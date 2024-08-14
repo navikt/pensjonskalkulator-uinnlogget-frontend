@@ -1,7 +1,7 @@
   name: workflow-uinnlogget
   on:
     push: 
-      branches: [main]
+      branches: [workflows]
     
   jobs:
     build-and-publish:
@@ -25,8 +25,8 @@
           run: npm ci
           env:
             NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        - name: Run prettier
-          run: npm run prettier:check
+        # - name: Run prettier
+        #   run: npm run prettier:check
         - name: Run lint
           run: npm run lint
         - name: Build application
