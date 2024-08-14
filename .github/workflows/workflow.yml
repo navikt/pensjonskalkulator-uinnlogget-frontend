@@ -1,18 +1,8 @@
   name: workflow-uinnlogget
   on:
-    workflow_call:
-      inputs:
-        app:
-          required: false
-          default: ${{ github.event.repository.name }}
-          type: string
-        dev-only:
-          required: false
-          default: false
-          type: boolean
-      outputs:
-        image:
-            value: ${{ jobs.build-and-publish.outputs.image }}
+    push: 
+      branches: [main]
+    
   jobs:
     build-and-publish:
       name: Bygg, test og publiser docker image
