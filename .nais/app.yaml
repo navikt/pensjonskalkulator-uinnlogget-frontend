@@ -3,12 +3,13 @@ kind: Application
 metadata:
   labels:
     team: pensjonskalkulator
-  name: pensjonskalkulator-uinnlogget
+  name: pensjonskalkulator-uinnlogget-sandbox
   namespace: pensjonskalkulator
 spec:
   image: {{image}} # Placeholder variable to be replaced by the CI/CD pipeline
   ingresses:
-  # - https://sandbox.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
+  - https://sandbox.intern.dev.nav.no/pensjon/kalkulator-uinnlogget
+  - https://sandbox.ansatt.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
   replicas:
     max: 2
