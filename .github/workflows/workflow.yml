@@ -73,4 +73,5 @@
         image: ${{ needs.build-and-publish.outputs.image }}
         app: ${{ inputs.app }}
         dev-only: ${{ inputs.dev-only }}
+        nais-template: .nais/app.yaml
       secrets: inherit
