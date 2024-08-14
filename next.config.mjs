@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  basePath: '/pensjon/kalkulator-uinnlogget'
+};
 
 export default nextConfig;
