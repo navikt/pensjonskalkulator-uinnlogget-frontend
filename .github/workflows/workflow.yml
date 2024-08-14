@@ -68,6 +68,8 @@
 
     nais-deploy:
       needs: build-and-publish
+      permissions:
+        id-token: write
       uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
       with:
         image: ${{ needs.build-and-publish.outputs.image }}
