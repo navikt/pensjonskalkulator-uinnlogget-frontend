@@ -2,7 +2,7 @@
   on:
     push: 
 
-      branches: [dev-workflows]
+      branches: [dev-workflows, main]
     
   jobs:
     build-and-publish:
@@ -33,7 +33,7 @@
         - name: Build application
           run: npm run build
         - name: docker-build-push
-          if: github.ref_name == 'dev-workflows' || startsWith(github.ref_name, 'dev-')
+          if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
           uses: nais/docker-build-push@v0
           id: docker-build-push
           with:
@@ -76,4 +76,5 @@
         app: ${{ inputs.app }}
         dev-only: ${{ inputs.dev-only }}
         nais-template: .nais/app.yaml
+        dev-vars: .nais/app.yaml
       secrets: inherit
