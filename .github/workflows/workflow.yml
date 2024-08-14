@@ -77,5 +77,5 @@
         app: ${{ inputs.app }}
         dev-only: ${{ inputs.dev-only }}
         nais-template: .nais/app.yaml
-        dev-vars: .nais/app.yaml
+        dev-vars: image=.nais/app.yaml
       secrets: inherit
