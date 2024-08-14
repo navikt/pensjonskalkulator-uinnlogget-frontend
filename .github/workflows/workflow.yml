@@ -71,11 +71,16 @@
       needs: build-and-publish
       permissions:
         id-token: write
-      uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
-      with:
-        image: ${{ needs.build-and-publish.outputs.image }}
-        app: ${{ inputs.app }}
-        dev-only: ${{ inputs.dev-only }}
-        nais-template: .nais/app.yaml
-        dev-vars: image=.nais/app.yaml
-      secrets: inherit
+      # uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
+      # with:
+      #   image: ${{ needs.build-and-publish.outputs.image }}
+      #   app: ${{ inputs.app }}
+      #   dev-only: ${{ inputs.dev-only }}
+      #   nais-template: .nais/app.yaml
+      #   dev-vars: image=.nais/app.yaml
+      # secrets: inherit
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
+          VAR: image=${{ needs.build-and-publish.outputs.image }}
