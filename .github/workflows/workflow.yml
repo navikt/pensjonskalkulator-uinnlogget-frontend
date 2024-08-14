@@ -42,6 +42,13 @@
             dockerfile: .docker/Dockerfile
             identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
             project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+        - name: deploy-dev
+          uses: nais/deploy/actions/deploy@v2
+          env:
+            CLUSTER: dev-gcp
+            RESOURCE: .nais/app.yml
+            VAR: image=${{ needs.build-and-publish.outputs.image }}
+
 
     codeql-analyse:
       if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
@@ -67,10 +74,10 @@
           with:
             category: "/language:javascript"
 
-    nais-deploy:
-      needs: build-and-publish
-      runs-on: ubuntu-latest
-      permissions: write-all
+    # nais-deploy:
+    #   needs: build-and-publish
+    #   runs-on: ubuntu-latest
+    #   permissions: write-all
       # uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
       # with:
       #   image: ${{ needs.build-and-publish.outputs.image }}
@@ -79,10 +86,4 @@
       #   nais-template: .nais/app.yaml
       #   dev-vars: image=.nais/app.yaml
       # secrets: inherit
-      steps:
-        - name: deploy-dev
-          uses: nais/deploy/actions/deploy@v2
-          env:
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/app.yml
-            VAR: image=${{ needs.build-and-publish.outputs.image }}
+      
