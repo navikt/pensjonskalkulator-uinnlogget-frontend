@@ -69,6 +69,7 @@
 
     nais-deploy:
       needs: build-and-publish
+      runs-on: ubuntu-latest
       permissions:
         id-token: write
       # uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
