@@ -1,6 +1,7 @@
   name: workflow-uinnlogget
   on:
     push: 
+    
       branches: [workflows]
     
   jobs:
