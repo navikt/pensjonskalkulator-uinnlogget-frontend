@@ -79,8 +79,10 @@
       #   nais-template: .nais/app.yaml
       #   dev-vars: image=.nais/app.yaml
       # secrets: inherit
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
-          VAR: image=${{ needs.build-and-publish.outputs.image }}
+      steps:
+        - name: deploy-dev
+          uses: nais/deploy/actions/deploy@v2
+          env:
+            CLUSTER: dev-gcp
+            RESOURCE: .nais/app.yaml #, topic.yaml, statefulset.yaml, etc.
+            VAR: image=${{ needs.build-and-publish.outputs.image }}
