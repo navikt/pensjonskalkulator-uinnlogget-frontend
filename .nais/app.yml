@@ -8,8 +8,7 @@ metadata:
 spec:
   image: {{image}} # Placeholder variable to be replaced by the CI/CD pipeline
   ingresses:
-  - https://sandbox.intern.dev.nav.no/pensjon/kalkulator-uinnlogget
-  - https://sandbox.ansatt.dev.nav.no/pensjon/kalkulator-uinnlogget
+    - https://sandbox.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
   replicas:
     max: 2
