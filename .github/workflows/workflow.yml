@@ -1,8 +1,9 @@
   name: workflow-uinnlogget
   on:
     push: 
-
-      branches: [dev-workflows, main]
+      branches:
+        - main
+        - dev-workflows
     
   jobs:
     build-and-publish:
