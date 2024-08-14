@@ -47,7 +47,7 @@
           env:
             CLUSTER: dev-gcp
             RESOURCE: .nais/app.yml
-            VAR: image=${{ needs.build-and-publish.outputs.image }}
+            VAR: image=${{ steps.docker-build-push.outputs.image }}
 
 
     codeql-analyse:
