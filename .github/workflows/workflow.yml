@@ -2,7 +2,7 @@
   on:
     push: 
 
-      branches: [workflows]
+      branches: [dev-workflows]
     
   jobs:
     build-and-publish:
