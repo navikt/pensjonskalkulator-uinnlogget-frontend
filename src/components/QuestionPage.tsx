@@ -49,6 +49,11 @@ export default function QuestionPage({ questions }: Props) {
   
   function handleDropDownAnswer(){
 
+    const answer: Answer = {
+        questionId: currentQuestion.id,
+    };
+
+    addAnswer(answer);
   }
   
   //function handleFillInAnswer
