@@ -8,5 +8,5 @@ export interface Answer{
 }
 
 export interface DropDownAnswerDef{
-    alternativeId: number;
+    alternativeId: string;
 }

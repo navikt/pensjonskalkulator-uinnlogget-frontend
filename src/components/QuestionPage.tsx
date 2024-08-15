@@ -42,9 +42,13 @@ export default function QuestionPage({ questions }: Props){
         }
     }
 
-    //function handleDropDownAnswer 
+    function handleDropDownAnswer(){
 
-    //function handleFillInAnswer
+    } 
+
+    function handleFillInAnswer(){
+        
+    }
     
     //function handleRadioAnswer
 
