@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  h2 {
+    @apply text-title;
+    @apply font-title;
+  }
+
+  h3 {
+    @apply text-undertittel;
+    @apply font-undertittel;
+  }
+}

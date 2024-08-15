@@ -10,6 +10,14 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontWeight:{
+      title: 600,
+      undertittel: 500
+    },
+    fontSize: {
+      title:"2rem",
+      undertittel:"1.5rem"
+    }
   },
   plugins: [],
 }
