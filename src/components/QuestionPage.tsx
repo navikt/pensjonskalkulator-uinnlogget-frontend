@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Question } from '../types/question'
 import { Answer } from '../types/answer'
 import QuestionBox from './QuestionBox'
+import DropDownModelView from './DropDownModelView'
 
 interface Props {
   questions: Array<Question>
@@ -44,14 +45,33 @@ export default function QuestionPage({ questions }: Props) {
     }
   }
 
-  //function handleDropDownAnswer
+  //function handleRadioAnswer
+  
+  function handleDropDownAnswer(){
 
+  }
+  
   //function handleFillInAnswer
 
-  //function handleRadioAnswer
+  function getCurrentQuestionView() {
+    switch (currentQuestion.type) {
+      case 'dropdown':
+        return (
+          <DropDownModelView
+            question={currentQuestion.dropdownQuestion!}
+            onAnswer={handleDropDownAnswer}
+          />
+        );
+      default:
+        return null;
+    }
+  }
+
+
+
   return (
     <>
-      <QuestionBox />
+      <QuestionBox /> {/* pass inn currentquestionview */}
     </>
   )
 }

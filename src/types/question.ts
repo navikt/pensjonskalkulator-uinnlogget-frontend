@@ -1,7 +1,8 @@
 export interface Question{
     id: number,
     title: string,
-    description: string, 
+    description: string,
+    type: 'radio' | 'dropdown' | 'input' 
     questionText: string,
     dropdownQuestion?: DropDownQuestionDef
     fillinQuestion?: string

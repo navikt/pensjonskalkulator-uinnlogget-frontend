@@ -4,6 +4,7 @@ export const mockQuestions: Array<Question> = [
     {
         id: 1,
         title: "Født",
+        type: "dropdown",
         description: "Her fyller du inn bla bla bla....",
         questionText: 'Hva er din alder?',
         dropdownQuestion: {
