@@ -1,5 +1,7 @@
 export interface Question{
-    id: string,
+    id: number,
+    title: string,
+    description: string, 
     questionText: string,
     dropdownQuestion?: DropDownQuestionDef
     fillinQuestion?: string

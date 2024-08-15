@@ -2,7 +2,9 @@ import { Question } from "@/types/question";
 
 export const mockQuestions: Array<Question> = [
     {
-        id: '647f7830d5a397319932617c',
+        id: 1,
+        title: "Født",
+        description: "Her fyller du inn bla bla bla....",
         questionText: 'Hva er din alder?',
         dropdownQuestion: {
           alternatives: [

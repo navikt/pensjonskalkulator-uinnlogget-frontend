@@ -1,5 +1,5 @@
 export interface Answer{
-    questionId: string;
+    questionId: number;
     dropdownQuestionAnswer?: DropDownAnswerDef;
     fillinQuestionAnswer?: string;
     //multiple choice question?
@@ -8,5 +8,5 @@ export interface Answer{
 }
 
 export interface DropDownAnswerDef{
-    alternativeId: string;
+    alternativeId: number;
 }

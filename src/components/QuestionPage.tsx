@@ -48,6 +48,9 @@ export default function QuestionPage({ questions }: Props){
     
     //function handleRadioAnswer
 
-}
+    return(
+        <></>
+    );
+}   
 
 //Her er det antatt at Spørsmålene blir hentet fra et API. Se nærmere på dette
