@@ -28,8 +28,7 @@ export default async function RootLayout({
     DECORATOR_HEADER,
     DECORATOR_FOOTER
   } = fragments
-  const scripts = extractScripts(DECORATOR_SCRIPTS)
-  console.log(DECORATOR_SCRIPTS)
+
   return (
     <html lang='nb'>
       <head
