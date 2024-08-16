@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import '@navikt/ds-css'
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
-import Head from 'next/head'
+import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+import { extractScripts } from '@/helpers/Scriptextractor'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,9 +18,39 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const fragments = await fetchDecoratorHtml({
+    env: 'prod', // or "dev" depending on your environment
+    params: { context: 'privatperson' }
+  })
+
+  const {
+    DECORATOR_STYLES,
+    DECORATOR_SCRIPTS,
+    DECORATOR_HEADER,
+    DECORATOR_FOOTER
+  } = fragments
+  const scripts = extractScripts(DECORATOR_SCRIPTS)
+  console.log(DECORATOR_SCRIPTS)
   return (
-    <html lang='en'>
-      <body className={inter.className}>{children}</body>
+    <html lang='nb'>
+      <head
+        dangerouslySetInnerHTML={{ __html: DECORATOR_STYLES }}
+        suppressHydrationWarning
+      />
+      <body>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DECORATOR_HEADER
+          }}
+          suppressHydrationWarning
+        />
+        {children}
+        <div
+          dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }}
+          suppressHydrationWarning
+        />
+        <div dangerouslySetInnerHTML={{ __html: DECORATOR_SCRIPTS }} />
+      </body>
     </html>
   )
 }
