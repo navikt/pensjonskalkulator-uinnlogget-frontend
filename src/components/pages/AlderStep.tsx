@@ -2,8 +2,10 @@ import React, { useContext } from 'react'
 import StepBox from '../StepBox'
 import { TextField, VStack } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, FormContext, Values } from '@/app/form/page'
+
 import addState from '@/helpers/addState'
+import { ContextForm } from '@/common'
+import { FormContext } from '@/contexts/context'
 
 function AlderStep() {
   const { states, setState } = useContext(FormContext) as ContextForm

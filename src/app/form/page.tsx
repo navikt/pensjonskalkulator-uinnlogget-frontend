@@ -1,10 +1,12 @@
 'use client'
 
+import { Values } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
 import TestStep from '@/components/pages/TestStep'
 import StepBox from '@/components/StepBox'
+import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 import {
   Box,
@@ -15,17 +17,7 @@ import {
 } from '@navikt/ds-react'
 import Link from 'next/link'
 
-export type Values = {
-  [key: string]: { state: string }
-}
-
-export interface ContextForm {
-  states: Values
-  setState: Dispatch<React.SetStateAction<Values>>
-}
-
 import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
-export const FormContext = createContext<ContextForm | undefined>(undefined)
 
 function FormPage() {
   const [formState, setFormSate] = useState<Values>({})
