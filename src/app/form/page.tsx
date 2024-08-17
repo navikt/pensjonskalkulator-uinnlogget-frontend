@@ -27,9 +27,14 @@ export interface ContextForm {
 import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 export const FormContext = createContext<ContextForm | undefined>(undefined)
 
-function page() {
+function FormPage() {
   const [formState, setFormSate] = useState<Values>({})
-  const pages = [<AlderStep />, <TestStep />, <InntektStep />, <AFPStep />]
+  const pages = [
+    <AlderStep key='alder' />,
+    <TestStep key='test' />,
+    <InntektStep key='inntekt' />,
+    <AFPStep key='afp' />
+  ]
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
 
@@ -91,4 +96,4 @@ function page() {
   )
 }
 
-export default page
+export default FormPage
