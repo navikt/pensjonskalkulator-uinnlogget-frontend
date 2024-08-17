@@ -1,8 +1,9 @@
 import React from 'react'
 import StepBox from '../StepBox'
+import FormWrapper from '../FormWrapper'
 
 function TestStep() {
-  return <div>Hva er din test</div>
+  return <FormWrapper>Hva er din test</FormWrapper>
 }
 
 export default TestStep
