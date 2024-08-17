@@ -7,6 +7,8 @@ import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
+
 export const metadata: Metadata = {
   title: 'Forenklet Pensjonskalkulator',
   description: 'Her kan du regne ut pensjon din'
@@ -18,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const fragments = await fetchDecoratorHtml({
-    env: 'prod', // or "dev" depending on your environment
+    env: decoratorEnv,
     params: { context: 'privatperson' }
   })
 

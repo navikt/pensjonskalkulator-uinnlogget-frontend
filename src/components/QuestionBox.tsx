@@ -1,4 +1,5 @@
 import { Box, Button, HStack, Link, TextField, VStack } from '@navikt/ds-react'
+import { redirect, usePathname } from 'next/navigation'
 import React from 'react'
 
 export default function QuestionBox() {
@@ -26,7 +27,14 @@ export default function QuestionBox() {
                 kommer.
               </p>
               <HStack gap={'2'}>
-                <Button variant='primary'>Kom i gang</Button>
+                <Button variant='primary'>
+                  <Link
+                    href='./kalkulator-uinnlogget/form'
+                    className='text-white'
+                  >
+                    <p className=' text-white'>Kom i Gang</p>
+                  </Link>
+                </Button>
                 <Button variant='tertiary'>Avbryt</Button>
               </HStack>
               <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
