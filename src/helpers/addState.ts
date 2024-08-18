@@ -1,4 +1,4 @@
-import { Values } from '@/app/form/page'
+import { Values } from '@/common'
 import { Dispatch } from 'react'
 
 const addState = (

@@ -1,8 +1,9 @@
 import React, { useContext, useState } from 'react'
 import FormWrapper from '../FormWrapper'
 import { TextField } from '@navikt/ds-react'
-import { ContextForm, FormContext } from '@/app/form/page'
 import addState from '@/helpers/addState'
+import { FormContext } from '@/contexts/context'
+import { ContextForm } from '@/common'
 
 function InntektStep() {
   const { states, setState } = useContext(FormContext) as ContextForm
