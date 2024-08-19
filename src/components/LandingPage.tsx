@@ -4,13 +4,14 @@ import React from 'react'
 
 export default function QuestionBox() {
   return (
-    <Box padding={'8'} width={'full'} background='surface-subtle'>
+    <Box width={'full'} background='surface-subtle'>
       <div className='flex flex-col items-center w-full'>
-        {/* <div className='mx-auto'> */}
-        <h2 className='ml-0 mb-3'>Pensjonskalkulator</h2>
+        <h2 className=' mb-3'>Pensjonskalkulator</h2>
+
         <Box
           marginBlock={'auto'}
-          width={'40rem'}
+          width={'100%'}
+          maxWidth={'40rem'}
           padding={'4'}
           background='bg-default'
         >

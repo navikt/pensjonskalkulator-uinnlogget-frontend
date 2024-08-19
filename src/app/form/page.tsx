@@ -4,7 +4,6 @@ import { Values } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
-import TestStep from '@/components/pages/TestStep'
 import StepBox from '@/components/StepBox'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
@@ -21,9 +20,9 @@ import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 
 function FormPage() {
   const [formState, setFormSate] = useState<Values>({})
+
   const pages = [
     <AlderStep key='alder' />,
-    <TestStep key='test' />,
     <InntektStep key='inntekt' />,
     <AFPStep key='afp' />
   ]
@@ -48,16 +47,9 @@ function FormPage() {
             onStepChange={(newStep) => goTo(newStep - 1)}
           >
             <FormProgress.Step>Alder</FormProgress.Step>
-            <FormProgress.Step>Test</FormProgress.Step>
             <FormProgress.Step>Inntekt</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
           </FormProgress>
-          {/* <ProgressBar
-            value={curStep + 1}
-            valueMax={pages.length}
-            size='medium'
-            aria-labelledby='progress-bar-label-medium'
-          /> */}
           <FormContext.Provider
             value={{ setState: setFormSate, states: formState }}
           >
@@ -79,9 +71,11 @@ function FormPage() {
               </Button>
             )}
           </HStack>
-          <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
-            Personopplysninger som brukes i pensjonskalkulator
-          </Link>
+          <div className='mt-6'>
+            <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
+              Personopplysninger som brukes i pensjonskalkulator
+            </Link>
+          </div>
         </Box>
       </div>
       {/* </div> */}
