@@ -2,10 +2,12 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import '@navikt/ds-css'
-import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
-import Head from 'next/head'
+import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
+
+const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
 
 export const metadata: Metadata = {
   title: 'Forenklet Pensjonskalkulator',
@@ -17,9 +19,38 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const fragments = await fetchDecoratorHtml({
+    env: decoratorEnv,
+    params: { context: 'privatperson' }
+  })
+
+  const {
+    DECORATOR_STYLES,
+    DECORATOR_SCRIPTS,
+    DECORATOR_HEADER,
+    DECORATOR_FOOTER
+  } = fragments
+
   return (
-    <html lang='en'>
-      <body className={inter.className}>{children}</body>
+    <html lang='nb'>
+      <head
+        dangerouslySetInnerHTML={{ __html: DECORATOR_STYLES }}
+        suppressHydrationWarning
+      />
+      <body>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: DECORATOR_HEADER
+          }}
+          suppressHydrationWarning
+        />
+        {children}
+        <div
+          dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }}
+          suppressHydrationWarning
+        />
+        <div dangerouslySetInnerHTML={{ __html: DECORATOR_SCRIPTS }} />
+      </body>
     </html>
   )
 }
