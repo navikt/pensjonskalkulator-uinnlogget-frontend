@@ -51,12 +51,16 @@ function FormPage() {
   }
 
   return (
-    <Box
-      padding={{ lg: '10', sm: '0' }}
-      width={'full'}
-      background='surface-subtle'
-    >
-      <Box maxWidth={'40rem'} width={'100%'} marginInline={'auto'}>
+    <Box padding={{ lg: '10', sm: '5' }} width={'full'} background='bg-default'>
+      <Box
+        maxWidth={'40rem'}
+        width={'100%'}
+        marginInline={'auto'}
+        borderColor='border-default'
+        borderWidth='1'
+        padding={'4'}
+        borderRadius={'large'}
+      >
         <div className='mb-3 text-left'>
           <h2>Pensjonskalkulator</h2>
         </div>
