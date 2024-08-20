@@ -1,6 +1,6 @@
 'use client'
 
-import { Values } from '@/common'
+import { StepRef, Values } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -16,10 +16,11 @@ import {
 } from '@navikt/ds-react'
 import Link from 'next/link'
 
-import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
+import React, { cloneElement, FormEvent, useRef, useState } from 'react'
 
 function FormPage() {
   const [formState, setFormSate] = useState<Values>({})
+  const childRef = useRef<StepRef>(null) // Ref to access child component method
 
   const pages = [
     <AlderStep key='alder' />,
@@ -29,18 +30,23 @@ function FormPage() {
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
 
-  return (
-    <Box width={'full'} background='surface-subtle'>
-      <div className='flex flex-col items-center w-full'>
-        <h2 className=' mb-3'>Pensjonskalkulator</h2>
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault()
 
-        <Box
-          marginBlock={'auto'}
-          width={'100%'}
-          maxWidth={'40rem'}
-          padding={'4'}
-          background='bg-default'
-        >
+    if (childRef.current?.onSubmit()) next()
+  }
+
+  return (
+    <Box
+      padding={{ lg: '10', sm: '0' }}
+      width={'full'}
+      background='surface-subtle'
+    >
+      <Box maxWidth={'40rem'} width={'100%'} marginInline={'auto'}>
+        <div className='mb-3 text-left'>
+          <h2>Pensjonskalkulator</h2>
+        </div>
+        <Box width={'100%'} padding={'4'} background='bg-default'>
           <FormProgress
             totalSteps={pages.length}
             activeStep={curStep + 1}
@@ -50,34 +56,30 @@ function FormPage() {
             <FormProgress.Step>Inntekt</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
           </FormProgress>
-          <FormContext.Provider
-            value={{ setState: setFormSate, states: formState }}
-          >
-            {step}
-          </FormContext.Provider>
-          <HStack gap={'2'}>
-            {curStep !== pages.length - 1 ? (
-              <Button onClick={next} variant='primary'>
-                Neste
+          <form onSubmit={handleSubmit}>
+            <FormContext.Provider
+              value={{ setState: setFormSate, states: formState }}
+            >
+              {cloneElement(step, { ref: childRef })}
+            </FormContext.Provider>
+            <HStack gap={'2'} marginBlock='2'>
+              <Button type='submit' variant='primary'>
+                {curStep === pages.length - 1 ? 'Send Inn' : 'Neste'}
               </Button>
-            ) : (
-              <Button onClick={next} variant='primary'>
-                Send Inn
-              </Button>
-            )}
-            {curStep !== 0 && (
-              <Button onClick={back} variant='tertiary'>
-                Forrige
-              </Button>
-            )}
-          </HStack>
+              {curStep !== 0 && (
+                <Button type='button' onClick={back} variant='tertiary'>
+                  Forrige
+                </Button>
+              )}
+            </HStack>
+          </form>
           <div className='mt-6'>
             <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
               Personopplysninger som brukes i pensjonskalkulator
             </Link>
           </div>
         </Box>
-      </div>
+      </Box>
       {/* </div> */}
     </Box>
   )

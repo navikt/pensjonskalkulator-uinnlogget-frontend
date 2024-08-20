@@ -4,11 +4,10 @@ import { useState } from 'react'
 import LandingPage from '@/components/LandingPage'
 
 export default function QuestionPage() {
-  
   return (
     <>
       <main>
-        < LandingPage/>
+        <LandingPage />
       </main>
     </>
   )

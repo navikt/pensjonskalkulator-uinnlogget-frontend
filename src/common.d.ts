@@ -6,3 +6,7 @@ export interface ContextForm {
   states: Values
   setState: Dispatch<React.SetStateAction<Values>>
 }
+
+export interface StepRef {
+  onSubmit: () => void
+}
