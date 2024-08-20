@@ -1,6 +1,6 @@
 'use client'
 
-import { StepRef, Values } from '@/common'
+import { ContextForm, FormValues, StepRef } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -19,8 +19,22 @@ import Link from 'next/link'
 
 import React, { cloneElement, FormEvent, useRef, useState } from 'react'
 
+const initialFormState: FormValues = {
+  alder: '',
+  inntekt: '',
+  aarYrkesaktiv: '',
+  alderTaUt: '',
+  uttaksgrad: '',
+  forventetInntektEtterUttak: '',
+  boddINorgeSisteAar: '',
+  AntallAarBoddINorge: '',
+  rettTilAfp: '',
+  tredjepersonStorreEnn2G: '',
+  tredjepersonMottarPensjon: ''
+}
+
 function FormPage() {
-  const [formState, setFormSate] = useState<Values>({})
+  const [formState, setFormSate] = useState<FormValues>(initialFormState)
   const childRef = useRef<StepRef>(null) // Ref to access child component method
 
   const pages = [
