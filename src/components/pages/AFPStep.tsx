@@ -2,7 +2,7 @@ import React, { forwardRef, useContext, useImperativeHandle } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, StepRef } from '@/common'
+import { ContextForm, FormValues, StepRef } from '@/common'
 
 const AFPStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
@@ -35,7 +35,12 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
       <RadioGroup
         legend=''
         defaultValue={states.rettTilAfp || undefined}
-        // onChange={(val) => addState(val, setState, 'afp')}
+        onChange={(it) =>
+          setState((prev: FormValues) => ({
+            ...prev,
+            rettTilAfp: it
+          }))
+        }
         error={errorMsg}
       >
         <Radio value={'ja'}>Ja</Radio>

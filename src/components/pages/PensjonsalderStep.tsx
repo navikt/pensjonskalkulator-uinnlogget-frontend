@@ -7,9 +7,7 @@ import React, {
   } from 'react'
   import { TextField, VStack } from '@navikt/ds-react'
   import FormWrapper from '../FormWrapper'
-  
-  import addState from '@/helpers/addState'
-  import { ContextForm, StepRef } from '@/common'
+  import { ContextForm, FormValues, StepRef } from '@/common'
   import { FormContext } from '@/contexts/context'
   
   const PensjonsalderStep = forwardRef<StepRef>((props, ref) => {
@@ -19,15 +17,15 @@ import React, {
   
     useImperativeHandle(ref, () => ({
       onSubmit() {
-        if (!states.pensjonsalder?.state) {
+        if (!states.alderTaUt) {
           setErrorMsg(message)
           return false
         }
   
         // Age must be between 62 and 75
         if (
-          parseInt(states.pensjonsalder.state) < 62 ||
-          parseInt(states.pensjonsalder.state) > 75
+          parseInt(states.alderTaUt) < 62 ||
+          parseInt(states.alderTaUt) > 75
         ) {
           setErrorMsg(message)
           return false
@@ -47,10 +45,15 @@ import React, {
           </p>
           <div className='w-24'>
             <TextField
-              onChange={(it) => addState(it.target.value, setState, 'pensjonsalder')}
+               onChange={(it) =>
+                setState((prev: FormValues) => ({
+                  ...prev,
+                  alderTaUt: it.target.value
+                }))
+              }
               type='number'
               label='Pensjonsalder'
-              value={states.pensjonsalder?.state || ''}
+              value={states.alderTaUt}
               error={errorMsg}
             ></TextField>
           </div>
