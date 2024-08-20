@@ -46,4 +46,5 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
   )
 })
 
+InntektStep.displayName = 'InntektStep'
 export default InntektStep

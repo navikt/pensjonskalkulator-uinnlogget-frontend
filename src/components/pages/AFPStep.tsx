@@ -46,4 +46,5 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
   )
 })
 
+AFPStep.displayName = 'AFPStep'
 export default AFPStep

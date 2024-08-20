@@ -56,4 +56,5 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   )
 })
 
+AlderStep.displayName = 'AlderStep'
 export default AlderStep
