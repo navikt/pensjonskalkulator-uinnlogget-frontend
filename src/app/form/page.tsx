@@ -1,9 +1,10 @@
 'use client'
 
-import { StepRef, Values } from '@/common'
+import { ContextForm, FormValues, StepRef } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
+import PensjonsalderStep from '@/components/pages/PensjonsalderStep'
 import StepBox from '@/components/StepBox'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
@@ -18,21 +19,39 @@ import Link from 'next/link'
 
 import React, { cloneElement, FormEvent, useRef, useState } from 'react'
 
+const initialFormState: FormValues = {
+  alder: '',
+  inntekt: '',
+  aarYrkesaktiv: '',
+  alderTaUt: '',
+  uttaksgrad: '',
+  forventetInntektEtterUttak: '',
+  boddINorgeSisteAar: '',
+  AntallAarBoddINorge: '',
+  rettTilAfp: '',
+  tredjepersonStorreEnn2G: '',
+  tredjepersonMottarPensjon: ''
+}
+
 function FormPage() {
-  const [formState, setFormSate] = useState<Values>({})
+  const [formState, setFormSate] = useState<FormValues>(initialFormState)
   const childRef = useRef<StepRef>(null) // Ref to access child component method
 
   const pages = [
     <AlderStep key='alder' />,
     <InntektStep key='inntekt' />,
-    <AFPStep key='afp' />
+    <AFPStep key='afp' />,
+    <PensjonsalderStep key='pensjonsalder' />
   ]
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-
+    if (curStep == pages.length - 1) {
+      // Submit form
+      return
+    }
     if (childRef.current?.onSubmit()) next()
   }
 
@@ -55,6 +74,7 @@ function FormPage() {
             <FormProgress.Step>Alder</FormProgress.Step>
             <FormProgress.Step>Inntekt</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
+            <FormProgress.Step>Pensjonsalder</FormProgress.Step>
           </FormProgress>
           <form onSubmit={handleSubmit}>
             <FormContext.Provider
@@ -64,7 +84,7 @@ function FormPage() {
             </FormContext.Provider>
             <HStack gap={'2'} marginBlock='2'>
               <Button type='submit' variant='primary'>
-                {curStep === pages.length - 1 ? 'Send Inn' : 'Neste'}
+                {curStep === pages.length - 1 ? 'Send' : 'Neste'}
               </Button>
               {curStep !== 0 && (
                 <Button type='button' onClick={back} variant='tertiary'>

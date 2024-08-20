@@ -2,8 +2,7 @@ import React, { forwardRef, useContext, useImperativeHandle } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, StepRef } from '@/common'
-import addState from '@/helpers/addState'
+import { ContextForm, FormValues, StepRef } from '@/common'
 
 const AFPStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
@@ -11,13 +10,13 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      if (!states.afp?.state) {
+      if (!states.rettTilAfp) {
         setErrorMsg('Du må velge et alternativ')
         return false
       }
       return true
     }
-  }))
+  })) 
 
   return (
     <FormWrapper>
@@ -35,8 +34,13 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
       </ReadMore>
       <RadioGroup
         legend=''
-        defaultValue={states.afp?.state || undefined}
-        onChange={(val) => addState(val, setState, 'afp')}
+        defaultValue={states.rettTilAfp || undefined}
+        onChange={(it) =>
+          setState((prev: FormValues) => ({
+            ...prev,
+            rettTilAfp: it
+          }))
+        }
         error={errorMsg}
       >
         <Radio value={'ja'}>Ja</Radio>
@@ -46,4 +50,5 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
   )
 })
 
+AFPStep.displayName = 'AFPStep'
 export default AFPStep
