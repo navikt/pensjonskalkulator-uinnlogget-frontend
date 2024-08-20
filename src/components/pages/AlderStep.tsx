@@ -9,8 +9,7 @@ import StepBox from '../StepBox'
 import { TextField, VStack } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 
-import addState from '@/helpers/addState'
-import { ContextForm, StepRef } from '@/common'
+import { ContextForm, FormValues, StepRef } from '@/common'
 import { FormContext } from '@/contexts/context'
 
 const AlderStep = forwardRef<StepRef>((props, ref) => {
@@ -18,19 +17,18 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const message = 'Du må sette en alder mellom 16 og 75'
 
+  const { alder } = states
+
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      if (!states.alder?.state) {
+      if (!alder) {
         setErrorMsg(message)
         return false
       }
 
       // Age must be between 16 and 75
-      if (
-        parseInt(states.alder.state) < 16 ||
-        parseInt(states.alder.state) > 75
-      ) {
-        setErrorMsg('message')
+      if (parseInt(alder) < 16 || parseInt(alder) > 75) {
+        setErrorMsg(message)
         return false
       }
 
@@ -44,13 +42,19 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
         <div>Hva er din alder</div>
         <div className='w-24'>
           <TextField
-            onChange={(it) => addState(it.target.value, setState, 'alder')}
+            onChange={(it) =>
+              setState((prev: FormValues) => ({
+                ...prev,
+                alder: it.target.value
+              }))
+            }
             type='number'
             label='Alder'
-            value={states.alder?.state || ''}
+            value={alder}
             error={errorMsg}
           ></TextField>
         </div>
+        <div></div>
       </FormWrapper>
     </>
   )

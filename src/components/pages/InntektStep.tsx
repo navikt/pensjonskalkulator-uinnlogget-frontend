@@ -6,9 +6,8 @@ import React, {
 } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Box, TextField } from '@navikt/ds-react'
-import addState from '@/helpers/addState'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, StepRef } from '@/common'
+import { ContextForm, FormValues, StepRef } from '@/common'
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
@@ -16,13 +15,13 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      if (!states.inntekt?.state) {
+      if (!states.inntekt) {
         setErrorMsg('Du må fylle ut inntekt')
         return false
       }
 
       // Must not be negative
-      if (parseInt(states.inntekt.state) < 0) {
+      if (parseInt(states.inntekt) < 0) {
         setErrorMsg('Inntekt kan ikke være negativ')
         return false
       }
@@ -36,9 +35,14 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
       <div>Hva er din forventet inntekt?</div>
       <div className='w-24'>
         <TextField
-          onChange={(val) => addState(val.target.value, setState, 'inntekt')}
+          onChange={(it) =>
+            setState((prev: FormValues) => ({
+              ...prev,
+              inntekt: it.target.value
+            }))
+          }
           label='Inntekt'
-          value={states.inntekt?.state || ''}
+          value={states.inntekt || ''}
           error={errorMsg}
         />
       </div>

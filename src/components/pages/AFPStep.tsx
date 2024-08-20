@@ -3,7 +3,6 @@ import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, StepRef } from '@/common'
-import addState from '@/helpers/addState'
 
 const AFPStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
@@ -11,7 +10,7 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      if (!states.afp?.state) {
+      if (!states.rettTilAfp) {
         setErrorMsg('Du må velge et alternativ')
         return false
       }
@@ -35,8 +34,8 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
       </ReadMore>
       <RadioGroup
         legend=''
-        defaultValue={states.afp?.state || undefined}
-        onChange={(val) => addState(val, setState, 'afp')}
+        defaultValue={states.rettTilAfp || undefined}
+        // onChange={(val) => addState(val, setState, 'afp')}
         error={errorMsg}
       >
         <Radio value={'ja'}>Ja</Radio>
