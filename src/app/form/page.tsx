@@ -62,7 +62,7 @@ function FormPage() {
         width={'100%'}
         marginInline={'auto'}
         borderColor='border-default'
-        borderWidth='1'
+        // borderWidth='1'
         padding={'4'}
         borderRadius={'large'}
       >

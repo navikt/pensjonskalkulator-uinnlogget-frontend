@@ -5,13 +5,15 @@ import React, {
   useState
 } from 'react'
 import FormWrapper from '../FormWrapper'
-import { Box, TextField } from '@navikt/ds-react'
+import { Box, Button, TextField } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValues, StepRef } from '@/common'
+import { PlusCircleIcon } from '@navikt/aksel-icons'
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const inputArray = []
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
@@ -33,7 +35,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
   return (
     <FormWrapper>
       <h2>Hva er din forventet inntekt?</h2>
-      <div className='w-24'>
+      <div className='w-30'>
         <TextField
           onChange={(it) =>
             setState((prev: FormValues) => ({
@@ -45,6 +47,9 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           value={states.inntekt || ''}
           error={errorMsg}
         />
+        <Button icon={<PlusCircleIcon />} variant='tertiary'>
+          Legg til
+        </Button>
       </div>
     </FormWrapper>
   )

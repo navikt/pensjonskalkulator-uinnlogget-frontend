@@ -16,7 +16,7 @@ const AFPStep = forwardRef<StepRef>((props, ref) => {
       }
       return true
     }
-  })) 
+  }))
 
   return (
     <FormWrapper>
