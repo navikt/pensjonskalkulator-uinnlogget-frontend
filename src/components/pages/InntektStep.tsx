@@ -33,7 +33,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
   return (
     <FormWrapper>
-      <div>Hva er din forventet inntekt?</div>
+      <h2>Hva er din forventet inntekt?</h2>
       <div className='w-24'>
         <TextField
           onChange={(val) => addState(val.target.value, setState, 'inntekt')}

@@ -21,7 +21,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   useImperativeHandle(ref, () => ({
     onSubmit() {
       if (!states.alder?.state) {
-        setErrorMsg(message)
+        setErrorMsg(message);
         return false
       }
 
@@ -30,7 +30,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
         parseInt(states.alder.state) < 16 ||
         parseInt(states.alder.state) > 75
       ) {
-        setErrorMsg('message')
+        setErrorMsg(message);
         return false
       }
 
@@ -41,7 +41,10 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   return (
     <>
       <FormWrapper>
-        <div>Hva er din alder</div>
+        <h2>Hva er din alder?</h2>
+        <p>
+          Hvor gammel er du? Dette er viktig for å beregne pensjonen din.
+        </p>
         <div className='w-24'>
           <TextField
             onChange={(it) => addState(it.target.value, setState, 'alder')}
