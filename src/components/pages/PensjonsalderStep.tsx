@@ -61,6 +61,7 @@ import React, {
       </>
     )
   })
-  
+
+  PensjonsalderStep.displayName = 'PensjonsalderStep'
   export default PensjonsalderStep
   
