@@ -44,8 +44,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const pages = [
     <AlderStep key='alder' />,
-    <InntektStep grunnbelop={grunnbelop} key='inntekt' />,
-    <AFPStep key='afp' />,
+    <InntektStep key='inntekt' />,
+    <AFPStep grunnbelop={grunnbelop} key='afp' />,
     <UtlandsStep key='utland' />
   ]
 
