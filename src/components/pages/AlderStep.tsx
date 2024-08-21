@@ -25,7 +25,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   const [errorMsgTaut, setErrorMsgTaut] = useState<string | null>(null)
   const message = 'Du må oppgi et gyldig årstall'
 
-  const { alder, alderTaUt } = states
+  const { alder, aarYrkesaktiv } = states
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
@@ -42,7 +42,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
         setErrorMsg(null)
       }
 
-      if (!alderTaUt || parseInt(alderTaUt) < 0 || parseInt(alderTaUt) > 10) {
+      if (!aarYrkesaktiv || parseInt(aarYrkesaktiv) < 0 || parseInt(aarYrkesaktiv) > 10) {
         setErrorMsgTaut(
           'Du maksimalt være 10 år yrkesaktiv etter at du har tatt ut pensjon'
         )
@@ -92,12 +92,12 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             onChange={(it) =>
               setState((prev: FormValues) => ({
                 ...prev,
-                alderTaUt: it.target.value
+                aarYrkesaktiv: it.target.value
               }))
             }
             type='number'
             label='Skriv antall år'
-            value={alderTaUt}
+            value={aarYrkesaktiv}
             error={errorMsgTaut}
           ></TextField>
         </Box>
