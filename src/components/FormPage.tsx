@@ -4,7 +4,7 @@ import { ContextForm, FormValues, StepRef } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
-import PensjonsalderStep from '@/components/pages/PensjonsalderStep'
+import UtlandsStep from './pages/UtlandsStep'
 import StepBox from '@/components/StepBox'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
@@ -26,7 +26,8 @@ const initialFormState: FormValues = {
   alderTaUt: '',
   uttaksgrad: '',
   forventetInntektEtterUttak: '',
-  boddINorgeSisteAar: '',
+  utland: '',
+  boddIUtland: '',
   AntallAarBoddINorge: '',
   rettTilAfp: '',
   tredjepersonStorreEnn2G: '',
@@ -45,7 +46,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     <AlderStep key='alder' />,
     <InntektStep grunnbelop={grunnbelop} key='inntekt' />,
     <AFPStep key='afp' />,
-    <PensjonsalderStep key='pensjonsalder' />
+    <UtlandsStep key='utland' />
   ]
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
@@ -82,7 +83,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
             <FormProgress.Step>Alder</FormProgress.Step>
             <FormProgress.Step>Inntekt</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
-            <FormProgress.Step>Pensjonsalder</FormProgress.Step>
+            <FormProgress.Step>Utland</FormProgress.Step>
           </FormProgress>
           <form onSubmit={handleSubmit}>
             <FormContext.Provider
