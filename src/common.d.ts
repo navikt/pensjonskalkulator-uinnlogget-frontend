@@ -5,7 +5,8 @@ export type FormValues = {
   alderTaUt: string
   uttaksgrad: string
   forventetInntektEtterUttak: string
-  boddINorgeSisteAar: string
+  utland: string
+  boddIUtland: string
   AntallAarBoddINorge: string
   rettTilAfp: string
   tredjepersonStorreEnn2G: string
