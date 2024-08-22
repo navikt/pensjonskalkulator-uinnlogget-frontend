@@ -1,6 +1,6 @@
 import React, { forwardRef, useContext, useImperativeHandle } from 'react'
 import FormWrapper from '../FormWrapper'
-import { Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
+import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValues, StepRef } from '@/common'
 import Substep from '../Substep'
@@ -12,10 +12,29 @@ interface FormPageProps {
 const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
   const [errorMsg, setErrorMsg] = React.useState<string | null>(null)
+  const [errorFields, setErrorFields] = React.useState({
+    rettTilAfp: false,
+    tredjepersonStorreEnn2G: false,
+    tredjepersonMottarPensjon: false,
+  })
+  const message = 'Du må svare på spørsmålet';
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      return true
+      const errors = {
+        rettTilAfp: !states.rettTilAfp,
+        tredjepersonStorreEnn2G: !states.tredjepersonStorreEnn2G,
+        tredjepersonMottarPensjon: !states.tredjepersonMottarPensjon,
+      };
+
+      setErrorFields(errors);
+
+      if(Object.values(errors).some((error) => error)) {
+        setErrorMsg(message);
+        return false;
+      }
+
+      return true;
     }
   }))
 
@@ -30,6 +49,7 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
             rettTilAfp: it,
           }))
         }
+        error={errorFields.rettTilAfp ? message : ''}
         >
           <Radio value='ja'>Ja</Radio>
           <Radio value='nei'>Nei</Radio>
@@ -47,6 +67,7 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
               tredjepersonStorreEnn2G: it,
             }))
           }
+          error={errorFields.tredjepersonStorreEnn2G ? message : ''}
         >
           <Radio value='ja'>Ja</Radio>
           <Radio value='nei'>Nei</Radio>
@@ -64,6 +85,7 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
               tredjepersonMottarPensjon: it,
             }))
           }
+          error={errorFields.tredjepersonMottarPensjon ? message : ''}
         >
           <Radio value='ja'>Ja</Radio>
           <Radio value='nei'>Nei</Radio>
