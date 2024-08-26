@@ -18,6 +18,7 @@ import {
 import Link from 'next/link'
 
 import React, { cloneElement, FormEvent, useRef, useState } from 'react'
+import EktefelleStep from './pages/EktefelleStep'
 
 const initialFormState: FormValues = {
   alder: '',
@@ -26,10 +27,12 @@ const initialFormState: FormValues = {
   alderTaUt: '',
   uttaksgrad: '',
   forventetInntektEtterUttak: '',
+  forventetInntektEtterHeleUttak: '',
   utland: '',
   boddIUtland: '',
   AntallAarBoddINorge: '',
   rettTilAfp: '',
+  sivilstand: 'UGIFT',
   tredjepersonStorreEnn2G: '',
   tredjepersonMottarPensjon: ''
 }
@@ -44,9 +47,10 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const pages = [
     <AlderStep key='alder' />,
+    <UtlandsStep key='utland' />,
     <InntektStep key='inntekt' />,
+    <EktefelleStep grunnbelop={grunnbelop} key='ektefelle' />,
     <AFPStep grunnbelop={grunnbelop} key='afp' />,
-    <UtlandsStep key='utland' />
   ]
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
@@ -81,9 +85,10 @@ function FormPage({ grunnbelop }: FormPageProps) {
             onStepChange={(newStep) => goTo(newStep - 1)}
           >
             <FormProgress.Step>Alder</FormProgress.Step>
-            <FormProgress.Step>Inntekt</FormProgress.Step>
-            <FormProgress.Step>AFP</FormProgress.Step>
             <FormProgress.Step>Utland</FormProgress.Step>
+            <FormProgress.Step>Inntekt</FormProgress.Step>
+            <FormProgress.Step>Ektefelle</FormProgress.Step>
+            <FormProgress.Step>AFP</FormProgress.Step>
           </FormProgress>
           <form onSubmit={handleSubmit}>
             <FormContext.Provider
