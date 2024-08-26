@@ -5,14 +5,11 @@ import React, {
   useImperativeHandle,
   useState
 } from 'react'
-import StepBox from '../StepBox'
 import {
   Bleed,
   BodyShort,
   Box,
-  Heading,
   TextField,
-  VStack
 } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 
@@ -23,6 +20,10 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
   const [errorMsgTaut, setErrorMsgTaut] = useState<string | null>(null)
+  const [errorFields, setErrorFields] = React.useState({
+    alder: false,
+    aarYrkesaktiv: false,
+  });
   const message = 'Du må oppgi et gyldig årstall'
 
   const { alder, aarYrkesaktiv } = states
@@ -31,25 +32,36 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
     onSubmit() {
       var willContinue = true
 
-      if (
-        !alder ||
-        parseInt(alder) < 1900 ||
-        parseInt(alder) > new Date().getFullYear()
-      ) {
-        setErrorMsg(message)
-        willContinue = false
-      } else {
-        setErrorMsg(null)
+      const errors = {
+        alder: !states.alder,
+        aarYrkesaktiv: !states.aarYrkesaktiv,
+      };
+
+      setErrorFields(errors);
+
+      if (Object.values(errors).some((error) => error)){
+
+        if (
+          !alder ||
+          parseInt(alder) < 1900 ||
+          parseInt(alder) > new Date().getFullYear()
+        ) {
+          setErrorMsg(message)
+          willContinue = false
+        } else {
+          setErrorMsg(null)
+        }
+  
+        if (!aarYrkesaktiv || parseInt(aarYrkesaktiv) < 0 || parseInt(aarYrkesaktiv) > 10) {
+          setErrorMsgTaut(
+            'Du maksimalt være 10 år yrkesaktiv etter at du har tatt ut pensjon'
+          )
+          willContinue = false
+        } else {
+          setErrorMsgTaut(null)
+        }
       }
 
-      if (!aarYrkesaktiv || parseInt(aarYrkesaktiv) < 0 || parseInt(aarYrkesaktiv) > 10) {
-        setErrorMsgTaut(
-          'Du maksimalt være 10 år yrkesaktiv etter at du har tatt ut pensjon'
-        )
-        willContinue = false
-      } else {
-        setErrorMsgTaut(null)
-      }
 
       return willContinue
     }
@@ -73,7 +85,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             type='number'
             label='I hvilket år er du født?'
             value={alder}
-            error={errorMsg}
+            error={errorFields.alder ? errorMsg : ""}
           ></TextField>
         </Box>
         <Box
@@ -98,7 +110,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             type='number'
             label='Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
             value={aarYrkesaktiv}
-            error={errorMsgTaut}
+            error={errorFields.aarYrkesaktiv ? errorMsgTaut : ""}
           ></TextField>
         </Box>
       </FormWrapper>
