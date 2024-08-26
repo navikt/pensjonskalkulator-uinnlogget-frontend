@@ -5,7 +5,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react";
-import { Radio, RadioGroup, TextField, VStack } from "@navikt/ds-react";
+import { Radio, RadioGroup, ReadMore, TextField, VStack } from "@navikt/ds-react";
 import FormWrapper from "../FormWrapper";
 import { ContextForm, FormValues, StepRef } from "@/common";
 import { FormContext } from "@/contexts/context";
@@ -30,10 +30,10 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
   return (
     <>
       <FormWrapper>
-        <h2>Har du bodd eller arbeidet i andre land enn i Norge?</h2>
+        <h2>Utland</h2>
         <div>
           <RadioGroup
-            legend=""
+            legend="Har du bodd eller arbeidet utenfor Norge?"
             value={states.utland || undefined}
             onChange={(it) =>
               setState((prev: FormValues) => ({
@@ -46,6 +46,11 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
             <Radio value={"ja"}>Ja</Radio>
             <Radio value={"nei"}>Nei</Radio>
           </RadioGroup>
+          <ReadMore header="Om opphold utenfor Norge">
+            Hvis du har bodd eller arbeidet utenfor Norge, kan det påvirke
+            pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
+            pensjon fra det landet du har bodd i.
+          </ReadMore>
           {states.utland === "ja" && (
             <Substep>
               <TextField

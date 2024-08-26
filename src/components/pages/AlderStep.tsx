@@ -81,11 +81,11 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
           borderWidth='0 0 1 0'
           borderColor='border-subtle'
         />
-        <Bleed marginBlock={'2'}>
+        {/* <Bleed marginBlock={'2'}>
           <Heading size='xsmall'>
             Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?
           </Heading>
-        </Bleed>
+        </Bleed> */}
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
             maxLength={3}
@@ -96,7 +96,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
               }))
             }
             type='number'
-            label='Skriv antall år'
+            label='Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
             value={aarYrkesaktiv}
             error={errorMsgTaut}
           ></TextField>
