@@ -18,12 +18,17 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
+      var willContinue = true;
+      
       if (!states.boddIUtland) {
         setErrorMsg(message);
-        return false;
+        willContinue = false;
+      }
+      if(states.utland === "nei"){
+        willContinue = true;
       }
 
-      return true;
+      return willContinue;
     },
   }));
 
