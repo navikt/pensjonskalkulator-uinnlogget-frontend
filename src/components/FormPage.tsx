@@ -120,7 +120,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
       // Clean up event listener on unmount
       window.removeEventListener('popstate', handlePopState)
     }
-  }, [])
+  }, [goTo])
 
   const handleGoTo = (step: number) => {
     goTo(step)
