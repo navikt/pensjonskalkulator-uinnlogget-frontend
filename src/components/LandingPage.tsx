@@ -30,7 +30,7 @@ export default function QuestionBox() {
             <HStack gap={'2'}>
               <Button variant='primary'>
                 <Link
-                  href='./kalkulator-uinnlogget/form'
+                  href='./kalkulator-uinnlogget/form/alder'
                   className='text-white'
                 >
                   <p className=' text-white'>Kom i Gang</p>
