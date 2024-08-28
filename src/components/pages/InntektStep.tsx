@@ -27,9 +27,15 @@ import Substep from "../Substep";
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorFields, setErrorFields] = React.useState({
+    inntekt: false,
+    alderTaUt: false,
+    uttaksgrad: false,
+  });
+  const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null);
+  const [errorMsgTaUt, setErrorMsgTaUt] = useState<string | null>(null);
+  const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(null);
   const [inputArray, setInputArray] = useState<ReactElement[]>([]);
-  const [uttaksgrad, setUttaksgrad] = useState<number>(0);
 
   const addInputField = () => {
     return (
@@ -42,7 +48,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         }
         label="Inntekt"
         value={states.inntekt || ""}
-        error={errorMsg}
+        error={errorMsgInntekt}
         key={inputArray.length}
       />
     );
@@ -50,18 +56,41 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      if (!states.inntekt) {
-        setErrorMsg("Du må fylle ut inntekt");
-        return false;
-      }
 
-      // Must not be negative
-      if (parseInt(states.inntekt) < 0) {
-        setErrorMsg("Inntekt kan ikke være negativ");
-        return false;
-      }
+      console.log(states.uttaksgrad);
+      var willContinue = true;
+      
+      const errors = {
+        inntekt: !states.inntekt,
+        alderTaUt: !states.alderTaUt,
+        uttaksgrad: !states.uttaksgrad,
+      };
 
-      return true;
+      setErrorFields(errors);
+      
+      if (Object.values(errors).some((error) => error)) {
+        
+        if (!states.inntekt) {
+          setErrorMsgInntekt("Du må fylle ut inntekt");
+        }
+       
+        if (parseInt(states.inntekt) < 0) {
+          setErrorMsgInntekt("Inntekt kan ikke være negativ");
+        }
+        
+        if(states.alderTaUt === ""){
+          setErrorMsgTaUt("Velg alder for uttak av pensjon");
+        }
+
+        if(states.uttaksgrad === ""){
+          setErrorMsgUttaksgrad("Velg uttaksgrad");
+        }
+
+        willContinue = false;
+        
+      } 
+
+      return willContinue;
     },
   }));
 
@@ -78,8 +107,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           }
           label="Hva er din forventede årlige inntekt?"
           description="Dagens kroneverdi før skatt"
-          value={states.inntekt || ""}
-          error={errorMsg}
+          value={states.inntekt}
+          error={errorFields.inntekt ? errorMsgInntekt : ""}
         />
         {inputArray.map((input) => input)}
         {/* <Button
@@ -104,16 +133,63 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         </ReadMore>
 
         <Substep>
-        <Select
-            defaultValue={undefined}
+          <Select
+            value={states.alderTaUt}
             style={{ width: "5rem" }}
             label={"Når planlegger du å ta ut pensjon?"}
             description="Oppgi alder"
+            onChange={(it) =>
+              setState((prev: FormValues) => ({
+                ...prev,
+                alderTaUt: it.target.value
+              }))
+            }
+            error={errorFields.alderTaUt ? errorMsgTaUt : ""}
           >
-            <option value={"0"}>----</option>
-            {/* For-loop */}
+            <option value={""}>----</option>
+            {Array.from({ length: 14 }, (_, i) => (
+              <option value={i + 62} key={i}>
+                {i + 62} år
+              </option>
+            ))}
           </Select>
         </Substep>
+        <Substep>
+          <Select
+            value={states.uttaksgrad}
+            style={{ width: "5rem" }}
+            label={"Hvilken uttaksgrad ønsker du?"}
+            onChange={(it) => {
+              setState((prev: FormValues) => ({
+                ...prev,
+                uttaksgrad: it.target.value
+              }))
+            }}
+            error={errorFields.uttaksgrad ? errorMsgUttaksgrad : ""}
+          >
+            <option value={""}>----</option>
+            <option value={"20"}>20%</option>
+            <option value={"40"}>40%</option>
+            <option value={"50"}>50%</option>
+            <option value={"60"}>60%</option>
+            <option value={"80"}>80%</option>
+            <option value={"100"}>100%</option>
+          </Select>
+        </Substep>
+        {states.uttaksgrad !== "" && (
+          <Substep>
+            <TextField
+              // onChange={(it) =>
+              //   setState((prev: FormValues) => ({
+              //     ...prev,
+              //     inntekt: it.target.value
+              //   }))
+              // }
+              style={{ width: "10rem" }}
+              label={`Hvor mange år forventer du å ha inntekt etter uttak av ${states.uttaksgrad}% pensjon?`}
+            />
+          </Substep>
+        )}
         <Substep>
           <Select
             style={{ width: "5rem" }}
@@ -129,36 +205,6 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             <option value={"livsvarig"}>livsvarig</option>
           </Select>
         </Substep>
-        <Substep>
-          <Select
-            defaultValue={undefined}
-            style={{ width: "5rem" }}
-            label={"Hvilken uttaksgrad ønsker du?"}
-            onChange={(it) => setUttaksgrad(parseInt(it.target.value))}
-          >
-            <option value={"0"}>----</option>
-            <option value={"20"}>20%</option>
-            <option value={"40"}>40%</option>
-            <option value={"50"}>50%</option>
-            <option value={"60"}>60%</option>
-            <option value={"80"}>80%</option>
-            <option value={"100"}>100%</option>
-          </Select>
-        </Substep>
-        {uttaksgrad != 0 && (
-          <Substep>
-            <TextField
-              // onChange={(it) =>
-              //   setState((prev: FormValues) => ({
-              //     ...prev,
-              //     inntekt: it.target.value
-              //   }))
-              // }
-              style={{ width: "10rem" }}
-              label={`Hvor mange år forventer du å ha inntekt etter uttak av ${uttaksgrad}% pensjon?`}
-            />
-          </Substep>
-        )}
       </div>
     </FormWrapper>
   );

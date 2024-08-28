@@ -39,8 +39,8 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
         }
         error={errorMsg}
         >
-          <Radio value='ja'>Ja</Radio>
-          <Radio value='nei'>Nei</Radio>
+          <Radio value='ALDERSPENSJON_MED_AFP_PRIVAT'>Ja</Radio>
+          <Radio value='ALDERSPENSJON'>Nei</Radio>
         </RadioGroup>
       </Substep>
     </FormWrapper>
