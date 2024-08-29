@@ -17,7 +17,7 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
   useImperativeHandle(ref, () => ({
     onSubmit() {
 
-      if(!states.rettTilAfp) {
+      if(!states.simuleringType) {
         setErrorMsg(message);
         return false;
       }
@@ -30,11 +30,11 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
     <FormWrapper>
       <Substep>
         <RadioGroup legend={'Har du rett til AFP i privat sektor?'}
-        value={states.rettTilAfp}
+        value={states.simuleringType}
         onChange={(it) =>
           setState((prev: FormValues) => ({
             ...prev,
-            rettTilAfp: it,
+            simuleringType: it,
           }))
         }
         error={errorMsg}

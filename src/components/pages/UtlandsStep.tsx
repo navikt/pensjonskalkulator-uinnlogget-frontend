@@ -13,19 +13,16 @@ import Substep from "../Substep";
 
 const UtlandsStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;
+  const [boddIUtland, setBoddIUtland] = useState("");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const message = "Venligst fyll ut hvor mange år du har bodd i utlandet";
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
       var willContinue = true;
       
-      if (!states.boddIUtland) {
-        setErrorMsg(message);
+      if (states.utenlandsAntallAar === 0 && boddIUtland === "ja") {
+        setErrorMsg("Venligst fyll ut hvor mange år du har bodd i utlandet");
         willContinue = false;
-      }
-      if(states.utland === "nei"){
-        willContinue = true;
       }
 
       return willContinue;
@@ -39,13 +36,9 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
         <div>
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
-            value={states.utland || undefined}
+            value={boddIUtland}
             onChange={(it) =>
-              setState((prev: FormValues) => ({
-                ...prev,
-                utland: it,
-                boddIUtland: it == "nei" ? "" : prev.boddIUtland,
-              }))
+              setBoddIUtland(it)
             }
           >
             <Radio value={"ja"}>Ja</Radio>
@@ -56,18 +49,18 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
             pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
             pensjon fra det landet du har bodd i.
           </ReadMore>
-          {states.utland === "ja" && (
+          {boddIUtland === "ja" && (
             <Substep>
               <TextField
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
-                    boddIUtland: it.target.value,
+                    utenlandsAntallAar: it.target.value,
                   }))
                 }
                 type="number"
                 label="Hvor mange år har du bodd i utlandet?"
-                value={states.boddIUtland}
+                value={states.utenlandsAntallAar}
                 error={errorMsg}
               ></TextField>
             </Substep>

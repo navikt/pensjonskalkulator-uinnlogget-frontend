@@ -24,71 +24,62 @@ import { PlusCircleIcon } from "@navikt/aksel-icons";
 
 import { getGrunnbelop } from "@/functions/functions";
 import Substep from "../Substep";
+import { stat } from "fs";
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;
+  const [inntektVsaHelPensjon, setInntektVsaHelPensjon] = useState("");
+  const [livsvarigInntekt, setLivsvarigInntekt] = useState(true);
   const [errorFields, setErrorFields] = React.useState({
-    inntekt: false,
-    alderTaUt: false,
+    aarligInntektFoerUttakBeloep: false,
     uttaksgrad: false,
+    gradertInntekt: false,
+    helPensjonInntekt: false,
   });
   const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null);
-  const [errorMsgTaUt, setErrorMsgTaUt] = useState<string | null>(null);
   const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(null);
-  const [inputArray, setInputArray] = useState<ReactElement[]>([]);
-
-  const addInputField = () => {
-    return (
-      <TextField
-        onChange={(it) =>
-          setState((prev: FormValues) => ({
-            ...prev,
-            inntekt: it.target.value,
-          }))
-        }
-        label="Inntekt"
-        value={states.inntekt || ""}
-        error={errorMsgInntekt}
-        key={inputArray.length}
-      />
-    );
-  };
+  const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(null);
+  const [errorMsgHelPensjonInntekt, setErrorMsgHelPensjonInntekt] = useState<string | null>(null);
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-
-      console.log(states.uttaksgrad);
       var willContinue = true;
-      
+
       const errors = {
-        inntekt: !states.inntekt,
-        alderTaUt: !states.alderTaUt,
-        uttaksgrad: !states.uttaksgrad,
+        aarligInntektFoerUttakBeloep: !states.aarligInntektFoerUttakBeloep,
+        uttaksgrad: !states.gradertUttak.grad,
+        gradertInntekt: !states.gradertUttak.aarligInntektVsaPensjonBeloep,
+        helPensjonInntekt: !states.heltUttak.aarligInntektVsaPensjon.beloep,
       };
 
       setErrorFields(errors);
-      
+
       if (Object.values(errors).some((error) => error)) {
-        
-        if (!states.inntekt) {
+        if (!states.aarligInntektFoerUttakBeloep) {
           setErrorMsgInntekt("Du må fylle ut inntekt");
         }
-       
-        if (parseInt(states.inntekt) < 0) {
+
+        if (states.aarligInntektFoerUttakBeloep < 0) {
           setErrorMsgInntekt("Inntekt kan ikke være negativ");
         }
-        
-        if(states.alderTaUt === ""){
-          setErrorMsgTaUt("Velg alder for uttak av pensjon");
+
+        if(!states.gradertUttak.grad){
+          setErrorMsgUttaksgrad("Du må velge uttaksgrad");
         }
 
-        if(states.uttaksgrad === ""){
-          setErrorMsgUttaksgrad("Velg uttaksgrad");
-        }
+        if(states.gradertUttak.grad > 0 && states.gradertUttak.grad !== 100){
+          if(!states.gradertUttak.aarligInntektVsaPensjonBeloep){
+            setErrorMsgGradInntekt("Du må fylle ut inntekt");
+          }
+        } 
 
+        if(inntektVsaHelPensjon === "ja" && !states.heltUttak.aarligInntektVsaPensjon.beloep){
+          setErrorMsgHelPensjonInntekt("Du må fylle ut inntekt");
+        }
+       
         willContinue = false;
-        
       } 
+
 
       return willContinue;
     },
@@ -102,22 +93,16 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           onChange={(it) =>
             setState((prev: FormValues) => ({
               ...prev,
-              inntekt: it.target.value,
+              aarligInntektFoerUttakBeloep: parseInt(it.target.value),
             }))
           }
           label="Hva er din forventede årlige inntekt?"
           description="Dagens kroneverdi før skatt"
-          value={states.inntekt}
-          error={errorFields.inntekt ? errorMsgInntekt : ""}
+          value={states.aarligInntektFoerUttakBeloep === 0 ? "" : states.aarligInntektFoerUttakBeloep}
+          error={
+            errorFields.aarligInntektFoerUttakBeloep ? errorMsgInntekt : ""
+          }
         />
-        {inputArray.map((input) => input)}
-        {/* <Button
-          onClick={() => setInputArray((prev) => [...prev, addInputField()])}
-          icon={<PlusCircleIcon />}
-          variant="tertiary"
-        >
-          Legg til
-        </Button> */}
         <ReadMore header="Om pensjonsgivende inntekt">
           Dette regnes som pensjonsgivende inntekt: all lønnsinntekt for
           lønnstakere personinntekt fra næring for selvstendige foreldrepenger
@@ -134,40 +119,21 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
         <Substep>
           <Select
-            value={states.alderTaUt}
-            style={{ width: "5rem" }}
-            label={"Når planlegger du å ta ut pensjon?"}
-            description="Oppgi alder"
-            onChange={(it) =>
-              setState((prev: FormValues) => ({
-                ...prev,
-                alderTaUt: it.target.value
-              }))
-            }
-            error={errorFields.alderTaUt ? errorMsgTaUt : ""}
-          >
-            <option value={""}>----</option>
-            {Array.from({ length: 14 }, (_, i) => (
-              <option value={i + 62} key={i}>
-                {i + 62} år
-              </option>
-            ))}
-          </Select>
-        </Substep>
-        <Substep>
-          <Select
-            value={states.uttaksgrad}
+            value={states.gradertUttak.grad}
             style={{ width: "5rem" }}
             label={"Hvilken uttaksgrad ønsker du?"}
             onChange={(it) => {
               setState((prev: FormValues) => ({
                 ...prev,
-                uttaksgrad: it.target.value
-              }))
+                gradertUttak: (prev.gradertUttak = {
+                  ...prev.gradertUttak,
+                  grad: parseInt(it.target.value),
+                }),
+              }));
             }}
             error={errorFields.uttaksgrad ? errorMsgUttaksgrad : ""}
           >
-            <option value={""}>----</option>
+            <option value={"0"}>----</option>
             <option value={"20"}>20%</option>
             <option value={"40"}>40%</option>
             <option value={"50"}>50%</option>
@@ -176,35 +142,242 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             <option value={"100"}>100%</option>
           </Select>
         </Substep>
-        {states.uttaksgrad !== "" && (
-          <Substep>
-            <TextField
-              // onChange={(it) =>
-              //   setState((prev: FormValues) => ({
-              //     ...prev,
-              //     inntekt: it.target.value
-              //   }))
-              // }
-              style={{ width: "10rem" }}
-              label={`Hvor mange år forventer du å ha inntekt etter uttak av ${states.uttaksgrad}% pensjon?`}
-            />
-          </Substep>
+        {states.gradertUttak.grad !== 0 && states.gradertUttak.grad !== 100 && (
+          <>
+            <Substep>
+              <div className="flex space-x-4">
+                <Select
+                  value={states.gradertUttak.uttakAlder.aar}
+                  style={{ width: "5rem" }}
+                  label={`Når planlegger du å ta ut ${states.gradertUttak.grad}% pensjon?`}
+                  description="Velg alder"
+                  onChange={(it) => {
+                    setState((prev: FormValues) => ({
+                      ...prev,
+                      gradertUttak: {
+                        ...prev.gradertUttak,
+                        uttakAlder: {
+                          aar: parseInt(it.target.value),
+                          maaneder: prev.gradertUttak.uttakAlder.maaneder,
+                        },
+                      },
+                    }));
+                  }}
+                >
+                  {Array.from({ length: 14 }, (_, i) => (
+                    <option value={i + 62} key={i}>
+                      {i + 62} år
+                    </option>
+                  ))}
+                </Select>
+
+                <Select
+                  value={states.gradertUttak.uttakAlder.maaneder}
+                  style={{ width: "5rem" }}
+                  label={"Velg måned"}
+                  onChange={(it) => {
+                    setState((prev: FormValues) => ({
+                      ...prev,
+                      gradertUttak: (prev.gradertUttak = {
+                        ...prev.gradertUttak,
+                        uttakAlder: {
+                          aar: prev.gradertUttak.uttakAlder.aar,
+                          maaneder: parseInt(it.target.value),
+                        },
+                      }),
+                    }));
+                  }}
+                >
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option value={i} key={i}>
+                      {i + 1}.mnd
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            </Substep>
+
+            <Substep>
+              <TextField
+                onChange={(it) => {
+                  setState((prev: FormValues) => ({
+                    ...prev,
+                    gradertUttak: {
+                      ...prev.gradertUttak,
+                      aarligInntektVsaPensjonBeloep: parseInt(it.target.value),
+                    },
+                  }));
+                }}
+                style={{ width: "10rem" }}
+                label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak.grad}% pensjon?`}
+                value={states.gradertUttak.aarligInntektVsaPensjonBeloep === 0 ? "" : states.gradertUttak.aarligInntektVsaPensjonBeloep}
+                error={errorFields.gradertInntekt ? errorMsgGradInntekt : ""}
+              />
+            </Substep>
+          </>
         )}
         <Substep>
-          <Select
-            style={{ width: "5rem" }}
-            label={
-              "Hvor mange år forventer du å ha inntekt etter uttak av hel pensjon?"
-            }
-          >
-            {Array.from({ length: 13 }, (_, i) => (
-              <option value={i + 1} key={i}>
-                {i + 1} år
-              </option>
-            ))}
-            <option value={"livsvarig"}>livsvarig</option>
-          </Select>
+          <div className="flex space-x-4">
+            <Select
+              value={states.heltUttak.uttakAlder.aar}
+              style={{ width: "5rem" }}
+              label={`Når planlegger du å ta ut 100% pensjon?`}
+              description="Velg alder"
+              onChange={(it) => {
+                setState((prev: FormValues) => ({
+                  ...prev,
+                  heltUttak: {
+                    ...prev.heltUttak,
+                    uttakAlder: {
+                      aar: parseInt(it.target.value),
+                      maaneder: prev.gradertUttak.uttakAlder.maaneder,
+                    },
+                  },
+                }));
+              }}
+            >
+              {Array.from({ length: 14 }, (_, i) => (
+                <option value={i + 62} key={i}>
+                  {i + 62} år
+                </option>
+              ))}
+            </Select>
+
+            <Select
+              value={states.heltUttak.uttakAlder.maaneder}
+              style={{ width: "5rem" }}
+              label={"Velg måned"}
+              onChange={(it) => {
+                setState((prev: FormValues) => ({
+                  ...prev,
+                  heltUttak: (prev.heltUttak = {
+                    ...prev.heltUttak,
+                    uttakAlder: {
+                      aar: prev.heltUttak.uttakAlder.aar,
+                      maaneder: parseInt(it.target.value),
+                    },
+                  }),
+                }));
+              }}
+            >
+              {Array.from({ length: 12 }, (_, i) => (
+                <option value={i} key={i}>
+                  {i + 1}.mnd
+                </option>
+              ))}
+            </Select>
+          </div>
         </Substep>
+        <RadioGroup
+          legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
+          value={inntektVsaHelPensjon}
+          onChange={(it) => setInntektVsaHelPensjon(it)}
+        >
+          <Radio value={"ja"}>Ja</Radio>
+          <Radio value={"nei"}>Nei</Radio>
+        </RadioGroup>
+        {inntektVsaHelPensjon === "ja" && (
+          <>
+            <Substep>
+              <TextField
+                label="Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?"
+                value={states.heltUttak.aarligInntektVsaPensjon.beloep === 0 ? "" : states.heltUttak.aarligInntektVsaPensjon.beloep}
+                onChange={(it) => {
+                  setState((prev: FormValues) => ({
+                    ...prev,
+                    heltUttak: {
+                      ...prev.heltUttak,
+                      aarligInntektVsaPensjon: {
+                        ...prev.heltUttak.aarligInntektVsaPensjon,
+                        beloep: parseInt(it.target.value),
+                      },
+                    },
+                  }));
+                }}
+                error={errorFields.helPensjonInntekt ? errorMsgHelPensjonInntekt : ""}
+              />
+            </Substep>
+
+            <Substep>
+              <div className="flex space-x-4">
+                <Select
+                  value={
+                    states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar ??
+                    "livsvarig"
+                  }
+                  style={{ width: "5rem" }}
+                  label={"Til hvilken alder forventer du å ha inntekten?"}
+                  description="Velg alder"
+                  onChange={(it) => {
+                    const value = it.target.value;
+                    setLivsvarigInntekt(value === "livsvarig" ? true : false);
+                    setState((prev: FormValues) => ({
+                      ...prev,
+                      heltUttak: {
+                        ...prev.heltUttak,
+                        aarligInntektVsaPensjon: {
+                          ...prev.heltUttak.aarligInntektVsaPensjon,
+                          sluttAlder: {
+                            ...prev.heltUttak.aarligInntektVsaPensjon
+                              .sluttAlder,
+                            aar: value === "livsvarig" ? null : value,
+                            maaneder:
+                              prev.heltUttak.aarligInntektVsaPensjon.sluttAlder
+                                .maaneder,
+                          },
+                        },
+                      },
+                    }));
+                  }}
+                  /* error={errorFields.alderTaUt ? errorMsgTaUt : ""} */
+                >
+                  <option value={"livsvarig"}>Livsvarig</option>
+                  {Array.from({ length: 14 }, (_, i) => (
+                    <option value={i + 62} key={i}>
+                      {i + 62} år
+                    </option>
+                  ))}
+                </Select>
+                {!livsvarigInntekt && (
+                  <Select
+                    value={
+                      states.heltUttak.aarligInntektVsaPensjon.sluttAlder
+                        .maaneder ?? "livsvarig"
+                    }
+                    style={{ width: "5rem" }}
+                    label={"Velg måned"}
+                    onChange={(it) => {
+                      const value = it.target.value;
+                      setState((prev: FormValues) => ({
+                        ...prev,
+                        heltUttak: {
+                          ...prev.heltUttak,
+                          aarligInntektVsaPensjon: {
+                            ...prev.heltUttak.aarligInntektVsaPensjon,
+                            sluttAlder: {
+                              ...prev.heltUttak.aarligInntektVsaPensjon
+                                .sluttAlder,
+                              aar: prev.heltUttak.aarligInntektVsaPensjon
+                                .sluttAlder.aar,
+                              maaneder: value === "livsvarig" ? null : value,
+                            },
+                          },
+                        },
+                      }));
+                    }}
+                    /* error={errorFields.alderTaUt ? errorMsgTaUt : ""} */
+                  >
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option value={i} key={i}>
+                        {i + 1}.mnd
+                      </option>
+                    ))}
+                  </Select>
+                )}
+              </div>
+            </Substep>
+          </>
+        )}
       </div>
     </FormWrapper>
   );

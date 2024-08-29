@@ -16,35 +16,39 @@ import {
   ProgressBar
 } from '@navikt/ds-react'
 import Link from 'next/link'
-
 import React, { cloneElement, FormEvent, useRef, useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
-/*
-simuleringType - kan være “ALDERSPENSJON” eller “ALDERSPENSJON_MED_AFP_PRIVAT” (det velges av brukeren).
-sivilstand - kan være “UGIFT”, “GIFT” eller “SAMBOER”.
-epsHarInntektOver2G - ektefelle/partner/samboer har inntekt på mer enn 2 ganger folketrygdens grunnbeløp (G).
-epsHarPensjon - ektefelle/partner/samboer har startet uttak av pensjon.
-gradertUttak - brukes bare om brukeren tar ut mindre enn 100 % pensjon (vil være null ellers).
-heltUttak - brukes alltid. Det er når brukeren starter uttak av 100 % pensjon.
-uttakAlder - er brukerens alder når uttaket startes. Alder angis i antall fylte år og antall fylte måneder (0–11).
-aarligInntektVsaPensjonBeloep - er brukerens årlige inntekt ved siden av (Vsa) pensjon. Det er et kronebeløp.
-sluttAlder - er brukerens alder (år og måneder) når inntekten slutter. */
 
 const initialFormState: FormValues = {
-  alder: '',
-  inntekt: '',
-  aarYrkesaktiv: '',
-  alderTaUt: '',
-  uttaksgrad: '',
-  forventetInntektEtterUttak: '',
-  forventetInntektEtterHeleUttak: '',
-  utland: '',
-  boddIUtland: '',
-  AntallAarBoddINorge: '',
-  rettTilAfp: '',
+  simuleringType: '', 
+  foedselAar: 0,
   sivilstand: 'UGIFT',
-  tredjepersonStorreEnn2G: '',
-  tredjepersonMottarPensjon: ''
+  epsHarInntektOver2G: false,
+  epsHarPensjon: false,
+  utenlandsAntallAar: 0,
+  inntektOver1GAntallAar: 0,
+  aarligInntektFoerUttakBeloep: 0,
+  gradertUttak: {
+    grad: 0,
+    uttakAlder: {
+      aar: 0,
+      maaneder: 0
+    },
+    aarligInntektVsaPensjonBeloep: 0
+  },
+  heltUttak: {
+    uttakAlder: {
+      aar: 0,
+      maaneder: 0
+    },
+    aarligInntektVsaPensjon: {
+      beloep: 0,
+      sluttAlder: {
+        aar: null,
+        maaneder: null
+      }
+    }
+  }
 }
 
 interface FormPageProps {
@@ -65,18 +69,36 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
 
-  const handleSubmit = /* async */ (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (curStep == pages.length - 1) {
-      /* try {
-        const response = await axios.post(
-          'https://pensjonskalkulator-backend.intern.dev.nav.no/simulerAnonymAlderspensjonV1',
-          formState
+
+      console.log('Form submitted:', formState);
+
+      try {
+        // Fetch CSRF token
+        const csrfResponse = await fetch('https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf');
+        const csrfData = await csrfResponse.json();
+        const csrfToken = csrfData.token;
+
+        // Make POST request with CSRF token
+        const response = await fetch(
+          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/alderspensjon/anonym-simulering',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-XSRF-TOKEN': csrfToken,
+            },
+            body: JSON.stringify(formState),
+          }
         );
-        console.log('Response:', response.data);
+        const responseData = await response.json();
+        console.log('Response:', responseData);
       } catch (error) {
         console.error('Error:', error);
-      } */
+      }
+
       return
     }
     if (childRef.current?.onSubmit()) next()

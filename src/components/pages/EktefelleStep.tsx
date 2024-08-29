@@ -15,8 +15,8 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
     const [errorMsg, setErrorMsg] = React.useState<string | null>(states.sivilstand || null);
     const [selectedOption, setSelectedOption] = React.useState<string>(states.sivilstand);
     const [errorFields, setErrorFields] = React.useState({
-      tredjepersonStorreEnn2G: false,
-      tredjepersonMottarPensjon: false,
+      epsHarInntektOver2G: false,
+      epsHarPensjon: false,
     });
     const message = "Du må svare på spørsmålet";
 
@@ -24,8 +24,8 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
       onSubmit() {
         var willContinue = true;
         const errors = {
-          tredjepersonStorreEnn2G: !states.tredjepersonStorreEnn2G,
-          tredjepersonMottarPensjon: !states.tredjepersonMottarPensjon,
+          epsHarInntektOver2G: !states.epsHarInntektOver2G,
+          epsHarPensjon: !states.epsHarPensjon,
         };
 
         setErrorFields(errors);
@@ -49,7 +49,7 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
           <Select
             value={selectedOption}
             style={{ width: "5rem" }}
-            label={"Hvilken uttaksgrad ønsker du?"}
+            label={"Hva er din sivilstand?"}
             onChange={(it) => {
               setSelectedOption(it.target.value);
               setState((prev: FormValues) => ({
@@ -70,17 +70,17 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
                   2 * grunnbelop
                 }kr når du starter å ta ut pensjon?`}
-                value={states.tredjepersonStorreEnn2G}
+                value={states.epsHarInntektOver2G}
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
                     tredjepersonStorreEnn2G: it,
                   }))
                 }
-                error={errorFields.tredjepersonStorreEnn2G ? errorMsg : ""}
+                error={errorFields.epsHarInntektOver2G ? errorMsg : ""}
               >
-                <Radio value="ja">Ja</Radio>
-                <Radio value="nei">Nei</Radio>
+                <Radio value={true}>Ja</Radio>
+                <Radio value={false}>Nei</Radio>
               </RadioGroup>
             </Substep>
             <Substep>
@@ -88,17 +88,17 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 legend={
                   "Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?"
                 }
-                value={states.tredjepersonMottarPensjon}
+                value={states.epsHarPensjon}
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
                     tredjepersonMottarPensjon: it,
                   }))
                 }
-                error={errorFields.tredjepersonMottarPensjon ? errorMsg : ""}
+                error={errorFields.epsHarPensjon ? errorMsg : ""}
               >
-                <Radio value="ja">Ja</Radio>
-                <Radio value="nei">Nei</Radio>
+                <Radio value={true}>Ja</Radio>
+                <Radio value={false}>Nei</Radio>
               </RadioGroup>
             </Substep>
           </>
