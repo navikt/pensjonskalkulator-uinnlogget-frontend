@@ -65,7 +65,6 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
       };
 
       setErrorFields(errors);
-      console.log(states.heltUttak.uttakAlder.maaneder);
 
       if (Object.values(errors).some((error) => error)) {
         if (!states.aarligInntektFoerUttakBeloep) {
@@ -104,15 +103,30 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
         if(inntektVsaHelPensjon === "ja"){
           if(!states.heltUttak.aarligInntektVsaPensjon.beloep){
+            console.log("kom inn")
             setErrorMsgHelPensjonInntekt("Du må fylle ut inntekt");
           }
           if(states.heltUttak.aarligInntektVsaPensjon.beloep < 0){
             setErrorMsgHelPensjonInntekt("Inntekt kan ikke være negativ");
           }
-        }
-       
+        } 
+        
+        
         willContinue = false;
       } 
+      
+      if(states.gradertUttak.grad === 100){
+        states.gradertUttak.aarligInntektVsaPensjonBeloep = 0;
+        states.gradertUttak.uttakAlder.aar = null;
+        states.gradertUttak.uttakAlder.maaneder = null;
+        willContinue = true;
+      }
+
+      if(inntektVsaHelPensjon === "nei"){
+        states.heltUttak.aarligInntektVsaPensjon.beloep = 0;
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null;
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null;
+      }
 
 
       return willContinue;
@@ -371,7 +385,6 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                       },
                     }));
                   }}
-                  /* error={errorFields.alderTaUt ? errorMsgTaUt : ""} */
                 >
                   <option value={"livsvarig"}>Livsvarig</option>
                   {Array.from({ length: 14 }, (_, i) => (
@@ -407,7 +420,6 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                         },
                       }));
                     }}
-                    /* error={errorFields.alderTaUt ? errorMsgTaUt : ""} */
                   >
                     {Array.from({ length: 12 }, (_, i) => (
                       <option value={i} key={i}>
