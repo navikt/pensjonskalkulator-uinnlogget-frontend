@@ -362,7 +362,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                           sluttAlder: {
                             ...prev.heltUttak.aarligInntektVsaPensjon
                               .sluttAlder,
-                            aar: value === "livsvarig" ? null : value,
+                            aar: value === "livsvarig" ? null : parseInt(value),
                             maaneder:
                               prev.heltUttak.aarligInntektVsaPensjon.sluttAlder
                                 .maaneder,
@@ -401,7 +401,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                                 .sluttAlder,
                               aar: prev.heltUttak.aarligInntektVsaPensjon
                                 .sluttAlder.aar,
-                              maaneder: value === "livsvarig" ? null : value,
+                              maaneder: value === "livsvarig" ? null : parseInt(value),
                             },
                           },
                         },

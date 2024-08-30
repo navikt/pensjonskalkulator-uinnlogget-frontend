@@ -18,20 +18,19 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
       epsHarInntektOver2G: false,
       epsHarPensjon: false,
     });
-    const message = "Du må svare på spørsmålet";
 
     useImperativeHandle(ref, () => ({
       onSubmit() {
         var willContinue = true;
         const errors = {
-          epsHarInntektOver2G: !states.epsHarInntektOver2G,
-          epsHarPensjon: !states.epsHarPensjon,
+          epsHarInntektOver2G: states.epsHarInntektOver2G === null,
+          epsHarPensjon: states.epsHarPensjon === null,
         };
 
         setErrorFields(errors);
 
         if (Object.values(errors).some((error) => error)) {
-          setErrorMsg(message);
+          setErrorMsg("Du må svare på spørsmålet");
           willContinue = false;
         }
 
