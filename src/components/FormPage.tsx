@@ -31,15 +31,15 @@ const initialFormState: FormValues = {
   gradertUttak: {
     grad: 0,
     uttakAlder: {
-      aar: 0,
-      maaneder: 0
+      aar: null,
+      maaneder: null
     },
     aarligInntektVsaPensjonBeloep: 0
   },
   heltUttak: {
     uttakAlder: {
       aar: 0,
-      maaneder: 0
+      maaneder: -1
     },
     aarligInntektVsaPensjon: {
       beloep: 0,
@@ -78,8 +78,14 @@ function FormPage({ grunnbelop }: FormPageProps) {
       try {
         // Fetch CSRF token
         const csrfResponse = await fetch('https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf');
+
+        if (!csrfResponse.ok) {
+          throw new Error('Failed to fetch CSRF token');
+        }
+
         const csrfData = await csrfResponse.json();
         const csrfToken = csrfData.token;
+        console.log('CSRF token:', csrfToken);
 
         // Make POST request with CSRF token
         const response = await fetch(
@@ -93,6 +99,11 @@ function FormPage({ grunnbelop }: FormPageProps) {
             body: JSON.stringify(formState),
           }
         );
+
+        if (!response.ok) {
+          throw new Error('Failed to submit form');
+        }
+
         const responseData = await response.json();
         console.log('Response:', responseData);
       } catch (error) {
@@ -147,11 +158,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
               )}
             </HStack>
           </form>
-          <div className='mt-6'>
-            <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
-              Personopplysninger som brukes i pensjonskalkulator
-            </Link>
-          </div>
         </Box>
       </Box>
       {/* </div> */}

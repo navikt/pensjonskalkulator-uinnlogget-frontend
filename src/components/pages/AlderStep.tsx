@@ -33,33 +33,41 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
       var willContinue = true
 
       const errors = {
-        foedselAar: !states.foedselAar,
-        inntektOver1GAntallAar: !states.inntektOver1GAntallAar,
+        foedselAar: !foedselAar,
+        inntektOver1GAntallAar: !inntektOver1GAntallAar || inntektOver1GAntallAar < 0 || inntektOver1GAntallAar > 10,
       };
 
       setErrorFields(errors);
 
       if (Object.values(errors).some((error) => error)){
-
+        
         if (
           !foedselAar ||
           foedselAar < 1900 ||
           foedselAar > new Date().getFullYear()
         ) {
-          setErrorMsg(message)
-          willContinue = false
-        } else {
-          setErrorMsg(null)
+          setErrorMsg(message)  
         }
   
-        if (!inntektOver1GAntallAar || inntektOver1GAntallAar < 0 || inntektOver1GAntallAar > 10) {
+        if (!inntektOver1GAntallAar) {
+          setErrorMsgTaut(
+            'Fyll ut antall år'
+          )
+        } 
+
+        if(inntektOver1GAntallAar < 0){
+          setErrorMsgTaut(
+            'Oppgi positivt tall'
+          )
+        }
+
+        if(inntektOver1GAntallAar > 10){
           setErrorMsgTaut(
             'Du maksimalt være 10 år yrkesaktiv etter at du har tatt ut pensjon'
           )
-          willContinue = false
-        } else {
-          setErrorMsgTaut(null)
         }
+
+        willContinue = false
       }
 
 
@@ -79,12 +87,12 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             onChange={(it) =>
               setState((prev: FormValues) => ({
                 ...prev,
-                foedselAar: it.target.value
+                foedselAar: parseInt(it.target.value)
               }))
             }
             type='number'
             label='I hvilket år er du født?'
-            value={foedselAar}
+            value={foedselAar === 0 ? "" : foedselAar}
             error={errorFields.foedselAar ? errorMsg : ""}
           ></TextField>
         </Box>
@@ -104,12 +112,12 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             onChange={(it) =>
               setState((prev: FormValues) => ({
                 ...prev,
-                inntektOver1GAntallAar: it.target.value
+                inntektOver1GAntallAar: parseInt(it.target.value)
               }))
             }
             type='number'
             label='Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
-            value={inntektOver1GAntallAar}
+            value={inntektOver1GAntallAar === 0 ? "" : inntektOver1GAntallAar}
             error={errorFields.inntektOver1GAntallAar ? errorMsgTaut : ""}
           ></TextField>
         </Box>

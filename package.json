@@ -2,6 +2,7 @@
   "name": "pensjonskalkulator-uinnlogget-frontend",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://pensjonskalkulator-backend.intern.dev.nav.no",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

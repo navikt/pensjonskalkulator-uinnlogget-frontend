@@ -4,14 +4,14 @@ export type FormValues = {
   sivilstand: string,
   epsHarInntektOver2G: boolean,
   epsHarPensjon: boolean,
-  utenlandsAntallAar: number,
+  utenlandsAntallAar?: number | null,
   inntektOver1GAntallAar: number,
   aarligInntektFoerUttakBeloep: number,
   gradertUttak: {
     grad: number
     uttakAlder: {
-      aar: number
-      maaneder: number
+      aar?: number | null,
+      maaneder?: number | null
     },
     aarligInntektVsaPensjonBeloep: number
   }

@@ -74,7 +74,7 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
-                    tredjepersonStorreEnn2G: it,
+                    epsHarInntektOver2G: it,
                   }))
                 }
                 error={errorFields.epsHarInntektOver2G ? errorMsg : ""}
@@ -92,7 +92,7 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
-                    tredjepersonMottarPensjon: it,
+                    epsHarPensjon: it,
                   }))
                 }
                 error={errorFields.epsHarPensjon ? errorMsg : ""}

@@ -60,7 +60,7 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
                 }
                 type="number"
                 label="Hvor mange år har du bodd i utlandet?"
-                value={states.utenlandsAntallAar}
+                value={states.utenlandsAntallAar?? ''}
                 error={errorMsg}
               ></TextField>
             </Substep>
