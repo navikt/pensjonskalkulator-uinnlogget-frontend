@@ -6,7 +6,7 @@ export type FormValues = {
   epsHarPensjon?: boolean | null,
   boddIUtland: string, // fjernes fra ApiPayloaded
   inntektVsaHelPensjon: string // fjernes fra ApiPayloaded
-  utenlandsAntallAar?: number | null,
+  utenlandsAntallAar: number,
   inntektOver1GAntallAar: number,
   aarligInntektFoerUttakBeloep: number,
   gradertUttak: {

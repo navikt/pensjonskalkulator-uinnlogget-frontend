@@ -141,7 +141,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           onChange={(it) =>
             setState((prev: FormValues) => ({
               ...prev,
-              aarligInntektFoerUttakBeloep: parseInt(it.target.value),
+              aarligInntektFoerUttakBeloep: it.target.value === "" ? 0: parseInt(it.target.value, 10),
             }))
           }
           label="Hva er din forventede årlige inntekt?"
@@ -257,7 +257,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ...prev,
                     gradertUttak: {
                       ...prev.gradertUttak,
-                      aarligInntektVsaPensjonBeloep: parseInt(it.target.value),
+                      aarligInntektVsaPensjonBeloep: it.target.value === "" ? 0 : parseInt(it.target.value),
                     },
                   }));
                 }}

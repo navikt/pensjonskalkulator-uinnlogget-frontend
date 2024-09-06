@@ -87,7 +87,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             onChange={(it) =>
               setState((prev: FormValues) => ({
                 ...prev,
-                foedselAar: parseInt(it.target.value)
+                foedselAar: it.target.value === "" ? 0: parseInt(it.target.value, 10)
               }))
             }
             type='number'
@@ -112,7 +112,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             onChange={(it) =>
               setState((prev: FormValues) => ({
                 ...prev,
-                inntektOver1GAntallAar: parseInt(it.target.value)
+                inntektOver1GAntallAar: it.target.value === "" ? 0: parseInt(it.target.value, 10)
               }))
             }
             type='number'

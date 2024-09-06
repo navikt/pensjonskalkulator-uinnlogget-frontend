@@ -62,12 +62,12 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
                 onChange={(it) =>
                   setState((prev: FormValues) => ({
                     ...prev,
-                    utenlandsAntallAar: parseInt(it.target.value),
+                    utenlandsAntallAar: it.target.value === "" ? 0: parseInt(it.target.value, 10),
                   }))
                 }
                 type="number"
                 label="Hvor mange år har du bodd i utlandet?"
-                value={states.utenlandsAntallAar?? 0}
+                value={states.utenlandsAntallAar === 0 ? "" : states.utenlandsAntallAar}
                 error={errorMsg}
               ></TextField>
             </Substep>
