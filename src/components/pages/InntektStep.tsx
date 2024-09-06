@@ -28,7 +28,6 @@ import { stat } from "fs";
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;
-  const [inntektVsaHelPensjon, setInntektVsaHelPensjon] = useState("");
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true);
   const [errorFields, setErrorFields] = React.useState({
     aarligInntektFoerUttakBeloep: false,
@@ -101,7 +100,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           setErrorMsgHeltUttakMaaneder("Du må velge måned");
         }
 
-        if(inntektVsaHelPensjon === "ja"){
+        if(states.inntektVsaHelPensjon === "ja"){
           if(!states.heltUttak.aarligInntektVsaPensjon.beloep){
             console.log("kom inn")
             setErrorMsgHelPensjonInntekt("Du må fylle ut inntekt");
@@ -122,10 +121,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         willContinue = true;
       }
 
-      if(inntektVsaHelPensjon === "nei"){
+      if(states.inntektVsaHelPensjon === "nei"){
         states.heltUttak.aarligInntektVsaPensjon.beloep = 0;
         states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null;
         states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null;
+        willContinue = true;
       }
 
 
@@ -224,7 +224,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 <Select
                   value={states.gradertUttak.uttakAlder.maaneder?? -1}
                   style={{ width: "5rem" }}
-                  label={"Velg måned"}
+                  label={"-"}
+                  description="Velg måned"
                   onChange={(it) => {
                     setState((prev: FormValues) => ({
                       ...prev,
@@ -300,7 +301,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             <Select
               value={states.heltUttak.uttakAlder.maaneder}
               style={{ width: "5rem" }}
-              label={"Velg måned"}
+              label={"-"}
+              description="Velg måned"
               onChange={(it) => {
                 setState((prev: FormValues) => ({
                   ...prev,
@@ -326,13 +328,18 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         </Substep>
         <RadioGroup
           legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
-          value={inntektVsaHelPensjon}
-          onChange={(it) => setInntektVsaHelPensjon(it)}
+          value={states.inntektVsaHelPensjon}
+          onChange={(it) =>
+            setState((prev: FormValues) => ({
+              ...prev,
+              inntektVsaHelPensjon: it,
+            }))
+          }
         >
           <Radio value={"ja"}>Ja</Radio>
           <Radio value={"nei"}>Nei</Radio>
         </RadioGroup>
-        {inntektVsaHelPensjon === "ja" && (
+        {states.inntektVsaHelPensjon === "ja" && (
           <>
             <Substep>
               <TextField

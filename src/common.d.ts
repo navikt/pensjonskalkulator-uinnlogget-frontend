@@ -4,6 +4,8 @@ export type FormValues = {
   sivilstand: string,
   epsHarInntektOver2G?: boolean | null,
   epsHarPensjon?: boolean | null,
+  boddIUtland: string, // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: string // fjernes fra ApiPayloaded
   utenlandsAntallAar?: number | null,
   inntektOver1GAntallAar: number,
   aarligInntektFoerUttakBeloep: number,

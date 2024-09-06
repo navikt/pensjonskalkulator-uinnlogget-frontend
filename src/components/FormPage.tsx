@@ -25,6 +25,8 @@ const initialFormState: FormValues = {
   sivilstand: 'UGIFT',
   epsHarInntektOver2G: null,
   epsHarPensjon: null,
+  boddIUtland: '', // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
   utenlandsAntallAar: 0,
   inntektOver1GAntallAar: 0,
   aarligInntektFoerUttakBeloep: 0,
@@ -73,19 +75,20 @@ function FormPage({ grunnbelop }: FormPageProps) {
     e.preventDefault()
     if (curStep == pages.length - 1) {
 
-      console.log('Form submitted:', formState);
-
+      // Remove specified fields from formState
+      const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState;
+      console.log('Form submitted:', apiPayload);
+      
+      // Fetch CSRF token
       try {
-        // Fetch CSRF token
         const csrfResponse = await fetch('https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf');
-
+        
         if (!csrfResponse.ok) {
           throw new Error('Failed to fetch CSRF token');
         }
-
+        
         const csrfData = await csrfResponse.json();
         const csrfToken = csrfData.token;
-        console.log('CSRF token:', csrfToken);
 
         // Make POST request with CSRF token
         const response = await fetch(
@@ -96,7 +99,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
               'Content-Type': 'application/json',
               'X-XSRF-TOKEN': csrfToken,
             },
-            body: JSON.stringify(formState),
+            body: JSON.stringify(apiPayload),
           }
         );
 
