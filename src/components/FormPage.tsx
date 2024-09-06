@@ -39,20 +39,37 @@ aarligInntektVsaPensjonBeloep - er brukerens årlige inntekt ved siden av (Vsa) 
 sluttAlder - er brukerens alder (år og måneder) når inntekten slutter. */
 
 const initialFormState: FormValues = {
-  alder: '',
-  inntekt: '',
-  aarYrkesaktiv: '',
-  alderTaUt: '',
-  uttaksgrad: '',
-  forventetInntektEtterUttak: '',
-  forventetInntektEtterHeleUttak: '',
-  utland: '',
-  boddIUtland: '',
-  AntallAarBoddINorge: '',
-  rettTilAfp: '',
+  simuleringType: '',
+  foedselAar: 0,
   sivilstand: 'UGIFT',
-  tredjepersonStorreEnn2G: '',
-  tredjepersonMottarPensjon: ''
+  epsHarInntektOver2G: null,
+  epsHarPensjon: null,
+  boddIUtland: '', // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
+  utenlandsAntallAar: 0,
+  inntektOver1GAntallAar: 0,
+  aarligInntektFoerUttakBeloep: 0,
+  gradertUttak: {
+    grad: 0,
+    uttakAlder: {
+      aar: null,
+      maaneder: null
+    },
+    aarligInntektVsaPensjonBeloep: 0
+  },
+  heltUttak: {
+    uttakAlder: {
+      aar: 0,
+      maaneder: -1
+    },
+    aarligInntektVsaPensjon: {
+      beloep: 0,
+      sluttAlder: {
+        aar: null,
+        maaneder: null
+      }
+    }
+  }
 }
 
 interface FormPageProps {
@@ -85,19 +102,49 @@ function FormPage({ grunnbelop }: FormPageProps) {
   )
   const length = pagesNames.length
 
-  const handleSubmit = /* async */ (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
+    if (curStep == length - 1) {
+      // Remove specified fields from formState
+      const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState
+      console.log('Form submitted:', apiPayload)
 
-    if (curStep == Object.keys(pagesDict).length - 1) {
-      /* try {
-        const response = await axios.post(
-          'https://pensjonskalkulator-backend.intern.dev.nav.no/simulerAnonymAlderspensjonV1',
-          formState
-        );
-        console.log('Response:', response.data);
+      // Fetch CSRF token
+      try {
+        const csrfResponse = await fetch(
+          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf'
+        )
+
+        if (!csrfResponse.ok) {
+          throw new Error('Failed to fetch CSRF token')
+        }
+
+        const csrfData = await csrfResponse.json()
+        const csrfToken = csrfData.token
+
+        // Make POST request with CSRF token
+        const response = await fetch(
+          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/alderspensjon/anonym-simulering',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-XSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify(apiPayload)
+          }
+        )
+
+        if (!response.ok) {
+          throw new Error('Failed to submit form')
+        }
+
+        const responseData = await response.json()
+        console.log('Response:', responseData)
       } catch (error) {
-        console.error('Error:', error);
-      } */
+        console.error('Error:', error)
+      }
+
       return
     }
     if (childRef.current?.onSubmit()) {
@@ -170,11 +217,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
               )}
             </HStack>
           </form>
-          <div className='mt-6'>
-            <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
-              Personopplysninger som brukes i pensjonskalkulator
-            </Link>
-          </div>
         </Box>
       </Box>
       {/* </div> */}

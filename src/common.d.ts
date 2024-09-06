@@ -1,18 +1,35 @@
 export type FormValues = {
-  alder: string
-  inntekt: string
-  aarYrkesaktiv: string
-  alderTaUt: string
-  uttaksgrad: string
-  forventetInntektEtterUttak: string
-  forventetInntektEtterHeleUttak: string
-  utland: string
-  boddIUtland: string
-  AntallAarBoddINorge: string
-  rettTilAfp: string
-  sivilstand: string
-  tredjepersonStorreEnn2G: string
-  tredjepersonMottarPensjon: string
+  simuleringType: string,
+  foedselAar: number,
+  sivilstand: string,
+  epsHarInntektOver2G?: boolean | null,
+  epsHarPensjon?: boolean | null,
+  boddIUtland: string, // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: string // fjernes fra ApiPayloaded
+  utenlandsAntallAar: number,
+  inntektOver1GAntallAar: number,
+  aarligInntektFoerUttakBeloep: number,
+  gradertUttak: {
+    grad: number
+    uttakAlder: {
+      aar?: number | null,
+      maaneder?: number | null
+    },
+    aarligInntektVsaPensjonBeloep: number
+  }
+  heltUttak: {
+    uttakAlder: {
+      aar: number,
+      maaneder: number
+    },
+    aarligInntektVsaPensjon: {
+      beloep: number,
+      sluttAlder: {
+        aar?: number | null,
+        maaneder?: number | null
+      }
+    }
+  }
 }
 
 export interface ContextForm {
