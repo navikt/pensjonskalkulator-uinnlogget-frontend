@@ -6,9 +6,9 @@ import React, {
   useContext,
   useEffect,
   useImperativeHandle,
-  useState,
-} from "react";
-import FormWrapper from "../FormWrapper";
+  useState
+} from 'react'
+import FormWrapper from '../FormWrapper'
 import {
   Box,
   Button,
@@ -16,19 +16,19 @@ import {
   RadioGroup,
   ReadMore,
   Select,
-  TextField,
-} from "@navikt/ds-react";
-import { FormContext } from "@/contexts/context";
-import { ContextForm, FormValues, StepRef } from "@/common";
-import { PlusCircleIcon } from "@navikt/aksel-icons";
+  TextField
+} from '@navikt/ds-react'
+import { FormContext } from '@/contexts/context'
+import { ContextForm, FormValues, StepRef } from '@/common'
+import { PlusCircleIcon } from '@navikt/aksel-icons'
 
-import { getGrunnbelop } from "@/functions/functions";
-import Substep from "../Substep";
-import { stat } from "fs";
+import { getGrunnbelop } from '@/functions/functions'
+import Substep from '../Substep'
+import { stat } from 'fs'
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
-  const { states, setState } = useContext(FormContext) as ContextForm;
-  const [livsvarigInntekt, setLivsvarigInntekt] = useState(true);
+  const { states, setState } = useContext(FormContext) as ContextForm
+  const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, setErrorFields] = React.useState({
     aarligInntektFoerUttakBeloep: false,
     uttaksgrad: false,
@@ -37,121 +37,162 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
     gradertAar: false,
     gradertMaaneder: false,
     heltUttakAar: false,
-    heltUttakMaaneder: false,
-  });
-  const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null);
-  const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(null);
-  const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(null);
-  const [errorMsgGradAar, setErrorMsgGradAar] = useState<string | null>(null);
-  const [errorMsgGradMaaneder, setErrorMsgGradMaaneder] = useState<string | null>(null);
-  const [errorMsgHelPensjonInntekt, setErrorMsgHelPensjonInntekt] = useState<string | null>(null);
-  const [errorMsgHeltUttakAar, setErrorMsgHeltUttakAar] = useState<string | null>(null);
-  const [errorMsgHeltUttakMaaneder, setErrorMsgHeltUttakMaaneder] = useState<string | null>(null);
+    heltUttakMaaneder: false
+  })
+  const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null)
+  const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(
+    null
+  )
+  const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(
+    null
+  )
+  const [errorMsgGradAar, setErrorMsgGradAar] = useState<string | null>(null)
+  const [errorMsgGradMaaneder, setErrorMsgGradMaaneder] = useState<
+    string | null
+  >(null)
+  const [errorMsgHelPensjonInntekt, setErrorMsgHelPensjonInntekt] = useState<
+    string | null
+  >(null)
+  const [errorMsgHeltUttakAar, setErrorMsgHeltUttakAar] = useState<
+    string | null
+  >(null)
+  const [errorMsgHeltUttakMaaneder, setErrorMsgHeltUttakMaaneder] = useState<
+    string | null
+  >(null)
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      var willContinue = true;
+      var willContinue = true
 
       const errors = {
-        aarligInntektFoerUttakBeloep: !states.aarligInntektFoerUttakBeloep || states.aarligInntektFoerUttakBeloep < 0,
+        aarligInntektFoerUttakBeloep:
+          !states.aarligInntektFoerUttakBeloep ||
+          states.aarligInntektFoerUttakBeloep < 0,
         uttaksgrad: !states.gradertUttak.grad,
-        gradertInntekt: !states.gradertUttak.aarligInntektVsaPensjonBeloep || states.gradertUttak.aarligInntektVsaPensjonBeloep < 0,
-        helPensjonInntekt: !states.heltUttak.aarligInntektVsaPensjon.beloep || states.heltUttak.aarligInntektVsaPensjon.beloep < 0,
-        gradertAar: states.gradertUttak.uttakAlder.aar === null || states.gradertUttak.uttakAlder.aar === -1,
-        gradertMaaneder: states.gradertUttak.uttakAlder.maaneder === null || states.gradertUttak.uttakAlder.maaneder === -1,
-        heltUttakAar: !states.heltUttak.uttakAlder.aar || states.heltUttak.uttakAlder.aar === -1,
-        heltUttakMaaneder: states.heltUttak.uttakAlder.maaneder === null || states.heltUttak.uttakAlder.maaneder === -1,
-      };
+        gradertInntekt:
+          !states.gradertUttak.aarligInntektVsaPensjonBeloep ||
+          states.gradertUttak.aarligInntektVsaPensjonBeloep < 0,
+        helPensjonInntekt:
+          !states.heltUttak.aarligInntektVsaPensjon.beloep ||
+          states.heltUttak.aarligInntektVsaPensjon.beloep < 0,
+        gradertAar:
+          states.gradertUttak.uttakAlder.aar === null ||
+          states.gradertUttak.uttakAlder.aar === -1,
+        gradertMaaneder:
+          states.gradertUttak.uttakAlder.maaneder === null ||
+          states.gradertUttak.uttakAlder.maaneder === -1,
+        heltUttakAar:
+          !states.heltUttak.uttakAlder.aar ||
+          states.heltUttak.uttakAlder.aar === -1,
+        heltUttakMaaneder:
+          states.heltUttak.uttakAlder.maaneder === null ||
+          states.heltUttak.uttakAlder.maaneder === -1
+      }
 
-      setErrorFields(errors);
+      setErrorFields(errors)
 
       if (Object.values(errors).some((error) => error)) {
         if (!states.aarligInntektFoerUttakBeloep) {
-          setErrorMsgInntekt("Du må fylle ut inntekt");
+          setErrorMsgInntekt('Du må fylle ut inntekt')
         }
 
         if (states.aarligInntektFoerUttakBeloep < 0) {
-          setErrorMsgInntekt("Inntekt kan ikke være negativ");
+          setErrorMsgInntekt('Inntekt kan ikke være negativ')
         }
 
-        if(!states.gradertUttak.grad){
-          setErrorMsgUttaksgrad("Du må velge uttaksgrad");
+        if (!states.gradertUttak.grad) {
+          setErrorMsgUttaksgrad('Du må velge uttaksgrad')
         }
 
-        if(states.gradertUttak.grad > 0 && states.gradertUttak.grad !== 100){
-          if(!states.gradertUttak.aarligInntektVsaPensjonBeloep){
-            setErrorMsgGradInntekt("Du må fylle ut inntekt");
+        if (states.gradertUttak.grad > 0 && states.gradertUttak.grad !== 100) {
+          if (!states.gradertUttak.aarligInntektVsaPensjonBeloep) {
+            setErrorMsgGradInntekt('Du må fylle ut inntekt')
           }
-          if(states.gradertUttak.aarligInntektVsaPensjonBeloep < 0){
-            setErrorMsgGradInntekt("Inntekt kan ikke være negativ");
+          if (states.gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
+            setErrorMsgGradInntekt('Inntekt kan ikke være negativ')
           }
-          if(states.gradertUttak.uttakAlder.aar === null || states.gradertUttak.uttakAlder.aar === -1){
-            setErrorMsgGradAar("Du må velge alder");
+          if (
+            states.gradertUttak.uttakAlder.aar === null ||
+            states.gradertUttak.uttakAlder.aar === -1
+          ) {
+            setErrorMsgGradAar('Du må velge alder')
           }
-          if(states.gradertUttak.uttakAlder.maaneder === null || states.gradertUttak.uttakAlder.maaneder === -1){
-            setErrorMsgGradMaaneder("Du må velge måned");
+          if (
+            states.gradertUttak.uttakAlder.maaneder === null ||
+            states.gradertUttak.uttakAlder.maaneder === -1
+          ) {
+            setErrorMsgGradMaaneder('Du må velge måned')
           }
-        } 
-
-        if(!states.heltUttak.uttakAlder.aar || states.heltUttak.uttakAlder.aar === -1){
-          setErrorMsgHeltUttakAar("Du må velge alder");
         }
-        if(states.heltUttak.uttakAlder.maaneder === null || states.heltUttak.uttakAlder.maaneder === -1){
-          setErrorMsgHeltUttakMaaneder("Du må velge måned");
+
+        if (
+          !states.heltUttak.uttakAlder.aar ||
+          states.heltUttak.uttakAlder.aar === -1
+        ) {
+          setErrorMsgHeltUttakAar('Du må velge alder')
+        }
+        if (
+          states.heltUttak.uttakAlder.maaneder === null ||
+          states.heltUttak.uttakAlder.maaneder === -1
+        ) {
+          setErrorMsgHeltUttakMaaneder('Du må velge måned')
         }
 
-        if(states.inntektVsaHelPensjon === "ja"){
-          if(!states.heltUttak.aarligInntektVsaPensjon.beloep){
-            console.log("kom inn")
-            setErrorMsgHelPensjonInntekt("Du må fylle ut inntekt");
+        if (states.inntektVsaHelPensjon === 'ja') {
+          if (!states.heltUttak.aarligInntektVsaPensjon.beloep) {
+            console.log('kom inn')
+            setErrorMsgHelPensjonInntekt('Du må fylle ut inntekt')
           }
-          if(states.heltUttak.aarligInntektVsaPensjon.beloep < 0){
-            setErrorMsgHelPensjonInntekt("Inntekt kan ikke være negativ");
+          if (states.heltUttak.aarligInntektVsaPensjon.beloep < 0) {
+            setErrorMsgHelPensjonInntekt('Inntekt kan ikke være negativ')
           }
-        } 
-        
-        
-        willContinue = false;
-      } 
-      
-      if(states.gradertUttak.grad === 100){
-        states.gradertUttak.aarligInntektVsaPensjonBeloep = 0;
-        states.gradertUttak.uttakAlder.aar = null;
-        states.gradertUttak.uttakAlder.maaneder = null;
-        willContinue = true;
+        }
+
+        willContinue = false
       }
 
-      if(states.inntektVsaHelPensjon === "nei"){
-        states.heltUttak.aarligInntektVsaPensjon.beloep = 0;
-        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null;
-        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null;
-        willContinue = true;
+      if (states.gradertUttak.grad === 100) {
+        states.gradertUttak.aarligInntektVsaPensjonBeloep = 0
+        states.gradertUttak.uttakAlder.aar = null
+        states.gradertUttak.uttakAlder.maaneder = null
+        willContinue = true
       }
 
+      if (states.inntektVsaHelPensjon === 'nei') {
+        states.heltUttak.aarligInntektVsaPensjon.beloep = 0
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null
+        willContinue = true
+      }
 
-      return willContinue;
-    },
-  }));
+      return willContinue
+    }
+  }))
 
   return (
     <FormWrapper>
       <h2>Inntekt</h2>
-      <div className="w-30">
+      <div className='w-30'>
         <TextField
           onChange={(it) =>
             setState((prev: FormValues) => ({
               ...prev,
-              aarligInntektFoerUttakBeloep: it.target.value === "" ? 0: parseInt(it.target.value, 10),
+              aarligInntektFoerUttakBeloep:
+                it.target.value === '' ? 0 : parseInt(it.target.value, 10)
             }))
           }
-          label="Hva er din forventede årlige inntekt?"
-          description="Dagens kroneverdi før skatt"
-          value={states.aarligInntektFoerUttakBeloep === 0 ? "" : states.aarligInntektFoerUttakBeloep}
+          label='Hva er din forventede årlige inntekt?'
+          description='Dagens kroneverdi før skatt'
+          value={
+            states.aarligInntektFoerUttakBeloep === 0
+              ? ''
+              : states.aarligInntektFoerUttakBeloep
+          }
           error={
-            errorFields.aarligInntektFoerUttakBeloep ? errorMsgInntekt : ""
+            errorFields.aarligInntektFoerUttakBeloep ? errorMsgInntekt : ''
           }
         />
-        <ReadMore header="Om pensjonsgivende inntekt">
+        <ReadMore header='Om pensjonsgivende inntekt'>
           Dette regnes som pensjonsgivende inntekt: all lønnsinntekt for
           lønnstakere personinntekt fra næring for selvstendige foreldrepenger
           sykepenger dagpenger arbeidsavklaringspenger omstillingsstønad
@@ -168,50 +209,47 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         <Substep>
           <Select
             value={states.gradertUttak.grad}
-            style={{ width: "5rem" }}
-            label={"Hvilken uttaksgrad ønsker du?"}
+            style={{ width: '5rem' }}
+            label={'Hvilken uttaksgrad ønsker du?'}
             onChange={(it) => {
               setState((prev: FormValues) => ({
                 ...prev,
                 gradertUttak: (prev.gradertUttak = {
                   ...prev.gradertUttak,
-                  grad: parseInt(it.target.value),
-                }),
-              }));
+                  grad: parseInt(it.target.value)
+                })
+              }))
             }}
-            error={errorFields.uttaksgrad ? errorMsgUttaksgrad : ""}
+            error={errorFields.uttaksgrad ? errorMsgUttaksgrad : ''}
           >
-            <option value={"0"}>----</option>
-            <option value={"20"}>20%</option>
-            <option value={"40"}>40%</option>
-            <option value={"50"}>50%</option>
-            <option value={"60"}>60%</option>
-            <option value={"80"}>80%</option>
-            <option value={"100"}>100%</option>
+            <option value={'0'}>----</option>
+            <option value={'20'}>20%</option>
+            <option value={'40'}>40%</option>
+            <option value={'50'}>50%</option>
+            <option value={'60'}>60%</option>
+            <option value={'80'}>80%</option>
+            <option value={'100'}>100%</option>
           </Select>
         </Substep>
         {states.gradertUttak.grad !== 0 && states.gradertUttak.grad !== 100 && (
           <>
             <Substep>
-              <div className="flex space-x-4">
+              <div className='flex space-x-4'>
                 <Select
-                  value={states.gradertUttak.uttakAlder.aar?? -1}
-                  style={{ width: "5rem" }}
+                  value={states.gradertUttak.uttakAlder.aar ?? -1}
+                  style={{ width: '5rem' }}
                   label={`Når planlegger du å ta ut ${states.gradertUttak.grad}% pensjon?`}
-                  description="Velg alder"
+                  description='Velg alder'
                   onChange={(it) => {
-                    setState((prev: FormValues) => ({
-                      ...prev,
-                      gradertUttak: {
-                        ...prev.gradertUttak,
-                        uttakAlder: {
-                          aar: parseInt(it.target.value),
-                          maaneder: prev.gradertUttak.uttakAlder.maaneder,
-                        },
-                      },
-                    }));
+                    setState((prev: FormValues) => {
+                      const newstate = { ...prev }
+                      newstate.gradertUttak.uttakAlder.aar = parseInt(
+                        it.target.value
+                      )
+                      return newstate
+                    })
                   }}
-                  error={errorFields.gradertAar ? errorMsgGradAar : ""}
+                  error={errorFields.gradertAar ? errorMsgGradAar : ''}
                 >
                   <option value={-1}>----</option>
                   {Array.from({ length: 14 }, (_, i) => (
@@ -222,10 +260,10 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 </Select>
 
                 <Select
-                  value={states.gradertUttak.uttakAlder.maaneder?? -1}
-                  style={{ width: "5rem" }}
-                  label={"-"}
-                  description="Velg måned"
+                  value={states.gradertUttak.uttakAlder.maaneder ?? -1}
+                  style={{ width: '5rem' }}
+                  label={'-'}
+                  description='Velg måned'
                   onChange={(it) => {
                     setState((prev: FormValues) => ({
                       ...prev,
@@ -233,12 +271,14 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                         ...prev.gradertUttak,
                         uttakAlder: {
                           aar: prev.gradertUttak.uttakAlder.aar,
-                          maaneder: parseInt(it.target.value),
-                        },
-                      }),
-                    }));
+                          maaneder: parseInt(it.target.value)
+                        }
+                      })
+                    }))
                   }}
-                  error={errorFields.gradertMaaneder ? errorMsgGradMaaneder : ""}
+                  error={
+                    errorFields.gradertMaaneder ? errorMsgGradMaaneder : ''
+                  }
                 >
                   <option value={-1}>----</option>
                   {Array.from({ length: 12 }, (_, i) => (
@@ -257,25 +297,30 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ...prev,
                     gradertUttak: {
                       ...prev.gradertUttak,
-                      aarligInntektVsaPensjonBeloep: it.target.value === "" ? 0 : parseInt(it.target.value),
-                    },
-                  }));
+                      aarligInntektVsaPensjonBeloep:
+                        it.target.value === '' ? 0 : parseInt(it.target.value)
+                    }
+                  }))
                 }}
-                style={{ width: "10rem" }}
+                style={{ width: '10rem' }}
                 label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak.grad}% pensjon?`}
-                value={states.gradertUttak.aarligInntektVsaPensjonBeloep === 0 ? "" : states.gradertUttak.aarligInntektVsaPensjonBeloep}
-                error={errorFields.gradertInntekt ? errorMsgGradInntekt : ""}
+                value={
+                  states.gradertUttak.aarligInntektVsaPensjonBeloep === 0
+                    ? ''
+                    : states.gradertUttak.aarligInntektVsaPensjonBeloep
+                }
+                error={errorFields.gradertInntekt ? errorMsgGradInntekt : ''}
               />
             </Substep>
           </>
         )}
         <Substep>
-          <div className="flex space-x-4">
+          <div className='flex space-x-4'>
             <Select
               value={states.heltUttak.uttakAlder.aar}
-              style={{ width: "5rem" }}
+              style={{ width: '5rem' }}
               label={`Når planlegger du å ta ut 100% pensjon?`}
-              description="Velg alder"
+              description='Velg alder'
               onChange={(it) => {
                 setState((prev: FormValues) => ({
                   ...prev,
@@ -283,12 +328,12 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ...prev.heltUttak,
                     uttakAlder: {
                       aar: parseInt(it.target.value),
-                      maaneder: prev.gradertUttak.uttakAlder.maaneder,
-                    },
-                  },
-                }));
+                      maaneder: prev.gradertUttak.uttakAlder.maaneder
+                    }
+                  }
+                }))
               }}
-              error={errorFields.heltUttakAar ? errorMsgHeltUttakAar : ""}
+              error={errorFields.heltUttakAar ? errorMsgHeltUttakAar : ''}
             >
               <option value={-1}>----</option>
               {Array.from({ length: 14 }, (_, i) => (
@@ -300,9 +345,9 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
             <Select
               value={states.heltUttak.uttakAlder.maaneder}
-              style={{ width: "5rem" }}
-              label={"-"}
-              description="Velg måned"
+              style={{ width: '5rem' }}
+              label={'-'}
+              description='Velg måned'
               onChange={(it) => {
                 setState((prev: FormValues) => ({
                   ...prev,
@@ -310,12 +355,14 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ...prev.heltUttak,
                     uttakAlder: {
                       aar: prev.heltUttak.uttakAlder.aar,
-                      maaneder: parseInt(it.target.value),
-                    },
-                  }),
-                }));
+                      maaneder: parseInt(it.target.value)
+                    }
+                  })
+                }))
               }}
-              error={errorFields.heltUttakMaaneder ? errorMsgHeltUttakMaaneder : ""}
+              error={
+                errorFields.heltUttakMaaneder ? errorMsgHeltUttakMaaneder : ''
+              }
             >
               <option value={-1}>----</option>
               {Array.from({ length: 12 }, (_, i) => (
@@ -327,24 +374,28 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           </div>
         </Substep>
         <RadioGroup
-          legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
+          legend='Forventer du å ha inntekt etter uttak av hel pensjon?'
           value={states.inntektVsaHelPensjon}
           onChange={(it) =>
             setState((prev: FormValues) => ({
               ...prev,
-              inntektVsaHelPensjon: it,
+              inntektVsaHelPensjon: it
             }))
           }
         >
-          <Radio value={"ja"}>Ja</Radio>
-          <Radio value={"nei"}>Nei</Radio>
+          <Radio value={'ja'}>Ja</Radio>
+          <Radio value={'nei'}>Nei</Radio>
         </RadioGroup>
-        {states.inntektVsaHelPensjon === "ja" && (
+        {states.inntektVsaHelPensjon === 'ja' && (
           <>
             <Substep>
               <TextField
-                label="Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?"
-                value={states.heltUttak.aarligInntektVsaPensjon.beloep === 0 ? "" : states.heltUttak.aarligInntektVsaPensjon.beloep}
+                label='Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
+                value={
+                  states.heltUttak.aarligInntektVsaPensjon.beloep === 0
+                    ? ''
+                    : states.heltUttak.aarligInntektVsaPensjon.beloep
+                }
                 onChange={(it) => {
                   setState((prev: FormValues) => ({
                     ...prev,
@@ -352,28 +403,30 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                       ...prev.heltUttak,
                       aarligInntektVsaPensjon: {
                         ...prev.heltUttak.aarligInntektVsaPensjon,
-                        beloep: parseInt(it.target.value),
-                      },
-                    },
-                  }));
+                        beloep: parseInt(it.target.value)
+                      }
+                    }
+                  }))
                 }}
-                error={errorFields.helPensjonInntekt ? errorMsgHelPensjonInntekt : ""}
+                error={
+                  errorFields.helPensjonInntekt ? errorMsgHelPensjonInntekt : ''
+                }
               />
             </Substep>
 
             <Substep>
-              <div className="flex space-x-4">
+              <div className='flex space-x-4'>
                 <Select
                   value={
                     states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar ??
-                    "livsvarig"
+                    'livsvarig'
                   }
-                  style={{ width: "5rem" }}
-                  label={"Til hvilken alder forventer du å ha inntekten?"}
-                  description="Velg alder"
+                  style={{ width: '5rem' }}
+                  label={'Til hvilken alder forventer du å ha inntekten?'}
+                  description='Velg alder'
                   onChange={(it) => {
-                    const value = it.target.value;
-                    setLivsvarigInntekt(value === "livsvarig" ? true : false);
+                    const value = it.target.value
+                    setLivsvarigInntekt(value === 'livsvarig' ? true : false)
                     setState((prev: FormValues) => ({
                       ...prev,
                       heltUttak: {
@@ -383,17 +436,17 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                           sluttAlder: {
                             ...prev.heltUttak.aarligInntektVsaPensjon
                               .sluttAlder,
-                            aar: value === "livsvarig" ? null : parseInt(value),
+                            aar: value === 'livsvarig' ? null : parseInt(value),
                             maaneder:
                               prev.heltUttak.aarligInntektVsaPensjon.sluttAlder
-                                .maaneder,
-                          },
-                        },
-                      },
-                    }));
+                                .maaneder
+                          }
+                        }
+                      }
+                    }))
                   }}
                 >
-                  <option value={"livsvarig"}>Livsvarig</option>
+                  <option value={'livsvarig'}>Livsvarig</option>
                   {Array.from({ length: 14 }, (_, i) => (
                     <option value={i + 62} key={i}>
                       {i + 62} år
@@ -404,12 +457,12 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                   <Select
                     value={
                       states.heltUttak.aarligInntektVsaPensjon.sluttAlder
-                        .maaneder ?? "livsvarig"
+                        .maaneder ?? 'livsvarig'
                     }
-                    style={{ width: "5rem" }}
-                    label={"Velg måned"}
+                    style={{ width: '5rem' }}
+                    label={'Velg måned'}
                     onChange={(it) => {
-                      const value = it.target.value;
+                      const value = it.target.value
                       setState((prev: FormValues) => ({
                         ...prev,
                         heltUttak: {
@@ -421,11 +474,12 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                                 .sluttAlder,
                               aar: prev.heltUttak.aarligInntektVsaPensjon
                                 .sluttAlder.aar,
-                              maaneder: value === "livsvarig" ? null : parseInt(value),
-                            },
-                          },
-                        },
-                      }));
+                              maaneder:
+                                value === 'livsvarig' ? null : parseInt(value)
+                            }
+                          }
+                        }
+                      }))
                     }}
                   >
                     {Array.from({ length: 12 }, (_, i) => (
@@ -441,8 +495,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         )}
       </div>
     </FormWrapper>
-  );
-});
+  )
+})
 
-InntektStep.displayName = "InntektStep";
-export default InntektStep;
+InntektStep.displayName = 'InntektStep'
+export default InntektStep
