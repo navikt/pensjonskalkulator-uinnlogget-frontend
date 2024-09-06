@@ -94,11 +94,17 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
   const pagesNames = Object.keys(pagesDict)
 
-  const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
+  const { curStep, step, next, back, goTo, stepName } = useMultiStepForm(
+    pagesDict,
+    (e: number) => {
+      history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
+    }
+  )
+  const length = pagesNames.length
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (curStep == pages.length - 1) {
+    if (curStep == length - 1) {
       // Remove specified fields from formState
       const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState
       console.log('Form submitted:', apiPayload)
