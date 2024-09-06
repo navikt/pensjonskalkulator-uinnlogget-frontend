@@ -328,7 +328,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ...prev.heltUttak,
                     uttakAlder: {
                       aar: parseInt(it.target.value),
-                      maaneder: prev.gradertUttak.uttakAlder.maaneder
+                      maaneder: prev.heltUttak.uttakAlder.maaneder
                     }
                   }
                 }))
