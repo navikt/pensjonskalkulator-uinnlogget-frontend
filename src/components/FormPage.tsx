@@ -16,11 +16,30 @@ import {
   ProgressBar
 } from '@navikt/ds-react'
 import Link from 'next/link'
-import React, { cloneElement, FormEvent, useRef, useState } from 'react'
+
+import React, {
+  cloneElement,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 import EktefelleStep from './pages/EktefelleStep'
+import { useRouter } from 'next/navigation'
+import { on } from 'events'
+/*
+simuleringType - kan være “ALDERSPENSJON” eller “ALDERSPENSJON_MED_AFP_PRIVAT” (det velges av brukeren).
+sivilstand - kan være “UGIFT”, “GIFT” eller “SAMBOER”.
+epsHarInntektOver2G - ektefelle/partner/samboer har inntekt på mer enn 2 ganger folketrygdens grunnbeløp (G).
+epsHarPensjon - ektefelle/partner/samboer har startet uttak av pensjon.
+gradertUttak - brukes bare om brukeren tar ut mindre enn 100 % pensjon (vil være null ellers).
+heltUttak - brukes alltid. Det er når brukeren starter uttak av 100 % pensjon.
+uttakAlder - er brukerens alder når uttaket startes. Alder angis i antall fylte år og antall fylte måneder (0–11).
+aarligInntektVsaPensjonBeloep - er brukerens årlige inntekt ved siden av (Vsa) pensjon. Det er et kronebeløp.
+sluttAlder - er brukerens alder (år og måneder) når inntekten slutter. */
 
 const initialFormState: FormValues = {
-  simuleringType: '', 
+  simuleringType: '',
   foedselAar: 0,
   sivilstand: 'UGIFT',
   epsHarInntektOver2G: null,
@@ -57,38 +76,45 @@ interface FormPageProps {
   grunnbelop: number
 }
 
+interface Pages {
+  [key: string]: JSX.Element
+}
+
 function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormSate] = useState<FormValues>(initialFormState)
   const childRef = useRef<StepRef>(null) // Ref to access child component method
+  const router = useRouter()
 
-  const pages = [
-    <AlderStep key='alder' />,
-    <UtlandsStep key='utland' />,
-    <InntektStep key='inntekt' />,
-    <EktefelleStep grunnbelop={grunnbelop} key='ektefelle' />,
-    <AFPStep grunnbelop={grunnbelop} key='afp' />,
-  ]
+  const pagesDict: Pages = {
+    alder: <AlderStep key='alder' />,
+    utland: <UtlandsStep key='utland' />,
+    inntekt: <InntektStep key='inntekt' />,
+    ektefelle: <EktefelleStep grunnbelop={grunnbelop} key='ektefelle' />,
+    afp: <AFPStep grunnbelop={grunnbelop} key='afp' />
+  }
+  const pagesNames = Object.keys(pagesDict)
 
   const { curStep, step, next, back, goTo } = useMultiStepForm(pages)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (curStep == pages.length - 1) {
-
       // Remove specified fields from formState
-      const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState;
-      console.log('Form submitted:', apiPayload);
-      
+      const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState
+      console.log('Form submitted:', apiPayload)
+
       // Fetch CSRF token
       try {
-        const csrfResponse = await fetch('https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf');
-        
+        const csrfResponse = await fetch(
+          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf'
+        )
+
         if (!csrfResponse.ok) {
-          throw new Error('Failed to fetch CSRF token');
+          throw new Error('Failed to fetch CSRF token')
         }
-        
-        const csrfData = await csrfResponse.json();
-        const csrfToken = csrfData.token;
+
+        const csrfData = await csrfResponse.json()
+        const csrfToken = csrfData.token
 
         // Make POST request with CSRF token
         const response = await fetch(
@@ -97,25 +123,49 @@ function FormPage({ grunnbelop }: FormPageProps) {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'X-XSRF-TOKEN': csrfToken,
+              'X-XSRF-TOKEN': csrfToken
             },
-            body: JSON.stringify(apiPayload),
+            body: JSON.stringify(apiPayload)
           }
-        );
+        )
 
         if (!response.ok) {
-          throw new Error('Failed to submit form');
+          throw new Error('Failed to submit form')
         }
 
-        const responseData = await response.json();
-        console.log('Response:', responseData);
+        const responseData = await response.json()
+        console.log('Response:', responseData)
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error:', error)
       }
 
       return
     }
-    if (childRef.current?.onSubmit()) next()
+    if (childRef.current?.onSubmit()) {
+      next()
+    }
+  }
+
+  useEffect(() => {
+    // Listen for the popstate event (triggered by back/forward navigation)
+    const handlePopState = (event: any) => {
+      // Retrieve state from event and update the pageState accordingly
+      if (event.state) {
+        goTo(event.state.page)
+      }
+    }
+
+    window.addEventListener('popstate', handlePopState)
+
+    return () => {
+      // Clean up event listener on unmount
+      window.removeEventListener('popstate', handlePopState)
+    }
+  }, [])
+
+  const handleGoTo = (step: number) => {
+    goTo(step)
+    // router.push(`${stepName}`)
   }
 
   return (
@@ -134,9 +184,9 @@ function FormPage({ grunnbelop }: FormPageProps) {
         </div>
         <Box width={'100%'} padding={'4'} background='bg-default'>
           <FormProgress
-            totalSteps={pages.length}
+            totalSteps={length}
             activeStep={curStep + 1}
-            onStepChange={(newStep) => goTo(newStep - 1)}
+            onStepChange={(newStep) => handleGoTo(newStep - 1)}
           >
             <FormProgress.Step>Alder</FormProgress.Step>
             <FormProgress.Step>Utland</FormProgress.Step>
@@ -152,7 +202,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
             </FormContext.Provider>
             <HStack gap={'2'} marginBlock='2'>
               <Button type='submit' variant='primary'>
-                {curStep === pages.length - 1 ? 'Send' : 'Neste'}
+                {curStep === length - 1 ? 'Send' : 'Neste'}
               </Button>
               {curStep !== 0 && (
                 <Button type='button' onClick={back} variant='tertiary'>
