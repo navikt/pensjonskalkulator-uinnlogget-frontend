@@ -27,6 +27,7 @@ import React, {
 import EktefelleStep from './pages/EktefelleStep'
 import { useRouter } from 'next/navigation'
 import { on } from 'events'
+import submitForm from '@/functions/submitForm'
 /*
 simuleringType - kan være “ALDERSPENSJON” eller “ALDERSPENSJON_MED_AFP_PRIVAT” (det velges av brukeren).
 sivilstand - kan være “UGIFT”, “GIFT” eller “SAMBOER”.
@@ -97,7 +98,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const { curStep, step, next, back, goTo, stepName } = useMultiStepForm(
     pagesDict,
     (e: number) => {
-      history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
+      // history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
     }
   )
   const length = pagesNames.length
@@ -109,41 +110,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
       const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState
       console.log('Form submitted:', apiPayload)
 
-      // Fetch CSRF token
-      try {
-        const csrfResponse = await fetch(
-          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf'
-        )
-
-        if (!csrfResponse.ok) {
-          throw new Error('Failed to fetch CSRF token')
-        }
-
-        const csrfData = await csrfResponse.json()
-        const csrfToken = csrfData.token
-
-        // Make POST request with CSRF token
-        const response = await fetch(
-          'https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/alderspensjon/anonym-simulering',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'X-XSRF-TOKEN': csrfToken
-            },
-            body: JSON.stringify(apiPayload)
-          }
-        )
-
-        if (!response.ok) {
-          throw new Error('Failed to submit form')
-        }
-
-        const responseData = await response.json()
-        console.log('Response:', responseData)
-      } catch (error) {
-        console.error('Error:', error)
-      }
+      submitForm(formState)
 
       return
     }
