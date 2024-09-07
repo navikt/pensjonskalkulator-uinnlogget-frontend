@@ -23,8 +23,8 @@ const submitForm = async (formstate: FormValues) => {
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-        // 'X-XSRF-TOKEN': csrfToken
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': csrfToken
       },
       body: JSON.stringify(apiPayload)
       // credentials: 'include'
