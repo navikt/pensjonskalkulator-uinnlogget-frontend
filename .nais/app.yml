@@ -20,7 +20,5 @@ spec:
   accessPolicy:
     outbound:
       rules:
-        - application: pensjonskalkulator-uinnlogget-sandbox
-      external:
-        - host: g.nav.no
-        - host: nav.no
+        - application: pensjonskalkulator-backend
+      
