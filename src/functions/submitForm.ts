@@ -4,7 +4,8 @@ import { FormValues } from '@/common'
 
 const submitForm = async (formstate: FormValues) => {
   const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formstate
-  console.log('Form submitted:', apiPayload)
+  
+  console.log('Api payload', apiPayload)
 
   const csrfResponse = await fetch(
     'https://pensjonskalkulator-backend.intern.dev.nav.no/api/csrf'

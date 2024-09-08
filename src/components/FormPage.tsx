@@ -106,9 +106,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     if (curStep == length - 1) {
-      // Remove specified fields from formState
-      const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formState
-      console.log('Form submitted:', apiPayload)
 
       submitForm(formState)
 
