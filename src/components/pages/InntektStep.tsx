@@ -212,13 +212,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             style={{ width: '5rem' }}
             label={'Hvilken uttaksgrad ønsker du?'}
             onChange={(it) => {
-              setState((prev: FormValues) => ({
-                ...prev,
-                gradertUttak: (prev.gradertUttak = {
-                  ...prev.gradertUttak,
-                  grad: parseInt(it.target.value)
-                })
-              }))
+              setState((prev: FormValues) => {
+                const newstate = { ...prev }
+                newstate.gradertUttak.grad = parseInt(it.target.value)
+                return newstate
+              })
             }}
             error={errorFields.uttaksgrad ? errorMsgUttaksgrad : ''}
           >
@@ -265,16 +263,13 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                   label={'-'}
                   description='Velg måned'
                   onChange={(it) => {
-                    setState((prev: FormValues) => ({
-                      ...prev,
-                      gradertUttak: (prev.gradertUttak = {
-                        ...prev.gradertUttak,
-                        uttakAlder: {
-                          aar: prev.gradertUttak.uttakAlder.aar,
-                          maaneder: parseInt(it.target.value)
-                        }
-                      })
-                    }))
+                    setState((prev: FormValues) => {
+                      const newstate = { ...prev }
+                      newstate.gradertUttak.uttakAlder.maaneder = parseInt(
+                        it.target.value
+                      )
+                      return newstate
+                    })
                   }}
                   error={
                     errorFields.gradertMaaneder ? errorMsgGradMaaneder : ''
@@ -293,14 +288,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             <Substep>
               <TextField
                 onChange={(it) => {
-                  setState((prev: FormValues) => ({
-                    ...prev,
-                    gradertUttak: {
-                      ...prev.gradertUttak,
-                      aarligInntektVsaPensjonBeloep:
-                        it.target.value === '' ? 0 : parseInt(it.target.value)
-                    }
-                  }))
+                  setState((prev: FormValues) => {
+                    const newstate = { ...prev }
+                    newstate.gradertUttak.aarligInntektVsaPensjonBeloep = parseInt(it.target.value)
+                    return newstate
+                  })
                 }}
                 style={{ width: '10rem' }}
                 label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak.grad}% pensjon?`}
@@ -322,16 +314,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               label={`Når planlegger du å ta ut 100% pensjon?`}
               description='Velg alder'
               onChange={(it) => {
-                setState((prev: FormValues) => ({
-                  ...prev,
-                  heltUttak: {
-                    ...prev.heltUttak,
-                    uttakAlder: {
-                      aar: parseInt(it.target.value),
-                      maaneder: prev.heltUttak.uttakAlder.maaneder
-                    }
-                  }
-                }))
+                setState((prev: FormValues) => {
+                  const newstate = { ...prev }
+                  newstate.heltUttak.uttakAlder.aar = parseInt(it.target.value)
+                  return newstate
+                })
               }}
               error={errorFields.heltUttakAar ? errorMsgHeltUttakAar : ''}
             >
@@ -349,16 +336,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               label={'-'}
               description='Velg måned'
               onChange={(it) => {
-                setState((prev: FormValues) => ({
-                  ...prev,
-                  heltUttak: (prev.heltUttak = {
-                    ...prev.heltUttak,
-                    uttakAlder: {
-                      aar: prev.heltUttak.uttakAlder.aar,
-                      maaneder: parseInt(it.target.value)
-                    }
-                  })
-                }))
+                setState((prev: FormValues) => {
+                  const newstate = { ...prev }
+                  newstate.heltUttak.uttakAlder.maaneder = parseInt(it.target.value)
+                  return newstate
+                })
               }}
               error={
                 errorFields.heltUttakMaaneder ? errorMsgHeltUttakMaaneder : ''
@@ -397,16 +379,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     : states.heltUttak.aarligInntektVsaPensjon.beloep
                 }
                 onChange={(it) => {
-                  setState((prev: FormValues) => ({
-                    ...prev,
-                    heltUttak: {
-                      ...prev.heltUttak,
-                      aarligInntektVsaPensjon: {
-                        ...prev.heltUttak.aarligInntektVsaPensjon,
-                        beloep: parseInt(it.target.value)
-                      }
-                    }
-                  }))
+                  setState((prev: FormValues) => {
+                    const newstate = { ...prev }
+                    newstate.heltUttak.aarligInntektVsaPensjon.beloep = parseInt(it.target.value)
+                    return newstate
+                  })
                 }}
                 error={
                   errorFields.helPensjonInntekt ? errorMsgHelPensjonInntekt : ''
@@ -427,23 +404,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                   onChange={(it) => {
                     const value = it.target.value
                     setLivsvarigInntekt(value === 'livsvarig' ? true : false)
-                    setState((prev: FormValues) => ({
-                      ...prev,
-                      heltUttak: {
-                        ...prev.heltUttak,
-                        aarligInntektVsaPensjon: {
-                          ...prev.heltUttak.aarligInntektVsaPensjon,
-                          sluttAlder: {
-                            ...prev.heltUttak.aarligInntektVsaPensjon
-                              .sluttAlder,
-                            aar: value === 'livsvarig' ? null : parseInt(value),
-                            maaneder:
-                              prev.heltUttak.aarligInntektVsaPensjon.sluttAlder
-                                .maaneder
-                          }
-                        }
-                      }
-                    }))
+                    setState((prev: FormValues) => {
+                      const newstate = { ...prev }
+                      newstate.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = value === 'livsvarig' ? null : parseInt(value)
+                      return newstate
+                    })
                   }}
                 >
                   <option value={'livsvarig'}>Livsvarig</option>
@@ -463,23 +428,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     label={'Velg måned'}
                     onChange={(it) => {
                       const value = it.target.value
-                      setState((prev: FormValues) => ({
-                        ...prev,
-                        heltUttak: {
-                          ...prev.heltUttak,
-                          aarligInntektVsaPensjon: {
-                            ...prev.heltUttak.aarligInntektVsaPensjon,
-                            sluttAlder: {
-                              ...prev.heltUttak.aarligInntektVsaPensjon
-                                .sluttAlder,
-                              aar: prev.heltUttak.aarligInntektVsaPensjon
-                                .sluttAlder.aar,
-                              maaneder:
-                                value === 'livsvarig' ? null : parseInt(value)
-                            }
-                          }
-                        }
-                      }))
+                      setState((prev: FormValues) => {
+                        const newstate = { ...prev }
+                        newstate.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = value === 'livsvarig' ? null : parseInt(value)
+                        return newstate
+                      })
                     }}
                   >
                     {Array.from({ length: 12 }, (_, i) => (
