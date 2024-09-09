@@ -28,16 +28,6 @@ import EktefelleStep from './pages/EktefelleStep'
 import { useRouter } from 'next/navigation'
 import { on } from 'events'
 import submitForm from '@/functions/submitForm'
-/*
-simuleringType - kan være “ALDERSPENSJON” eller “ALDERSPENSJON_MED_AFP_PRIVAT” (det velges av brukeren).
-sivilstand - kan være “UGIFT”, “GIFT” eller “SAMBOER”.
-epsHarInntektOver2G - ektefelle/partner/samboer har inntekt på mer enn 2 ganger folketrygdens grunnbeløp (G).
-epsHarPensjon - ektefelle/partner/samboer har startet uttak av pensjon.
-gradertUttak - brukes bare om brukeren tar ut mindre enn 100 % pensjon (vil være null ellers).
-heltUttak - brukes alltid. Det er når brukeren starter uttak av 100 % pensjon.
-uttakAlder - er brukerens alder når uttaket startes. Alder angis i antall fylte år og antall fylte måneder (0–11).
-aarligInntektVsaPensjonBeloep - er brukerens årlige inntekt ved siden av (Vsa) pensjon. Det er et kronebeløp.
-sluttAlder - er brukerens alder (år og måneder) når inntekten slutter. */
 
 const initialFormState: FormValues = {
   simuleringType: '',
@@ -105,9 +95,9 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    if (curStep == length - 1) {
+    if (curStep === length - 1) {
 
-      submitForm(formState)
+      await submitForm(formState)
 
       return
     }
