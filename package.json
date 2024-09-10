@@ -12,6 +12,7 @@
     "@navikt/ds-css": "^6.15.0",
     "@navikt/ds-react": "^6.15.0",
     "@navikt/nav-dekoratoren-moduler": "^2.1.4",
+    "@navikt/oasis": "^3.4.0",
     "html-react-parser": "^5.1.12",
     "next": "14.2.5",
     "react": "^18",
