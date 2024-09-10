@@ -19,9 +19,11 @@ const generateBearerToken = async (): Promise<string> => {
 }
 
 //handler for å håndtere alle forespørsler
-export async function handler(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
+
 
     if (req.method !== 'POST') {
+        console.log('Method not allowed');
         return res.status(405).json({ message: 'Method not allowed' });
     }
 
