@@ -21,4 +21,7 @@ spec:
     outbound:
       rules:
         - application: pensjonskalkulator-backend
+  azure:
+    application:
+      enabled: true
       
