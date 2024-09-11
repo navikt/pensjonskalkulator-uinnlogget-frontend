@@ -39,7 +39,8 @@ export async function POST(req: NextRequest) {
             body: body,
         });
 
-        return NextResponse.json(backendResponse.body, { status: backendResponse.status });
+        const backendResponseText = await backendResponse.text();
+        return NextResponse.json(backendResponseText, { status: backendResponse.status });
 
     } catch (error) {
         console.error(`Error in POST handler: ${(error as Error).message}`, error);
