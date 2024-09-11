@@ -11,8 +11,8 @@ spec:
     - https://pensjonskalkulator-uinnlogget.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
   replicas:
-    max: 2
-    min: 2
+    max: 1
+    min: 1
   resources:
     requests:
       cpu: 200m
