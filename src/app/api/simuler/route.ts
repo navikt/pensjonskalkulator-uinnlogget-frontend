@@ -1,13 +1,12 @@
 'use server'
 
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import { requestAzureClientCredentialsToken } from "@navikt/oasis";
 
 const generateBearerToken = async (): Promise<string> => {
 
     const clientCredentials = await requestAzureClientCredentialsToken(
-        "api://dev-gcp:pensjonskalkulator:pensjonskalkulator-backend",
+        "api://dev-gcp:pensjonskalkulator:pensjonskalkulator-backend"
     );
 
     if(clientCredentials.ok){
@@ -20,10 +19,9 @@ const generateBearerToken = async (): Promise<string> => {
 }
 
 //handler for å håndtere alle forespørsler
-export async function POST(req: NextRequest/* req: NextApiRequest, res: NextApiResponse */) {
+export async function POST(req: NextRequest) {
 
     if (req.method !== 'POST') {
-        //return res.status(405).json({ message: 'Method not allowed' });
         return NextResponse.json({ message: 'Method not allowed' });
     }
 
@@ -42,12 +40,11 @@ export async function POST(req: NextRequest/* req: NextApiRequest, res: NextApiR
         });
 
         const data = await backendResponse.json();
-        //res.status(backendResponse.status).json(data);
+        console.log("Backend response: ", data);
         return NextResponse.json(data, { status: backendResponse.status });
     } catch (error) {
         console.error(`Error in POST handler: ${(error as Error).message}`, error);
         const errorObj: Error = error as Error;
-        //res.status(500).json({ error: errorObj.message });
         return NextResponse.json({ error: errorObj.message }, { status: 500 });
     }
 }
