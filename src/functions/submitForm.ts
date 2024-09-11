@@ -51,7 +51,7 @@ const submitForm = async (formstate: FormValues) => {
   const { boddIUtland, inntektVsaHelPensjon, ...apiPayload } = formstate
   console.log('Api payload', apiPayload)
   
-  const response = await fetch('http://localhost:3000/pensjon/kalkulator-uinnlogget/api/simuler', {
+  const response = await fetch('/api/simuler', { //http://localhost:3000/pensjon/kalkulator-uinnlogget/api/simuler
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
