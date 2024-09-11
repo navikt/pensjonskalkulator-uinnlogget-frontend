@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
         });
 
         const backendResponseText = await backendResponse.text();
-        return NextResponse.json(backendResponseText, { status: backendResponse.status });
+        return NextResponse.json(backendResponseText, { status: backendResponse.status, headers: { "Content-Type": "application/json"} });
 
     } catch (error) {
         console.error(`Error in POST handler: ${(error as Error).message}`, error);
