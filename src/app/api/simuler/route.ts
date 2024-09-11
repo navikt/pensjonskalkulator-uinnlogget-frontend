@@ -29,19 +29,18 @@ export async function POST(req: NextRequest) {
     
     try {
         const token = await generateBearerToken();
-        const reqBody = await req.json();
+
         const backendResponse = await fetch(backendUrl, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(reqBody),
+            body: req.body,
         });
 
-        const data = await backendResponse.json();
-        console.log("Backend response: ", data);
-        return NextResponse.json(data, { status: backendResponse.status });
+        return NextResponse.json(backendResponse.body, { status: backendResponse.status });
+        
     } catch (error) {
         console.error(`Error in POST handler: ${(error as Error).message}`, error);
         const errorObj: Error = error as Error;
