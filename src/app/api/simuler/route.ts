@@ -25,22 +25,22 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: 'Method not allowed' });
     }
 
-    const backendUrl = "https://pensjonskalkulator-backend.intern.dev.nav.no/api/v1/alderspensjon/anonym-simulering";
+    const backendUrl = "http://pensjonskalkulator-backend/api/v1/alderspensjon/anonym-simulering";
     
     try {
         const token = await generateBearerToken();
-
+        const body = await req.text();
         const backendResponse = await fetch(backendUrl, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
             },
-            body: req.body,
+            body: body,
         });
 
         return NextResponse.json(backendResponse.body, { status: backendResponse.status });
-        
+
     } catch (error) {
         console.error(`Error in POST handler: ${(error as Error).message}`, error);
         const errorObj: Error = error as Error;
