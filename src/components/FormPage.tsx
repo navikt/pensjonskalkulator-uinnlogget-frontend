@@ -13,6 +13,7 @@ import {
   Button,
   FormProgress,
   HStack,
+  Alert,
   ProgressBar
 } from '@navikt/ds-react'
 import Link from 'next/link'
@@ -73,6 +74,7 @@ interface Pages {
 
 function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormSate] = useState<FormValues>(initialFormState)
+  const [failedToSubmit, setFailedToSubmit] = useState(false)
   const childRef = useRef<StepRef>(null) // Ref to access child component method
   const router = useRouter()
 
@@ -97,7 +99,14 @@ function FormPage({ grunnbelop }: FormPageProps) {
     e.preventDefault()
     if (curStep === length - 1) {
 
-      await submitForm(formState)
+      const resultData = await submitForm(formState)
+      
+      if (resultData) {
+        const queryString = encodeURIComponent(JSON.stringify(resultData))
+        router.push(`/result?data=${queryString}`);
+      } else {
+        setFailedToSubmit(true)
+      }
 
       return
     }
@@ -143,6 +152,11 @@ function FormPage({ grunnbelop }: FormPageProps) {
           <h2>Pensjonskalkulator</h2>
         </div>
         <Box width={'100%'} padding={'4'} background='bg-default'>
+          {failedToSubmit &&
+            <Alert variant="error">
+              Error - Data ble ikke sendt. Sjekk om alt er fylt inn riktig.
+            </Alert>
+          }
           <FormProgress
             totalSteps={length}
             activeStep={curStep + 1}
