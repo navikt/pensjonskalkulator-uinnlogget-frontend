@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 const ResultPage = () => {
-  const router = useRouter();
+  /* const router = useRouter();
   const [resultData, setResultData] = useState(null);
 
   useEffect(() => {
@@ -13,12 +13,12 @@ const ResultPage = () => {
       const data = JSON.parse(decodeURIComponent(router.query.data as string));
       setResultData(data);
     }
-  }, [router.query.data]);
+  }, [router.query.data]); */
 
   return (
     <div>
       {/* Render the result object */}
-      {resultData && <pre>{JSON.stringify(resultData, null, 2)}</pre>}
+      {/* {resultData && <pre>{JSON.stringify(resultData, null, 2)}</pre>} */}
     </div>
   );
 };

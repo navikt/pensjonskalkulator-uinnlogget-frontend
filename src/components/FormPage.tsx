@@ -101,12 +101,12 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
       const resultData = await submitForm(formState)
       
-      if (resultData) {
+      /* if (resultData) {
         const queryString = encodeURIComponent(JSON.stringify(resultData))
         router.push(`/result?data=${queryString}`);
       } else {
         setFailedToSubmit(true)
-      }
+      } */
 
       return
     }
