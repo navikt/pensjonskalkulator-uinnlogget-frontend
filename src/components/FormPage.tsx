@@ -14,6 +14,7 @@ import {
   FormProgress,
   HStack,
   Alert,
+  Loader,
   ProgressBar,
 } from "@navikt/ds-react";
 import Link from "next/link";
@@ -187,9 +188,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
             </HStack>
             {loading && (
               <HStack gap={"2"} marginBlock="2">
-                <Suspense fallback={<div>Laster...</div>}>
-                  <div>Laster...</div>
-                </Suspense>
+                <Loader size="large" title="Laster..."/>
               </HStack>
             )}
           </form>
