@@ -65,7 +65,8 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
                     utenlandsAntallAar: it.target.value === "" ? 0: parseInt(it.target.value, 10),
                   }))
                 }
-                type="number"
+                type='number'
+                inputMode='numeric'
                 label="Hvor mange år har du bodd i utlandet?"
                 value={states.utenlandsAntallAar === 0 ? "" : states.utenlandsAntallAar}
                 error={errorMsg}
