@@ -166,7 +166,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
           >
             <FormProgress.Step>Alder</FormProgress.Step>
             <FormProgress.Step>Utland</FormProgress.Step>
-            <FormProgress.Step>Inntekt</FormProgress.Step>
+            <FormProgress.Step>Inntekt og alderspensjon</FormProgress.Step>
             <FormProgress.Step>Ektefelle</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
           </FormProgress>

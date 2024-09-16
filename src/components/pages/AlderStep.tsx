@@ -91,6 +91,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
               }))
             }
             type='number'
+            inputMode='numeric'
             label='I hvilket år er du født?'
             value={foedselAar === 0 ? "" : foedselAar}
             error={errorFields.foedselAar ? errorMsg : ""}
@@ -116,6 +117,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
               }))
             }
             type='number'
+            inputMode='numeric'
             label='Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
             value={inntektOver1GAntallAar === 0 ? "" : inntektOver1GAntallAar}
             error={errorFields.inntektOver1GAntallAar ? errorMsgTaut : ""}

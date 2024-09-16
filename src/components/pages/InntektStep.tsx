@@ -151,6 +151,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         willContinue = false
       }
 
+      //Bug her
       if (states.gradertUttak.grad === 100) {
         states.gradertUttak.aarligInntektVsaPensjonBeloep = 0
         states.gradertUttak.uttakAlder.aar = null
@@ -158,12 +159,13 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         willContinue = true
       }
 
+      //Bug her
       if (states.inntektVsaHelPensjon === 'nei') {
         states.heltUttak.aarligInntektVsaPensjon.beloep = 0
         states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null
         states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null
         willContinue = true
-      }
+      } 
 
       return willContinue
     }
@@ -171,7 +173,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
   return (
     <FormWrapper>
-      <h2>Inntekt</h2>
+      <h2>Inntekt og alderspensjon</h2>
       <div className='w-30'>
         <TextField
           onChange={(it) =>
@@ -181,6 +183,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 it.target.value === '' ? 0 : parseInt(it.target.value, 10)
             }))
           }
+          type='number'
+          inputMode='numeric'
           label='Hva er din forventede årlige inntekt?'
           description='Dagens kroneverdi før skatt'
           value={
@@ -294,6 +298,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     return newstate
                   })
                 }}
+                type='number'
+                inputMode='numeric'
                 style={{ width: '10rem' }}
                 label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak.grad}% pensjon?`}
                 value={
@@ -378,6 +384,8 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                     ? ''
                     : states.heltUttak.aarligInntektVsaPensjon.beloep
                 }
+                type='number'
+                inputMode='numeric'
                 onChange={(it) => {
                   setState((prev: FormValues) => {
                     const newstate = { ...prev }

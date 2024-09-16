@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 const ResultPage = () => {
   const [resultData, setResultData] = useState(null);
+  const [age, setAge] = useState(0);
 
   useEffect(() => {
     const storedData = localStorage.getItem('resultData');
