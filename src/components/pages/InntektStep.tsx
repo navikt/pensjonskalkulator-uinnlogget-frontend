@@ -37,56 +37,33 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
     gradertAar: false,
     gradertMaaneder: false,
     heltUttakAar: false,
-    heltUttakMaaneder: false
+    heltUttakMaaneder: false,
+    inntektVsaHelPensjon: false,
   })
   const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null)
-  const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(
-    null
-  )
-  const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(
-    null
-  )
+  const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(null)
+  const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(null)
   const [errorMsgGradAar, setErrorMsgGradAar] = useState<string | null>(null)
-  const [errorMsgGradMaaneder, setErrorMsgGradMaaneder] = useState<
-    string | null
-  >(null)
-  const [errorMsgHelPensjonInntekt, setErrorMsgHelPensjonInntekt] = useState<
-    string | null
-  >(null)
-  const [errorMsgHeltUttakAar, setErrorMsgHeltUttakAar] = useState<
-    string | null
-  >(null)
-  const [errorMsgHeltUttakMaaneder, setErrorMsgHeltUttakMaaneder] = useState<
-    string | null
-  >(null)
+  const [errorMsgGradMaaneder, setErrorMsgGradMaaneder] = useState<string | null>(null)
+  const [errorMsgHelPensjonInntekt, setErrorMsgHelPensjonInntekt] = useState<string | null>(null)
+  const [errorMsgHeltUttakAar, setErrorMsgHeltUttakAar] = useState<string | null>(null)
+  const [errorMsgHeltUttakMaaneder, setErrorMsgHeltUttakMaaneder] = useState<string | null>(null)
+  const [errorMsgInntektVsaHelPensjon, setErrorMsgInntektVsaHelPensjon] = useState<string | null>(null)
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
       var willContinue = true
 
       const errors = {
-        aarligInntektFoerUttakBeloep:
-          !states.aarligInntektFoerUttakBeloep ||
-          states.aarligInntektFoerUttakBeloep < 0,
+        aarligInntektFoerUttakBeloep: !states.aarligInntektFoerUttakBeloep || states.aarligInntektFoerUttakBeloep < 0,
         uttaksgrad: !states.gradertUttak.grad,
-        gradertInntekt:
-          !states.gradertUttak.aarligInntektVsaPensjonBeloep ||
-          states.gradertUttak.aarligInntektVsaPensjonBeloep < 0,
-        helPensjonInntekt:
-          !states.heltUttak.aarligInntektVsaPensjon.beloep ||
-          states.heltUttak.aarligInntektVsaPensjon.beloep < 0,
-        gradertAar:
-          states.gradertUttak.uttakAlder.aar === null ||
-          states.gradertUttak.uttakAlder.aar === -1,
-        gradertMaaneder:
-          states.gradertUttak.uttakAlder.maaneder === null ||
-          states.gradertUttak.uttakAlder.maaneder === -1,
-        heltUttakAar:
-          !states.heltUttak.uttakAlder.aar ||
-          states.heltUttak.uttakAlder.aar === -1,
-        heltUttakMaaneder:
-          states.heltUttak.uttakAlder.maaneder === null ||
-          states.heltUttak.uttakAlder.maaneder === -1
+        gradertInntekt: !states.gradertUttak.aarligInntektVsaPensjonBeloep || states.gradertUttak.aarligInntektVsaPensjonBeloep < 0,
+        helPensjonInntekt: !states.heltUttak.aarligInntektVsaPensjon.beloep || states.heltUttak.aarligInntektVsaPensjon.beloep < 0,
+        gradertAar: states.gradertUttak.uttakAlder.aar === null || states.gradertUttak.uttakAlder.aar === -1,
+        gradertMaaneder: states.gradertUttak.uttakAlder.maaneder === null || states.gradertUttak.uttakAlder.maaneder === -1,
+        heltUttakAar: !states.heltUttak.uttakAlder.aar || states.heltUttak.uttakAlder.aar === -1,
+        heltUttakMaaneder: states.heltUttak.uttakAlder.maaneder === null || states.heltUttak.uttakAlder.maaneder === -1,
+        inntektVsaHelPensjon: !states.inntektVsaHelPensjon
       }
 
       setErrorFields(errors)
@@ -123,6 +100,13 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           ) {
             setErrorMsgGradMaaneder('Du må velge måned')
           }
+        } else if(states.gradertUttak.grad === 100){
+          states.gradertUttak.aarligInntektVsaPensjonBeloep = 0
+          states.gradertUttak.uttakAlder.aar = null
+          states.gradertUttak.uttakAlder.maaneder = null
+          errors.gradertAar = false
+          errors.gradertMaaneder = false
+          errors.gradertInntekt = false
         }
 
         if (
@@ -138,34 +122,29 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
           setErrorMsgHeltUttakMaaneder('Du må velge måned')
         }
 
-        if (states.inntektVsaHelPensjon === 'ja') {
-          if (!states.heltUttak.aarligInntektVsaPensjon.beloep) {
-            console.log('kom inn')
-            setErrorMsgHelPensjonInntekt('Du må fylle ut inntekt')
+        if (!states.inntektVsaHelPensjon || !(states.inntektVsaHelPensjon === 'nei')) {
+          setErrorMsgInntektVsaHelPensjon('Velg alternativ')
+          if (states.inntektVsaHelPensjon === 'ja') {
+            if (!states.heltUttak.aarligInntektVsaPensjon.beloep) {
+              setErrorMsgHelPensjonInntekt('Du må fylle ut inntekt')
+            }
+            if (states.heltUttak.aarligInntektVsaPensjon.beloep < 0) {
+              setErrorMsgHelPensjonInntekt('Inntekt kan ikke være negativ')
+            }
           }
-          if (states.heltUttak.aarligInntektVsaPensjon.beloep < 0) {
-            setErrorMsgHelPensjonInntekt('Inntekt kan ikke være negativ')
-          }
+        } else{
+          states.heltUttak.aarligInntektVsaPensjon.beloep = 0
+          states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null
+          states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null
+          errors.helPensjonInntekt = false
         }
 
         willContinue = false
       }
 
-      //Bug her
-      if (states.gradertUttak.grad === 100) {
-        states.gradertUttak.aarligInntektVsaPensjonBeloep = 0
-        states.gradertUttak.uttakAlder.aar = null
-        states.gradertUttak.uttakAlder.maaneder = null
+      if (!Object.values(errors).some((error) => error)) {
         willContinue = true
       }
-
-      //Bug her
-      if (states.inntektVsaHelPensjon === 'nei') {
-        states.heltUttak.aarligInntektVsaPensjon.beloep = 0
-        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null
-        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null
-        willContinue = true
-      } 
 
       return willContinue
     }
@@ -370,6 +349,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               inntektVsaHelPensjon: it
             }))
           }
+          error={errorFields.inntektVsaHelPensjon ? errorMsgInntektVsaHelPensjon : ''}
         >
           <Radio value={'ja'}>Ja</Radio>
           <Radio value={'nei'}>Nei</Radio>
