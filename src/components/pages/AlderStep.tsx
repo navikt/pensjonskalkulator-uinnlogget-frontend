@@ -9,6 +9,7 @@ import {
   Bleed,
   BodyShort,
   Box,
+  Heading,
   TextField,
 } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
