@@ -28,7 +28,7 @@ import React, {
   useState,
 } from "react";
 import EktefelleStep from "./pages/EktefelleStep";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { on } from "events";
 import submitForm from "@/functions/submitForm";
 
@@ -105,10 +105,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
       const resultData = await submitForm(formState);
 
       if (resultData) {
-        router.push({
-          pathname: "/result",
-          query: { data: JSON.stringify(resultData) },
-        }); 
+        const params = new URLSearchParams(resultData).toString();
+        router.push(`/beregn?${params}`); 
       } else {
         setFailedToSubmit(true);
       }
