@@ -1,7 +1,7 @@
 "use client";
 
 import { Chips, VStack } from "@navikt/ds-react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
 //Sett interfacene i common.ts
@@ -109,23 +109,17 @@ import { useEffect, useState } from "react";
 */
 
  
-const ResultPage = () => {
+const BeregnPage = () => {
   const router = useRouter();
   const [resultData, setResultData] = useState(null);
 
   useEffect(() => {
-    if (router.isReady) {
-      const { data } = router.query;
-      if (data) {
-        try {
-          const parsedData = JSON.parse(data as string);
-          setResultData(parsedData);
-        } catch (error) {
-          console.error('Failed to parse data:', error);
-        }
-      } 
+    const query = new URLSearchParams(window.location.search);
+    const dataParam = query.get('data');
+    if (dataParam) {
+      setResultData(JSON.parse(dataParam));
     }
-  }, [router.isReady, router.query]);
+  }, []);
 
   return (
     <div>
@@ -139,4 +133,4 @@ const ResultPage = () => {
   );
 };
 
-export default ResultPage;
+export default BeregnPage;
