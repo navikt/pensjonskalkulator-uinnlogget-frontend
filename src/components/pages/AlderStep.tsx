@@ -24,14 +24,13 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
   const [errorFields, setErrorFields] = React.useState({
     foedselAar: false,
     inntektOver1GAntallAar: false,
-  });
-  const message = 'Du må oppgi et gyldig årstall'
+  }); //Sett type! 
 
   const { foedselAar, inntektOver1GAntallAar } = states
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      var willContinue = true
+      var willContinue = true 
 
       const errors = {
         foedselAar: !foedselAar,
@@ -47,7 +46,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
           foedselAar < 1900 ||
           foedselAar > new Date().getFullYear()
         ) {
-          setErrorMsg(message)  
+          setErrorMsg('Du må oppgi et gyldig årstall')  
         }
   
         if (!inntektOver1GAntallAar) {

@@ -39,7 +39,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
     heltUttakAar: false,
     heltUttakMaaneder: false,
     inntektVsaHelPensjon: false,
-  })
+  }) //Sett type! 
   const [errorMsgInntekt, setErrorMsgInntekt] = useState<string | null>(null)
   const [errorMsgUttaksgrad, setErrorMsgUttaksgrad] = useState<string | null>(null)
   const [errorMsgGradInntekt, setErrorMsgGradInntekt] = useState<string | null>(null)
@@ -66,7 +66,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
         inntektVsaHelPensjon: !states.inntektVsaHelPensjon
       }
 
-      setErrorFields(errors)
+      setErrorFields(errors) //se om jeg behøver å sette det her
 
       if (Object.values(errors).some((error) => error)) {
         if (!states.aarligInntektFoerUttakBeloep) {
