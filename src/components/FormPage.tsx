@@ -28,7 +28,7 @@ import React, {
   useState,
 } from "react";
 import EktefelleStep from "./pages/EktefelleStep";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { on } from "events";
 import submitForm from "@/functions/submitForm";
 
@@ -98,15 +98,17 @@ function FormPage({ grunnbelop }: FormPageProps) {
   );
   const length = pagesNames.length;
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => { 
     e.preventDefault();
     if (curStep === length - 1) {
       setLoading(true);
       const resultData = await submitForm(formState);
 
       if (resultData) {
-        localStorage.setItem("resultData", JSON.stringify(resultData));
-        router.push("/beregn");
+        router.push({
+          pathname: "/result",
+          query: { data: JSON.stringify(resultData) },
+        }); 
       } else {
         setFailedToSubmit(true);
       }
