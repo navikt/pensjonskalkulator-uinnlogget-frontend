@@ -1,5 +1,5 @@
 export type FormValues = {
-  simuleringType: string,
+  simuleringType: string | null,
   foedselAar: number,
   sivilstand: string,
   epsHarInntektOver2G?: boolean | null,

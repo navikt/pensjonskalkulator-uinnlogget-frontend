@@ -10,26 +10,28 @@ import FormWrapper from "../FormWrapper";
 import { ContextForm, FormValues, StepRef } from "@/common";
 import { FormContext } from "@/contexts/context";
 import Substep from "../Substep";
+import useErrorHandling from './useErrorHandling'
 
 const UtlandsStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+
+  const handleFieldChange = (field: keyof FormValues, value: number | null) => {
+    setState((prev: FormValues) => ({
+      ...prev,
+      [field]: value,
+    }));
+    clearError(field);
+  }
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      var willContinue = true;
-      
-      if (states.utenlandsAntallAar === 0 && states.boddIUtland === "ja") {
-        setErrorMsg("Venligst fyll ut hvor mange år du har bodd i utlandet");
-        willContinue = false;
-      }
-
-      if(states.boddIUtland === "nei"){
-        states.utenlandsAntallAar = 0;
-        willContinue = true;
-      }
-
-      return willContinue;
+      const hasErrors = validateFields("UtlandsStep");
+      if(!hasErrors){
+        if(states.boddIUtland === "nei") states.utenlandsAntallAar = 0;
+        return true;
+      }   
+      return false;
     },
   }));
 
@@ -41,12 +43,8 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
             value={states.boddIUtland}
-            onChange={(it) =>
-              setState((prev: FormValues) => ({
-                ...prev,
-                boddIUtland: it,
-              }))
-            }
+            onChange={(it) => handleFieldChange('boddIUtland', it)}
+            error={errorFields.boddIUtland}
           >
             <Radio value={"ja"}>Ja</Radio>
             <Radio value={"nei"}>Nei</Radio>
@@ -59,17 +57,12 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
           {states.boddIUtland === "ja" && (
             <Substep>
               <TextField
-                onChange={(it) =>
-                  setState((prev: FormValues) => ({
-                    ...prev,
-                    utenlandsAntallAar: it.target.value === "" ? 0: parseInt(it.target.value, 10),
-                  }))
-                }
+                onChange={(it) => handleFieldChange('utenlandsAntallAar', it.target.value === '' ? 0 : parseInt(it.target.value, 10))}
                 type='number'
                 inputMode='numeric'
                 label="Hvor mange år har du bodd i utlandet?"
                 value={states.utenlandsAntallAar === 0 ? "" : states.utenlandsAntallAar}
-                error={errorMsg}
+                error={errorFields.utenlandsAntallAar}
               ></TextField>
             </Substep>
           )}

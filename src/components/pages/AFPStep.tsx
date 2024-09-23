@@ -4,6 +4,7 @@ import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValues, StepRef } from '@/common'
 import Substep from '../Substep'
+import useErrorHandling from './useErrorHandling'
 
 interface FormPageProps {
   grunnbelop: number
@@ -11,18 +12,21 @@ interface FormPageProps {
 
 const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
-  const [errorMsg, setErrorMsg] = React.useState<string | null>(null)
-  const message = 'Du må svare på spørsmålet';
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+
+  const handleFieldChange = (field: keyof FormValues, value: string | null) => {
+    setState((prev: FormValues) => ({
+      ...prev,
+      [field]: value,
+    }));
+    clearError(field);
+  }
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-
-      if(!states.simuleringType) {
-        setErrorMsg(message);
-        return false;
-      }
-
-      return true;
+      const hasErrors = validateFields("AFPStep");
+      if(!hasErrors) return true; 
+      return false;
     }
   }))
 
@@ -31,13 +35,8 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
       <Substep>
         <RadioGroup legend={'Har du rett til AFP i privat sektor?'}
         value={states.simuleringType}
-        onChange={(it) =>
-          setState((prev: FormValues) => ({
-            ...prev,
-            simuleringType: it,
-          }))
-        }
-        error={errorMsg}
+        onChange={(it) => handleFieldChange('simuleringType', it)}
+        error={errorFields.simuleringType}
         >
           <Radio value='ALDERSPENSJON_MED_AFP_PRIVAT'>Ja</Radio>
           <Radio value='ALDERSPENSJON'>Nei</Radio>

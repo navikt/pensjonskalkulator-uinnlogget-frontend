@@ -4,6 +4,7 @@ import { Radio, RadioGroup, Select } from "@navikt/ds-react";
 import { FormContext } from "@/contexts/context";
 import { ContextForm, FormValues, StepRef } from "@/common";
 import Substep from "../Substep";
+import useErrorHandling from './useErrorHandling'
 
 interface FormPageProps {
   grunnbelop: number;
@@ -12,33 +13,27 @@ interface FormPageProps {
 const EktefelleStep = forwardRef<StepRef, FormPageProps>(
   ({ grunnbelop }, ref) => {
     const { states, setState } = useContext(FormContext) as ContextForm;
-    const [errorMsg, setErrorMsg] = React.useState<string | null>(states.sivilstand || null);
-    const [selectedOption, setSelectedOption] = React.useState<string>(states.sivilstand);
-    const [errorFields, setErrorFields] = React.useState({
-      epsHarInntektOver2G: false,
-      epsHarPensjon: false,
-    });
+    const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+
+    const handleFieldChange = (field: keyof FormValues, value: string | boolean | null) => {
+      setState((prev: FormValues) => ({
+        ...prev,
+        [field]: value,
+      }));
+      clearError(field);
+    }
 
     useImperativeHandle(ref, () => ({
       onSubmit() {
-        var willContinue = true;
-        const errors = {
-          epsHarInntektOver2G: states.epsHarInntektOver2G === null,
-          epsHarPensjon: states.epsHarPensjon === null,
-        };
-
-        setErrorFields(errors);
-
-        if (Object.values(errors).some((error) => error)) {
-          setErrorMsg("Du må svare på spørsmålet");
-          willContinue = false;
-        }
-
-        if(states.sivilstand === "UGIFT"){
-            willContinue = true;
-        }
-
-        return willContinue;
+        const hasErrors = validateFields("EktefelleStep");
+        if(!hasErrors){
+          if(states.sivilstand === "UGIFT"){
+            states.epsHarInntektOver2G = null;
+            states.epsHarPensjon = null;
+          }
+          return true;
+        }  
+        return false;
       },
     }));
 
@@ -46,16 +41,13 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
       <FormWrapper>
         <Substep>
           <Select
-            value={selectedOption}
+            value={states.sivilstand}
             style={{ width: "5rem" }}
             label={"Hva er din sivilstand?"}
-            onChange={(it) => {
-              setSelectedOption(it.target.value);
-              setState((prev: FormValues) => ({
-                ...prev,
-                sivilstand: it.target.value,
-              }));
-            }}
+            onChange={(it) =>
+              handleFieldChange('sivilstand', it.target.value)
+            }
+            error={errorFields.sivilstand}
           >
             <option value={"UGIFT"}>Ugift</option>
             <option value={"GIFT"}>Gift</option>
@@ -71,12 +63,9 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 }kr når du starter å ta ut pensjon?`}
                 value={states.epsHarInntektOver2G}
                 onChange={(it) =>
-                  setState((prev: FormValues) => ({
-                    ...prev,
-                    epsHarInntektOver2G: it,
-                  }))
+                  handleFieldChange('epsHarInntektOver2G', it)
                 }
-                error={errorFields.epsHarInntektOver2G ? errorMsg : ""}
+                error={errorFields.epsHarInntektOver2G}
               >
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
@@ -89,12 +78,9 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
                 }
                 value={states.epsHarPensjon}
                 onChange={(it) =>
-                  setState((prev: FormValues) => ({
-                    ...prev,
-                    epsHarPensjon: it,
-                  }))
+                  handleFieldChange('epsHarPensjon', it)
                 }
-                error={errorFields.epsHarPensjon ? errorMsg : ""}
+                error={errorFields.epsHarPensjon}
               >
                 <Radio value={true}>Ja</Radio>
                 <Radio value={false}>Nei</Radio>
