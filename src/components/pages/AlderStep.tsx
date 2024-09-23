@@ -33,7 +33,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
       var willContinue = true 
 
       const errors = {
-        foedselAar: !foedselAar,
+        foedselAar: !foedselAar || foedselAar < 1900 || foedselAar > new Date().getFullYear(),
         inntektOver1GAntallAar: !inntektOver1GAntallAar || inntektOver1GAntallAar < 0 || inntektOver1GAntallAar > 10,
       };
 
