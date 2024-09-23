@@ -13,65 +13,29 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-
 import { ContextForm, FormValues, StepRef } from '@/common'
 import { FormContext } from '@/contexts/context'
+import useErrorHandling from './useErrorHandling'
 
 const AlderStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
-  const [errorMsgTaut, setErrorMsgTaut] = useState<string | null>(null)
-  const [errorFields, setErrorFields] = React.useState({
-    foedselAar: false,
-    inntektOver1GAntallAar: false,
-  }); //Sett type! 
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const { foedselAar, inntektOver1GAntallAar } = states
+  const handleFieldChange = (field: keyof FormValues, value: number | null) => {
+    setState((prev: FormValues) => ({
+      ...prev,
+      [field]: value,
+    }));
+    clearError(field);
+  }
+
+
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      var willContinue = true 
-
-      const errors = {
-        foedselAar: !foedselAar || foedselAar < 1900 || foedselAar > new Date().getFullYear(),
-        inntektOver1GAntallAar: !inntektOver1GAntallAar || inntektOver1GAntallAar < 0 || inntektOver1GAntallAar > 10,
-      };
-
-      setErrorFields(errors);
-
-      if (Object.values(errors).some((error) => error)){
-        
-        if (
-          !foedselAar ||
-          foedselAar < 1900 ||
-          foedselAar > new Date().getFullYear()
-        ) {
-          setErrorMsg('Du må oppgi et gyldig årstall')  
-        }
-  
-        if (!inntektOver1GAntallAar) {
-          setErrorMsgTaut(
-            'Fyll ut antall år'
-          )
-        } 
-
-        if(inntektOver1GAntallAar < 0){
-          setErrorMsgTaut(
-            'Oppgi positivt tall'
-          )
-        }
-
-        if(inntektOver1GAntallAar > 10){
-          setErrorMsgTaut(
-            'Du maksimalt være 10 år yrkesaktiv etter at du har tatt ut pensjon'
-          )
-        }
-
-        willContinue = false
-      }
-
-
-      return willContinue
+      const hasErrors = validateFields("AlderStep");
+      if(!hasErrors) return true;  
+      return false;
     }
   }))
 
@@ -84,17 +48,12 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
             maxLength={3}
-            onChange={(it) =>
-              setState((prev: FormValues) => ({
-                ...prev,
-                foedselAar: it.target.value === "" ? 0: parseInt(it.target.value, 10)
-              }))
-            }
+            onChange={(it) => handleFieldChange('foedselAar', it.target.value === '' ? 0 : parseInt(it.target.value, 10))}
             type='number'
             inputMode='numeric'
             label='I hvilket år er du født?'
-            value={foedselAar === 0 ? "" : foedselAar}
-            error={errorFields.foedselAar ? errorMsg : ""}
+            value={states.foedselAar === 0 ? "" : states.foedselAar}
+            error={errorFields.foedselAar}
           ></TextField>
         </Box>
         <Box
@@ -110,17 +69,12 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
             maxLength={3}
-            onChange={(it) =>
-              setState((prev: FormValues) => ({
-                ...prev,
-                inntektOver1GAntallAar: it.target.value === "" ? 0: parseInt(it.target.value, 10)
-              }))
-            }
+            onChange={(it) => handleFieldChange('inntektOver1GAntallAar', it.target.value === '' ? 0 : parseInt(it.target.value, 10))}
             type='number'
             inputMode='numeric'
             label='Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
-            value={inntektOver1GAntallAar === 0 ? "" : inntektOver1GAntallAar}
-            error={errorFields.inntektOver1GAntallAar ? errorMsgTaut : ""}
+            value={states.inntektOver1GAntallAar === 0 ? "" : states.inntektOver1GAntallAar}
+            error={errorFields.inntektOver1GAntallAar}
           ></TextField>
         </Box>
       </FormWrapper>
