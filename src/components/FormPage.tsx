@@ -33,7 +33,7 @@ import { on } from "events";
 import submitForm from "@/functions/submitForm";
 
 const initialFormState: FormValues = {
-  simuleringType: "",
+  simuleringType: null,
   foedselAar: 0,
   sivilstand: "UGIFT",
   epsHarInntektOver2G: null,
