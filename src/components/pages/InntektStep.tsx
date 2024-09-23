@@ -46,7 +46,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
   useImperativeHandle(ref, () => ({
     onSubmit() {
 
-      const hasErrors = validateFields();
+      const hasErrors = validateFields("InntektStep");
 
       if(!hasErrors){
         if (states.gradertUttak.grad === 100) {
