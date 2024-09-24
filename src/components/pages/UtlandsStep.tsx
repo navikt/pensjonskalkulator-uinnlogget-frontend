@@ -10,7 +10,7 @@ import FormWrapper from "../FormWrapper";
 import { ContextForm, FormValues, StepRef } from "@/common";
 import { FormContext } from "@/contexts/context";
 import Substep from "../Substep";
-import useErrorHandling from './useErrorHandling'
+import useErrorHandling from '../../helpers/useErrorHandling'
 
 const UtlandsStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm;

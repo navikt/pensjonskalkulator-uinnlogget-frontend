@@ -4,7 +4,7 @@ import { Radio, RadioGroup, Select } from "@navikt/ds-react";
 import { FormContext } from "@/contexts/context";
 import { ContextForm, FormValues, StepRef } from "@/common";
 import Substep from "../Substep";
-import useErrorHandling from './useErrorHandling'
+import useErrorHandling from '../../helpers/useErrorHandling'
 
 interface FormPageProps {
   grunnbelop: number;
