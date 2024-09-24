@@ -3,11 +3,9 @@ import React, {
   Ref,
   useContext,
   useImperativeHandle,
-  useState
 } from 'react'
 import {
   Bleed,
-  BodyShort,
   Box,
   Heading,
   TextField,
@@ -15,7 +13,7 @@ import {
 import FormWrapper from '../FormWrapper'
 import { ContextForm, FormValues, StepRef } from '@/common'
 import { FormContext } from '@/contexts/context'
-import useErrorHandling from './useErrorHandling'
+import useErrorHandling from '../../helpers/useErrorHandling'
 
 const AlderStep = forwardRef<StepRef>((props, ref) => {
   const { states, setState } = useContext(FormContext) as ContextForm

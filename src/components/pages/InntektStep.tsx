@@ -14,8 +14,7 @@ import {
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValues, StepRef } from '@/common'
-import useErrorHandling from './useErrorHandling'
-import { getGrunnbelop } from '@/functions/functions'
+import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 
 const InntektStep = forwardRef<StepRef>((props, ref) => {
