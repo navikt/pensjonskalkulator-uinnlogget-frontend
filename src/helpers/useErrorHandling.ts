@@ -8,7 +8,7 @@ const useErrorHandling = (states: FormValues) => {
 
     const errors: { [key: string]: string | null } = {
       foedselAar: states.foedselAar < 1900 || states.foedselAar > new Date().getFullYear() ? 'Du må oppgi et gyldig årstall' : null,
-      inntektOver1GAntallAar: states.inntektOver1GAntallAar === 0 || states.inntektOver1GAntallAar < 0 || states.inntektOver1GAntallAar > 10 ? 'Fyll ut antall år' : null, //hmmm, skal det virkelig være maks 10? Spør Espen hva inntektOver1GAntallAar er
+      inntektOver1GAntallAar: states.inntektOver1GAntallAar === 0 ? 'Fyll ut antall år' : states.inntektOver1GAntallAar < 0 ? 'Antall år kan ikke være negativt' : null, //hmmm, skal det virkelig være maks 10? Spør Espen hva inntektOver1GAntallAar er
       boddIUtland: !states.boddIUtland ? 'Du må velge et alternativ' : null,
       utenlandsAntallAar: (states.utenlandsAntallAar === 0 && states.boddIUtland === "ja") ? 'Du må fylle ut antall år' : null,
       aarligInntektFoerUttakBeloep: states.aarligInntektFoerUttakBeloep === 0 ? 'Du må fylle ut inntekt' : states.aarligInntektFoerUttakBeloep < 0 ? 'Inntekt kan ikke være negativ' : null,
