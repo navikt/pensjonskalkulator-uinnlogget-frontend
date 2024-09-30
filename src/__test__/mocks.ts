@@ -1,5 +1,4 @@
 import { FormValues } from '@/common';
-import useErrorHandling from '../helpers/useErrorHandling';
 
 export const mockStates: FormValues = {
     simuleringType: null,

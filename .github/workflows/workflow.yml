@@ -30,8 +30,11 @@
           env:
             NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-        # - name: Run prettier
-        #   run: npm run prettier:check
+        #Kode under er for å hente openapi schema fra backend og generere types
+        # - name: Fetch openapi backend types
+        #   run: npx openapi-typescript ${{ github.event.inputs.prod == 'true' && 'https://www.nav.no/pensjon/kalkulator/v3/api-docs/current' || 'https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v3/api-docs/current' }} -o ./src/types/schema.d.ts
+        # - name: Format backend scheme
+        #   run: npm run format:types
         - name: Run lint
           run: npm run lint
         - name: Build application
