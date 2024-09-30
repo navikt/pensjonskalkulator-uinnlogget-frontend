@@ -25,7 +25,7 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
       [field]: value,
     }));
     clearError(field);
-  }
+  } 
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
