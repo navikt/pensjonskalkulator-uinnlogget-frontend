@@ -23,7 +23,7 @@ const useErrorHandling = (states: FormValues) => {
       sivilstand: !states.sivilstand ? 'Du må velge et alternativ' : null,
       epsHarInntektOver2G: states.sivilstand !== 'UGIFT' && states.epsHarInntektOver2G === null ? 'Du må velge et alternativ' : null,
       epsHarPensjon: states.sivilstand !== 'UGIFT' && states.epsHarPensjon === null ? 'Du må velge et alternativ' : null,
-      simuleringType: !states.simuleringType ? 'Du må velge et alternativ' : null,
+      simuleringType: !states.simuleringType ? 'Du må velge et alternativ' : null, 
     };
 
     let errorStep: { [key: string]: string | null } = {};
