@@ -1,10 +1,9 @@
 "use client";
 
-import { Chips, VStack } from "@navikt/ds-react";
-import { useRouter } from 'next/navigation';
+import { Table } from "@navikt/ds-react";
 import { useEffect, useState } from "react";
-
-//Sett interfacene i common.ts
+import Highcharts from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
 
 /* Eksepel på API respons:
 {
@@ -108,10 +107,17 @@ import { useEffect, useState } from "react";
 }
 */
 
+//Sett interfacet i common.d.ts
+interface PensjonData {
+  alderspensjon: { alder: number; beloep: number }[];
+  afpPrivat: { alder: number; beloep: number }[];
+  afpOffentlig: { alder: number; beloep: number }[];
+  vilkaarsproeving: { vilkaarErOppfylt: boolean; alternativ: number | string | null }; // Hva er alternativ?
+}
  
 const BeregnPage = () => {
-  const router = useRouter();
-  const [resultData, setResultData] = useState(null);
+  const [resultData, setResultData] = useState<PensjonData | null>(null);
+
 
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
@@ -121,14 +127,70 @@ const BeregnPage = () => {
     }
   }, []);
 
+  const getChartOptions = () => {
+
+    const alderspensjonData = resultData?.alderspensjon.map(item => item.beloep);
+    const afpPrivatData = resultData?.afpPrivat.map(item => item.beloep);
+    const categories = resultData?.alderspensjon.map(item => item.alder);
+
+    return {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Pension Data'
+      },
+      xAxis: {
+        categories: categories,
+        title: {
+          text: 'Alder'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Beløp'
+        }
+      },
+      series: [
+        {
+          name: 'Alderspensjon',
+          data: alderspensjonData
+        },
+        {
+          name: 'AFP Privat',
+          data: afpPrivatData
+        }
+      ]
+    };
+  }
+
   return (
     <div>
       <h1>Beregn</h1>
-      {resultData ? (
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Fra folketrygden</Table.HeaderCell>
+            <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Arbeidsinntekt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {/* Fyll inn data her (slik som i gamle pensjonskalk.) */}
+        </Table.Body>
+      </Table>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={getChartOptions()}
+      />  
+      {/* {resultData ? (
         <pre>{JSON.stringify(resultData, null, 2)}</pre>
       ) : (
         <p>No data available</p>
-      )}
+      )} */}
     </div>
   );
 };
