@@ -18,7 +18,7 @@
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "html-react-parser": "^5.1.12",
-    "next": "14.2.5",
+    "next": "14.2.10",
     "quicktype": "^23.0.170",
     "react": "^18",
     "react-dom": "^18",
