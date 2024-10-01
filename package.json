@@ -14,7 +14,6 @@
     "@navikt/ds-react": "^6.15.0",
     "@navikt/nav-dekoratoren-moduler": "^2.1.4",
     "@navikt/oasis": "^3.4.0",
-    "@testing-library/react-hooks": "^8.0.1",
     "dotenv": "^16.4.5",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
