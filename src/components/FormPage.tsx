@@ -98,7 +98,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   );
   const length = pagesNames.length;
 
-  const handleSubmit = async (e: FormEvent) => { 
+  /* const handleSubmit = async (e: FormEvent) => { 
     e.preventDefault();
     if (curStep === length - 1) {
       setLoading(true);
@@ -110,6 +110,55 @@ function FormPage({ grunnbelop }: FormPageProps) {
       } else {
         setFailedToSubmit(true);
       }
+      return;
+    }
+    if (childRef.current?.onSubmit()) {
+      next();
+    }
+  }; */
+
+  const handleSubmit = async (e: FormEvent) => { 
+    e.preventDefault();
+    if (curStep === length - 1) {
+      setLoading(true);
+      //const resultData = await submitForm(formState);
+  
+      const mockData = {
+        alderspensjon: [
+          { alder: 66, beloep: 36430 },
+          { alder: 67, beloep: 43716 },
+          { alder: 68, beloep: 190717 },
+          { alder: 69, beloep: 240269 },
+          { alder: 70, beloep: 240607 },
+          { alder: 71, beloep: 240835 },
+          { alder: 72, beloep: 241066 },
+          { alder: 73, beloep: 241330 },
+          { alder: 74, beloep: 241597 },
+          { alder: 75, beloep: 241895 },
+          { alder: 76, beloep: 242157 },
+          { alder: 77, beloep: 242256 }
+        ],
+        afpPrivat: [
+          { alder: 66, beloep: 28480 },
+          { alder: 67, beloep: 14976 },
+          { alder: 68, beloep: 14976 },
+          { alder: 69, beloep: 14976 },
+          { alder: 70, beloep: 14976 },
+          { alder: 71, beloep: 14976 },
+          { alder: 72, beloep: 14976 },
+          { alder: 73, beloep: 14976 },
+          { alder: 74, beloep: 14976 },
+          { alder: 75, beloep: 14976 }
+        ],
+        afpOffentlig: [],
+        vilkaarsproeving: {
+          vilkaarErOppfylt: true,
+          alternativ: null
+        }
+      };
+  
+      const params = new URLSearchParams({ data: JSON.stringify(mockData) }).toString();
+      router.push(`/beregn?${params}`); 
       return;
     }
     if (childRef.current?.onSubmit()) {

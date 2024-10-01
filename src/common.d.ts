@@ -40,3 +40,10 @@ export interface ContextForm {
 export interface StepRef {
   onSubmit: () => void
 }
+
+export interface PensjonData {
+  alderspensjon: { alder: number; beloep: number }[];
+  afpPrivat: { alder: number; beloep: number }[];
+  afpOffentlig: { alder: number; beloep: number }[];
+  vilkaarsproeving: { vilkaarErOppfylt: boolean; alternativ: number | string | null }; // Hva er alternativ?
+}

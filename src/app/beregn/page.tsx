@@ -1,9 +1,11 @@
 "use client";
 
-import { Table } from "@navikt/ds-react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import { FormContext } from "@/contexts/context";
+import { ContextForm, PensjonData } from "@/common";
+import ResultTable from "./ResultTable";
 
 /* Eksepel på API respons:
 {
@@ -106,16 +108,10 @@ import HighchartsReact from 'highcharts-react-official';
   }
 }
 */
-
-//Sett interfacet i common.d.ts
-interface PensjonData {
-  alderspensjon: { alder: number; beloep: number }[];
-  afpPrivat: { alder: number; beloep: number }[];
-  afpOffentlig: { alder: number; beloep: number }[];
-  vilkaarsproeving: { vilkaarErOppfylt: boolean; alternativ: number | string | null }; // Hva er alternativ?
-}
  
 const BeregnPage = () => {
+
+  //const { states, setState } = useContext(FormContext) as ContextForm
   const [resultData, setResultData] = useState<PensjonData | null>(null);
 
 
@@ -129,16 +125,22 @@ const BeregnPage = () => {
 
   const getChartOptions = () => {
 
-    const alderspensjonData = resultData?.alderspensjon.map(item => item.beloep);
-    const afpPrivatData = resultData?.afpPrivat.map(item => item.beloep);
-    const categories = resultData?.alderspensjon.map(item => item.alder);
+    const alderspensjonData = resultData?.alderspensjon?.map(item => item.beloep) || [];
+    const afpPrivatData = resultData?.afpPrivat?.map(item => item.beloep) || [];
+    const categories = resultData?.alderspensjon?.map(item => item.alder) || [];
+    /* const heltUttakAlder = states.heltUttak.uttakAlder.aar;
+    const inntektVsaHelPensjonBeloep = states.heltUttak.aarligInntektVsaPensjon.beloep;
+    let inntektVsaHelPensjonSluttalder = states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar; */
+    const heltUttakAlder = 68;
+    const inntektVsaHelPensjonBeloep = 111111;
+    let inntektVsaHelPensjonSluttalder = 75;
 
-    return {
+    const chartOptions = {
       chart: {
         type: 'column'
       },
       title: {
-        text: 'Pension Data'
+        text: 'Beregnet framtidig alderspensjon (kroner per år):'
       },
       xAxis: {
         categories: categories,
@@ -152,36 +154,55 @@ const BeregnPage = () => {
           text: 'Beløp'
         }
       },
+      plotOptions: {
+        column: {
+          stacking: 'normal'
+        }
+      },
       series: [
+        {
+          name: 'AFP Privat',
+          data: afpPrivatData
+        },
         {
           name: 'Alderspensjon',
           data: alderspensjonData
         },
-        {
-          name: 'AFP Privat',
-          data: afpPrivatData
-        }
       ]
     };
+    
+    if (inntektVsaHelPensjonBeloep !== 0) {
+
+      const inntektVsaHelPensjonData = [];
+      const inntektVsaHelPensjonInterval: number[] = [];
+      if (!inntektVsaHelPensjonSluttalder) categories[categories.length - 1];
+
+      for (let i = heltUttakAlder; i <= inntektVsaHelPensjonSluttalder; i++) {
+        inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep);
+        inntektVsaHelPensjonInterval.push(i);
+      }
+
+      const filteredCategories = categories.filter(category => 
+        inntektVsaHelPensjonInterval.includes(category)
+      );
+  
+      const filteredInntektVsaHelPensjonData = categories.map(category => 
+        filteredCategories.includes(category) ? inntektVsaHelPensjonBeloep : 0
+      );
+  
+      chartOptions.series.push({
+        name: 'Inntekt ved siden av hel pensjon',
+        data: filteredInntektVsaHelPensjonData
+      });
+    }
+
+    return chartOptions;
   }
 
   return (
     <div>
-      <h1>Beregn</h1>
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Fra folketrygden</Table.HeaderCell>
-            <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Arbeidsinntekt</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-          {/* Fyll inn data her (slik som i gamle pensjonskalk.) */}
-        </Table.Body>
-      </Table>
+      <h1>Resultat</h1>
+      <ResultTable />
       <HighchartsReact
         highcharts={Highcharts}
         options={getChartOptions()}

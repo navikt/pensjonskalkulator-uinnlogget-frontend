@@ -49,10 +49,7 @@ const useErrorHandling = (states: FormValues) => {
       errorStep = rest;
     }
 
-    console.log('Errors', errorStep);
-
     setErrorFields(errorStep);
-    console.log(Object.values(errorStep).some(error => error !== null));
 
     return Object.values(errorStep).some(error => error !== null);
   };
