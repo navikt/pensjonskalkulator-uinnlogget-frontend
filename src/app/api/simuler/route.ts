@@ -33,7 +33,7 @@ async function PostDev(req: NextRequest) {
     return NextResponse.json({ message: 'Method not allowed' })
   }
 
-  const backendUrl = 'localhost:3001/anonym-simulering'
+  const backendUrl = 'http://localhost:3001/anonym-simulering'
 
   const backendResponse = await fetch(backendUrl)
 

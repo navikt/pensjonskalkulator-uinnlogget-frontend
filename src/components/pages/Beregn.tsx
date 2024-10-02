@@ -125,9 +125,6 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
     const heltUttakAlder = states.heltUttak.uttakAlder.aar;
     const inntektVsaHelPensjonBeloep = states.heltUttak.aarligInntektVsaPensjon.beloep;
     let inntektVsaHelPensjonSluttalder = states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar;
-    /* const heltUttakAlder = 68;
-    const inntektVsaHelPensjonBeloep = 111111;
-    let inntektVsaHelPensjonSluttalder = 75; */
 
     const chartOptions = {
       chart: {
