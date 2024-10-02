@@ -107,12 +107,8 @@ import { ContextForm, FormValueResult, PensjonData } from "@/common";
   }
 }
 */
-
-interface BeregnProps {
-    beregnResult: FormValueResult;
-}
  
-const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
+const Beregn = (beregnResult : FormValueResult) => {
 
   const { states, setState } = useContext(FormContext) as ContextForm;
 
@@ -164,7 +160,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
       ]
     };
     
-    //if (inntektVsaHelPensjonBeloep !== 0) {
+    if (inntektVsaHelPensjonBeloep !== 0) {
 
       const inntektVsaHelPensjonData: number[] = [];
       const inntektVsaHelPensjonInterval: number[] = [];
@@ -189,7 +185,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         name: 'Inntekt ved siden av hel pensjon',
         data: filteredInntektVsaHelPensjonData
       });
- //   }
+    }
 
     return chartOptions;
   }
