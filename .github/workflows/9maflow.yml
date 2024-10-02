@@ -39,7 +39,7 @@
         - name: Build application
           run: npm run build
         - name: docker-build-push
-          if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
+          if: github.ref_name == '9maBranch'
           uses: nais/docker-build-push@v0
           id: docker-build-push
           with:
@@ -56,7 +56,7 @@
 
 
     codeql-analyse:
-      if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
+      if: github.ref_name == '9maBranch' 
       name: codeql-analyse
       timeout-minutes: 15
       runs-on: ubuntu-latest
