@@ -76,7 +76,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
   const pagesNames = Object.keys(pagesDict)
 
-  const { curStep, step, next, back, goTo, stepName } = useMultiStepForm(
+  const { curStep, step, next, back, goTo } = useMultiStepForm(
     pagesDict,
     (e: number) => {
       // history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
@@ -98,23 +98,10 @@ function FormPage({ grunnbelop }: FormPageProps) {
         setLoading(false)
         setShowBeregnPage(true)
       }
-
-      /* if (resultData) {
-        const params = new URLSearchParams({ data: JSON.stringify(resultData) }).toString();
-        router.push(`/beregn?${params}`); 
-      } else {
-        setFailedToSubmit(true);
-      }
-      return; */
     }
     if (childRef.current?.onSubmit()) {
       next()
     }
-  }
-
-  const handleGoTo = (step: number) => {
-    goTo(step)
-    // router.push(`${stepName}`)
   }
 
   return (
@@ -129,7 +116,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
             <FormContainerComponent
               totalSteps={length}
               activeStep={curStep + 1}
-              onStepChange={(newStep) => handleGoTo(newStep - 1)}
+              back={back}
+              onStepChange={(i) => goTo(i)}
               handleSubmit={handleSubmit}
               step={step}
               childRef={childRef}

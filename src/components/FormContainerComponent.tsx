@@ -5,7 +5,8 @@ import FormProgressComponent from './FormProgressComponent'
 interface FormContainerComponentProps {
   totalSteps: number
   activeStep: number
-  onStepChange: (newStep: number) => void
+  back: () => void
+  onStepChange: (step: number) => void
   handleSubmit: (e: FormEvent) => void
   step: ReactElement | null
   childRef: React.RefObject<any>
@@ -16,8 +17,9 @@ interface FormContainerComponentProps {
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
   totalSteps,
   activeStep,
-  onStepChange,
+  back,
   handleSubmit,
+  onStepChange,
   step,
   childRef,
   curStep,
@@ -34,26 +36,26 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
     <Box paddingBlock={'4'} style={{ fontWeight: 'bold', fontSize: '2rem' }}>
       Pensjonskalkulator
     </Box>
-    <FormProgressComponent
-      totalSteps={totalSteps}
-      activeStep={activeStep}
-      onStepChange={onStepChange}
-    />
+    <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
     <form onSubmit={handleSubmit}>
       {step ? React.cloneElement(step, { ref: childRef }) : null}
       <HStack gap={'2'} marginBlock="2">
         <Button type="submit" variant="primary">
           {curStep === length - 1 ? 'Send' : 'Neste'}
         </Button>
+
         {curStep !== 0 && (
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => onStepChange(curStep - 1)}
-          >
+          <Button type="button" variant="secondary" onClick={back}>
             Tilbake
           </Button>
         )}
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={() => onStepChange(totalSteps - 1)}
+        >
+          Til slutt
+        </Button>
       </HStack>
     </form>
   </Box>
