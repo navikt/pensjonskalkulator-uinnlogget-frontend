@@ -78,7 +78,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormSate] = useState<FormValues>(initialFormState);
   const [failedToSubmit, setFailedToSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [beregnResult, setBeregnResult] = useState<FormValueResult>() || [];
+  const [beregnResult, setBeregnResult] = useState<FormValueResult>();
   const [showBeregnPage, setShowBeregnPage] = useState(false);
   const childRef = useRef<StepRef>(null); // Ref to access child component method
   const router = useRouter();
@@ -107,6 +107,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
       try{
         const resultData = await submitForm(formState);
         setBeregnResult(resultData);
+        console.log(resultData);
       } catch (error) {
         console.error(error);
       } finally{
