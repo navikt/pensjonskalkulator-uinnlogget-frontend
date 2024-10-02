@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { FormValues } from '@/common';
 
 const useErrorHandling = (states: FormValues) => {
-  const [errorFields, setErrorFields] = useState<{ [key: string]: string | null }>({});
 
   const validateFields = (step: string) => {
 
@@ -29,30 +28,32 @@ const useErrorHandling = (states: FormValues) => {
     let errorStep: { [key: string]: string | null } = {};
 
     if(step === 'AlderStep'){
-      const { boddIUtland, utenlandsAntallAar, aarligInntektFoerUttakBeloep, uttaksgrad, gradertInntekt, gradertAar, gradertMaaneder, helPensjonInntekt, heltUttakAar, heltUttakMaaneder, inntektVsaHelPensjon, sivilstand, epsHarInntektOver2G, epsHarPensjon, simuleringType, ...rest } = errors;
-      errorStep = rest;
+      const { foedselAar, inntektOver1GAntallAar } = errors;
+      errorStep = {foedselAar, inntektOver1GAntallAar};
     }
     if(step === 'UtlandsStep'){
-      const { foedselAar, inntektOver1GAntallAar, aarligInntektFoerUttakBeloep, uttaksgrad, gradertInntekt, gradertAar, gradertMaaneder, helPensjonInntekt, heltUttakAar, heltUttakMaaneder, inntektVsaHelPensjon, sivilstand, epsHarInntektOver2G, epsHarPensjon, simuleringType, ...rest } = errors;
-      errorStep = rest;
+      const { boddIUtland, utenlandsAntallAar } = errors;
+      errorStep = { boddIUtland, utenlandsAntallAar };
     }
     if(step === 'InntektStep'){
       const { foedselAar, inntektOver1GAntallAar, boddIUtland, utenlandsAntallAar, sivilstand, epsHarInntektOver2G, epsHarPensjon, simuleringType, ...rest } = errors;
       errorStep = rest;
     }
     if(step === 'EktefelleStep'){
-      const { boddIUtland, utenlandsAntallAar, foedselAar, inntektOver1GAntallAar, aarligInntektFoerUttakBeloep, uttaksgrad, gradertInntekt, gradertAar, gradertMaaneder, helPensjonInntekt, heltUttakAar, heltUttakMaaneder, inntektVsaHelPensjon, simuleringType, ...rest } = errors;
-      errorStep = rest;
+      const { sivilstand, epsHarInntektOver2G, epsHarPensjon  } = errors;
+      errorStep = { sivilstand, epsHarInntektOver2G, epsHarPensjon };
     }
     if(step === 'AFPStep'){
-      const { boddIUtland, utenlandsAntallAar, foedselAar, inntektOver1GAntallAar, aarligInntektFoerUttakBeloep, uttaksgrad, gradertInntekt, gradertAar, gradertMaaneder, helPensjonInntekt, heltUttakAar, heltUttakMaaneder, inntektVsaHelPensjon, sivilstand, epsHarInntektOver2G, epsHarPensjon, ...rest } = errors;
-      errorStep = rest;
+      const { simuleringType } = errors;
+      errorStep = { simuleringType };
     }
 
     setErrorFields(errorStep);
 
     return Object.values(errorStep).some(error => error !== null);
   };
+
+  const [errorFields, setErrorFields] = useState<{ [key: string]: string | null }>({});
 
   const handlers = useMemo(
     () => ({

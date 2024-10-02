@@ -1,3 +1,6 @@
+
+import type {components} from './types/schema.d.ts'
+
 export type FormValues = {
   simuleringType: string | null,
   foedselAar: number,
@@ -31,6 +34,10 @@ export type FormValues = {
     }
   }
 }
+
+export type FormValues2 = components['schemas']['AnonymSimuleringSpecV1']
+
+export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
 
 export interface ContextForm {
   states: FormValues

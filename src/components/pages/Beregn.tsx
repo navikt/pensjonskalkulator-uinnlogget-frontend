@@ -4,8 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { FormContext } from "@/contexts/context";
-import { ContextForm, PensjonData } from "@/common";
-import ResultTable from "./ResultTable";
+import { ContextForm, FormValueResult, PensjonData } from "@/common";
 
 /* Eksepel på API respons:
 {
@@ -108,31 +107,26 @@ import ResultTable from "./ResultTable";
   }
 }
 */
+
+interface BeregnProps {
+    beregnResult: FormValueResult;
+}
  
-const BeregnPage = () => {
+const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
 
-  //const { states, setState } = useContext(FormContext) as ContextForm
-  const [resultData, setResultData] = useState<PensjonData | null>(null);
-
-  useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    const dataParam = query.get('data');
-    if (dataParam) {
-      setResultData(JSON.parse(dataParam));
-    }
-  }, []);
+  const { states, setState } = useContext(FormContext) as ContextForm;
 
   const getChartOptions = () => {
 
-    const alderspensjonData = resultData?.alderspensjon?.map(item => item.beloep) || [];
-    const afpPrivatData = resultData?.afpPrivat?.map(item => item.beloep) || [];
-    const categories = resultData?.alderspensjon?.map(item => item.alder) || [];
-    /* const heltUttakAlder = states.heltUttak.uttakAlder.aar;
+    const alderspensjonData = beregnResult?.alderspensjon?.map(item => item.beloep) || [];
+    const afpPrivatData = beregnResult?.afpPrivat?.map(item => item.beloep) || [];
+    const categories = beregnResult?.alderspensjon?.map(item => item.alder) || [];
+    const heltUttakAlder = states.heltUttak.uttakAlder.aar;
     const inntektVsaHelPensjonBeloep = states.heltUttak.aarligInntektVsaPensjon.beloep;
-    let inntektVsaHelPensjonSluttalder = states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar; */
-    const heltUttakAlder = 68;
+    let inntektVsaHelPensjonSluttalder = states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar;
+    /* const heltUttakAlder = 68;
     const inntektVsaHelPensjonBeloep = 111111;
-    let inntektVsaHelPensjonSluttalder = 75;
+    let inntektVsaHelPensjonSluttalder = 75; */
 
     const chartOptions = {
       chart: {
@@ -174,7 +168,9 @@ const BeregnPage = () => {
 
       const inntektVsaHelPensjonData: number[] = [];
       const inntektVsaHelPensjonInterval: number[] = [];
-      if (!inntektVsaHelPensjonSluttalder) categories[categories.length - 1];
+      if (inntektVsaHelPensjonSluttalder === null || inntektVsaHelPensjonSluttalder === undefined) {
+        inntektVsaHelPensjonSluttalder = categories[categories.length - 1];
+      } 
 
       for (let i = heltUttakAlder; i <= inntektVsaHelPensjonSluttalder; i++) {
         inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep);
@@ -201,7 +197,6 @@ const BeregnPage = () => {
   return (
     <div>
       <h1>Resultat</h1>
-      <ResultTable />
       <HighchartsReact
         highcharts={Highcharts}
         options={getChartOptions()}
@@ -215,4 +210,4 @@ const BeregnPage = () => {
   );
 };
 
-export default BeregnPage;
+export default Beregn;

@@ -1,6 +1,6 @@
 "use client";
 
-import { ContextForm, FormValues, StepRef } from "@/common";
+import { ContextForm, FormValueResult, FormValues, StepRef } from "@/common";
 import AFPStep from "@/components/pages/AFPStep";
 import AlderStep from "@/components/pages/AlderStep";
 import InntektStep from "@/components/pages/InntektStep";
@@ -29,8 +29,8 @@ import React, {
 } from "react";
 import EktefelleStep from "./pages/EktefelleStep";
 import { useRouter } from "next/navigation";
-import { on } from "events";
 import submitForm from "@/functions/submitForm";
+import Beregn from "./pages/Beregn";
 
 const initialFormState: FormValues = {
   simuleringType: null,
@@ -78,6 +78,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormSate] = useState<FormValues>(initialFormState);
   const [failedToSubmit, setFailedToSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [beregnResult, setBeregnResult] = useState<FormValueResult>() || [];
+  const [showBeregnPage, setShowBeregnPage] = useState(false);
   const childRef = useRef<StepRef>(null); // Ref to access child component method
   const router = useRouter();
 
@@ -98,26 +100,34 @@ function FormPage({ grunnbelop }: FormPageProps) {
   );
   const length = pagesNames.length;
 
-  /* const handleSubmit = async (e: FormEvent) => { 
+  const handleSubmit = async (e: FormEvent) => { 
     e.preventDefault();
     if (curStep === length - 1) {
       setLoading(true);
-      const resultData = await submitForm(formState);
+      try{
+        const resultData = await submitForm(formState);
+        setBeregnResult(resultData);
+        setShowBeregnPage(true);
+      } catch (error) {
+        console.error(error);
+      } finally{
+        setLoading(false);
+      }
 
-      if (resultData) {
+      /* if (resultData) {
         const params = new URLSearchParams({ data: JSON.stringify(resultData) }).toString();
         router.push(`/beregn?${params}`); 
       } else {
         setFailedToSubmit(true);
       }
-      return;
+      return; */
     }
     if (childRef.current?.onSubmit()) {
       next();
     }
-  }; */
+  };
 
-  const handleSubmit = async (e: FormEvent) => { 
+/*   const handleSubmit = async (e: FormEvent) => { 
     e.preventDefault();
     if (curStep === length - 1) {
       setLoading(true);
@@ -164,7 +174,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     if (childRef.current?.onSubmit()) {
       next();
     }
-  };
+  }; */
 
   useEffect(() => {
     // Listen for the popstate event (triggered by back/forward navigation)
@@ -241,6 +251,9 @@ function FormPage({ grunnbelop }: FormPageProps) {
               </HStack>
             )}
           </form>
+          {(showBeregnPage && beregnResult) && (
+            <Beregn beregnResult={beregnResult}/>
+          )}
         </Box>
       </Box>
       {/* </div> */}

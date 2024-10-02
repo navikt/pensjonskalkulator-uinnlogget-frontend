@@ -24,6 +24,7 @@ export default async function RootLayout({
     params: { context: 'privatperson' }
   })
 
+  
   const {
     DECORATOR_STYLES,
     DECORATOR_SCRIPTS,
