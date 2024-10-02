@@ -164,7 +164,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
       ]
     };
     
-    //if (inntektVsaHelPensjonBeloep !== 0) {
+    if (inntektVsaHelPensjonBeloep !== 0) {
 
       const inntektVsaHelPensjonData: number[] = [];
       const inntektVsaHelPensjonInterval: number[] = [];
@@ -189,7 +189,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         name: 'Inntekt ved siden av hel pensjon',
         data: filteredInntektVsaHelPensjonData
       });
- //   }
+    }
 
     return chartOptions;
   }

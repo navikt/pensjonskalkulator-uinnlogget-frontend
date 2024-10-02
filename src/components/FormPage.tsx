@@ -107,11 +107,11 @@ function FormPage({ grunnbelop }: FormPageProps) {
       try{
         const resultData = await submitForm(formState);
         setBeregnResult(resultData);
-        setShowBeregnPage(true);
       } catch (error) {
         console.error(error);
       } finally{
         setLoading(false);
+        setShowBeregnPage(true);
       }
 
       /* if (resultData) {
