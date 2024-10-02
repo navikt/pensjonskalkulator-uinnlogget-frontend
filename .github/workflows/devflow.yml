@@ -2,7 +2,7 @@
   on:
     push: 
       branches:
-        - startsWith(github.ref_name, 'dev-')
+        - 'dev-*'
     
   jobs:
     build-and-publish:
