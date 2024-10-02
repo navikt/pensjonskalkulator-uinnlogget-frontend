@@ -106,7 +106,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
       setLoading(true);
       try{
         const resultData = await submitForm(formState);
-        setBeregnResult(resultData);
+        setBeregnResult(JSON.parse(resultData));
         console.log(resultData);
       } catch (error) {
         console.error(error);
