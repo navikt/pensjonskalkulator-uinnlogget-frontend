@@ -113,6 +113,7 @@ interface BeregnProps {
 }
  
 const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
+//const Beregn = (beregnResult : FormValueResult) => {
 
   const { states, setState } = useContext(FormContext) as ContextForm;
 
@@ -124,9 +125,6 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
     const heltUttakAlder = states.heltUttak.uttakAlder.aar;
     const inntektVsaHelPensjonBeloep = states.heltUttak.aarligInntektVsaPensjon.beloep;
     let inntektVsaHelPensjonSluttalder = states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar;
-    /* const heltUttakAlder = 68;
-    const inntektVsaHelPensjonBeloep = 111111;
-    let inntektVsaHelPensjonSluttalder = 75; */
 
     const chartOptions = {
       chart: {
@@ -164,7 +162,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
       ]
     };
     
-    //if (inntektVsaHelPensjonBeloep !== 0) {
+    if (inntektVsaHelPensjonBeloep !== 0) {
 
       const inntektVsaHelPensjonData: number[] = [];
       const inntektVsaHelPensjonInterval: number[] = [];
@@ -189,7 +187,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         name: 'Inntekt ved siden av hel pensjon',
         data: filteredInntektVsaHelPensjonData
       });
- //   }
+    }
 
     return chartOptions;
   }

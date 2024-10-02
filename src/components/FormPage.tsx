@@ -78,7 +78,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormSate] = useState<FormValues>(initialFormState);
   const [failedToSubmit, setFailedToSubmit] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [beregnResult, setBeregnResult] = useState<FormValueResult>() || [];
+  const [beregnResult, setBeregnResult] = useState<FormValueResult>();
   const [showBeregnPage, setShowBeregnPage] = useState(false);
   const childRef = useRef<StepRef>(null); // Ref to access child component method
   const router = useRouter();
@@ -106,12 +106,13 @@ function FormPage({ grunnbelop }: FormPageProps) {
       setLoading(true);
       try{
         const resultData = await submitForm(formState);
-        setBeregnResult(resultData);
-        setShowBeregnPage(true);
+        setBeregnResult(JSON.parse(resultData));
+        console.log(resultData);
       } catch (error) {
         console.error(error);
       } finally{
         setLoading(false);
+        setShowBeregnPage(true);
       }
 
       /* if (resultData) {
@@ -126,55 +127,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
       next();
     }
   };
-
-/*   const handleSubmit = async (e: FormEvent) => { 
-    e.preventDefault();
-    if (curStep === length - 1) {
-      setLoading(true);
-      //const resultData = await submitForm(formState);
-  
-      const mockData = {
-        alderspensjon: [
-          { alder: 66, beloep: 36430 },
-          { alder: 67, beloep: 43716 },
-          { alder: 68, beloep: 190717 },
-          { alder: 69, beloep: 240269 },
-          { alder: 70, beloep: 240607 },
-          { alder: 71, beloep: 240835 },
-          { alder: 72, beloep: 241066 },
-          { alder: 73, beloep: 241330 },
-          { alder: 74, beloep: 241597 },
-          { alder: 75, beloep: 241895 },
-          { alder: 76, beloep: 242157 },
-          { alder: 77, beloep: 242256 }
-        ],
-        afpPrivat: [
-          { alder: 66, beloep: 28480 },
-          { alder: 67, beloep: 14976 },
-          { alder: 68, beloep: 14976 },
-          { alder: 69, beloep: 14976 },
-          { alder: 70, beloep: 14976 },
-          { alder: 71, beloep: 14976 },
-          { alder: 72, beloep: 14976 },
-          { alder: 73, beloep: 14976 },
-          { alder: 74, beloep: 14976 },
-          { alder: 75, beloep: 14976 }
-        ],
-        afpOffentlig: [],
-        vilkaarsproeving: {
-          vilkaarErOppfylt: true,
-          alternativ: null
-        }
-      };
-  
-      const params = new URLSearchParams({ data: JSON.stringify(mockData) }).toString();
-      router.push(`/beregn?${params}`); 
-      return;
-    }
-    if (childRef.current?.onSubmit()) {
-      next();
-    }
-  }; */
 
   useEffect(() => {
     // Listen for the popstate event (triggered by back/forward navigation)
@@ -229,12 +181,14 @@ function FormPage({ grunnbelop }: FormPageProps) {
             <FormProgress.Step>Ektefelle</FormProgress.Step>
             <FormProgress.Step>AFP</FormProgress.Step>
           </FormProgress>
-          <form onSubmit={handleSubmit}>
             <FormContext.Provider
               value={{ setState: setFormSate, states: formState }}
             >
-              {cloneElement(step, { ref: childRef })}
-            </FormContext.Provider>
+          {showBeregnPage && beregnResult ? (
+            <Beregn beregnResult={beregnResult} />
+          ) : (
+          <form onSubmit={handleSubmit}>
+            {step ? cloneElement(step, { ref: childRef }) : null}
             <HStack gap={"2"} marginBlock="2">
               <Button type="submit" variant="primary">
                 {curStep === length - 1 ? "Send" : "Neste"}
@@ -251,9 +205,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
               </HStack>
             )}
           </form>
-          {(showBeregnPage && beregnResult) && (
-            <Beregn beregnResult={beregnResult}/>
           )}
+          </FormContext.Provider>
         </Box>
       </Box>
       {/* </div> */}
