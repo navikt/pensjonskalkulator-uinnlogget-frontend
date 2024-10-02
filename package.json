@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
     "test": "jest",
     "dev": "next dev",
     "build": "next build",
@@ -18,7 +19,8 @@
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
     "html-react-parser": "^5.1.12",
-    "next": "14.2.10",
+    "next": "14.2.5",
+    "openapi-typescript": "^7.4.1",
     "quicktype": "^23.0.170",
     "react": "^18",
     "react-dom": "^18",
