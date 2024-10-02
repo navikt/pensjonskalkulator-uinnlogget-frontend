@@ -3,7 +3,7 @@ kind: Application
 metadata:
   labels:
     team: pensjonskalkulator
-  name: pensjonskalkulator-uinnlogget-sandbox
+  name: pensjonskalkulator-uinnlogget-dev
   namespace: pensjonskalkulator
 spec:
   image: {{image}} # Placeholder variable to be replaced by the CI/CD pipeline
