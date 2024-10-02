@@ -107,8 +107,13 @@ import { ContextForm, FormValueResult, PensjonData } from "@/common";
   }
 }
 */
+
+interface BeregnProps {
+    beregnResult: FormValueResult;
+}
  
-const Beregn = (beregnResult : FormValueResult) => {
+const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
+//const Beregn = (beregnResult : FormValueResult) => {
 
   const { states, setState } = useContext(FormContext) as ContextForm;
 

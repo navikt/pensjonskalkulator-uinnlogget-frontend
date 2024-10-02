@@ -251,10 +251,10 @@ function FormPage({ grunnbelop }: FormPageProps) {
                 <Loader size="large" title="Laster..."/>
               </HStack>
             )}
+            {(showBeregnPage && beregnResult) && (
+              <Beregn beregnResult={beregnResult}/>
+            )}
           </form>
-          {(showBeregnPage && beregnResult) && (
-            <Beregn beregnResult={beregnResult}/>
-          )}
         </Box>
       </Box>
       {/* </div> */}
