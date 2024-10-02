@@ -37,10 +37,12 @@ async function PostDev(req: NextRequest) {
 
   const backendResponse = await fetch(backendUrl)
 
+  await new Promise((resolve) => setTimeout(resolve, 2000))
+
   const backendResponseText = await backendResponse.text()
   return NextResponse.json(backendResponseText, {
     status: backendResponse.status,
-    headers: { 'Content-Type': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
   })
 }
 
@@ -59,15 +61,15 @@ async function PostProd(req: NextRequest) {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: body
+      body: body,
     })
 
     const backendResponseText = await backendResponse.text()
     return NextResponse.json(backendResponseText, {
       status: backendResponse.status,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
     })
   } catch (error) {
     console.error(`Error in POST handler: ${(error as Error).message}`, error)
