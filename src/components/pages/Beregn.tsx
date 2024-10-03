@@ -1,19 +1,18 @@
 'use client'
 
-import { useContext, useEffect, useState } from 'react'
+import { useContext } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValueResult, PensjonData } from '@/common'
-import { Box } from '@navikt/ds-react'
+import { Box, Table } from '@navikt/ds-react'
+import ResultTable from '../ResultTable'
 
 interface BeregnProps {
   beregnResult: FormValueResult
 }
 
 const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
-  //const Beregn = (beregnResult : FormValueResult) => {
-
   const { states, setState } = useContext(FormContext) as ContextForm
 
   const getChartOptions = () => {
@@ -112,12 +111,8 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         borderRadius={'large'}
       >
         <h1>Resultat</h1>
+        <ResultTable beregnResult={beregnResult} />
         <HighchartsReact highcharts={Highcharts} options={getChartOptions()} />
-        {/* {resultData ? (
-        <pre>{JSON.stringify(resultData, null, 2)}</pre>
-      ) : (
-        <p>No data available</p>
-      )} */}
       </Box>
     </div>
   )
