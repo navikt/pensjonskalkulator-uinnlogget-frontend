@@ -34,7 +34,7 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
             {states.gradertUttak !== undefined && (
               <Table.Row key={states.gradertUttak.uttakAlder.aar}>
                 <Table.HeaderCell scope="row">
-                  Ved {states.gradertUttak.uttakAlder.aar}{"("} 
+                  Ved {states.gradertUttak.uttakAlder.aar}{" ("} 
                   {states.gradertUttak.grad}{"%)"} 
                 </Table.HeaderCell>
                 <Table.DataCell>{alderspensjonGradert}</Table.DataCell>

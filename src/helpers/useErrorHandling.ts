@@ -9,7 +9,7 @@ const useErrorHandling = (states: FormValues) => {
       foedselAar: states.foedselAar < 1900 || states.foedselAar > new Date().getFullYear() ? 'Du må oppgi et gyldig årstall' : null,
       inntektOver1GAntallAar: states.inntektOver1GAntallAar === undefined ? null : states.inntektOver1GAntallAar === 0 ? 'Fyll ut antall år' : states.inntektOver1GAntallAar < 0 ? 'Antall år kan ikke være negativt' : null,
       boddIUtland: !states.boddIUtland ? 'Du må velge et alternativ' : null,
-      utenlandsAntallAar: (states.utenlandsAntallAar === 0 && states.boddIUtland === "ja") ? 'Du må fylle ut antall år' : null,
+      utenlandsAntallAar: states.utenlandsAntallAar !== undefined ? ((states.utenlandsAntallAar === 0 && states.boddIUtland === "ja") ? 'Du må fylle ut antall år' : (states.utenlandsAntallAar < 0) ? 'Antall år må være positiv' : null) : null,      
       aarligInntektFoerUttakBeloep: states.aarligInntektFoerUttakBeloep === undefined ? 'Du må fylle ut inntekt' : states.aarligInntektFoerUttakBeloep === 0 ? 'Inntekt kan ikke være 0' : states.aarligInntektFoerUttakBeloep < 0 ? 'Inntekt kan ikke være negativ' : null,      
       uttaksgrad: states.gradertUttak === undefined || states.gradertUttak?.grad === 0 ? 'Du må velge uttaksgrad' : null,
       gradertInntekt: states.gradertUttak !== undefined && states.gradertUttak?.grad > 0 && states.gradertUttak.grad !== 100 && (!states.gradertUttak.aarligInntektVsaPensjonBeloep ? 'Du må fylle ut inntekt' : states.gradertUttak.aarligInntektVsaPensjonBeloep < 0 ? 'Inntekt kan ikke være negativ' : null) || null,
