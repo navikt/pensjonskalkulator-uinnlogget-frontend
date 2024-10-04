@@ -1,7 +1,7 @@
 
 import type {components} from './types/schema.d.ts'
 
-export type FormValues = {
+/* export type FormValues = {
   simuleringType: string | null,
   foedselAar: number,
   sivilstand: string,
@@ -33,9 +33,14 @@ export type FormValues = {
       }
     }
   }
-}
+} */
 
-export type FormValues2 = components['schemas']['AnonymSimuleringSpecV1']
+export type SchemaFormValues = components['schemas']['AnonymSimuleringSpecV1']
+
+export type FormValues = SchemaFormValues & {
+  boddIUtland: string, // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: string, // fjernes fra ApiPayloaded
+}
 
 export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
 

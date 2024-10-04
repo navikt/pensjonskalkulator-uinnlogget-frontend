@@ -24,9 +24,9 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
       beregnResult?.alderspensjon?.map((item) => item.alder) || []
     const heltUttakAlder = states.heltUttak.uttakAlder.aar
     const inntektVsaHelPensjonBeloep =
-      states.heltUttak.aarligInntektVsaPensjon.beloep
+      states.heltUttak.aarligInntektVsaPensjon?.beloep
     let inntektVsaHelPensjonSluttalder =
-      states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
 
     const chartOptions = {
       chart: {
@@ -68,34 +68,35 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
       ],
     }
 
-    if (inntektVsaHelPensjonBeloep !== 0) {
-      const inntektVsaHelPensjonData: number[] = []
-      const inntektVsaHelPensjonInterval: number[] = []
-      if (
-        inntektVsaHelPensjonSluttalder === null ||
-        inntektVsaHelPensjonSluttalder === undefined
-      ) {
-        inntektVsaHelPensjonSluttalder = categories[categories.length - 1]
+    if (inntektVsaHelPensjonBeloep !== 0 && inntektVsaHelPensjonBeloep !== undefined) {
+        const inntektVsaHelPensjonData = [];
+        const inntektVsaHelPensjonInterval: number[] = [];
+        
+        if (
+          inntektVsaHelPensjonSluttalder === null ||
+          inntektVsaHelPensjonSluttalder === undefined
+        ) {
+          inntektVsaHelPensjonSluttalder = categories[categories.length - 1];
+        }
+      
+        for (let i = heltUttakAlder; i <= inntektVsaHelPensjonSluttalder; i++) {
+          inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep);
+          inntektVsaHelPensjonInterval.push(i);
+        }
+      
+        const filteredCategories = categories.filter((category) =>
+          inntektVsaHelPensjonInterval.includes(category)
+        );
+      
+        const filteredInntektVsaHelPensjonData = categories.map((category) =>
+          filteredCategories.includes(category) ? inntektVsaHelPensjonBeloep : 0
+        ).filter((item): item is number => item !== undefined);
+      
+        chartOptions.series.push({
+          name: 'Inntekt ved siden av hel pensjon',
+          data: filteredInntektVsaHelPensjonData,
+        });
       }
-
-      for (let i = heltUttakAlder; i <= inntektVsaHelPensjonSluttalder; i++) {
-        inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep)
-        inntektVsaHelPensjonInterval.push(i)
-      }
-
-      const filteredCategories = categories.filter((category) =>
-        inntektVsaHelPensjonInterval.includes(category)
-      )
-
-      const filteredInntektVsaHelPensjonData = categories.map((category) =>
-        filteredCategories.includes(category) ? inntektVsaHelPensjonBeloep : 0
-      )
-
-      chartOptions.series.push({
-        name: 'Inntekt ved siden av hel pensjon',
-        data: filteredInntektVsaHelPensjonData,
-      })
-    }
 
     return chartOptions
   }

@@ -17,21 +17,21 @@ import LoadingComponent from './LoadingComponent'
 import FormContainerComponent from './FormContainerComponent'
 
 const initialFormState: FormValues = {
-  simuleringType: null,
+  simuleringType: undefined,
   foedselAar: 0,
   sivilstand: 'UGIFT',
-  epsHarInntektOver2G: null,
-  epsHarPensjon: null,
+  epsHarInntektOver2G: undefined,
+  epsHarPensjon: undefined,
   boddIUtland: '', // fjernes fra ApiPayloaded
   inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
   utenlandsAntallAar: 0,
-  inntektOver1GAntallAar: 0,
+  inntektOver1GAntallAar: 0, //Spør espen om dette. Hva er denne verdien og hvilket intervall kan den være mellom. Fiks useErrorHandling.ts i henhold til dette.
   aarligInntektFoerUttakBeloep: 0,
   gradertUttak: {
     grad: 0,
     uttakAlder: {
-      aar: null,
-      maaneder: null,
+      aar: 0,
+      maaneder: -1,
     },
     aarligInntektVsaPensjonBeloep: 0,
   },
@@ -43,8 +43,8 @@ const initialFormState: FormValues = {
     aarligInntektVsaPensjon: {
       beloep: 0,
       sluttAlder: {
-        aar: null,
-        maaneder: null,
+        aar: 0,
+        maaneder: -1,
       },
     },
   },
