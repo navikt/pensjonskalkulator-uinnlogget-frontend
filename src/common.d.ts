@@ -1,5 +1,4 @@
-
-import type {components} from './types/schema.d.ts'
+import type { components } from './types/schema.d.ts'
 
 /* export type FormValues = {
   simuleringType: string | null,
@@ -38,8 +37,8 @@ import type {components} from './types/schema.d.ts'
 export type SchemaFormValues = components['schemas']['AnonymSimuleringSpecV1']
 
 export type FormValues = SchemaFormValues & {
-  boddIUtland: string, // fjernes fra ApiPayloaded
-  inntektVsaHelPensjon: string, // fjernes fra ApiPayloaded
+  boddIUtland: string // fjernes fra ApiPayloaded
+  inntektVsaHelPensjon: string // fjernes fra ApiPayloaded
 }
 
 export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
@@ -47,6 +46,7 @@ export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
 export interface ContextForm {
   states: FormValues
   setState: Dispatch<React.SetStateAction<FormValues>>
+  formPageProps: FormPageProps
 }
 
 export interface StepRef {
@@ -54,8 +54,20 @@ export interface StepRef {
 }
 
 export interface PensjonData {
-  alderspensjon: { alder: number; beloep: number }[];
-  afpPrivat: { alder: number; beloep: number }[];
-  afpOffentlig: { alder: number; beloep: number }[];
-  vilkaarsproeving: { vilkaarErOppfylt: boolean; alternativ: number | string | null }; // Hva er alternativ?
+  alderspensjon: { alder: number; beloep: number }[]
+  afpPrivat: { alder: number; beloep: number }[]
+  afpOffentlig: { alder: number; beloep: number }[]
+  vilkaarsproeving: {
+    vilkaarErOppfylt: boolean
+    alternativ: number | string | null
+  } // Hva er alternativ?
+}
+
+export interface FormPageProps {
+  curStep: number
+  length: number
+  back: () => void
+  onStepChange: (step: number) => void
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  next: () => void
 }
