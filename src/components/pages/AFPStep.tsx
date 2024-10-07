@@ -5,6 +5,7 @@ import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValues, StepRef } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
+import FormButtons from '../FormButtons'
 
 interface FormPageProps {
   grunnbelop: number
@@ -18,30 +19,32 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
     setState((prev: FormValues) => ({
       ...prev,
       [field]: value,
-    }));
-    clearError(field);
+    }))
+    clearError(field)
   }
 
   useImperativeHandle(ref, () => ({
     onSubmit() {
-      const hasErrors = validateFields("AFPStep");
-      if(!hasErrors) return true; 
-      return false;
-    }
+      const hasErrors = validateFields('AFPStep')
+      if (!hasErrors) return true
+      return false
+    },
   }))
 
   return (
     <FormWrapper>
       <Substep>
-        <RadioGroup legend={'Har du rett til AFP i privat sektor?'}
-        value={states.simuleringType}
-        onChange={(it) => handleFieldChange('simuleringType', it)}
-        error={errorFields.simuleringType}
+        <RadioGroup
+          legend={'Har du rett til AFP i privat sektor?'}
+          value={states.simuleringType}
+          onChange={(it) => handleFieldChange('simuleringType', it)}
+          error={errorFields.simuleringType}
         >
-          <Radio value='ALDERSPENSJON_MED_AFP_PRIVAT'>Ja</Radio>
-          <Radio value='ALDERSPENSJON'>Nei</Radio>
+          <Radio value="ALDERSPENSJON_MED_AFP_PRIVAT">Ja</Radio>
+          <Radio value="ALDERSPENSJON">Nei</Radio>
         </RadioGroup>
       </Substep>
+      <FormButtons />
     </FormWrapper>
   )
 })

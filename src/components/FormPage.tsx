@@ -105,7 +105,13 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
 
   return (
-    <FormContext.Provider value={{ setState: setFormState, states: formState }}>
+    <FormContext.Provider
+      value={{
+        setState: setFormState,
+        states: formState,
+        formPageProps: { curStep, length, back, onStepChange: goTo },
+      }}
+    >
       {showBeregnPage && beregnResult ? (
         <Beregn beregnResult={beregnResult} />
       ) : (
