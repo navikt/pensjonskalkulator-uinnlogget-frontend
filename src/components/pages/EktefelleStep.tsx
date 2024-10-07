@@ -28,8 +28,8 @@ const EktefelleStep = forwardRef<StepRef, FormPageProps>(
         const hasErrors = validateFields("EktefelleStep");
         if(!hasErrors){
           if(states.sivilstand === "UGIFT"){
-            states.epsHarInntektOver2G = null;
-            states.epsHarPensjon = null;
+            states.epsHarInntektOver2G = undefined;
+            states.epsHarPensjon = undefined;
           }
           return true;
         }  

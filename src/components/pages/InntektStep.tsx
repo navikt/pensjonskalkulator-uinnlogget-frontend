@@ -22,7 +22,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const updateNestedState = (state: FormValues, path: string, value: number | null): FormValues => {
+  const updateNestedState = (state: FormValues, path: string, value: number | undefined): FormValues => {
     const keys = path.split('.');
     const lastKey = keys.pop() as string;
     const clone = { ...state };
@@ -37,7 +37,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
     return clone;
   };
 
-  const handleFieldChange = (field: string, value: number | null, error: string | null) => {
+  const handleFieldChange = (field: string, value: number | undefined, error: string | null) => {
     setState((prev: FormValues) => updateNestedState(prev, field, value));
     clearError(error);
   }
@@ -48,20 +48,17 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
       const hasErrors = validateFields("InntektStep");
 
       if(!hasErrors){
-        if (states.gradertUttak.grad === 100) {
-          states.gradertUttak.aarligInntektVsaPensjonBeloep = 0;
-          states.gradertUttak.uttakAlder.aar = null;
-          states.gradertUttak.uttakAlder.maaneder = null;
-        }
-
         if (states.inntektVsaHelPensjon === 'nei') {
-          states.heltUttak.aarligInntektVsaPensjon.beloep = 0;
-          states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar = null;
-          states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = null;
+          if (states.heltUttak?.aarligInntektVsaPensjon){
+            states.heltUttak.aarligInntektVsaPensjon.beloep = 0;
+            states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined;
+          } 
         }
-
-        if(!livsvarigInntekt){
-          states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder = 0;
+        if(livsvarigInntekt && states.heltUttak.aarligInntektVsaPensjon?.sluttAlder){
+          states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined;
+        }
+        if(states.gradertUttak?.grad === 100){
+          states.gradertUttak = undefined;
         }
 
         return true
@@ -106,7 +103,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
 
         <Substep>
           <Select
-            value={states.gradertUttak.grad}
+            value={states.gradertUttak?.grad}
             style={{ width: '5rem' }}
             label={'Hvilken uttaksgrad ønsker du?'}
             onChange={(it) => {
@@ -123,21 +120,21 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
             <option value={'100'}>100%</option>
           </Select>
         </Substep>
-        {states.gradertUttak.grad !== 0 && states.gradertUttak.grad !== 100 && (
+        {states.gradertUttak !== undefined && states.gradertUttak?.grad !== 0 && states.gradertUttak?.grad !== 100 && (
           <>
             <Substep>
               <div className='flex space-x-4'>
                 <Select
-                  value={states.gradertUttak.uttakAlder.aar ?? -1}
+                  value={states.gradertUttak?.uttakAlder.aar}
                   style={{ width: '5rem' }}
-                  label={`Når planlegger du å ta ut ${states.gradertUttak.grad}% pensjon?`}
+                  label={`Når planlegger du å ta ut ${states.gradertUttak?.grad}% pensjon?`}
                   description='Velg alder'
                   onChange={(it) => {
                     handleFieldChange('gradertUttak.uttakAlder.aar', parseInt(it.target.value), 'gradertAar')
                   }}
                   error={errorFields.gradertAar}
                 >
-                  <option value={-1}>----</option>
+                  <option value={0}>----</option>
                   {Array.from({ length: 14 }, (_, i) => (
                     <option value={i + 62} key={i}>
                       {i + 62} år
@@ -146,7 +143,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 </Select>
 
                 <Select
-                  value={states.gradertUttak.uttakAlder.maaneder ?? -1}
+                  value={states.gradertUttak?.uttakAlder.maaneder}
                   style={{ width: '5rem' }}
                   label={'-'}
                   description='Velg måned'
@@ -173,11 +170,11 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 type='number'
                 inputMode='numeric'
                 style={{ width: '10rem' }}
-                label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak.grad}% pensjon?`}
+                label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak?.grad}% pensjon?`}
                 value={
-                  states.gradertUttak.aarligInntektVsaPensjonBeloep === 0
+                  states.gradertUttak?.aarligInntektVsaPensjonBeloep === 0
                     ? ''
-                    : states.gradertUttak.aarligInntektVsaPensjonBeloep
+                    : states.gradertUttak?.aarligInntektVsaPensjonBeloep
                 }
                 error={errorFields.gradertInntekt}
               />
@@ -196,7 +193,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               }}
               error={errorFields.heltUttakAar}
             >
-              <option value={-1}>----</option>
+              <option value={0}>----</option>
               {Array.from({ length: 14 }, (_, i) => (
                 <option value={i + 62} key={i}>
                   {i + 62} år
@@ -240,9 +237,9 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               <TextField
                 label='Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
                 value={
-                  states.heltUttak.aarligInntektVsaPensjon.beloep === 0
+                  states.heltUttak.aarligInntektVsaPensjon?.beloep === 0
                     ? ''
-                    : states.heltUttak.aarligInntektVsaPensjon.beloep
+                    : states.heltUttak.aarligInntektVsaPensjon?.beloep
                 }
                 type='number'
                 inputMode='numeric'
@@ -257,7 +254,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
               <div className='flex space-x-4'>
                 <Select
                   value={
-                    states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar ??
+                    states.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ??
                     'livsvarig'
                   }
                   style={{ width: '5rem' }}
@@ -266,7 +263,7 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                   onChange={(it) => {
                     const value = it.target.value
                     setLivsvarigInntekt(value === 'livsvarig' ? true : false)
-                    handleFieldChange('heltUttak.aarligInntektVsaPensjon.sluttAlder.aar', value === 'livsvarig' ? null : parseInt(value), 'heltUttakAar')
+                    handleFieldChange('heltUttak.aarligInntektVsaPensjon.sluttAlder.aar', value === 'livsvarig' ? undefined : parseInt(value), 'heltUttakAar')
                   }}
                 >
                   <option value={'livsvarig'}>Livsvarig</option>
@@ -279,14 +276,13 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
                 {!livsvarigInntekt && (
                   <Select
                     value={
-                      states.heltUttak.aarligInntektVsaPensjon.sluttAlder
-                        .maaneder ?? 'livsvarig'
+                      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder ?? 'livsvarig'
                     }
                     style={{ width: '5rem' }}
                     label={'Velg måned'}
                     onChange={(it) => {
                       const value = it.target.value
-                      handleFieldChange('heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder', value === 'livsvarig' ? null : parseInt(value), 'helUttakMaaneder')
+                      handleFieldChange('heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder', value === 'livsvarig' ? undefined : parseInt(value), 'helUttakMaaneder')
                     }}
                   >
                     {Array.from({ length: 12 }, (_, i) => (

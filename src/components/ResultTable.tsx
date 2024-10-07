@@ -11,9 +11,11 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
     const { states, setState } = useContext(FormContext) as ContextForm
 
     const alderspensjonHel = beregnResult?.alderspensjon?.find(item => item.alder === states.heltUttak.uttakAlder.aar)?.beloep || 0
-    const alderspensjonGradert = beregnResult?.alderspensjon?.find(item => item.alder === states.gradertUttak.uttakAlder.aar)?.beloep || 0
+    const alderspensjonGradert = beregnResult?.alderspensjon?.find(item => item.alder === states.gradertUttak?.uttakAlder.aar)?.beloep || 0
     const afpPrivatHel = beregnResult?.afpPrivat?.find(item => item.alder === states.heltUttak.uttakAlder.aar)?.beloep || 0
-    const afpPrivatGradert = beregnResult?.afpPrivat?.find(item => item.alder === states.gradertUttak.uttakAlder.aar)?.beloep || 0
+    const afpPrivatGradert = beregnResult?.afpPrivat?.find(item => item.alder === states.gradertUttak?.uttakAlder.aar)?.beloep || 0
+    const aarligbelopVsaGradertuttak = states.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
+    const aarligbelopVsaHeltuttak = states.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
 
     return(
         <Table>
@@ -29,16 +31,16 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {states.gradertUttak.grad !== 100 && (
+            {states.gradertUttak !== undefined && (
               <Table.Row key={states.gradertUttak.uttakAlder.aar}>
                 <Table.HeaderCell scope="row">
-                  Ved {states.gradertUttak.uttakAlder.aar}{"("} 
+                  Ved {states.gradertUttak.uttakAlder.aar}{" ("} 
                   {states.gradertUttak.grad}{"%)"} 
                 </Table.HeaderCell>
                 <Table.DataCell>{alderspensjonGradert}</Table.DataCell>
                 <Table.DataCell>{afpPrivatGradert}</Table.DataCell>
                 <Table.DataCell>{states.gradertUttak.aarligInntektVsaPensjonBeloep}</Table.DataCell>
-                <Table.DataCell>{alderspensjonGradert + afpPrivatGradert + states.gradertUttak.aarligInntektVsaPensjonBeloep}</Table.DataCell>
+                <Table.DataCell>{alderspensjonGradert + afpPrivatGradert + aarligbelopVsaGradertuttak}</Table.DataCell>
               </Table.Row>
             )}
             <Table.Row key={states.heltUttak.uttakAlder.aar}>
@@ -47,8 +49,8 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
               </Table.HeaderCell>
               <Table.DataCell>{alderspensjonHel}</Table.DataCell>
               <Table.DataCell>{afpPrivatHel}</Table.DataCell>
-              <Table.DataCell>{states.heltUttak.aarligInntektVsaPensjon.beloep ? states.heltUttak.aarligInntektVsaPensjon.beloep : 0}</Table.DataCell>
-              <Table.DataCell>{alderspensjonHel + afpPrivatHel + states.heltUttak.aarligInntektVsaPensjon.beloep}</Table.DataCell>
+              <Table.DataCell>{aarligbelopVsaHeltuttak}</Table.DataCell>
+              <Table.DataCell>{alderspensjonHel + afpPrivatHel + aarligbelopVsaHeltuttak}</Table.DataCell>
             </Table.Row>
           </Table.Body>
         </Table>

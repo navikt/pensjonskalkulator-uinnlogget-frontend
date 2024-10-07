@@ -1,4 +1,4 @@
-import { FormValues } from '@/common';
+/* import { FormValues } from '@/common';
 
 export const mockStates: FormValues = {
     simuleringType: null,
@@ -34,4 +34,4 @@ export const mockStates: FormValues = {
     },
   };
 
-export const mockSetState = jest.fn();
+export const mockSetState = jest.fn(); */
