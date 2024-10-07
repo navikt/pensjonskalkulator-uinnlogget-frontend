@@ -12,13 +12,6 @@ function FormButtons({ onSubmit }: Props) {
 
   const { curStep, onStepChange, length, back } = context.formPageProps
 
-  const onKeyDownHandler = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      onSubmit!()
-    }
-  }
-
   return (
     <HStack gap={'2'} marginBlock="2">
       <Button type="submit" variant="primary">

@@ -84,8 +84,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   )
   const length = pagesNames.length
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     if (curStep === length - 1) {
       setLoading(true)
       try {
