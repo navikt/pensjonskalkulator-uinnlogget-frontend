@@ -121,7 +121,6 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         <ResultTable beregnResult={beregnResult} />
         <HighchartsReact highcharts={Highcharts} options={getChartOptions()} />
       </Box>
-      <FormButtons />
     </div>
   )
 }

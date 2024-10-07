@@ -68,4 +68,6 @@ export interface FormPageProps {
   length: number
   back: () => void
   onStepChange: (step: number) => void
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  next: () => void
 }

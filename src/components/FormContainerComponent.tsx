@@ -37,9 +37,7 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
       Pensjonskalkulator
     </Box>
     <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
-    <form onSubmit={handleSubmit}>
-      {step ? React.cloneElement(step, { ref: childRef }) : null}
-    </form>
+    {step ? React.cloneElement(step, { ref: childRef }) : null}
   </Box>
 )
 

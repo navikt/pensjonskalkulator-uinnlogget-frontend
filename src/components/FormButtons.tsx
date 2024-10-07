@@ -3,10 +3,21 @@ import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
 
-function FormButtons() {
+interface Props {
+  onSubmit?: () => void
+}
+
+function FormButtons({ onSubmit }: Props) {
   const context = useContext(FormContext) as ContextForm
 
   const { curStep, onStepChange, length, back } = context.formPageProps
+
+  const onKeyDownHandler = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      onSubmit!()
+    }
+  }
 
   return (
     <HStack gap={'2'} marginBlock="2">

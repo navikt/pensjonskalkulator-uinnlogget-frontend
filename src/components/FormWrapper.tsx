@@ -1,10 +1,20 @@
 import { VStack } from '@navikt/ds-react'
-import React, { ReactNode } from 'react'
+import React, { FormEvent, ReactNode, useContext } from 'react'
 
-function FormWrapper({ children }: { children: ReactNode }) {
+interface FormWrapperProps {
+  children: ReactNode
+  onSubmit: () => void
+}
+
+function FormWrapper({ children, onSubmit }: FormWrapperProps) {
+  const handleOnSubmit = (e: FormEvent) => {
+    e.preventDefault()
+    onSubmit()
+  }
+
   return (
     <VStack gap={'4'} paddingBlock={'3'}>
-      {children}
+      <form onSubmit={handleOnSubmit}>{children}</form>
     </VStack>
   )
 }

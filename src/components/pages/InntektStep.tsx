@@ -18,8 +18,10 @@ import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
 
-const InntektStep = forwardRef<StepRef>((props, ref) => {
-  const { states, setState } = useContext(FormContext) as ContextForm
+const InntektStep = () => {
+  const { states, setState, formPageProps } = useContext(
+    FormContext
+  ) as ContextForm
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
@@ -51,36 +53,34 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
     clearError(error)
   }
 
-  useImperativeHandle(ref, () => ({
-    onSubmit() {
-      const hasErrors = validateFields('InntektStep')
+  const onSubmit = () => {
+    const hasErrors = validateFields('InntektStep')
 
-      if (!hasErrors) {
-        if (states.inntektVsaHelPensjon === 'nei') {
-          if (states.heltUttak?.aarligInntektVsaPensjon) {
-            states.heltUttak.aarligInntektVsaPensjon.beloep = 0
-            states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
-          }
-        }
-        if (
-          livsvarigInntekt &&
-          states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-        ) {
+    if (!hasErrors) {
+      if (states.inntektVsaHelPensjon === 'nei') {
+        if (states.heltUttak?.aarligInntektVsaPensjon) {
+          states.heltUttak.aarligInntektVsaPensjon.beloep = 0
           states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
         }
-        if (states.gradertUttak?.grad === 100) {
-          states.gradertUttak = undefined
-        }
-
-        return true
       }
+      if (
+        livsvarigInntekt &&
+        states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+      ) {
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
+      }
+      if (states.gradertUttak?.grad === 100) {
+        states.gradertUttak = undefined
+      }
+      formPageProps.next()
+      return true
+    }
 
-      return false
-    },
-  }))
+    return false
+  }
 
   return (
-    <FormWrapper>
+    <FormWrapper onSubmit={onSubmit}>
       <h2>Inntekt og alderspensjon</h2>
       <div className="w-30">
         <TextField
@@ -360,7 +360,6 @@ const InntektStep = forwardRef<StepRef>((props, ref) => {
       <FormButtons />
     </FormWrapper>
   )
-})
+}
 
-InntektStep.displayName = 'InntektStep'
 export default InntektStep

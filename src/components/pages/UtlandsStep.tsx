@@ -19,8 +19,10 @@ import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 
-const UtlandsStep = forwardRef<StepRef>((props, ref) => {
-  const { states, setState } = useContext(FormContext) as ContextForm
+const UtlandsStep = () => {
+  const { states, setState, formPageProps } = useContext(
+    FormContext
+  ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
   const handleFieldChange = (field: keyof FormValues, value: number | null) => {
@@ -31,20 +33,19 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
     clearError(field)
   }
 
-  useImperativeHandle(ref, () => ({
-    onSubmit() {
-      const hasErrors = validateFields('UtlandsStep')
-      if (!hasErrors) {
-        if (states.boddIUtland === 'nei') states.utenlandsAntallAar = 0
-        return true
-      }
-      return false
-    },
-  }))
+  const onSubmit = () => {
+    const hasErrors = validateFields('UtlandsStep')
+    if (!hasErrors) {
+      if (states.boddIUtland === 'nei') states.utenlandsAntallAar = 0
+      formPageProps.next()
+      return true
+    }
+    return false
+  }
 
   return (
     <>
-      <FormWrapper>
+      <FormWrapper onSubmit={onSubmit}>
         <h2>Utland</h2>
         <div>
           <RadioGroup
@@ -87,7 +88,6 @@ const UtlandsStep = forwardRef<StepRef>((props, ref) => {
       </FormWrapper>
     </>
   )
-})
+}
 
-UtlandsStep.displayName = 'UtlandsStep'
 export default UtlandsStep

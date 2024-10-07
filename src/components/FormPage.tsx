@@ -72,7 +72,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     utland: <UtlandsStep key="utland" />,
     inntekt: <InntektStep key="inntekt" />,
     ektefelle: <EktefelleStep grunnbelop={grunnbelop} key="ektefelle" />,
-    afp: <AFPStep grunnbelop={grunnbelop} key="afp" />,
+    afp: <AFPStep key="afp" />,
   }
   const pagesNames = Object.keys(pagesDict)
 
@@ -99,9 +99,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
         setShowBeregnPage(true)
       }
     }
-    if (childRef.current?.onSubmit()) {
-      next()
-    }
   }
 
   return (
@@ -109,7 +106,14 @@ function FormPage({ grunnbelop }: FormPageProps) {
       value={{
         setState: setFormState,
         states: formState,
-        formPageProps: { curStep, length, back, onStepChange: goTo },
+        formPageProps: {
+          curStep,
+          length,
+          back,
+          onStepChange: goTo,
+          handleSubmit,
+          next,
+        },
       }}
     >
       {showBeregnPage && beregnResult ? (

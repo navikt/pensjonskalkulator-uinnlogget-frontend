@@ -11,8 +11,11 @@ interface FormPageProps {
   grunnbelop: number
 }
 
-const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
-  const { states, setState } = useContext(FormContext) as ContextForm
+const AFPStep = () => {
+  const { states, setState, formPageProps } = useContext(
+    FormContext
+  ) as ContextForm
+
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
   const handleFieldChange = (field: keyof FormValues, value: string | null) => {
@@ -23,16 +26,23 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
     clearError(field)
   }
 
-  useImperativeHandle(ref, () => ({
-    onSubmit() {
-      const hasErrors = validateFields('AFPStep')
-      if (!hasErrors) return true
-      return false
-    },
-  }))
+  // useImperativeHandle(ref, () => ({
+  //   onSubmit() {
+  //     const hasErrors = validateFields('AFPStep')
+  //     if (!hasErrors) return true
+  //     return false
+  //   },
+  // }))
+
+  const onSubmit = () => {
+    const hasErrors = validateFields('AFPStep')
+    if (!hasErrors) return true
+    formPageProps.next()
+    return false
+  }
 
   return (
-    <FormWrapper>
+    <FormWrapper onSubmit={onSubmit}>
       <Substep>
         <RadioGroup
           legend={'Har du rett til AFP i privat sektor?'}
@@ -44,10 +54,9 @@ const AFPStep = forwardRef<StepRef, FormPageProps>(({ grunnbelop }, ref) => {
           <Radio value="ALDERSPENSJON">Nei</Radio>
         </RadioGroup>
       </Substep>
-      <FormButtons />
+      <FormButtons onSubmit={onSubmit} />
     </FormWrapper>
   )
-})
+}
 
-AFPStep.displayName = 'AFPStep'
 export default AFPStep

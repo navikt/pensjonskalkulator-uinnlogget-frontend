@@ -6,8 +6,10 @@ import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 
-const AlderStep = forwardRef<StepRef>((props, ref) => {
-  const { states, setState } = useContext(FormContext) as ContextForm
+const AlderStep = () => {
+  const { states, setState, formPageProps } = useContext(
+    FormContext
+  ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
   const handleFieldChange = (field: keyof FormValues, value: number | null) => {
@@ -18,20 +20,24 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
     clearError(field)
   }
 
-  useImperativeHandle(ref, () => ({
-    onSubmit() {
-      const hasErrors = validateFields('AlderStep')
-      if (!hasErrors) return true
-      return false
-    },
-  }))
+  // useImperativeHandle(ref, () => ({
+  //   onSubmit() {
+  //     const hasErrors = validateFields('AlderStep')
+  //     if (!hasErrors) return true
+  //     return false
+  //   },
+  // }))
+
+  const onSubmit = () => {
+    const hasErrors = validateFields('AlderStep')
+    if (hasErrors) return false
+    formPageProps.next()
+    return true
+  }
 
   return (
     <>
-      <FormWrapper>
-        {/* <Heading level='1' size='medium'>
-          Hvilket år er du født?
-        </Heading> */}
+      <FormWrapper onSubmit={onSubmit}>
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
             maxLength={3}
@@ -78,11 +84,10 @@ const AlderStep = forwardRef<StepRef>((props, ref) => {
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
         </Box>
-        <FormButtons />
+        <FormButtons onSubmit={onSubmit} />
       </FormWrapper>
     </>
   )
-})
+}
 
-AlderStep.displayName = 'AlderStep'
 export default AlderStep
