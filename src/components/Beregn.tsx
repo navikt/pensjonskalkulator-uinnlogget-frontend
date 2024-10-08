@@ -6,14 +6,15 @@ import HighchartsReact from 'highcharts-react-official'
 import { FormContext } from '@/contexts/context'
 import { ContextForm, FormValueResult } from '@/common'
 import { Box } from '@navikt/ds-react'
-import ResultTable from '../ResultTable'
+import ResultTable from './ResultTable'
 
-interface BeregnProps {
-  beregnResult: FormValueResult
+interface BeregnResource {
+  resource: { read(): FormValueResult | undefined }
 }
 
-const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
+const Beregn: React.FC<BeregnResource> = ({ resource }) => {
   const { states } = useContext(FormContext) as ContextForm
+  const beregnResult = resource.read()
 
   const getChartOptions = () => {
     const alderspensjonData =
@@ -117,7 +118,7 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
         borderRadius={'large'}
       >
         <h1>Resultat</h1>
-        <ResultTable beregnResult={beregnResult} />
+        <ResultTable beregnResult={beregnResult!} />
         <HighchartsReact highcharts={Highcharts} options={getChartOptions()} />
       </Box>
     </div>

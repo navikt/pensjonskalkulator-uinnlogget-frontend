@@ -1,6 +1,5 @@
-import { FormContext } from '@/contexts/context'
 import { VStack } from '@navikt/ds-react'
-import React, { FormEvent, ReactNode, useContext } from 'react'
+import React, { FormEvent, ReactNode } from 'react'
 
 interface FormWrapperProps {
   children: ReactNode
@@ -8,11 +7,8 @@ interface FormWrapperProps {
 }
 
 function FormWrapper({ children, onSubmit }: FormWrapperProps) {
-  const context = useContext(FormContext)
-
   const handleOnSubmit = (e: FormEvent) => {
     e.preventDefault()
-    context?.formPageProps.handleSubmit()
     onSubmit()
   }
 

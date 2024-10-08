@@ -1,8 +1,8 @@
-import { FormValues } from '@/common'
+import { FormValueResult } from '@/common'
 
-export default function wrapPromise(promise: Promise<FormValues>) {
+export default function wrapPromise(promise: Promise<FormValueResult>) {
   let status = 'pending'
-  let result: FormValues
+  let result: FormValueResult
   const suspender = promise.then(
     (res) => {
       status = 'success'
