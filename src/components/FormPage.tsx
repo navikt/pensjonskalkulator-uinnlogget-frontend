@@ -16,7 +16,7 @@ import Beregn from './pages/Beregn'
 import LoadingComponent from './LoadingComponent'
 import FormContainerComponent from './FormContainerComponent'
 
-const initialFormState: FormValues = {
+export const initialFormState: FormValues = {
   simuleringType: undefined,
   foedselAar: 0,
   sivilstand: 'UGIFT',

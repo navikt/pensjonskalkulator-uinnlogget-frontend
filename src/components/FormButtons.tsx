@@ -3,11 +3,7 @@ import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
 
-interface Props {
-  onSubmit?: () => void
-}
-
-function FormButtons({ onSubmit }: Props) {
+function FormButtons() {
   const context = useContext(FormContext) as ContextForm
 
   const { curStep, onStepChange, length, back } = context.formPageProps
@@ -23,13 +19,6 @@ function FormButtons({ onSubmit }: Props) {
           Tilbake
         </Button>
       )}
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => onStepChange!(length! - 1)}
-      >
-        Til slutt
-      </Button>
     </HStack>
   )
 }
