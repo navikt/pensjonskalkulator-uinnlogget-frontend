@@ -17,7 +17,10 @@ const submitForm = async (formstate: FormValues) => {
   })
 
   if (!response.ok) {
-    throw new Error('Failed to submit form')
+    throw {
+      message: 'Failed to submit form',
+      status: response.status,
+    }
   }
 
   return response.json()
