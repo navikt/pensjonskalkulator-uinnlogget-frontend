@@ -1,39 +1,37 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import '@navikt/ds-css'
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-import Script from 'next/script'
+//import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+//const inter = Inter({ subsets: ['latin'] })
 
 const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
 
 export const metadata: Metadata = {
   title: 'Forenklet Pensjonskalkulator',
-  description: 'Her kan du regne ut pensjon din'
+  description: 'Her kan du regne ut pensjon din',
 }
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   const fragments = await fetchDecoratorHtml({
     env: decoratorEnv,
-    params: { context: 'privatperson' }
+    params: { context: 'privatperson' },
   })
 
-  
   const {
     DECORATOR_STYLES,
     DECORATOR_SCRIPTS,
     DECORATOR_HEADER,
-    DECORATOR_FOOTER
+    DECORATOR_FOOTER,
   } = fragments
 
   return (
-    <html lang='nb'>
+    <html lang="nb">
       <head
         dangerouslySetInnerHTML={{ __html: DECORATOR_STYLES }}
         suppressHydrationWarning
@@ -41,7 +39,7 @@ export default async function RootLayout({
       <body>
         <div
           dangerouslySetInnerHTML={{
-            __html: DECORATOR_HEADER
+            __html: DECORATOR_HEADER,
           }}
           suppressHydrationWarning
         />

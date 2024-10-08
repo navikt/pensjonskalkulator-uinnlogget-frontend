@@ -1,19 +1,18 @@
-import { Box, Button, HStack, Link, TextField, VStack } from '@navikt/ds-react'
-import { redirect, usePathname } from 'next/navigation'
+import { Box, Button, HStack, Link, VStack } from '@navikt/ds-react'
 import React from 'react'
 
 export default function QuestionBox() {
   return (
-    <Box width={'full'} background='surface-subtle'>
-      <div className='flex flex-col items-center w-full'>
-        <h2 className=' mb-3'>Pensjonskalkulator</h2>
+    <Box width={'full'} background="surface-subtle">
+      <div className="flex flex-col items-center w-full">
+        <h2 className=" mb-3">Pensjonskalkulator</h2>
 
         <Box
           marginBlock={'auto'}
           width={'100%'}
           maxWidth={'40rem'}
           padding={'4'}
-          background='bg-default'
+          background="bg-default"
         >
           <VStack padding={'6'} gap={'5'}>
             <h3>Hei Du</h3>
@@ -28,17 +27,17 @@ export default function QuestionBox() {
               kommer.
             </p>
             <HStack gap={'2'}>
-              <Button variant='primary'>
+              <Button variant="primary">
                 <Link
-                  href='./kalkulator-uinnlogget/form'
-                  className='text-white'
+                  href="./kalkulator-uinnlogget/form"
+                  className="text-white"
                 >
-                  <p className=' text-white'>Kom i Gang</p>
+                  <p className=" text-white">Kom i Gang</p>
                 </Link>
               </Button>
-              <Button variant='tertiary'>Avbryt</Button>
+              <Button variant="tertiary">Avbryt</Button>
             </HStack>
-            <Link href='https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator'>
+            <Link href="https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator">
               Personopplysninger som brukes i pensjonskalkulator
             </Link>
           </VStack>

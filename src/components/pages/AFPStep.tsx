@@ -1,15 +1,11 @@
-import React, { forwardRef, useContext, useImperativeHandle } from 'react'
+import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues, StepRef } from '@/common'
+import { ContextForm, FormValues } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
-
-interface FormPageProps {
-  grunnbelop: number
-}
 
 const AFPStep = () => {
   const { states, setState, formPageProps } = useContext(

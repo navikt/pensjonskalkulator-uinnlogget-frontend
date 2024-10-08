@@ -1,4 +1,4 @@
-import { ContextForm, FormPageProps } from '@/common'
+import { ContextForm } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'

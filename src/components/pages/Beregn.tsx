@@ -4,17 +4,16 @@ import { useContext } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValueResult, PensjonData } from '@/common'
-import { Box, Table } from '@navikt/ds-react'
+import { ContextForm, FormValueResult } from '@/common'
+import { Box } from '@navikt/ds-react'
 import ResultTable from '../ResultTable'
-import FormButtons from '../FormButtons'
 
 interface BeregnProps {
   beregnResult: FormValueResult
 }
 
 const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
-  const { states, setState } = useContext(FormContext) as ContextForm
+  const { states } = useContext(FormContext) as ContextForm
 
   const getChartOptions = () => {
     const alderspensjonData =
@@ -124,5 +123,35 @@ const Beregn: React.FC<BeregnProps> = ({ beregnResult }) => {
     </div>
   )
 }
+
+/* Beregn.propTypes = {
+  beregnResult: PropTypes.shape({
+    alderspensjon: PropTypes.arrayOf(
+      PropTypes.shape({
+        alder: PropTypes.number.isRequired,
+        beloep: PropTypes.number.isRequired,
+      }).isRequired
+    ).isRequired,
+    afpPrivat: PropTypes.arrayOf(
+      PropTypes.shape({
+        alder: PropTypes.number.isRequired,
+        beloep: PropTypes.number.isRequired,
+      })
+    ),
+    afpOffentlig: PropTypes.arrayOf(
+      PropTypes.shape({
+        alder: PropTypes.number.isRequired,
+        beloep: PropTypes.number.isRequired,
+      })
+    ),
+    vilkaarsproeving: PropTypes.shape({
+      vilkaarErOppfylt: PropTypes.bool.isRequired,
+      alternativ: PropTypes.shape({
+        alder: PropTypes.number,
+        beloep: PropTypes.number,
+      }),
+    }).isRequired,
+  }).isRequired,
+} */
 
 export default Beregn
