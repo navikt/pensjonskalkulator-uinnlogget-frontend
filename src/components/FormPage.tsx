@@ -1,6 +1,6 @@
 'use client'
 
-import { FormValueResult, FormValues, StepRef } from '@/common'
+import { FormValueResult, FormValues } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -8,7 +8,7 @@ import UtlandsStep from './pages/UtlandsStep'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
 import submitForm from '@/functions/submitForm'
 import Beregn from './pages/Beregn'
@@ -62,7 +62,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const [loading, setLoading] = useState(false)
   const [beregnResult, setBeregnResult] = useState<FormValueResult>()
   const [showBeregnPage, setShowBeregnPage] = useState(false)
-  const childRef = useRef<StepRef>(null) // Ref to access child component method
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,
@@ -121,7 +120,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
               onStepChange={(i) => goTo(i)}
               handleSubmit={handleSubmit}
               step={step}
-              childRef={childRef}
               curStep={curStep}
               length={length}
             />

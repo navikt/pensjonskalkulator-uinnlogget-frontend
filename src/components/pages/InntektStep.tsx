@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues } from '@/common'
+import { ContextForm } from '@/common'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
@@ -20,6 +20,10 @@ const InntektStep = () => {
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
+  type FormValues = {
+    [key: string]: FormValues | number | string | undefined
+  }
+
   const updateNestedState = (
     state: FormValues,
     path: string,
@@ -29,10 +33,10 @@ const InntektStep = () => {
     const lastKey = keys.pop() as string
     const clone = { ...state }
 
-    let nestedState: any = clone
+    let nestedState: FormValues = clone
     keys.forEach((key) => {
       if (!nestedState[key]) nestedState[key] = {}
-      nestedState = nestedState[key]
+      nestedState = nestedState[key] as FormValues
     })
 
     nestedState[lastKey] = value

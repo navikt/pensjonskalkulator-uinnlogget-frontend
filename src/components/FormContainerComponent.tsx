@@ -9,7 +9,6 @@ interface FormContainerComponentProps {
   onStepChange: (step: number) => void
   handleSubmit: (e: FormEvent) => void
   step: ReactElement | null
-  childRef: React.RefObject<any>
   curStep: number
   length: number
 }
@@ -18,7 +17,6 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
   totalSteps,
   activeStep,
   step,
-  childRef,
 }) => (
   <Box
     maxWidth={'40rem'}
@@ -32,7 +30,7 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
       Pensjonskalkulator
     </Box>
     <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
-    {step ? React.cloneElement(step, { ref: childRef }) : null}
+    {step}
   </Box>
 )
 
