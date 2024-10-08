@@ -103,7 +103,7 @@ describe('Når brukeren er på siste steg,', () => {
         <FormButtons />
       </FormContext.Provider>
     )
-    const formButtonsElement = screen.getByRole('button')
-    expect(formButtonsElement).toHaveTextContent('Send')
+    const formButtonsElement = screen.getAllByRole('button')
+    expect(formButtonsElement[0]).toHaveTextContent('Send')
   })
 })
