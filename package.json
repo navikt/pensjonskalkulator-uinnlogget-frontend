@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
+    "testc": "jest --c",
     "test": "jest",
     "dev": "concurrently \"next dev\" \"json-server mockdb/db.json --port 3001 \"",
     "build": "next build",
@@ -18,6 +19,7 @@
     "@navikt/oasis": "^3.4.0",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
+    "@typescript-eslint/typescript-estree": "^8.8.1",
     "dotenv": "^16.4.5",
     "eslint-config-next": "^14.2.14",
     "highcharts": "^11.4.8",

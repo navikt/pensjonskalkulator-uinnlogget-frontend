@@ -5,7 +5,7 @@ const createJestConfig = nextJest({
 })
 
 const customJestConfig = {
-  collectCoverage: true,
+  collectCoverage: process.argv.includes('--c'),
   coverageProvider: 'v8',
   collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
