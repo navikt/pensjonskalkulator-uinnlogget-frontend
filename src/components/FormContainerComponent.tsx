@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement } from 'react'
-import { Box, HStack, Button } from '@navikt/ds-react'
+import { Box } from '@navikt/ds-react'
 import FormProgressComponent from './FormProgressComponent'
 
 interface FormContainerComponentProps {
@@ -9,7 +9,6 @@ interface FormContainerComponentProps {
   onStepChange: (step: number) => void
   handleSubmit: (e: FormEvent) => void
   step: ReactElement | null
-  childRef: React.RefObject<any>
   curStep: number
   length: number
 }
@@ -17,13 +16,7 @@ interface FormContainerComponentProps {
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
   totalSteps,
   activeStep,
-  back,
-  handleSubmit,
-  onStepChange,
   step,
-  childRef,
-  curStep,
-  length,
 }) => (
   <Box
     maxWidth={'40rem'}
@@ -37,7 +30,7 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
       Pensjonskalkulator
     </Box>
     <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
-    {step ? React.cloneElement(step, { ref: childRef }) : null}
+    {step}
   </Box>
 )
 

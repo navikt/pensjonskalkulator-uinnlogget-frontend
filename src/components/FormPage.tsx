@@ -1,6 +1,6 @@
 'use client'
 
-import { FormValueResult, FormValues, StepRef } from '@/common'
+import { FormValueResult, FormValues } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -8,15 +8,14 @@ import UtlandsStep from './pages/UtlandsStep'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
-import { useRouter } from 'next/navigation'
 import submitForm from '@/functions/submitForm'
 import Beregn from './pages/Beregn'
 import LoadingComponent from './LoadingComponent'
 import FormContainerComponent from './FormContainerComponent'
 
-const initialFormState: FormValues = {
+export const initialFormState: FormValues = {
   simuleringType: undefined,
   foedselAar: 0,
   sivilstand: 'UGIFT',
@@ -60,12 +59,9 @@ interface Pages {
 
 function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormState] = useState<FormValues>(initialFormState)
-  const [failedToSubmit, setFailedToSubmit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [beregnResult, setBeregnResult] = useState<FormValueResult>()
   const [showBeregnPage, setShowBeregnPage] = useState(false)
-  const childRef = useRef<StepRef>(null) // Ref to access child component method
-  const router = useRouter()
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,
@@ -76,12 +72,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
   const pagesNames = Object.keys(pagesDict)
 
-  const { curStep, step, next, back, goTo } = useMultiStepForm(
-    pagesDict,
-    (e: number) => {
-      // history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
-    }
-  )
+  const { curStep, step, next, back, goTo } = useMultiStepForm(pagesDict)
   const length = pagesNames.length
 
   const handleSubmit = async () => {
@@ -129,7 +120,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
               onStepChange={(i) => goTo(i)}
               handleSubmit={handleSubmit}
               step={step}
-              childRef={childRef}
               curStep={curStep}
               length={length}
             />

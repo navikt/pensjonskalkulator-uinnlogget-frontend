@@ -1,7 +1,7 @@
-import React, { forwardRef, Ref, useContext, useImperativeHandle } from 'react'
-import { Bleed, Box, Heading, TextField } from '@navikt/ds-react'
+import React, { useContext } from 'react'
+import { Box, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, FormValues, StepRef } from '@/common'
+import { ContextForm, FormValues } from '@/common'
 import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -84,7 +84,7 @@ const AlderStep = () => {
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
         </Box>
-        <FormButtons onSubmit={onSubmit} />
+        <FormButtons />
       </FormWrapper>
     </>
   )

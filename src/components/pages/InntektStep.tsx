@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useContext,
-  useImperativeHandle,
-  useState,
-} from 'react'
+import React, { useContext, useState } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
   Radio,
@@ -13,7 +8,7 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues, StepRef } from '@/common'
+import { ContextForm } from '@/common'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
@@ -25,19 +20,23 @@ const InntektStep = () => {
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
+  type FormValues = {
+    [key: string]: FormValues | number | string | undefined
+  }
+
   const updateNestedState = (
     state: FormValues,
     path: string,
-    value: number | undefined
+    value: number | string | undefined
   ): FormValues => {
     const keys = path.split('.')
     const lastKey = keys.pop() as string
     const clone = { ...state }
 
-    let nestedState: any = clone
+    let nestedState: FormValues = clone
     keys.forEach((key) => {
       if (!nestedState[key]) nestedState[key] = {}
-      nestedState = nestedState[key]
+      nestedState = nestedState[key] as FormValues
     })
 
     nestedState[lastKey] = value
@@ -46,10 +45,42 @@ const InntektStep = () => {
 
   const handleFieldChange = (
     field: string,
-    value: number | undefined,
+    value: number | string | undefined,
     error: string | null
   ) => {
+    /* if (field === 'inntektVsaHelPensjon' && value === 'nei') {
+      setState((prev: FormValues) =>
+        updateNestedState(prev, 'heltUttak.aarligInntektVsaPensjon.beloep', 0)
+      )
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
+          undefined
+        )
+      )
+    } 
+    if(livsvarigInntekt && states.heltUttak.aarligInntektVsaPensjon?.sluttAlder){
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
+          undefined
+        )
+      )
+    }
+    if(states.gradertUttak?.grad === 100){
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'gradertUttak',
+          undefined
+        )
+      )
+    } */
+    //else {
     setState((prev: FormValues) => updateNestedState(prev, field, value))
+    //}
     clearError(error)
   }
 
