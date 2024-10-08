@@ -1,8 +1,6 @@
 import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import FormPage from '@/components/FormPage'
-import { FormContext } from '@/contexts/context'
-import { FormValues } from '@/common'
 
 // Mock the necessary modules and functions
 jest.mock('@/functions/submitForm', () => jest.fn())
