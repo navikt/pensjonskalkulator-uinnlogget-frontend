@@ -1,5 +1,5 @@
 import React, { FormEvent, ReactElement } from 'react'
-import { Box, HStack, Button } from '@navikt/ds-react'
+import { Box } from '@navikt/ds-react'
 import FormProgressComponent from './FormProgressComponent'
 
 interface FormContainerComponentProps {
@@ -17,13 +17,8 @@ interface FormContainerComponentProps {
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
   totalSteps,
   activeStep,
-  back,
-  handleSubmit,
-  onStepChange,
   step,
   childRef,
-  curStep,
-  length,
 }) => (
   <Box
     maxWidth={'40rem'}

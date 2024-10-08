@@ -10,7 +10,6 @@ import useMultiStepForm from '@/helpers/useMultiStepForm'
 
 import React, { FormEvent, useRef, useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
-import { useRouter } from 'next/navigation'
 import submitForm from '@/functions/submitForm'
 import Beregn from './pages/Beregn'
 import LoadingComponent from './LoadingComponent'
@@ -60,12 +59,10 @@ interface Pages {
 
 function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormState] = useState<FormValues>(initialFormState)
-  const [failedToSubmit, setFailedToSubmit] = useState(false)
   const [loading, setLoading] = useState(false)
   const [beregnResult, setBeregnResult] = useState<FormValueResult>()
   const [showBeregnPage, setShowBeregnPage] = useState(false)
   const childRef = useRef<StepRef>(null) // Ref to access child component method
-  const router = useRouter()
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,

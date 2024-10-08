@@ -1,9 +1,4 @@
-import React, {
-  forwardRef,
-  useContext,
-  useImperativeHandle,
-  useState,
-} from 'react'
+import React, { useContext, useState } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
   Radio,
@@ -13,7 +8,7 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues, StepRef } from '@/common'
+import { ContextForm, FormValues } from '@/common'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
@@ -28,7 +23,7 @@ const InntektStep = () => {
   const updateNestedState = (
     state: FormValues,
     path: string,
-    value: number | undefined
+    value: number | string | undefined
   ): FormValues => {
     const keys = path.split('.')
     const lastKey = keys.pop() as string
@@ -46,10 +41,42 @@ const InntektStep = () => {
 
   const handleFieldChange = (
     field: string,
-    value: number | undefined,
+    value: number | string | undefined,
     error: string | null
   ) => {
+    /* if (field === 'inntektVsaHelPensjon' && value === 'nei') {
+      setState((prev: FormValues) =>
+        updateNestedState(prev, 'heltUttak.aarligInntektVsaPensjon.beloep', 0)
+      )
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
+          undefined
+        )
+      )
+    } 
+    if(livsvarigInntekt && states.heltUttak.aarligInntektVsaPensjon?.sluttAlder){
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
+          undefined
+        )
+      )
+    }
+    if(states.gradertUttak?.grad === 100){
+      setState((prev: FormValues) =>
+        updateNestedState(
+          prev,
+          'gradertUttak',
+          undefined
+        )
+      )
+    } */
+    //else {
     setState((prev: FormValues) => updateNestedState(prev, field, value))
+    //}
     clearError(error)
   }
 

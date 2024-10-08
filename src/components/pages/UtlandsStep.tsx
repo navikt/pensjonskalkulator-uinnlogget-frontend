@@ -1,19 +1,7 @@
-import React, {
-  forwardRef,
-  Ref,
-  useContext,
-  useImperativeHandle,
-  useState,
-} from 'react'
-import {
-  Radio,
-  RadioGroup,
-  ReadMore,
-  TextField,
-  VStack,
-} from '@navikt/ds-react'
+import React, { useContext } from 'react'
+import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, FormValues, StepRef } from '@/common'
+import { ContextForm, FormValues } from '@/common'
 import { FormContext } from '@/contexts/context'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
