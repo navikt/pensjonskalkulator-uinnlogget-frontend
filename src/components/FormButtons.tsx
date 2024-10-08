@@ -6,7 +6,7 @@ import React, { useContext } from 'react'
 function FormButtons() {
   const context = useContext(FormContext) as ContextForm
 
-  const { curStep, onStepChange, length, back } = context.formPageProps
+  const { curStep, length, back } = context.formPageProps
 
   return (
     <HStack gap={'2'} marginBlock="2">

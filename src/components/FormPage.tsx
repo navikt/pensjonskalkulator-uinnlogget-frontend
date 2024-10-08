@@ -8,7 +8,7 @@ import UtlandsStep from './pages/UtlandsStep'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
-import React, { FormEvent, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
 import submitForm from '@/functions/submitForm'
 import Beregn from './pages/Beregn'
@@ -73,12 +73,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
   const pagesNames = Object.keys(pagesDict)
 
-  const { curStep, step, next, back, goTo } = useMultiStepForm(
-    pagesDict,
-    (e: number) => {
-      // history.pushState({ page: curStep }, '', `${pagesNames[e]}`)
-    }
-  )
+  const { curStep, step, next, back, goTo } = useMultiStepForm(pagesDict)
   const length = pagesNames.length
 
   const handleSubmit = async () => {
