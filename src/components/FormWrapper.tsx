@@ -1,6 +1,6 @@
 import { FormContext } from '@/contexts/context'
 import { VStack } from '@navikt/ds-react'
-import React, { FormEvent, ReactNode } from 'react'
+import React, { FormEvent, ReactNode, useContext } from 'react'
 
 interface FormWrapperProps {
   children: ReactNode

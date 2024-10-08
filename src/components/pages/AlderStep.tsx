@@ -84,7 +84,7 @@ const AlderStep = () => {
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
         </Box>
-        <FormButtons onSubmit={onSubmit} />
+        <FormButtons />
       </FormWrapper>
     </>
   )

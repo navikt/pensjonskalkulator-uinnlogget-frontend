@@ -50,7 +50,7 @@ const AFPStep = () => {
           <Radio value="ALDERSPENSJON">Nei</Radio>
         </RadioGroup>
       </Substep>
-      <FormButtons onSubmit={onSubmit} />
+      <FormButtons />
     </FormWrapper>
   )
 }
