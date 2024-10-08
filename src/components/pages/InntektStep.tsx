@@ -294,21 +294,23 @@ const InntektStep = () => {
             </Select>
           </div>
         </Substep>
-        <RadioGroup
-          legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
-          value={states.inntektVsaHelPensjon}
-          onChange={(it) =>
-            handleFieldChange(
-              'inntektVsaHelPensjon',
-              it,
-              'inntektVsaHelPensjon'
-            )
-          }
-          error={errorFields.inntektVsaHelPensjon}
-        >
-          <Radio value={'ja'}>Ja</Radio>
-          <Radio value={'nei'}>Nei</Radio>
-        </RadioGroup>
+        <Substep>
+          <RadioGroup
+            legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
+            value={states.inntektVsaHelPensjon}
+            onChange={(it) =>
+              handleFieldChange(
+                'inntektVsaHelPensjon',
+                it,
+                'inntektVsaHelPensjon'
+              )
+            }
+            error={errorFields.inntektVsaHelPensjon}
+          >
+            <Radio value={'ja'}>Ja</Radio>
+            <Radio value={'nei'}>Nei</Radio>
+          </RadioGroup>
+        </Substep>
         {states.inntektVsaHelPensjon === 'ja' && (
           <>
             <Substep>

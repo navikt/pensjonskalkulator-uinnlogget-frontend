@@ -1,6 +1,6 @@
 'use client'
 
-import { FormValueResult, FormValues } from '@/common'
+import { FormValues } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -10,10 +10,8 @@ import useMultiStepForm from '@/helpers/useMultiStepForm'
 
 import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
-import submitForm from '@/functions/submitForm'
-import Beregn from './pages/Beregn'
-import LoadingComponent from './LoadingComponent'
 import FormContainerComponent from './FormContainerComponent'
+import BeregnPage from './pages/BeregnPage'
 
 export const initialFormState: FormValues = {
   simuleringType: undefined,
@@ -59,9 +57,6 @@ interface Pages {
 
 function FormPage({ grunnbelop }: FormPageProps) {
   const [formState, setFormState] = useState<FormValues>(initialFormState)
-  const [loading, setLoading] = useState(false)
-  const [beregnResult, setBeregnResult] = useState<FormValueResult>()
-  const [showBeregnPage, setShowBeregnPage] = useState(false)
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,
@@ -72,23 +67,28 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
   const pagesNames = Object.keys(pagesDict)
 
-  const { curStep, step, next, back, goTo } = useMultiStepForm(pagesDict)
+  const lastPage = <BeregnPage key="beregn" />
+
+  const { curStep, step, next, back, goTo } = useMultiStepForm(
+    pagesDict,
+    lastPage
+  )
   const length = pagesNames.length
 
   const handleSubmit = async () => {
-    if (curStep === length - 1) {
-      setLoading(true)
-      try {
-        const resultData = await submitForm(formState)
-        setBeregnResult(JSON.parse(resultData))
-        console.log(resultData)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
-        setShowBeregnPage(true)
-      }
-    }
+    // if (curStep === length - 1) {
+    //   setLoading(true)
+    //   try {
+    //     const resultData = await submitForm(formState)
+    //     setBeregnResult(JSON.parse(resultData))
+    //     console.log(resultData)
+    //   } catch (error) {
+    //     console.error(error)
+    //   } finally {
+    //     setLoading(false)
+    //     setShowBeregnPage(true)
+    //   }
+    // }
   }
 
   return (
@@ -106,26 +106,22 @@ function FormPage({ grunnbelop }: FormPageProps) {
         },
       }}
     >
-      {showBeregnPage && beregnResult ? (
-        <Beregn beregnResult={beregnResult} />
-      ) : (
-        <>
-          {loading ? (
-            <LoadingComponent />
-          ) : (
-            <FormContainerComponent
-              totalSteps={length}
-              activeStep={curStep + 1}
-              back={back}
-              onStepChange={(i) => goTo(i)}
-              handleSubmit={handleSubmit}
-              step={step}
-              curStep={curStep}
-              length={length}
-            />
-          )}
-        </>
-      )}
+      <>
+        {curStep !== length ? (
+          <FormContainerComponent
+            totalSteps={length}
+            activeStep={curStep + 1}
+            back={back}
+            onStepChange={(i) => goTo(i)}
+            handleSubmit={handleSubmit}
+            step={step}
+            curStep={curStep}
+            length={length}
+          />
+        ) : (
+          <BeregnPage />
+        )}
+      </>
     </FormContext.Provider>
   )
 }
