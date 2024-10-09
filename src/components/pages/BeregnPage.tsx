@@ -23,7 +23,7 @@ function BeregnPage() {
     read: () => undefined,
   })
 
-  const { states, setState } = useContext(FormContext) as ContextForm
+  const { states } = useContext(FormContext) as ContextForm
 
   useEffect(() => {
     const payload = { ...states }
