@@ -4,6 +4,7 @@ import { ContextForm, FormValueResult, FormValues } from '@/common'
 import wrapPromise from '@/utils/wrapPromise'
 import submitForm from '@/functions/submitForm'
 import { FormContext } from '@/contexts/context'
+
 import LoadingComponent from '../LoadingComponent'
 
 function fetchBeregnData(formState: FormValues) {
@@ -22,12 +23,32 @@ function BeregnPage() {
     read: () => undefined,
   })
 
-  const context = useContext(FormContext) as ContextForm
+  const { states, setState } = useContext(FormContext) as ContextForm
 
   useEffect(() => {
-    const resource = fetchBeregnData(context.states)
+    const payload = { ...states }
+
+    if (
+      payload.inntektVsaHelPensjon === 'nei' &&
+      payload.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
+      payload.heltUttak.aarligInntektVsaPensjon.beloep > 0
+    ) {
+      payload.heltUttak.aarligInntektVsaPensjon!.beloep = 0
+    }
+    if (
+      payload.inntektVsaHelPensjon == 'nei' &&
+      payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar !== 0 &&
+      payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder !== -1
+    ) {
+      payload.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
+    }
+    if (payload.gradertUttak?.grad === 100) {
+      payload.gradertUttak = undefined
+    }
+
+    const resource = fetchBeregnData(payload)
     setBeregnResource(resource)
-  }, [context.states])
+  }, [])
 
   return (
     <Suspense fallback={<LoadingComponent />}>

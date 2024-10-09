@@ -48,37 +48,7 @@ const InntektStep = () => {
     value: number | string | undefined,
     error: string | null
   ) => {
-    if (field === 'inntektVsaHelPensjon' && value === 'nei') {
-      setState((prev: FormValues) =>
-        updateNestedState(prev, 'heltUttak.aarligInntektVsaPensjon.beloep', 0)
-      )
-      setState((prev: FormValues) =>
-        updateNestedState(
-          prev,
-          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
-          undefined
-        )
-      )
-    }
-    if (
-      livsvarigInntekt &&
-      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-    ) {
-      setState((prev: FormValues) =>
-        updateNestedState(
-          prev,
-          'heltUttak.aarligInntektVsaPensjon.sluttAlder',
-          undefined
-        )
-      )
-    }
-    if (states.gradertUttak?.grad === 100) {
-      setState((prev: FormValues) =>
-        updateNestedState(prev, 'gradertUttak', undefined)
-      )
-    } else {
-      setState((prev: FormValues) => updateNestedState(prev, field, value))
-    }
+    setState((prev: FormValues) => updateNestedState(prev, field, value))
     clearError(error)
   }
 
@@ -101,7 +71,7 @@ const InntektStep = () => {
       if (states.gradertUttak?.grad === 100) {
         states.gradertUttak = undefined
       } */
-      formPageProps.next()
+      formPageProps.goToNext()
       return true
     }
 
@@ -347,7 +317,7 @@ const InntektStep = () => {
                     setLivsvarigInntekt(value === 'livsvarig' ? true : false)
                     handleFieldChange(
                       'heltUttak.aarligInntektVsaPensjon.sluttAlder.aar',
-                      value === 'livsvarig' ? undefined : parseInt(value),
+                      value === 'livsvarig' ? 0 : parseInt(value),
                       'heltUttakAar'
                     )
                   }}
@@ -363,7 +333,7 @@ const InntektStep = () => {
                   <Select
                     value={
                       states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                        ?.maaneder ?? 'livsvarig'
+                        ?.maaneder ?? -1
                     }
                     style={{ width: '5rem' }}
                     label={'Velg måned'}
@@ -371,11 +341,13 @@ const InntektStep = () => {
                       const value = it.target.value
                       handleFieldChange(
                         'heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder',
-                        value === 'livsvarig' ? undefined : parseInt(value),
-                        'helUttakMaaneder'
+                        parseInt(value),
+                        'heltUttakSluttAlderMaaneder'
                       )
                     }}
+                    error={errorFields.heltUttakSluttAlderMaaneder}
                   >
+                    <option value={-1}>----</option>
                     {Array.from({ length: 12 }, (_, i) => (
                       <option value={i} key={i}>
                         {i + 1}.mnd

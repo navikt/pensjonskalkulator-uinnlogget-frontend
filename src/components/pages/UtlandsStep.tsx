@@ -25,7 +25,7 @@ const UtlandsStep = () => {
     const hasErrors = validateFields('UtlandsStep')
     if (!hasErrors) {
       if (states.boddIUtland === 'nei') states.utenlandsAntallAar = 0
-      formPageProps.next()
+      formPageProps.goToNext()
       return true
     }
     return false

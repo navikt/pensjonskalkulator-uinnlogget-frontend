@@ -35,7 +35,7 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
         states.epsHarInntektOver2G = undefined
         states.epsHarPensjon = undefined
       }
-      formPageProps.next()
+      formPageProps.goToNext()
       return true
     }
     return false

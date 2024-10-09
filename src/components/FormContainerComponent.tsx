@@ -5,7 +5,7 @@ import FormProgressComponent from './FormProgressComponent'
 interface FormContainerComponentProps {
   totalSteps: number
   activeStep: number
-  back: () => void
+  goBack: () => void
   onStepChange: (step: number) => void
   handleSubmit: (e: FormEvent) => void
   step: ReactElement | null

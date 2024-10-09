@@ -34,9 +34,7 @@ const useErrorHandling = (states: FormValues) => {
               ? 'Inntekt kan ikke være negativ'
               : null,
       uttaksgrad:
-        states.gradertUttak === undefined || states.gradertUttak?.grad === 0
-          ? 'Du må velge uttaksgrad'
-          : null,
+        states.gradertUttak?.grad === 0 ? 'Du må velge uttaksgrad' : null,
       gradertInntekt:
         (states.gradertUttak !== undefined &&
           states.gradertUttak?.grad > 0 &&
@@ -75,8 +73,14 @@ const useErrorHandling = (states: FormValues) => {
           ? 'Du må velge alder'
           : null,
       heltUttakMaaneder:
-        states.heltUttak.uttakAlder.maaneder === null ||
+        !states.heltUttak.uttakAlder.maaneder ||
         states.heltUttak.uttakAlder.maaneder === -1
+          ? 'Du må velge måned'
+          : null,
+      heltUttakSluttAlderMaaneder:
+        states.heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar !== 0 &&
+        states.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder === -1
           ? 'Du må velge måned'
           : null,
       inntektVsaHelPensjon:

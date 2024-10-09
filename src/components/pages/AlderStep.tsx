@@ -32,7 +32,7 @@ const AlderStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
     if (hasErrors) return false
-    formPageProps.next()
+    formPageProps.goToNext()
     return true
   }
 

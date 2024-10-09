@@ -33,7 +33,7 @@ const AFPStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('AFPStep')
     if (!hasErrors) {
-      formPageProps.next()
+      formPageProps.goToNext()
       return true
     }
 
