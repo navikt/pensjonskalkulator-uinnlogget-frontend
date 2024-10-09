@@ -9,7 +9,7 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
   const [curStep, setCurStep] = useState(0)
   const pages = Object.keys(steps)
 
-  const next = () => {
+  const goToNext = () => {
     setCurStep((prev) => {
       prev = prev + 1
       console.log(prev)
@@ -18,7 +18,7 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
     })
   }
 
-  const back = () => {
+  const goBack = () => {
     setCurStep((prev) => {
       prev = prev - 1
 
@@ -33,8 +33,8 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
   return {
     curStep,
     step: curStep === pages.length ? lastPage : steps[pages[curStep]],
-    next,
-    back,
+    goToNext,
+    goBack,
     goTo,
     stepName: pages[curStep],
   }

@@ -37,8 +37,8 @@ import type { components } from './types/schema.d.ts'
 export type SchemaFormValues = components['schemas']['AnonymSimuleringSpecV1']
 
 export type FormValues = SchemaFormValues & {
-  boddIUtland: string // fjernes fra ApiPayloaded
-  inntektVsaHelPensjon: string // fjernes fra ApiPayloaded
+  boddIUtland: string // fjernes fra ApiPayloaden
+  inntektVsaHelPensjon: string // fjernes fra ApiPayloaden
 }
 
 export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
@@ -66,8 +66,8 @@ export interface PensjonData {
 export interface FormPageProps {
   curStep: number
   length: number
-  back: () => void
+  goBack: () => void
   onStepChange: (step: number) => void
   handleSubmit: () => void
-  next: () => void
+  goToNext: () => void
 }

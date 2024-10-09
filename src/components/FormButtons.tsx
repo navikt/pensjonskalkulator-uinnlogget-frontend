@@ -6,7 +6,7 @@ import React, { useContext } from 'react'
 function FormButtons() {
   const context = useContext(FormContext) as ContextForm
 
-  const { curStep, length, back } = context.formPageProps
+  const { curStep, length, goBack } = context.formPageProps
 
   return (
     <HStack gap={'2'} marginBlock="2">
@@ -15,7 +15,7 @@ function FormButtons() {
       </Button>
 
       {curStep !== 0 && (
-        <Button type="button" variant="secondary" onClick={back}>
+        <Button type="button" variant="secondary" onClick={goBack}>
           Tilbake
         </Button>
       )}
