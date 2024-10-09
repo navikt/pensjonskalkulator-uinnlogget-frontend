@@ -48,7 +48,7 @@ const InntektStep = () => {
     value: number | string | undefined,
     error: string | null
   ) => {
-    /* if (field === 'inntektVsaHelPensjon' && value === 'nei') {
+    if (field === 'inntektVsaHelPensjon' && value === 'nei') {
       setState((prev: FormValues) =>
         updateNestedState(prev, 'heltUttak.aarligInntektVsaPensjon.beloep', 0)
       )
@@ -59,8 +59,11 @@ const InntektStep = () => {
           undefined
         )
       )
-    } 
-    if(livsvarigInntekt && states.heltUttak.aarligInntektVsaPensjon?.sluttAlder){
+    }
+    if (
+      livsvarigInntekt &&
+      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+    ) {
       setState((prev: FormValues) =>
         updateNestedState(
           prev,
@@ -69,18 +72,13 @@ const InntektStep = () => {
         )
       )
     }
-    if(states.gradertUttak?.grad === 100){
+    if (states.gradertUttak?.grad === 100) {
       setState((prev: FormValues) =>
-        updateNestedState(
-          prev,
-          'gradertUttak',
-          undefined
-        )
+        updateNestedState(prev, 'gradertUttak', undefined)
       )
-    } */
-    //else {
-    setState((prev: FormValues) => updateNestedState(prev, field, value))
-    //}
+    } else {
+      setState((prev: FormValues) => updateNestedState(prev, field, value))
+    }
     clearError(error)
   }
 
@@ -88,7 +86,7 @@ const InntektStep = () => {
     const hasErrors = validateFields('InntektStep')
 
     if (!hasErrors) {
-      if (states.inntektVsaHelPensjon === 'nei') {
+      /* if (states.inntektVsaHelPensjon === 'nei') {
         if (states.heltUttak?.aarligInntektVsaPensjon) {
           states.heltUttak.aarligInntektVsaPensjon.beloep = 0
           states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
@@ -102,7 +100,7 @@ const InntektStep = () => {
       }
       if (states.gradertUttak?.grad === 100) {
         states.gradertUttak = undefined
-      }
+      } */
       formPageProps.next()
       return true
     }
