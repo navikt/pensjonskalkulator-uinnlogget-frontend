@@ -21,10 +21,10 @@ describe('FormButtons', () => {
             formPageProps: {
               curStep: 0,
               length: 5,
-              back: jest.fn(),
+              goBack: jest.fn(),
               onStepChange: jest.fn(),
               handleSubmit: jest.fn(),
-              next: jest.fn(),
+              goToNext: jest.fn(),
             },
           }}
         >
@@ -44,10 +44,10 @@ describe('FormButtons', () => {
             formPageProps: {
               curStep: 0,
               length: 5,
-              back: jest.fn(),
+              goBack: jest.fn(),
               onStepChange: jest.fn(),
               handleSubmit: jest.fn(),
-              next: jest.fn(),
+              goToNext: jest.fn(),
             },
           }}
         >
@@ -71,10 +71,10 @@ describe('Når brukeren er mellom første og siste steg,,', () => {
           formPageProps: {
             curStep: 1,
             length: 5,
-            back: jest.fn(),
+            goBack: jest.fn(),
             onStepChange: jest.fn(),
             handleSubmit: jest.fn(),
-            next: jest.fn(),
+            goToNext: jest.fn(),
           },
         }}
       >
@@ -96,10 +96,10 @@ describe('Når brukeren er på siste steg,', () => {
           formPageProps: {
             curStep: 4,
             length: 5,
-            back: jest.fn(),
+            goBack: jest.fn(),
             onStepChange: jest.fn(),
             handleSubmit: jest.fn(),
-            next: jest.fn(),
+            goToNext: jest.fn(),
           },
         }}
       >
@@ -119,10 +119,10 @@ describe('Når brukeren er på siste steg,', () => {
           formPageProps: {
             curStep: 4,
             length: 5,
-            back: jest.fn(),
+            goBack: jest.fn(),
             onStepChange: jest.fn(),
             handleSubmit: jest.fn(),
-            next: jest.fn(),
+            goToNext: jest.fn(),
           },
         }}
       >
@@ -148,10 +148,10 @@ describe('Når brukeren trykker på', () => {
   const defaultFormPageProps = {
     curStep: 1,
     length: 5,
-    back: mockBack,
+    goBack: mockBack,
     onStepChange: mockOnStepChange,
     handleSubmit: mockHandleSubmit,
-    next: mockNext,
+    goToNext: mockNext,
   }
 
   const context = {
