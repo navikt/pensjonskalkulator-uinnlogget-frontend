@@ -22,14 +22,6 @@ const AFPStep = () => {
     clearError(field)
   }
 
-  // useImperativeHandle(ref, () => ({
-  //   onSubmit() {
-  //     const hasErrors = validateFields('AFPStep')
-  //     if (!hasErrors) return true
-  //     return false
-  //   },
-  // }))
-
   const onSubmit = () => {
     const hasErrors = validateFields('AFPStep')
     if (!hasErrors) {

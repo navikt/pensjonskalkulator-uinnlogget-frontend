@@ -96,7 +96,7 @@ const useErrorHandling = (states: FormValues) => {
           ? 'Du må velge et alternativ'
           : null,
       simuleringType:
-        states.simuleringType === undefined
+        states.simuleringType === undefined || states.simuleringType === ''
           ? 'Du må velge et alternativ'
           : null,
     }
