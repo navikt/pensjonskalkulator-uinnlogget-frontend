@@ -36,10 +36,15 @@ function BeregnPage() {
       payload.heltUttak.aarligInntektVsaPensjon!.beloep = 0
     }
     if (
+      payload.inntektVsaHelPensjon === 'nei' &&
+      payload.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
+    ) {
+      payload.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
+    }
+    if (
       payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0 &&
       payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder === -1
     ) {
-      console.log('kom inn')
       payload.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
     }
     if (payload.gradertUttak?.grad === 100) {
