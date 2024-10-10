@@ -13,18 +13,26 @@ const UtlandsStep = () => {
   ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const handleFieldChange = (field: keyof FormValues, value: number | null) => {
+  const handleFieldChange = (
+    field: keyof FormValues,
+    value: number | string | null
+  ) => {
     setState((prev: FormValues) => ({
       ...prev,
       [field]: value,
     }))
     clearError(field)
+    if (field === 'boddIUtland' && value === 'nei') {
+      setState((prev: FormValues) => ({
+        ...prev,
+        ['utenlandsAntallAar']: 0,
+      }))
+    }
   }
 
   const onSubmit = () => {
     const hasErrors = validateFields('UtlandsStep')
     if (!hasErrors) {
-      if (states.boddIUtland === 'nei') states.utenlandsAntallAar = 0
       formPageProps.goToNext()
       return true
     }
