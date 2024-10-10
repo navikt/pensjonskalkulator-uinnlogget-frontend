@@ -26,15 +26,26 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
       [field]: value,
     }))
     clearError(field)
+
+    if (field === 'sivilstand' && value === 'UGIFT') {
+      if (states.epsHarInntektOver2G !== undefined) {
+        setState((prev: FormValues) => ({
+          ...prev,
+          ['epsHarInntektOver2G']: undefined,
+        }))
+      }
+      if (states.epsHarPensjon !== undefined) {
+        setState((prev: FormValues) => ({
+          ...prev,
+          ['epsHarPensjon']: undefined,
+        }))
+      }
+    }
   }
 
   const onSubmit = () => {
     const hasErrors = validateFields('EktefelleStep')
     if (!hasErrors) {
-      if (states.sivilstand === 'UGIFT') {
-        states.epsHarInntektOver2G = undefined
-        states.epsHarPensjon = undefined
-      }
       formPageProps.goToNext()
       return true
     }
