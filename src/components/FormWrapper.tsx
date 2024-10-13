@@ -14,7 +14,9 @@ function FormWrapper({ children, onSubmit }: FormWrapperProps) {
 
   return (
     <VStack gap={'4'} paddingBlock={'3'}>
-      <form onSubmit={handleOnSubmit}>{children}</form>
+      <form role="form" onSubmit={handleOnSubmit}>
+        {children}
+      </form>
     </VStack>
   )
 }
