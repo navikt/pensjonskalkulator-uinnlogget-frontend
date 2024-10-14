@@ -5,12 +5,6 @@ import { initialFormState } from '../FormPage'
 import { FormEvent } from 'react'
 
 describe('FormButtons', () => {
-  // test('Renderer uten feilmelding', () => {
-  //   render(<FormButtons />)
-  //   const formButtonsElement = screen.getByTestId('form-buttons')
-  //   expect(formButtonsElement).toBeInTheDocument()
-  // })
-
   describe('Når brukeren er på første steg,', () => {
     test('Renderer 1 knapp', () => {
       render(
