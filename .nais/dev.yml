@@ -6,7 +6,7 @@ metadata:
   name: pensjonskalkulator-uinnlogget-catbox
   namespace: pensjonskalkulator
 spec:
-  image: { { image } } # Placeholder variable to be replaced by the CI/CD pipeline
+  image: {{image}}
   ingresses:
     - https://pensjonskalkulator-uinnlogget-cat.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
