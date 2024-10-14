@@ -1,5 +1,3 @@
-// src/components/pages/__tests__/AFPStep.test.tsx
-import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import AFPStep from '../AFPStep'
 import { FormContext } from '@/contexts/context'

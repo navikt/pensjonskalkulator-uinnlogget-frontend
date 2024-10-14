@@ -1,5 +1,3 @@
-// src/components/__tests__/FormContainerComponent.test.tsx
-import React from 'react'
 import { render, screen } from '@testing-library/react'
 import FormContainerComponent from '../FormContainerComponent'
 import FormProgressComponent from '../FormProgressComponent'
