@@ -54,7 +54,7 @@ describe('AFPStep Component', () => {
     )
   }
 
-  test('should render the component', () => {
+  test('Burde rendre', () => {
     renderComponent()
     expect(
       screen.getByText('Har du rett til AFP i privat sektor?')
@@ -62,7 +62,7 @@ describe('AFPStep Component', () => {
     expect(screen.getByText('Mocked FormButtons')).toBeInTheDocument()
   })
 
-  test('should call handleFieldChange on radio button change', () => {
+  test('skal kalle handleFieldChange når radio endres', () => {
     renderComponent()
     const radioButton = screen.getByLabelText('Ja')
     fireEvent.click(radioButton)
@@ -70,7 +70,7 @@ describe('AFPStep Component', () => {
     expect(mockClearError).toHaveBeenCalledWith('simuleringType')
   })
 
-  test('should call validateFields and goToNext on form submit if no errors', () => {
+  test('skal kalle validateFields og goToNext når skjemaet sendes inn uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderComponent()
     const form = screen.getByRole('form')
@@ -79,7 +79,7 @@ describe('AFPStep Component', () => {
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
-  test('should not call goToNext on form submit if there are errors', () => {
+  test('skal ikke kalle validateFields og goToNext når skjemaet sendes inn med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderComponent()
     const form = screen.getByRole('form')

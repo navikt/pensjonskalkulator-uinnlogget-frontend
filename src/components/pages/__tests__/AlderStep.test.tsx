@@ -52,7 +52,7 @@ describe('AlderStep Component', () => {
     )
   }
 
-  test('should call validateFields and goToNext on form submit if no errors', () => {
+  test('burde kalle validateFields og goToNext når form submittes uten dersom det ikke er feil i input', () => {
     mockValidateFields.mockReturnValue(false)
     renderComponent()
     const form = screen.getByRole('form')
@@ -61,7 +61,7 @@ describe('AlderStep Component', () => {
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
-  test('should not call goToNext on form submit if there are errors', () => {
+  test('burde ikke kalle validateFields og goToNext når form submittes dersom det er feil i input', () => {
     mockValidateFields.mockReturnValue(true)
     renderComponent()
     const form = screen.getByRole('form')
