@@ -21,14 +21,6 @@ const AlderStep = () => {
     clearError(field)
   }
 
-  // useImperativeHandle(ref, () => ({
-  //   onSubmit() {
-  //     const hasErrors = validateFields('AlderStep')
-  //     if (!hasErrors) return true
-  //     return false
-  //   },
-  // }))
-
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
     if (hasErrors) return false
