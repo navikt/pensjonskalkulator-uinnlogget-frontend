@@ -6,6 +6,7 @@ import { FormContext } from '@/contexts/context'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
+import { useFieldChange } from '@/helpers/useFormState'
 
 const UtlandsStep = () => {
   const { states, setState, formPageProps } = useContext(
@@ -13,22 +14,10 @@ const UtlandsStep = () => {
   ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const handleFieldChange = (
-    field: keyof FormValues,
-    value: number | string | null
-  ) => {
-    setState((prev: FormValues) => ({
-      ...prev,
-      [field]: value,
-    }))
-    clearError(field)
-    if (field === 'boddIUtland' && value === 'nei') {
-      setState((prev: FormValues) => ({
-        ...prev,
-        ['utenlandsAntallAar']: 0,
-      }))
-    }
-  }
+  const { handleFieldChange } = useFieldChange<FormValues>({
+    setState,
+    clearError,
+  })
 
   const onSubmit = () => {
     const hasErrors = validateFields('UtlandsStep')
@@ -47,7 +36,11 @@ const UtlandsStep = () => {
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
             value={states.boddIUtland}
-            onChange={(it) => handleFieldChange('boddIUtland', it)}
+            onChange={(it) =>
+              handleFieldChange((draft) => {
+                draft.boddIUtland = it
+              }, 'boddIUtland')
+            }
             error={errorFields.boddIUtland}
           >
             <Radio value={'ja'}>Ja</Radio>
@@ -62,10 +55,10 @@ const UtlandsStep = () => {
             <Substep>
               <TextField
                 onChange={(it) =>
-                  handleFieldChange(
-                    'utenlandsAntallAar',
-                    it.target.value === '' ? 0 : parseInt(it.target.value, 10)
-                  )
+                  handleFieldChange((draft) => {
+                    draft.utenlandsAntallAar =
+                      it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                  }, 'utenlandsAntallAar')
                 }
                 type="number"
                 inputMode="numeric"

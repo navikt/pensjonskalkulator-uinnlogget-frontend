@@ -3,12 +3,12 @@ kind: Application
 metadata:
   labels:
     team: pensjonskalkulator
-  name: pensjonskalkulator-uinnlogget-sandbox
+  name: pensjonskalkulator-uinnlogget-catbox
   namespace: pensjonskalkulator
 spec:
-  image: {{image}} # Placeholder variable to be replaced by the CI/CD pipeline
+  image: {{image}}
   ingresses:
-    - https://pensjonskalkulator-uinnlogget-dev.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
+    - https://pensjonskalkulator-uinnlogget-cat.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
   replicas:
     max: 1
@@ -24,4 +24,3 @@ spec:
   azure:
     application:
       enabled: true
-      

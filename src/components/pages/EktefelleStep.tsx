@@ -6,6 +6,7 @@ import { ContextForm, FormValues } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
+import { useFieldChange } from '@/helpers/useFormState'
 
 interface FormPageProps {
   grunnbelop: number
@@ -17,31 +18,10 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
   ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const handleFieldChange = (
-    field: keyof FormValues,
-    value: string | boolean | null
-  ) => {
-    setState((prev: FormValues) => ({
-      ...prev,
-      [field]: value,
-    }))
-    clearError(field)
-
-    if (field === 'sivilstand' && value === 'UGIFT') {
-      if (states.epsHarInntektOver2G !== undefined) {
-        setState((prev: FormValues) => ({
-          ...prev,
-          ['epsHarInntektOver2G']: undefined,
-        }))
-      }
-      if (states.epsHarPensjon !== undefined) {
-        setState((prev: FormValues) => ({
-          ...prev,
-          ['epsHarPensjon']: undefined,
-        }))
-      }
-    }
-  }
+  const { handleFieldChange } = useFieldChange<FormValues>({
+    setState,
+    clearError,
+  })
 
   const onSubmit = () => {
     const hasErrors = validateFields('EktefelleStep')
@@ -59,7 +39,11 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           value={states.sivilstand}
           style={{ width: '5rem' }}
           label={'Hva er din sivilstand?'}
-          onChange={(it) => handleFieldChange('sivilstand', it.target.value)}
+          onChange={(it) =>
+            handleFieldChange((draft) => {
+              draft.sivilstand = it.target.value
+            }, 'sivilstand')
+          }
           error={errorFields.sivilstand}
         >
           <option value={'UGIFT'}>Ugift</option>
@@ -74,8 +58,12 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
               legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
                 2 * grunnbelop
               }kr når du starter å ta ut pensjon?`}
-              value={states.epsHarInntektOver2G}
-              onChange={(it) => handleFieldChange('epsHarInntektOver2G', it)}
+              defaultValue={states.epsHarInntektOver2G}
+              onChange={(it) =>
+                handleFieldChange((draft) => {
+                  draft.epsHarInntektOver2G = it
+                }, 'epsHarInntektOver2G')
+              }
               error={errorFields.epsHarInntektOver2G}
             >
               <Radio value={true}>Ja</Radio>
@@ -87,8 +75,12 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
               legend={
                 'Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?'
               }
-              value={states.epsHarPensjon}
-              onChange={(it) => handleFieldChange('epsHarPensjon', it)}
+              defaultValue={states.epsHarPensjon}
+              onChange={(it) =>
+                handleFieldChange((draft) => {
+                  draft.epsHarPensjon = it
+                }, 'epsHarPensjon')
+              }
               error={errorFields.epsHarPensjon}
             >
               <Radio value={true}>Ja</Radio>
