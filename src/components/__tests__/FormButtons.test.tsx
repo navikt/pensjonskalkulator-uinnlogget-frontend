@@ -72,21 +72,10 @@ describe('Når brukeren er på siste steg,', () => {
   })
 
   test('Endrer teksten på knappen til "Send"', () => {
+    const modifiedContextValues = { ...mockedContextValues }
+    modifiedContextValues.formPageProps.curStep = 4
     render(
-      <FormContext.Provider
-        value={{
-          setState: jest.fn(),
-          states: initialFormState,
-          formPageProps: {
-            curStep: 4,
-            length: 5,
-            goBack: jest.fn(),
-            onStepChange: jest.fn(),
-            handleSubmit: jest.fn(),
-            goToNext: jest.fn(),
-          },
-        }}
-      >
+      <FormContext.Provider value={modifiedContextValues}>
         <FormButtons />
       </FormContext.Provider>
     )
