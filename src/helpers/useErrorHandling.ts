@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
-import { FormValues } from '@/common'
+import { State } from '@/common'
 
-const useErrorHandling = (states: FormValues) => {
+const useErrorHandling = (states: State) => {
   const validateFields = (step: string) => {
     const errors: { [key: string]: string | null } = {
       foedselAar:

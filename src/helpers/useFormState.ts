@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { produce } from 'immer' // Import immer for immutable state updates
-import { FormValues } from '@/common'
+import { State } from '@/common'
 
 type UseFieldChangeProps<T> = {
   setState: React.Dispatch<React.SetStateAction<T>>
@@ -8,7 +8,7 @@ type UseFieldChangeProps<T> = {
 }
 
 // Custom hook to handle field changes using immer for deep updates
-export const useFieldChange = <T extends FormValues>({
+export const useFieldChange = <T extends State>({
   setState,
   clearError,
 }: UseFieldChangeProps<T>) => {

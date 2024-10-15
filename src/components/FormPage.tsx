@@ -1,6 +1,6 @@
 'use client'
 
-import { FormValues } from '@/common'
+import { State } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -13,7 +13,7 @@ import EktefelleStep from './pages/EktefelleStep'
 import FormContainerComponent from './FormContainerComponent'
 import BeregnPage from './pages/BeregnPage'
 
-export const initialFormState: FormValues = {
+export const initialFormState: State = {
   simuleringType: '',
   foedselAar: 0,
   sivilstand: 'UGIFT',
@@ -56,7 +56,7 @@ interface Pages {
 }
 
 function FormPage({ grunnbelop }: FormPageProps) {
-  const [formState, setFormState] = useState<FormValues>(initialFormState)
+  const [formState, setFormState] = useState<State>(initialFormState)
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,
@@ -95,7 +95,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     <FormContext.Provider
       value={{
         setState: setFormState,
-        states: formState,
+        state: formState,
         formPageProps: {
           curStep,
           length,

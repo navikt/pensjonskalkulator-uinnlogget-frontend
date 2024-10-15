@@ -8,20 +8,20 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues } from '@/common'
+import { ContextForm, State } from '@/common'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const InntektStep = () => {
-  const { states, setState, formPageProps } = useContext(
+  const { state, setState, formPageProps } = useContext(
     FormContext
   ) as ContextForm
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
-  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
-  const { handleFieldChange } = useFieldChange<FormValues>({
+  const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
@@ -30,21 +30,6 @@ const InntektStep = () => {
     const hasErrors = validateFields('InntektStep')
 
     if (!hasErrors) {
-      /* if (states.inntektVsaHelPensjon === 'nei') {
-        if (states.heltUttak?.aarligInntektVsaPensjon) {
-          states.heltUttak.aarligInntektVsaPensjon.beloep = 0
-          states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
-        }
-      }
-      if (
-        livsvarigInntekt &&
-        states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-      ) {
-        states.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
-      }
-      if (states.gradertUttak?.grad === 100) {
-        states.gradertUttak = undefined
-      } */
       formPageProps.goToNext()
       return true
     }
@@ -68,9 +53,9 @@ const InntektStep = () => {
           label="Hva er din forventede årlige inntekt?"
           description="Dagens kroneverdi før skatt"
           value={
-            states.aarligInntektFoerUttakBeloep === 0
+            state.aarligInntektFoerUttakBeloep === 0
               ? ''
-              : states.aarligInntektFoerUttakBeloep
+              : state.aarligInntektFoerUttakBeloep
           }
           error={errorFields.aarligInntektFoerUttakBeloep}
         />
@@ -90,7 +75,7 @@ const InntektStep = () => {
 
         <Substep>
           <Select
-            value={states.gradertUttak?.grad}
+            value={state.gradertUttak?.grad}
             style={{ width: '5rem' }}
             label={'Hvilken uttaksgrad ønsker du?'}
             onChange={(it) => {
@@ -109,16 +94,16 @@ const InntektStep = () => {
             <option value={'100'}>100%</option>
           </Select>
         </Substep>
-        {states.gradertUttak !== undefined &&
-          states.gradertUttak?.grad !== 0 &&
-          states.gradertUttak?.grad !== 100 && (
+        {state.gradertUttak !== undefined &&
+          state.gradertUttak?.grad !== 0 &&
+          state.gradertUttak?.grad !== 100 && (
             <>
               <Substep>
                 <div className="flex space-x-4">
                   <Select
-                    value={states.gradertUttak?.uttakAlder.aar}
+                    value={state.gradertUttak?.uttakAlder.aar}
                     style={{ width: '5rem' }}
-                    label={`Når planlegger du å ta ut ${states.gradertUttak?.grad}% pensjon?`}
+                    label={`Når planlegger du å ta ut ${state.gradertUttak?.grad}% pensjon?`}
                     description="Velg alder"
                     onChange={(it) => {
                       handleFieldChange((draft) => {
@@ -138,7 +123,7 @@ const InntektStep = () => {
                   </Select>
 
                   <Select
-                    value={states.gradertUttak?.uttakAlder.maaneder}
+                    value={state.gradertUttak?.uttakAlder.maaneder}
                     style={{ width: '5rem' }}
                     label={'-'}
                     description="Velg måned"
@@ -174,11 +159,11 @@ const InntektStep = () => {
                   type="number"
                   inputMode="numeric"
                   style={{ width: '10rem' }}
-                  label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${states.gradertUttak?.grad}% pensjon?`}
+                  label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon?`}
                   value={
-                    states.gradertUttak?.aarligInntektVsaPensjonBeloep === 0
+                    state.gradertUttak?.aarligInntektVsaPensjonBeloep === 0
                       ? ''
-                      : states.gradertUttak?.aarligInntektVsaPensjonBeloep
+                      : state.gradertUttak?.aarligInntektVsaPensjonBeloep
                   }
                   error={errorFields.gradertInntekt}
                 />
@@ -188,7 +173,7 @@ const InntektStep = () => {
         <Substep>
           <div className="flex space-x-4">
             <Select
-              value={states.heltUttak.uttakAlder.aar}
+              value={state.heltUttak.uttakAlder.aar}
               style={{ width: '5rem' }}
               label={`Når planlegger du å ta ut 100% pensjon?`}
               description="Velg alder"
@@ -208,7 +193,7 @@ const InntektStep = () => {
             </Select>
 
             <Select
-              value={states.heltUttak.uttakAlder.maaneder}
+              value={state.heltUttak.uttakAlder.maaneder}
               style={{ width: '5rem' }}
               label={'-'}
               description="Velg måned"
@@ -233,7 +218,7 @@ const InntektStep = () => {
         <Substep>
           <RadioGroup
             legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
-            value={states.inntektVsaHelPensjon}
+            value={state.inntektVsaHelPensjon}
             onChange={(it) =>
               handleFieldChange((draft) => {
                 draft.inntektVsaHelPensjon = it
@@ -245,15 +230,15 @@ const InntektStep = () => {
             <Radio value={'nei'}>Nei</Radio>
           </RadioGroup>
         </Substep>
-        {states.inntektVsaHelPensjon === 'ja' && (
+        {state.inntektVsaHelPensjon === 'ja' && (
           <>
             <Substep>
               <TextField
                 label="Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?"
                 value={
-                  states.heltUttak.aarligInntektVsaPensjon?.beloep === 0
+                  state.heltUttak.aarligInntektVsaPensjon?.beloep === 0
                     ? ''
-                    : states.heltUttak.aarligInntektVsaPensjon?.beloep
+                    : state.heltUttak.aarligInntektVsaPensjon?.beloep
                 }
                 type="number"
                 inputMode="numeric"
@@ -271,7 +256,7 @@ const InntektStep = () => {
               <div className="flex space-x-4">
                 <Select
                   value={
-                    states.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ??
+                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ??
                     'livsvarig'
                   }
                   style={{ width: '5rem' }}
@@ -296,7 +281,7 @@ const InntektStep = () => {
                 {!livsvarigInntekt && (
                   <Select
                     value={
-                      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
                         ?.maaneder ?? -1
                     }
                     style={{ width: '5rem' }}

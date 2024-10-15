@@ -6,7 +6,7 @@ import { FormEvent } from 'react'
 
 const mockedContextValues = {
   setState: jest.fn(),
-  states: initialFormState,
+  state: initialFormState,
   formPageProps: {
     curStep: 0,
     length: 5,
@@ -106,7 +106,7 @@ describe('Når brukeren trykker på', () => {
 
   const context = {
     setState: jest.fn(),
-    states: initialFormState,
+    state: initialFormState,
     formPageProps: defaultFormPageProps,
   }
 

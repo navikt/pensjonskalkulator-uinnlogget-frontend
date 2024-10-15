@@ -31,7 +31,7 @@ describe('AFPStep Component', () => {
 
   const context = {
     setState: mockSetState,
-    states: initialFormState,
+    state: initialFormState,
     formPageProps: defaultFormPageProps,
   }
 

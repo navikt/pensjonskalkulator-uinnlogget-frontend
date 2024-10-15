@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, FormValues } from '@/common'
+import { ContextForm, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
@@ -9,12 +9,12 @@ import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const UtlandsStep = () => {
-  const { states, setState, formPageProps } = useContext(
+  const { state, setState, formPageProps } = useContext(
     FormContext
   ) as ContextForm
-  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
-  const { handleFieldChange } = useFieldChange<FormValues>({
+  const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
@@ -35,7 +35,7 @@ const UtlandsStep = () => {
         <div>
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
-            value={states.boddIUtland}
+            value={state.boddIUtland}
             onChange={(it) =>
               handleFieldChange((draft) => {
                 draft.boddIUtland = it
@@ -51,7 +51,7 @@ const UtlandsStep = () => {
             pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
             pensjon fra det landet du har bodd i.
           </ReadMore>
-          {states.boddIUtland === 'ja' && (
+          {state.boddIUtland === 'ja' && (
             <Substep>
               <TextField
                 onChange={(it) =>
@@ -64,9 +64,7 @@ const UtlandsStep = () => {
                 inputMode="numeric"
                 label="Hvor mange år har du bodd i utlandet?"
                 value={
-                  states.utenlandsAntallAar === 0
-                    ? ''
-                    : states.utenlandsAntallAar
+                  state.utenlandsAntallAar === 0 ? '' : state.utenlandsAntallAar
                 }
                 error={errorFields.utenlandsAntallAar}
               ></TextField>

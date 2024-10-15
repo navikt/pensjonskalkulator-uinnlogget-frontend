@@ -36,7 +36,7 @@ import type { components } from './types/schema.d.ts'
 
 export type SchemaFormValues = components['schemas']['AnonymSimuleringSpecV1']
 
-export type FormValues = SchemaFormValues & {
+export type State = SchemaFormValues & {
   boddIUtland: string // fjernes fra ApiPayloaden
   inntektVsaHelPensjon: string // fjernes fra ApiPayloaden
 }
@@ -44,7 +44,7 @@ export type FormValues = SchemaFormValues & {
 export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
 
 export interface ContextForm {
-  states: FormValues
+  state: State
   setState: Dispatch<React.SetStateAction<FormValues>>
   formPageProps: FormPageProps
 }

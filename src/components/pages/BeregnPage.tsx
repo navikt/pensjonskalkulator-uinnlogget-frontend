@@ -1,6 +1,6 @@
 import React, { Suspense, useContext, useEffect, useState } from 'react'
 import Beregn from '../Beregn'
-import { ContextForm, FormValueResult, FormValues } from '@/common'
+import { ContextForm, FormValueResult, State } from '@/common'
 import wrapPromise from '@/utils/wrapPromise'
 import submitForm from '@/functions/submitForm'
 import { FormContext } from '@/contexts/context'
@@ -8,7 +8,7 @@ import { FormContext } from '@/contexts/context'
 import LoadingComponent from '../LoadingComponent'
 import { produce } from 'immer'
 
-function fetchBeregnData(formState: FormValues) {
+function fetchBeregnData(formState: State) {
   return wrapPromise(
     submitForm(formState).then((data) => JSON.parse(data) as FormValueResult)
   )
@@ -24,10 +24,10 @@ function BeregnPage() {
     read: () => undefined,
   })
 
-  const { states, setState } = useContext(FormContext) as ContextForm
+  const { state, setState } = useContext(FormContext) as ContextForm
 
   useEffect(() => {
-    const payload = produce(states, (draft) => {
+    const payload = produce(state, (draft) => {
       if (
         draft.inntektVsaHelPensjon === 'nei' &&
         draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
