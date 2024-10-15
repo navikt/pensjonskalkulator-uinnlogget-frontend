@@ -103,6 +103,8 @@ const useErrorHandling = (states: FormValues) => {
 
     let errorStep: { [key: string]: string | null } = {}
 
+    //TODO: Change type to enum
+
     if (step === 'AlderStep') {
       const {
         foedselAar: _foedselAar,
