@@ -1,9 +1,6 @@
 import { useEffect } from 'react'
-import { usePathname } from 'next/navigation'
 
 export const useRoute = (backEvent: () => void) => {
-  const pathname = usePathname()
-
   useEffect(() => {
     const handlePopState = () => {
       backEvent()
