@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import AFPStep from '../AFPStep'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '../../FormPage'
 import useErrorHandling from '../../../helpers/useErrorHandling'
+import { initialFormState } from '@/defaults/defaultFormState'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({

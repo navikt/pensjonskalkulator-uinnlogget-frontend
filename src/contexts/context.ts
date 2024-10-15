@@ -1,7 +1,6 @@
 import { ContextForm } from '@/common'
+import { initialFormState } from '@/defaults/defaultFormState'
 import { createContext } from 'react'
-
-import { initialFormState } from '@/components/FormPage'
 
 const defaultFormPageProps = {
   curStep: 0,

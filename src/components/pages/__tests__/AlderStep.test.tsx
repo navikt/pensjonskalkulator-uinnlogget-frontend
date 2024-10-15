@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import AlderStep from '../AlderStep'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '../../FormPage'
+
 import useErrorHandling from '../../../helpers/useErrorHandling'
+import { initialFormState } from '@/defaults/defaultFormState'
 
 jest.mock('../../../helpers/useErrorHandling', () => ({
   __esModule: true,

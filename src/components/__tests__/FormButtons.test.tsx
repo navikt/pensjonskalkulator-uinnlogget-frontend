@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import FormButtons from '../FormButtons'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '../FormPage'
 import { FormEvent } from 'react'
+import { initialFormState } from '@/defaults/defaultFormState'
 
 const mockedContextValues = {
   setState: jest.fn(),
