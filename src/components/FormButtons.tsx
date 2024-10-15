@@ -1,10 +1,9 @@
-import { ContextForm } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
 
 function FormButtons() {
-  const context = useContext(FormContext) as ContextForm
+  const context = useContext(FormContext)
 
   const { curStep, length, goBack } = context.formPageProps
 

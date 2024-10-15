@@ -1,6 +1,6 @@
 import React, { Suspense, useContext, useEffect, useState } from 'react'
 import Beregn from '../Beregn'
-import { ContextForm, FormValueResult, State } from '@/common'
+import { FormValueResult, State } from '@/common'
 import wrapPromise from '@/utils/wrapPromise'
 import submitForm from '@/functions/submitForm'
 import { FormContext } from '@/contexts/context'
@@ -24,7 +24,7 @@ function BeregnPage() {
     read: () => undefined,
   })
 
-  const { state, setState } = useContext(FormContext) as ContextForm
+  const { state, setState } = useContext(FormContext)
 
   useEffect(() => {
     const payload = produce(state, (draft) => {

@@ -8,16 +8,14 @@ import {
   TextField,
 } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, State } from '@/common'
+import { State } from '@/common'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import Substep from '../Substep'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const InntektStep = () => {
-  const { state, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
+  const { state, setState, formPageProps } = useContext(FormContext)
   const [livsvarigInntekt, setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 

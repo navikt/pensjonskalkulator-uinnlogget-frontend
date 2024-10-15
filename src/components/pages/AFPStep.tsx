@@ -2,16 +2,14 @@ import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, State } from '@/common'
+import { State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const AFPStep = () => {
-  const { state, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
+  const { state, setState, formPageProps } = useContext(FormContext)
 
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 

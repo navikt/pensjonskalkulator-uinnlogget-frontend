@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, State } from '@/common'
+import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
@@ -9,9 +9,7 @@ import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const UtlandsStep = () => {
-  const { state, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
+  const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
   const { handleFieldChange } = useFieldChange<State>({

@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValueResult } from '@/common'
+import { FormValueResult } from '@/common'
 import { Table } from '@navikt/ds-react'
 
 interface BeregnProps {
@@ -8,7 +8,7 @@ interface BeregnProps {
 }
 
 const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
-  const { state } = useContext(FormContext) as ContextForm
+  const { state } = useContext(FormContext)
 
   const alderspensjonHel =
     beregnResult?.alderspensjon?.find(

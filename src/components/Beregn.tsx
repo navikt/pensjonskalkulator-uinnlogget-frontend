@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValueResult } from '@/common'
+import { FormValueResult } from '@/common'
 import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
 
@@ -13,7 +13,7 @@ interface BeregnResource {
 }
 
 const Beregn: React.FC<BeregnResource> = ({ resource }) => {
-  const { state } = useContext(FormContext) as ContextForm
+  const { state } = useContext(FormContext)
   const beregnResult = resource.read()
 
   const getChartOptions = () => {

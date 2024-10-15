@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup, Select } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, State } from '@/common'
+import { State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -13,9 +13,7 @@ interface FormPageProps {
 }
 
 const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
-  const { state, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
+  const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
   const { handleFieldChange } = useFieldChange<State>({
