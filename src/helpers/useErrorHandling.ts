@@ -15,7 +15,9 @@ const useErrorHandling = (states: FormValues) => {
             ? 'Fyll ut antall år'
             : states.inntektOver1GAntallAar < 0
               ? 'Antall år kan ikke være negativt'
-              : null,
+              : states.inntektOver1GAntallAar > 50
+                ? 'Du kan ikke være yrkesaktiv i mer enn 50 år'
+                : null,
       boddIUtland: !states.boddIUtland ? 'Du må velge et alternativ' : null,
       utenlandsAntallAar:
         states.utenlandsAntallAar !== undefined
@@ -59,6 +61,12 @@ const useErrorHandling = (states: FormValues) => {
         states.gradertUttak.uttakAlder.maaneder === -1
           ? 'Du må velge måned'
           : null,
+      heltUttakAar:
+        states.heltUttak.uttakAlder.aar === 0 ? 'Du må velge alder' : null,
+      heltUttakMaaneder:
+        states.heltUttak.uttakAlder.maaneder === -1
+          ? 'Du må velge måned'
+          : null,
       helPensjonInntekt:
         (states.inntektVsaHelPensjon === 'ja' &&
           (!states.heltUttak.aarligInntektVsaPensjon?.beloep
@@ -67,16 +75,6 @@ const useErrorHandling = (states: FormValues) => {
               ? 'Inntekt kan ikke være negativ'
               : null)) ||
         null,
-      heltUttakAar:
-        !states.heltUttak.uttakAlder.aar ||
-        states.heltUttak.uttakAlder.aar === 0
-          ? 'Du må velge alder'
-          : null,
-      heltUttakMaaneder:
-        !states.heltUttak.uttakAlder.maaneder ||
-        states.heltUttak.uttakAlder.maaneder === -1
-          ? 'Du må velge måned'
-          : null,
       heltUttakSluttAlderMaaneder:
         states.heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
         states.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar !== 0 &&
