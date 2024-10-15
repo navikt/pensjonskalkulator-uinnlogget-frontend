@@ -6,6 +6,7 @@ import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import Substep from '../Substep'
+import { useFieldChange } from '@/helpers/useFormState'
 
 const AlderStep = () => {
   const { states, setState, formPageProps } = useContext(
@@ -13,13 +14,10 @@ const AlderStep = () => {
   ) as ContextForm
   const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
 
-  const handleFieldChange = (field: keyof FormValues, value: number | null) => {
-    setState((prev: FormValues) => ({
-      ...prev,
-      [field]: value,
-    }))
-    clearError(field)
-  }
+  const { handleFieldChange } = useFieldChange<FormValues>({
+    setState,
+    clearError,
+  })
 
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
@@ -35,10 +33,10 @@ const AlderStep = () => {
           <TextField
             maxLength={3}
             onChange={(it) =>
-              handleFieldChange(
-                'foedselAar',
-                it.target.value === '' ? 0 : parseInt(it.target.value, 10)
-              )
+              handleFieldChange((draft) => {
+                draft.foedselAar =
+                  it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+              }, 'foedselAar')
             }
             type="number"
             inputMode="numeric"
@@ -52,10 +50,10 @@ const AlderStep = () => {
             <TextField
               maxLength={3}
               onChange={(it) =>
-                handleFieldChange(
-                  'inntektOver1GAntallAar',
-                  it.target.value === '' ? 0 : parseInt(it.target.value, 10)
-                )
+                handleFieldChange((draft) => {
+                  draft.inntektOver1GAntallAar =
+                    it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                }, 'inntektOver1GAntallAar')
               }
               type="number"
               inputMode="numeric"

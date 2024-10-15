@@ -6,6 +6,7 @@ import submitForm from '@/functions/submitForm'
 import { FormContext } from '@/contexts/context'
 
 import LoadingComponent from '../LoadingComponent'
+import { produce } from 'immer'
 
 function fetchBeregnData(formState: FormValues) {
   return wrapPromise(
@@ -23,33 +24,42 @@ function BeregnPage() {
     read: () => undefined,
   })
 
-  const { states } = useContext(FormContext) as ContextForm
+  const { states, setState } = useContext(FormContext) as ContextForm
 
   useEffect(() => {
-    const payload = { ...states }
+    const payload = produce(states, (draft) => {
+      if (
+        draft.inntektVsaHelPensjon === 'nei' &&
+        draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
+        draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
+      ) {
+        draft.heltUttak.aarligInntektVsaPensjon!.beloep = 0
+      }
+      if (
+        draft.inntektVsaHelPensjon === 'nei' &&
+        draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
+      ) {
+        draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
+      }
+      if (
+        draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0 &&
+        draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder === -1
+      ) {
+        draft.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
+      }
+      if (draft.gradertUttak?.grad === 100) {
+        draft.gradertUttak = undefined
+      }
+      if (draft.sivilstand === 'UGIFT') {
+        draft.epsHarInntektOver2G = undefined
+        draft.epsHarPensjon = undefined
+      }
+      if (draft.boddIUtland === 'nei') {
+        draft.utenlandsAntallAar = 0
+      }
+    })
 
-    if (
-      payload.inntektVsaHelPensjon === 'nei' &&
-      payload.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
-      payload.heltUttak.aarligInntektVsaPensjon.beloep > 0
-    ) {
-      payload.heltUttak.aarligInntektVsaPensjon!.beloep = 0
-    }
-    if (
-      payload.inntektVsaHelPensjon === 'nei' &&
-      payload.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
-    ) {
-      payload.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
-    }
-    if (
-      payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0 &&
-      payload.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder === -1
-    ) {
-      payload.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
-    }
-    if (payload.gradertUttak?.grad === 100) {
-      payload.gradertUttak = undefined
-    }
+    setState(payload)
 
     const resource = fetchBeregnData(payload)
     setBeregnResource(resource)
