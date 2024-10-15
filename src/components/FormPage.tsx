@@ -8,11 +8,12 @@ import UtlandsStep from './pages/UtlandsStep'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
 import FormContainerComponent from './FormContainerComponent'
 import BeregnPage from './pages/BeregnPage'
 import { initialFormState } from '@/defaults/defaultFormState'
+import { useRoute } from '@/helpers/useRoute'
 
 interface FormPageProps {
   grunnbelop: number
@@ -40,7 +41,13 @@ function FormPage({ grunnbelop }: FormPageProps) {
     pagesDict,
     lastPage
   )
+  const { setRoute } = useRoute(goBack)
   const length = pagesNames.length
+
+  useEffect(() => {
+    const route = pagesNames[curStep]
+    setRoute(route)
+  }, [curStep])
 
   const handleSubmit = async () => {
     // if (curStep === length - 1) {
