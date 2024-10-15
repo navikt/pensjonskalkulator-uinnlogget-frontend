@@ -3,6 +3,7 @@ import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import { initialFormState } from '@/components/FormPage'
 import useErrorHandling from '@/helpers/useErrorHandling'
+import { FormValues } from '@/common'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string | null }
@@ -11,7 +12,7 @@ describe('useErrorHandling', () => {
     clearError: (field: string | null) => void
   }
 
-  const renderWithState = (state: any) => {
+  const renderWithState = (state: FormValues) => {
     const TestComponent = () => {
       const result = useErrorHandling(state)
       errorFields = result[0]
