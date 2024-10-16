@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import AlderStep from '../AlderStep'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '../../FormPage'
+
 import useErrorHandling from '../../../helpers/useErrorHandling'
+import { initialFormState } from '@/defaults/defaultFormState'
 
 jest.mock('../../../helpers/useErrorHandling', () => ({
   __esModule: true,
@@ -14,35 +15,35 @@ jest.mock('../../FormButtons', () => ({
   default: jest.fn(() => <div>Mocked FormButtons</div>),
 }))
 
+const mockGoToNext = jest.fn()
+const mockSetState = jest.fn()
+
+const defaultFormPageProps = {
+  curStep: 1,
+  length: 5,
+  goBack: jest.fn(),
+  onStepChange: jest.fn(),
+  handleSubmit: jest.fn(),
+  goToNext: mockGoToNext,
+}
+
+const context = {
+  setState: mockSetState,
+  state: initialFormState,
+  formPageProps: defaultFormPageProps,
+}
+
+const mockValidateFields = jest.fn()
+const mockClearError = jest.fn()
+
+beforeEach(() => {
+  jest.clearAllMocks()
+  ;(useErrorHandling as jest.Mock).mockReturnValue([
+    {},
+    { validateFields: mockValidateFields, clearError: mockClearError },
+  ])
+})
 describe('AlderStep Component', () => {
-  const mockGoToNext = jest.fn()
-  const mockSetState = jest.fn()
-
-  const defaultFormPageProps = {
-    curStep: 1,
-    length: 5,
-    goBack: jest.fn(),
-    onStepChange: jest.fn(),
-    handleSubmit: jest.fn(),
-    goToNext: mockGoToNext,
-  }
-
-  const context = {
-    setState: mockSetState,
-    states: initialFormState,
-    formPageProps: defaultFormPageProps,
-  }
-
-  const mockValidateFields = jest.fn()
-  const mockClearError = jest.fn()
-
-  beforeEach(() => {
-    jest.clearAllMocks()
-    ;(useErrorHandling as jest.Mock).mockReturnValue([
-      {},
-      { validateFields: mockValidateFields, clearError: mockClearError },
-    ])
-  })
 
   const renderComponent = () => {
     return render(
@@ -52,7 +53,7 @@ describe('AlderStep Component', () => {
     )
   }
 
-  test('burde kalle validateFields og goToNext når form submittes uten dersom det ikke er feil i input', () => {
+  test('burde kalle validateFields og goToNext når form submittes dersom det ikke er feil i input', () => {
     mockValidateFields.mockReturnValue(false)
     renderComponent()
     const form = screen.getByRole('form')
@@ -68,5 +69,22 @@ describe('AlderStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
+  })
+
+  test('burde vise en feilmelding dersom errorFields inneholder noe', () => {
+    const errorFields = {
+      foedselAar: 'Dette feltet er påkrevd',
+    }
+    ;(useErrorHandling as jest.Mock).mockReturnValue([
+      errorFields,
+      { validateFields: mockValidateFields, clearError: mockClearError },
+    ])
+    renderComponent()
+    const form = screen.getByRole('form')
+    fireEvent.submit(form)
+    expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
+    expect(mockGoToNext).not.toHaveBeenCalled()
+    expect(screen.getByText('Dette feltet er påkrevd')).toBeInTheDocument()
+
   })
 })

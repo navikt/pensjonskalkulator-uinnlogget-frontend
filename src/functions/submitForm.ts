@@ -1,6 +1,6 @@
-import { FormValues } from '@/common'
+import { State } from '@/common'
 
-const submitForm = async (formstate: FormValues) => {
+const submitForm = async (formstate: State) => {
   const {
     boddIUtland: _boddIUtland,
     inntektVsaHelPensjon: _inntektVsaHelPensjon,

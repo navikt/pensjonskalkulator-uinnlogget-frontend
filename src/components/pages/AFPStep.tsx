@@ -2,20 +2,18 @@ import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValues } from '@/common'
+import { State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const AFPStep = () => {
-  const { states, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
+  const { state, setState, formPageProps } = useContext(FormContext)
 
-  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
-  const { handleFieldChange } = useFieldChange<FormValues>({
+  const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
@@ -35,7 +33,7 @@ const AFPStep = () => {
       <Substep>
         <RadioGroup
           legend={'Har du rett til AFP i privat sektor?'}
-          value={states.simuleringType}
+          defaultValue={state.simuleringType}
           onChange={(it) =>
             handleFieldChange((draft) => {
               draft.simuleringType = it

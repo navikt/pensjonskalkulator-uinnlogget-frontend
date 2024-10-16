@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValueResult } from '@/common'
+import { FormValueResult } from '@/common'
 import { Table } from '@navikt/ds-react'
 
 interface BeregnProps {
@@ -8,28 +8,28 @@ interface BeregnProps {
 }
 
 const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
-  const { states } = useContext(FormContext) as ContextForm
+  const { state } = useContext(FormContext)
 
   const alderspensjonHel =
     beregnResult?.alderspensjon?.find(
-      (item) => item.alder === states.heltUttak.uttakAlder.aar
+      (item) => item.alder === state.heltUttak.uttakAlder.aar
     )?.beloep || 0
   const alderspensjonGradert =
     beregnResult?.alderspensjon?.find(
-      (item) => item.alder === states.gradertUttak?.uttakAlder.aar
+      (item) => item.alder === state.gradertUttak?.uttakAlder.aar
     )?.beloep || 0
   const afpPrivatHel =
     beregnResult?.afpPrivat?.find(
-      (item) => item.alder === states.heltUttak.uttakAlder.aar
+      (item) => item.alder === state.heltUttak.uttakAlder.aar
     )?.beloep || 0
   const afpPrivatGradert =
     beregnResult?.afpPrivat?.find(
-      (item) => item.alder === states.gradertUttak?.uttakAlder.aar
+      (item) => item.alder === state.gradertUttak?.uttakAlder.aar
     )?.beloep || 0
   const aarligbelopVsaGradertuttak =
-    states.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
+    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
   const aarligbelopVsaHeltuttak =
-    states.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
 
   return (
     <Table>
@@ -44,17 +44,17 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
       </Table.Header>
       <Table.Body>
         {aarligbelopVsaGradertuttak !== 0 && (
-          <Table.Row key={states.gradertUttak?.uttakAlder.aar}>
+          <Table.Row key={state.gradertUttak?.uttakAlder.aar}>
             <Table.HeaderCell scope="row">
-              Ved {states.gradertUttak?.uttakAlder.aar}
+              Ved {state.gradertUttak?.uttakAlder.aar}
               {' ('}
-              {states.gradertUttak?.grad}
+              {state.gradertUttak?.grad}
               {'%)'}
             </Table.HeaderCell>
             <Table.DataCell>{alderspensjonGradert}</Table.DataCell>
             <Table.DataCell>{afpPrivatGradert}</Table.DataCell>
             <Table.DataCell>
-              {states.gradertUttak?.aarligInntektVsaPensjonBeloep}
+              {state.gradertUttak?.aarligInntektVsaPensjonBeloep}
             </Table.DataCell>
             <Table.DataCell>
               {alderspensjonGradert +
@@ -63,9 +63,9 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
             </Table.DataCell>
           </Table.Row>
         )}
-        <Table.Row key={states.heltUttak.uttakAlder.aar}>
+        <Table.Row key={state.heltUttak.uttakAlder.aar}>
           <Table.HeaderCell scope="row">
-            Ved {states.heltUttak.uttakAlder.aar} {'(100%)'}
+            Ved {state.heltUttak.uttakAlder.aar} {'(100%)'}
           </Table.HeaderCell>
           <Table.DataCell>{alderspensjonHel}</Table.DataCell>
           <Table.DataCell>{afpPrivatHel}</Table.DataCell>

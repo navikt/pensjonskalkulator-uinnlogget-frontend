@@ -1,6 +1,6 @@
 'use client'
 
-import { FormValues } from '@/common'
+import { State } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
@@ -12,40 +12,7 @@ import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
 import FormContainerComponent from './FormContainerComponent'
 import BeregnPage from './pages/BeregnPage'
-
-export const initialFormState: FormValues = {
-  simuleringType: '',
-  foedselAar: 0,
-  sivilstand: 'UGIFT',
-  epsHarInntektOver2G: undefined,
-  epsHarPensjon: undefined,
-  boddIUtland: '', // fjernes fra ApiPayloaded
-  inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
-  utenlandsAntallAar: 0,
-  inntektOver1GAntallAar: 0, //Spør espen om dette. Hva er denne verdien og hvilket intervall kan den være mellom. Fiks useErrorHandling.ts i henhold til dette.
-  aarligInntektFoerUttakBeloep: 0,
-  gradertUttak: {
-    grad: 0,
-    uttakAlder: {
-      aar: 0,
-      maaneder: -1,
-    },
-    aarligInntektVsaPensjonBeloep: 0,
-  },
-  heltUttak: {
-    uttakAlder: {
-      aar: 0,
-      maaneder: -1,
-    },
-    aarligInntektVsaPensjon: {
-      beloep: 0,
-      sluttAlder: {
-        aar: 0,
-        maaneder: -1,
-      },
-    },
-  },
-}
+import { initialFormState } from '@/defaults/defaultFormState'
 
 interface FormPageProps {
   grunnbelop: number
@@ -56,7 +23,7 @@ interface Pages {
 }
 
 function FormPage({ grunnbelop }: FormPageProps) {
-  const [formState, setFormState] = useState<FormValues>(initialFormState)
+  const [formState, setFormState] = useState<State>(initialFormState)
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,
@@ -95,7 +62,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     <FormContext.Provider
       value={{
         setState: setFormState,
-        states: formState,
+        state: formState,
         formPageProps: {
           curStep,
           length,

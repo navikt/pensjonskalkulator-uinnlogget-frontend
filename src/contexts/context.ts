@@ -1,4 +1,18 @@
 import { ContextForm } from '@/common'
+import { initialFormState } from '@/defaults/defaultFormState'
 import { createContext } from 'react'
 
-export const FormContext = createContext<ContextForm | undefined>(undefined)
+const defaultFormPageProps = {
+  curStep: 0,
+  length: 0,
+  goBack: () => {},
+  onStepChange: () => {},
+  handleSubmit: () => {},
+  goToNext: () => {},
+}
+
+export const FormContext = createContext<ContextForm>({
+  state: initialFormState,
+  setState: () => {},
+  formPageProps: defaultFormPageProps,
+})

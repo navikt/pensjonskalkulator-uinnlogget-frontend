@@ -24,12 +24,12 @@ describe('FormContainerComponent', () => {
     return render(<FormContainerComponent {...defaultProps} {...props} />)
   }
 
-  test('skal rendre komponenten', () => {
+  test('Skal rendre komponenten', () => {
     renderComponent()
     expect(screen.getByText('Pensjonskalkulator')).toBeInTheDocument()
   })
 
-  test('skal rendre FormProgressComponent med riktige props', () => {
+  test('Skal rendre FormProgressComponent med riktige props', () => {
     renderComponent()
     expect(screen.getByText('Mocked FormProgressComponent')).toBeInTheDocument()
     expect(FormProgressComponent).toHaveBeenCalledWith(
@@ -41,7 +41,7 @@ describe('FormContainerComponent', () => {
     )
   })
 
-  test('skal rendre det nåværende steget', () => {
+  test('Skal rendre det nåværende steget', () => {
     renderComponent()
     expect(screen.getByText('Mocked Step')).toBeInTheDocument()
   })

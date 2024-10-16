@@ -29,12 +29,12 @@ describe('FormPage Component', () => {
     return render(<FormPage grunnbelop={grunnbelop} />)
   }
 
-  test('should render the FormPage component', () => {
+  test('Burde rendre komponenten', () => {
     renderFormPage()
     expect(screen.getByText('Pensjonskalkulator')).toBeInTheDocument()
   })
 
-  test('should render the first step', () => {
+  test('Burde rendre første steget', () => {
     renderFormPage()
     expect(screen.getByText('First Step')).toBeInTheDocument()
   })
