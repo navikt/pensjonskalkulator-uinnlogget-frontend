@@ -114,7 +114,7 @@ describe('Når brukeren trykker på', () => {
     jest.clearAllMocks()
   })
 
-  test('Neste-knappen, skal next-funksjonen kalles', () => {
+  test('Neste-knappen, skal goToNext-funksjonen kalles', () => {
     render(
       <FormContext.Provider value={context}>
         <form onSubmit={handleSubmit}>
@@ -123,13 +123,12 @@ describe('Når brukeren trykker på', () => {
       </FormContext.Provider>
     )
 
-    //Expext button to submit form
     const formButtonsElement = screen.getByRole('button', { name: 'Neste' })
     formButtonsElement.click()
     expect(mockHandleSubmit).toHaveBeenCalledTimes(1)
   })
 
-  test('Tilbake-knappen, skal back-funksjonen kalles', () => {
+  test('Tilbake-knappen, skal goBack-funksjonen kalles', () => {
     render(
       <FormContext.Provider value={context}>
         <FormButtons />

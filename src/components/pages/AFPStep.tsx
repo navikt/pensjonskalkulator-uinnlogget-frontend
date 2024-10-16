@@ -33,7 +33,7 @@ const AFPStep = () => {
       <Substep>
         <RadioGroup
           legend={'Har du rett til AFP i privat sektor?'}
-          value={state.simuleringType}
+          defaultValue={state.simuleringType}
           onChange={(it) =>
             handleFieldChange((draft) => {
               draft.simuleringType = it
