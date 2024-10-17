@@ -46,7 +46,7 @@ const InntektStep = () => {
   const handleFieldChange = (
     field: string,
     value: number | string | undefined,
-    error: string | null
+    error: string
   ) => {
     setState((prev: FormValues) => updateNestedState(prev, field, value))
     clearError(error)
