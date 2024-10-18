@@ -141,9 +141,14 @@ const useErrorHandling = (states: FormValues) => {
   const handlers = useMemo(
     () => ({
       validateFields,
-      clearError: (field: string) => { 
-        setErrorFields((prev) => ({ ...prev, [field]: '' }))
+      clearError: (field: string | null) => {
+        if (field !== null) {
+          setErrorFields((prev) => ({ ...prev, [field]: '' }))
+        }
       },
+      /* clearError: (field: string) => { 
+        setErrorFields((prev) => ({ ...prev, [field]: '' }))
+      }, */
     }),
     [states]
   )
