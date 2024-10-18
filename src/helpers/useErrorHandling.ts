@@ -1,7 +1,5 @@
 import { useState, useMemo } from 'react'
-import { FormValues } from '@/common'
-
-type StepName = 'AlderStep' | 'UtlandsStep' | 'InntektStep' | 'EktefelleStep' | 'AFPStep'
+import { StepName, ErrorFields, FormValues } from '@/common'
 
 const useErrorHandling = (states: FormValues) => {
   const validateInntektOver1GAntallAar = (): string => {
@@ -98,7 +96,7 @@ const useErrorHandling = (states: FormValues) => {
   }
 
   const validateFields = (step: StepName) => {
-    const errors: { [key: string]: string } = {}
+    const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
       errors.foedselAar = states.foedselAar < 1900 || states.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
@@ -138,12 +136,12 @@ const useErrorHandling = (states: FormValues) => {
     return Object.values(errors).some((error) => error !== '')
   }
 
-  const [errorFields, setErrorFields] = useState<{ [key: string]: string }>({})
+  const [errorFields, setErrorFields] = useState<ErrorFields>({});
 
   const handlers = useMemo(
     () => ({
       validateFields,
-      clearError: (field: string) => {
+      clearError: (field: string) => { 
         setErrorFields((prev) => ({ ...prev, [field]: '' }))
       },
     }),

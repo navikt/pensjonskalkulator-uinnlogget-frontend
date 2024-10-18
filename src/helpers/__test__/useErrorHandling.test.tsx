@@ -867,4 +867,53 @@ describe('useErrorHandling', () => {
       })
     })
   })
+
+  describe('clearError', () => {
+    test('Skal fjerne feilmelding for et spesifikt felt', () => {
+      const state = { ...initialFormState, foedselAar: 1800 }
+      renderWithState(state)
+
+      act(() => {
+        handlers.validateFields('AlderStep')
+      })
+
+      expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+
+      act(() => {
+        handlers.clearError('foedselAar')
+      })
+
+      expect(errorFields.foedselAar).toBe('')
+    })
+
+    test('Skal ikke påvirke andre feilmeldinger når et spesifikt felt er fjernet', () => {
+      const state = {
+        ...initialFormState,
+        simuleringType: '',
+        foedselAar: 1800,
+      }
+      renderWithState(state)
+
+      act(() => {
+        handlers.validateFields('AFPStep')
+        handlers.validateFields('AlderStep')
+      })
+
+      // Wait for state update
+      setTimeout(() => {
+        expect(errorFields.simuleringType).toBe('Du må velge et alternativ')
+        expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+
+        act(() => {
+          handlers.clearError('simuleringType')
+        })
+
+        // Wait for state update
+        setTimeout(() => {
+          expect(errorFields.simuleringType).toBe('')
+          expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+        }, 0)
+      }, 0)
+    })
+  })
 })
