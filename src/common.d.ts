@@ -1,39 +1,5 @@
 import type { components } from './types/schema.d.ts'
 
-/* export type FormValues = {
-  simuleringType: string | null,
-  foedselAar: number,
-  sivilstand: string,
-  epsHarInntektOver2G?: boolean | null,
-  epsHarPensjon?: boolean | null,
-  boddIUtland: string, // fjernes fra ApiPayloaded
-  inntektVsaHelPensjon: string, // fjernes fra ApiPayloaded
-  utenlandsAntallAar: number,
-  inntektOver1GAntallAar: number,
-  aarligInntektFoerUttakBeloep: number,
-  gradertUttak: {
-    grad: number
-    uttakAlder: {
-      aar?: number | null,
-      maaneder?: number | null
-    },
-    aarligInntektVsaPensjonBeloep: number
-  }
-  heltUttak: {
-    uttakAlder: {
-      aar: number,
-      maaneder: number
-    },
-    aarligInntektVsaPensjon: {
-      beloep: number,
-      sluttAlder: {
-        aar?: number | null,
-        maaneder?: number | null
-      }
-    }
-  }
-} */
-
 export type SchemaFormValues = components['schemas']['AnonymSimuleringSpecV1']
 
 export type FormValues = SchemaFormValues & {
@@ -43,6 +9,34 @@ export type FormValues = SchemaFormValues & {
 
 export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
 
+export type StepName =
+  | 'AlderStep'
+  | 'UtlandsStep'
+  | 'InntektStep'
+  | 'EktefelleStep'
+  | 'AFPStep'
+
+export type ErrorFields = {
+  foedselAar?: string
+  inntektOver1GAntallAar?: string
+  boddIUtland?: string
+  utenlandsAntallAar?: string
+  aarligInntektFoerUttakBeloep?: string
+  uttaksgrad?: string
+  gradertInntekt?: string
+  gradertAar?: string
+  gradertMaaneder?: string
+  heltUttakAar?: string
+  heltUttakMaaneder?: string
+  helPensjonInntekt?: string
+  heltUttakSluttAlderMaaneder?: string
+  inntektVsaHelPensjon?: string
+  sivilstand?: string
+  epsHarInntektOver2G?: string
+  epsHarPensjon?: string
+  simuleringType?: string
+}
+
 export interface ContextForm {
   states: FormValues
   setState: Dispatch<React.SetStateAction<FormValues>>
@@ -51,16 +45,6 @@ export interface ContextForm {
 
 export interface StepRef {
   onSubmit: () => void
-}
-
-export interface PensjonData {
-  alderspensjon: { alder: number; beloep: number }[]
-  afpPrivat: { alder: number; beloep: number }[]
-  afpOffentlig: { alder: number; beloep: number }[]
-  vilkaarsproeving: {
-    vilkaarErOppfylt: boolean
-    alternativ: number | string | null
-  } // Hva er alternativ?
 }
 
 export interface FormPageProps {

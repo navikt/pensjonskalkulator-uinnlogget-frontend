@@ -37,9 +37,9 @@ export default function QuestionBox() {
               </Button>
               <Button variant="tertiary">Avbryt</Button>
             </HStack>
-            <Link href="https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator">
+            {/* <Link href="https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator">
               Personopplysninger som brukes i pensjonskalkulator
-            </Link>
+            </Link> */}
           </VStack>
         </Box>
       </div>

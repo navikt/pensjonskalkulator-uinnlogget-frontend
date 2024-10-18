@@ -9,5 +9,3 @@ export default function QuestionPage() {
     </>
   )
 }
-
-//Her er det antatt at Spørsmålene blir hentet fra et API. Se nærmere på dette
