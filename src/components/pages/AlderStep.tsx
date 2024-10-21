@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Box, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
-import { ContextForm, FormValues } from '@/common'
+import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -9,12 +9,10 @@ import Substep from '../Substep'
 import { useFieldChange } from '@/helpers/useFormState'
 
 const AlderStep = () => {
-  const { states, setState, formPageProps } = useContext(
-    FormContext
-  ) as ContextForm
-  const [errorFields, { validateFields, clearError }] = useErrorHandling(states)
+  const { state, setState, formPageProps } = useContext(FormContext)
+  const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
-  const { handleFieldChange } = useFieldChange<FormValues>({
+  const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
@@ -41,7 +39,7 @@ const AlderStep = () => {
             type="number"
             inputMode="numeric"
             label="I hvilket år er du født?"
-            value={states.foedselAar === 0 ? '' : states.foedselAar}
+            value={state.foedselAar === 0 ? '' : state.foedselAar}
             error={errorFields.foedselAar}
           ></TextField>
         </Box>
@@ -59,9 +57,9 @@ const AlderStep = () => {
               inputMode="numeric"
               label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
               value={
-                states.inntektOver1GAntallAar === 0
+                state.inntektOver1GAntallAar === 0
                   ? ''
-                  : states.inntektOver1GAntallAar
+                  : state.inntektOver1GAntallAar
               }
               error={errorFields.inntektOver1GAntallAar}
             ></TextField>

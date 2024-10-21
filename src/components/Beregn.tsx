@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { FormContext } from '@/contexts/context'
-import { ContextForm, FormValueResult } from '@/common'
+import { FormValueResult } from '@/common'
 import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
 
@@ -13,7 +13,7 @@ interface BeregnResource {
 }
 
 const Beregn: React.FC<BeregnResource> = ({ resource }) => {
-  const { states } = useContext(FormContext) as ContextForm
+  const { state } = useContext(FormContext)
   const beregnResult = resource.read()
 
   const getChartOptions = () => {
@@ -23,11 +23,11 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
       beregnResult?.afpPrivat?.map((item) => item.beloep) || []
     const categories =
       beregnResult?.alderspensjon?.map((item) => item.alder) || []
-    const heltUttakAlder = states.heltUttak.uttakAlder.aar
+    const heltUttakAlder = state.heltUttak.uttakAlder.aar
     const inntektVsaHelPensjonBeloep =
-      states.heltUttak.aarligInntektVsaPensjon?.beloep
+      state.heltUttak.aarligInntektVsaPensjon?.beloep
     let inntektVsaHelPensjonSluttalder =
-      states.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
+      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
 
     const chartOptions = {
       chart: {
