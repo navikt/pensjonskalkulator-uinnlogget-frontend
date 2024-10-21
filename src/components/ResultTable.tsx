@@ -49,7 +49,7 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
               Ved {state.gradertUttak?.uttakAlder.aar}
               {' ('}
               {state.gradertUttak?.grad}
-              {'%)'}
+              {' %)'}
             </Table.HeaderCell>
             <Table.DataCell>{alderspensjonGradert}</Table.DataCell>
             <Table.DataCell>{afpPrivatGradert}</Table.DataCell>
@@ -65,7 +65,7 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
         )}
         <Table.Row key={state.heltUttak.uttakAlder.aar}>
           <Table.HeaderCell scope="row">
-            Ved {state.heltUttak.uttakAlder.aar} {'(100%)'}
+            Ved {state.heltUttak.uttakAlder.aar} {'(100 %)'}
           </Table.HeaderCell>
           <Table.DataCell>{alderspensjonHel}</Table.DataCell>
           <Table.DataCell>{afpPrivatHel}</Table.DataCell>

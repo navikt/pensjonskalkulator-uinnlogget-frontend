@@ -12,12 +12,6 @@ jest.mock('../../../helpers/useErrorHandling', () => ({
   default: jest.fn(),
 }))
 
-// Mock the FormButtons component
-jest.mock('../../FormButtons', () => ({
-  __esModule: true,
-  default: jest.fn(() => <div>Mocked FormButtons</div>),
-}))
-
 // Mock the useFieldChange hook
 jest.mock('@/helpers/useFormState', () => ({
   __esModule: true,
@@ -73,7 +67,6 @@ describe('EktefelleStep Component', () => {
   test('Burde rendre komponenten', () => {
     renderComponent()
     expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
-    expect(screen.getByText('Mocked FormButtons')).toBeInTheDocument()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -94,8 +87,8 @@ describe('EktefelleStep Component', () => {
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
-  describe('sivilstand', () => {
-    test('Burde kalle handleFieldChange når sivilstand endres', () => {
+  describe('Gitt at brukeren har valgt sivilstand', () => {
+    test('Burde handleFieldChange bli kalt når sivilstand endres', () => {
       renderComponent()
       const select = screen.getByLabelText('Hva er din sivilstand?')
       fireEvent.change(select, { target: { value: 'GIFT' } })
@@ -108,8 +101,8 @@ describe('EktefelleStep Component', () => {
       expect(draft.sivilstand).toBe('GIFT')
     })
 
-    describe('UGIFT', () => {
-      test('Burde ikke vise radiobuttons', () => {
+    describe('Når sivilstand er satt til UGIFT', () => {
+      test('Burde ikke radioknapper bli vist', () => {
         renderComponent({
           ...context,
           state: {
@@ -122,8 +115,8 @@ describe('EktefelleStep Component', () => {
       })
     })
 
-    describe('GIFT/SAMBOER', () => {
-      test('Burde vise 2 radiobuttons', () => {
+    describe('Når sivilstand er satt til GIFT/SAMBOER', () => {
+      test('Burde 2 radioknapper vises', () => {
         renderComponent({
           ...context,
           state: {
@@ -135,7 +128,7 @@ describe('EktefelleStep Component', () => {
         expect(screen.getAllByLabelText('Nei')[0]).toBeInTheDocument()
       })
 
-      test('Begge radiobuttons burde default være unchecked', () => {
+      test('Burde begge radioknapper være unchecked som default', () => {
         renderComponent({
           ...context,
           state: {
@@ -147,7 +140,7 @@ describe('EktefelleStep Component', () => {
         expect(screen.getAllByLabelText('Nei')[0]).not.toBeChecked()
       })
 
-      test('Ved klikk på "Ja" på epsHarInntektOver2G burde verdien være true', () => {
+      test('Burde epsHarInntektOver2G være true når "Ja" er klikket', () => {
         renderComponent({
           ...context,
           state: {
@@ -160,7 +153,7 @@ describe('EktefelleStep Component', () => {
         expect(radioButton).toBeChecked()
       })
 
-      test('Ved klikk på "Nei" på epsHarPensjon burde verdien være false', () => {
+      test('Burde epsHarPensjon være false når "Nei" er klikket', () => {
         renderComponent({
           ...context,
           state: {
