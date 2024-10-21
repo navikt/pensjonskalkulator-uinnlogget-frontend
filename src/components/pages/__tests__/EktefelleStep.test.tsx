@@ -2,8 +2,8 @@ import { render, screen, fireEvent } from '@testing-library/react'
 import EktefelleStep from '../EktefelleStep'
 import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { FormValues } from '@/common'
-import { initialFormState } from '../../FormPage'
+import { State } from '@/common'
+import { initialFormState } from '@/defaults/defaultFormState'
 import { useFieldChange } from '@/helpers/useFormState'
 
 // Mock the useErrorHandling hook
@@ -27,7 +27,7 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: Partial<FormValues> = {}
+  const draft: Partial<State> = {}
   updateFn(draft)
   return draft
 })
@@ -43,7 +43,7 @@ const defaultFormPageProps = {
 
 const context = {
   setState: mockSetState,
-  states: initialFormState,
+  state: initialFormState,
   formPageProps: defaultFormPageProps,
 }
 
@@ -112,7 +112,7 @@ describe('EktefelleStep Component', () => {
       test('Burde ikke vise radiobuttons', () => {
         renderComponent({
           ...context,
-          states: {
+          state: {
             ...initialFormState,
             sivilstand: 'UGIFT',
           },
@@ -126,7 +126,7 @@ describe('EktefelleStep Component', () => {
       test('Burde vise 2 radiobuttons', () => {
         renderComponent({
           ...context,
-          states: {
+          state: {
             ...initialFormState,
             sivilstand: 'GIFT',
           },
@@ -138,7 +138,7 @@ describe('EktefelleStep Component', () => {
       test('Begge radiobuttons burde default være unchecked', () => {
         renderComponent({
           ...context,
-          states: {
+          state: {
             ...initialFormState,
             sivilstand: 'GIFT',
           },
@@ -150,7 +150,7 @@ describe('EktefelleStep Component', () => {
       test('Ved klikk på "Ja" på epsHarInntektOver2G burde verdien være true', () => {
         renderComponent({
           ...context,
-          states: {
+          state: {
             ...initialFormState,
             sivilstand: 'GIFT',
           },
@@ -163,7 +163,7 @@ describe('EktefelleStep Component', () => {
       test('Ved klikk på "Nei" på epsHarPensjon burde verdien være false', () => {
         renderComponent({
           ...context,
-          states: {
+          state: {
             ...initialFormState,
             sivilstand: 'GIFT',
           },
