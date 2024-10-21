@@ -1,84 +1,177 @@
-/* import React from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
+import EktefelleStep from '../EktefelleStep'
 import { FormContext } from '@/contexts/context'
-import EktefelleStep from '@/components/pages/EktefelleStep'
-import { initialFormState } from '@/components/FormPage'
+import useErrorHandling from '../../../helpers/useErrorHandling'
 import { FormValues } from '@/common'
+import { initialFormState } from '../../FormPage'
+import { useFieldChange } from '@/helpers/useFormState'
 
-describe('EktefelleStep Component', () => {
-  const grunnbelop = 100000
+// Mock the useErrorHandling hook
+jest.mock('../../../helpers/useErrorHandling', () => ({
+  __esModule: true,
+  default: jest.fn(),
+}))
 
-  const renderEktefelleStep = (state: FormValues) => {
-    return render(
-      <FormContext.Provider
-        value={{
-          states: state,
-          setState: jest.fn(),
-          formPageProps: {
-            curStep: 0,
-            length: 5,
-            goBack: jest.fn(),
-            onStepChange: jest.fn(),
-            handleSubmit: jest.fn(),
-            goToNext: jest.fn(),
-          },
-        }}
-      >
-        <EktefelleStep grunnbelop={grunnbelop} />
-      </FormContext.Provider>
-    )
-  }
+// Mock the FormButtons component
+jest.mock('../../FormButtons', () => ({
+  __esModule: true,
+  default: jest.fn(() => <div>Mocked FormButtons</div>),
+}))
 
-  test('should render the EktefelleStep component', () => {
-    renderEktefelleStep(initialFormState)
-    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
-  })
+// Mock the useFieldChange hook
+jest.mock('@/helpers/useFormState', () => ({
+  __esModule: true,
+  useFieldChange: jest.fn(),
+}))
 
-  test('should not clear epsHarInntektOver2G and epsHarPensjon when sivilstand is UGIFT, but the questions should not be displayed', () => {
-    const state = {
-      ...initialFormState,
-      sivilstand: 'GIFT',
-      epsHarInntektOver2G: true,
-      epsHarPensjon: true,
-    }
-    const { getByLabelText, queryByText } = renderEktefelleStep(state)
+const mockGoToNext = jest.fn()
+const mockSetState = jest.fn()
+const mockHandleFieldChange = jest.fn((updateFn) => {
+  const draft: Partial<FormValues> = {}
+  updateFn(draft)
+  return draft
+})
 
-    fireEvent.change(getByLabelText('Hva er din sivilstand?'), {
-      target: { value: 'UGIFT' },
-    })
+const defaultFormPageProps = {
+  curStep: 1,
+  length: 5,
+  goBack: jest.fn(),
+  onStepChange: jest.fn(),
+  handleSubmit: jest.fn(),
+  goToNext: mockGoToNext,
+}
 
-    expect(state.epsHarInntektOver2G).toBe(true)
-    expect(state.epsHarPensjon).toBe(true)
-    expect(
-      queryByText(
-        `Har du ektefelle, partner eller samboer som har inntekt større enn ${
-          2 * grunnbelop
-        }kr når du starter å ta ut pensjon?`
-      )
-    ).not.toBeInTheDocument()
-    expect(
-      queryByText(
-        'Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?'
-      )
-    ).not.toBeInTheDocument()
-  })
+const context = {
+  setState: mockSetState,
+  states: initialFormState,
+  formPageProps: defaultFormPageProps,
+}
 
-  test('should show additional fields when sivilstand is not UGIFT', () => {
-    const state = { ...initialFormState, sivilstand: 'GIFT' }
-    renderEktefelleStep(state)
+const mockValidateFields = jest.fn()
+const mockClearError = jest.fn()
 
-    expect(
-      screen.getByText(
-        `Har du ektefelle, partner eller samboer som har inntekt større enn ${
-          2 * grunnbelop
-        }kr når du starter å ta ut pensjon?`
-      )
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?'
-      )
-    ).toBeInTheDocument()
+beforeEach(() => {
+  jest.clearAllMocks()
+  ;(useErrorHandling as jest.Mock).mockReturnValue([
+    {},
+    { validateFields: mockValidateFields, clearError: mockClearError },
+  ])
+  ;(useFieldChange as jest.Mock).mockReturnValue({
+    handleFieldChange: mockHandleFieldChange,
   })
 })
- */
+
+const renderComponent = (contextOverride = context) => {
+  return render(
+    <FormContext.Provider value={contextOverride}>
+      <EktefelleStep grunnbelop={100000} />
+    </FormContext.Provider>
+  )
+}
+
+describe('EktefelleStep Component', () => {
+  test('Burde rendre komponenten', () => {
+    renderComponent()
+    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
+    expect(screen.getByText('Mocked FormButtons')).toBeInTheDocument()
+  })
+
+  test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderComponent()
+    const form = screen.getByRole('form')
+    fireEvent.submit(form)
+    expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
+    expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
+    mockValidateFields.mockReturnValue(true)
+    renderComponent()
+    const form = screen.getByRole('form')
+    fireEvent.submit(form)
+    expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
+    expect(mockGoToNext).not.toHaveBeenCalled()
+  })
+
+  describe('sivilstand', () => {
+    test('Burde kalle handleFieldChange når sivilstand endres', () => {
+      renderComponent()
+      const select = screen.getByLabelText('Hva er din sivilstand?')
+      fireEvent.change(select, { target: { value: 'GIFT' } })
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'sivilstand'
+      )
+
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.sivilstand).toBe('GIFT')
+    })
+
+    describe('UGIFT', () => {
+      test('Burde ikke vise radiobuttons', () => {
+        renderComponent({
+          ...context,
+          states: {
+            ...initialFormState,
+            sivilstand: 'UGIFT',
+          },
+        })
+        expect(screen.queryByLabelText('Ja')).not.toBeInTheDocument()
+        expect(screen.queryByLabelText('Nei')).not.toBeInTheDocument()
+      })
+    })
+
+    describe('GIFT/SAMBOER', () => {
+      test('Burde vise 2 radiobuttons', () => {
+        renderComponent({
+          ...context,
+          states: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        expect(screen.getAllByLabelText('Ja')[0]).toBeInTheDocument()
+        expect(screen.getAllByLabelText('Nei')[0]).toBeInTheDocument()
+      })
+
+      test('Begge radiobuttons burde default være unchecked', () => {
+        renderComponent({
+          ...context,
+          states: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        expect(screen.getAllByLabelText('Ja')[0]).not.toBeChecked()
+        expect(screen.getAllByLabelText('Nei')[0]).not.toBeChecked()
+      })
+
+      test('Ved klikk på "Ja" på epsHarInntektOver2G burde verdien være true', () => {
+        renderComponent({
+          ...context,
+          states: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        const radioButton = screen.getAllByLabelText('Ja')[0]
+        fireEvent.click(screen.getAllByLabelText('Ja')[0])
+        expect(radioButton).toBeChecked()
+      })
+
+      test('Ved klikk på "Nei" på epsHarPensjon burde verdien være false', () => {
+        renderComponent({
+          ...context,
+          states: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        const radioButton = screen.getAllByLabelText('Nei')[1]
+        fireEvent.click(screen.getAllByLabelText('Nei')[1])
+        expect(radioButton).toBeChecked()
+      })
+    })
+  })
+})
