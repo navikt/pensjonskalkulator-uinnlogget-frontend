@@ -76,7 +76,7 @@ describe('EktefelleStep Component', () => {
     expect(screen.getByText('Mocked FormButtons')).toBeInTheDocument()
   })
 
-  test('Burde gå videre til neste step når skjemaet sendes inn uten feil', () => {
+  test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderComponent()
     const form = screen.getByRole('form')
@@ -85,7 +85,7 @@ describe('EktefelleStep Component', () => {
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
-  test('Burde ikke gå videre til neste step når skjemaet sendes inn med feil', () => {
+  test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderComponent()
     const form = screen.getByRole('form')
