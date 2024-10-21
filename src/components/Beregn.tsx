@@ -125,34 +125,4 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
   )
 }
 
-/* Beregn.propTypes = {
-  beregnResult: PropTypes.shape({
-    alderspensjon: PropTypes.arrayOf(
-      PropTypes.shape({
-        alder: PropTypes.number.isRequired,
-        beloep: PropTypes.number.isRequired,
-      }).isRequired
-    ).isRequired,
-    afpPrivat: PropTypes.arrayOf(
-      PropTypes.shape({
-        alder: PropTypes.number.isRequired,
-        beloep: PropTypes.number.isRequired,
-      })
-    ),
-    afpOffentlig: PropTypes.arrayOf(
-      PropTypes.shape({
-        alder: PropTypes.number.isRequired,
-        beloep: PropTypes.number.isRequired,
-      })
-    ),
-    vilkaarsproeving: PropTypes.shape({
-      vilkaarErOppfylt: PropTypes.bool.isRequired,
-      alternativ: PropTypes.shape({
-        alder: PropTypes.number,
-        beloep: PropTypes.number,
-      }),
-    }).isRequired,
-  }).isRequired,
-} */
-
 export default Beregn

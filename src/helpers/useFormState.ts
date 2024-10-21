@@ -4,7 +4,7 @@ import { State } from '@/common'
 
 type UseFieldChangeProps<T> = {
   setState: React.Dispatch<React.SetStateAction<T>>
-  clearError: (error: string | null) => void
+  clearError: (error: string) => void
 }
 
 // Custom hook to handle field changes using immer for deep updates
@@ -13,7 +13,7 @@ export const useFieldChange = <T extends State>({
   clearError,
 }: UseFieldChangeProps<T>) => {
   const handleFieldChange = useCallback(
-    (updater: (state: T) => void, error: string | null) => {
+    (updater: (state: T) => void, error: string) => {
       setState((prev) => produce(prev, updater)) // Use immer's `produce` to handle immutable updates
       clearError(error)
     },
