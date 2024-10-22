@@ -1,9 +1,9 @@
 import React from 'react'
 import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '@/components/FormPage'
+import { initialFormState } from '@/defaults/defaultFormState'
 import useErrorHandling from '@/helpers/useErrorHandling'
-import { FormValues } from '@/common'
+import { State } from '@/common'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }
@@ -19,7 +19,7 @@ describe('useErrorHandling', () => {
     clearError: (field: string) => void
   }
 
-  const renderWithState = (state: FormValues) => {
+  const renderWithState = (state: State) => {
     const TestComponent = () => {
       const result = useErrorHandling(state)
       errorFields = result[0]
@@ -30,7 +30,7 @@ describe('useErrorHandling', () => {
     render(
       <FormContext.Provider
         value={{
-          states: state,
+          state: state,
           setState: jest.fn(),
           formPageProps: {
             curStep: 0,

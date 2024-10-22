@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
-import { StepName, ErrorFields, FormValues } from '@/common'
+import { StepName, ErrorFields, State } from '@/common'
 
-const useErrorHandling = (states: FormValues) => {
+const useErrorHandling = (states: State) => {
   const validateInntektOver1GAntallAar = (): string => {
     if (states.inntektOver1GAntallAar === undefined || states.inntektOver1GAntallAar === 0) {
       return 'Fyll ut antall år';
@@ -141,14 +141,9 @@ const useErrorHandling = (states: FormValues) => {
   const handlers = useMemo(
     () => ({
       validateFields,
-      clearError: (field: string | null) => {
-        if (field !== null) {
-          setErrorFields((prev) => ({ ...prev, [field]: '' }))
-        }
-      },
-      /* clearError: (field: string) => { 
+      clearError: (field: string) => { 
         setErrorFields((prev) => ({ ...prev, [field]: '' }))
-      }, */
+      },
     }),
     [states]
   )

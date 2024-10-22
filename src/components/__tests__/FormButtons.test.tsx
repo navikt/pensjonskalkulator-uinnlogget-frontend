@@ -1,27 +1,26 @@
 import { render, screen } from '@testing-library/react'
 import FormButtons from '../FormButtons'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '../FormPage'
 import { FormEvent } from 'react'
+import { initialFormState } from '@/defaults/defaultFormState'
 
+const mockedContextValues = {
+  setState: jest.fn(),
+  state: initialFormState,
+  formPageProps: {
+    curStep: 0,
+    length: 5,
+    goBack: jest.fn(),
+    onStepChange: jest.fn(),
+    handleSubmit: jest.fn(),
+    goToNext: jest.fn(),
+  },
+}
 describe('FormButtons', () => {
   describe('Når brukeren er på første steg,', () => {
     test('Renderer 1 knapp', () => {
       render(
-        <FormContext.Provider
-          value={{
-            setState: jest.fn(),
-            states: initialFormState,
-            formPageProps: {
-              curStep: 0,
-              length: 5,
-              goBack: jest.fn(),
-              onStepChange: jest.fn(),
-              handleSubmit: jest.fn(),
-              goToNext: jest.fn(),
-            },
-          }}
-        >
+        <FormContext.Provider value={mockedContextValues}>
           <FormButtons />
         </FormContext.Provider>
       )
@@ -31,47 +30,25 @@ describe('FormButtons', () => {
 
     test('Tilbake-knappen er ikke synlig', () => {
       render(
-        <FormContext.Provider
-          value={{
-            setState: jest.fn(),
-            states: initialFormState,
-            formPageProps: {
-              curStep: 0,
-              length: 5,
-              goBack: jest.fn(),
-              onStepChange: jest.fn(),
-              handleSubmit: jest.fn(),
-              goToNext: jest.fn(),
-            },
-          }}
-        >
+        <FormContext.Provider value={mockedContextValues}>
           <FormButtons />
         </FormContext.Provider>
       )
-      const formButtonsElement = screen.queryByRole('button', {
-        name: 'Tilbake',
-      })
-      expect(formButtonsElement).toBeNull()
+      expect(
+        screen.queryByRole('button', {
+          name: 'Tilbake',
+        })
+      ).not.toBeInTheDocument()
     })
   })
 })
 describe('Når brukeren er mellom første og siste steg,,', () => {
   test('Renderer 2 knapper', () => {
+    const modifiedContextValues = { ...mockedContextValues }
+    modifiedContextValues.formPageProps.curStep = 1
+
     render(
-      <FormContext.Provider
-        value={{
-          setState: jest.fn(),
-          states: initialFormState,
-          formPageProps: {
-            curStep: 1,
-            length: 5,
-            goBack: jest.fn(),
-            onStepChange: jest.fn(),
-            handleSubmit: jest.fn(),
-            goToNext: jest.fn(),
-          },
-        }}
-      >
+      <FormContext.Provider value={modifiedContextValues}>
         <FormButtons />
       </FormContext.Provider>
     )
@@ -82,21 +59,11 @@ describe('Når brukeren er mellom første og siste steg,,', () => {
 
 describe('Når brukeren er på siste steg,', () => {
   test('Renderer 2 knapper', () => {
+    const modifiedContextValues = { ...mockedContextValues }
+    modifiedContextValues.formPageProps.curStep = 4
+
     render(
-      <FormContext.Provider
-        value={{
-          setState: jest.fn(),
-          states: initialFormState,
-          formPageProps: {
-            curStep: 4,
-            length: 5,
-            goBack: jest.fn(),
-            onStepChange: jest.fn(),
-            handleSubmit: jest.fn(),
-            goToNext: jest.fn(),
-          },
-        }}
-      >
+      <FormContext.Provider value={modifiedContextValues}>
         <FormButtons />
       </FormContext.Provider>
     )
@@ -105,21 +72,10 @@ describe('Når brukeren er på siste steg,', () => {
   })
 
   test('Endrer teksten på knappen til "Send"', () => {
+    const modifiedContextValues = { ...mockedContextValues }
+    modifiedContextValues.formPageProps.curStep = 4
     render(
-      <FormContext.Provider
-        value={{
-          setState: jest.fn(),
-          states: initialFormState,
-          formPageProps: {
-            curStep: 4,
-            length: 5,
-            goBack: jest.fn(),
-            onStepChange: jest.fn(),
-            handleSubmit: jest.fn(),
-            goToNext: jest.fn(),
-          },
-        }}
-      >
+      <FormContext.Provider value={modifiedContextValues}>
         <FormButtons />
       </FormContext.Provider>
     )
@@ -150,7 +106,7 @@ describe('Når brukeren trykker på', () => {
 
   const context = {
     setState: jest.fn(),
-    states: initialFormState,
+    state: initialFormState,
     formPageProps: defaultFormPageProps,
   }
 
@@ -158,7 +114,7 @@ describe('Når brukeren trykker på', () => {
     jest.clearAllMocks()
   })
 
-  test('Neste-knappen, skal next-funksjonen kalles', () => {
+  test('Neste-knappen, skal goToNext-funksjonen kalles', () => {
     render(
       <FormContext.Provider value={context}>
         <form onSubmit={handleSubmit}>
@@ -167,13 +123,12 @@ describe('Når brukeren trykker på', () => {
       </FormContext.Provider>
     )
 
-    //Expext button to submit form
     const formButtonsElement = screen.getByRole('button', { name: 'Neste' })
     formButtonsElement.click()
     expect(mockHandleSubmit).toHaveBeenCalledTimes(1)
   })
 
-  test('Tilbake-knappen, skal back-funksjonen kalles', () => {
+  test('Tilbake-knappen, skal goBack-funksjonen kalles', () => {
     render(
       <FormContext.Provider value={context}>
         <FormButtons />
