@@ -1,10 +1,13 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import UtlandsStep from '../UtlandsStep'
-import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
 import { initialFormState } from '@/defaults/defaultFormState'
 import { useFieldChange } from '@/helpers/useFormState'
+import {
+  renderMockedComponent,
+  generateDefaultFormPageProps,
+} from '../test-utils/testSetup'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -21,24 +24,15 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: Partial<State> = {}
+  const draft: State = { ...initialFormState }
   updateFn(draft)
   return draft
 })
 
-const defaultFormPageProps = {
-  curStep: 1,
-  length: 5,
-  goBack: jest.fn(),
-  onStepChange: jest.fn(),
-  handleSubmit: jest.fn(),
-  goToNext: mockGoToNext,
-}
-
 const context = {
   setState: mockSetState,
   state: initialFormState,
-  formPageProps: defaultFormPageProps,
+  formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
 const mockValidateFields = jest.fn()
@@ -55,17 +49,9 @@ beforeEach(() => {
   })
 })
 
-const renderComponent = (contextOverride = context) => {
-  return render(
-    <FormContext.Provider value={contextOverride}>
-      <UtlandsStep />
-    </FormContext.Provider>
-  )
-}
-
 describe('UtlandsStep Component', () => {
   test('Burde rendre komponenten', () => {
-    renderComponent()
+    renderMockedComponent(UtlandsStep, context)
     expect(
       screen.getByText('Har du bodd eller arbeidet utenfor Norge?')
     ).toBeInTheDocument()
@@ -79,7 +65,7 @@ describe('UtlandsStep Component', () => {
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
-    renderComponent()
+    renderMockedComponent(UtlandsStep, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
@@ -88,7 +74,7 @@ describe('UtlandsStep Component', () => {
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
-    renderComponent()
+    renderMockedComponent(UtlandsStep, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
@@ -97,7 +83,7 @@ describe('UtlandsStep Component', () => {
 
   describe('Gitt at radioknappene for boddIUtland finnes', () => {
     test('Burde boddIUtland endres når handleFieldChange kalles på', () => {
-      renderComponent()
+      renderMockedComponent(UtlandsStep, context)
       const radio = screen.getByLabelText('Ja')
       fireEvent.click(radio)
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -111,7 +97,7 @@ describe('UtlandsStep Component', () => {
 
     describe('Når boddIUtland er "Nei"', () => {
       test('Burde ikke tekstfelt for utenlandsAntallAar vises', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -126,7 +112,7 @@ describe('UtlandsStep Component', () => {
 
     describe('Når boddIUtland er "Ja"', () => {
       test('Burde tekstfeltet for utenlandsAntallAar vises', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -139,7 +125,7 @@ describe('UtlandsStep Component', () => {
       })
 
       test('Burde utenlandsAntallAar endres når handleFieldChange kalles på', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -160,7 +146,7 @@ describe('UtlandsStep Component', () => {
       })
 
       test('Burde sette utenlandsAntallAar til 0 når input er tom', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -183,7 +169,7 @@ describe('UtlandsStep Component', () => {
       })
 
       test('Burde vise tom input når utenlandsAntallAar er 0', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -198,7 +184,7 @@ describe('UtlandsStep Component', () => {
       })
 
       test('Burde vise riktig input når utenlandsAntallAar ikke er 0', () => {
-        renderComponent({
+        renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialFormState,
