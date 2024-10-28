@@ -123,6 +123,7 @@ const InntektStep = () => {
                   <Select
                     value={state.gradertUttak?.uttakAlder.maaneder}
                     style={{ width: '5rem' }}
+                    id={'gradertMaaneder'}
                     label={'-'}
                     description="Velg måned"
                     onChange={(it) => {
@@ -193,6 +194,7 @@ const InntektStep = () => {
             <Select
               value={state.heltUttak.uttakAlder.maaneder}
               style={{ width: '5rem' }}
+              id={'heltUttakMaaneder'}
               label={'-'}
               description="Velg måned"
               onChange={(it) => {
@@ -280,9 +282,10 @@ const InntektStep = () => {
                   <Select
                     value={
                       state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                        ?.maaneder ?? -1
+                        ?.maaneder
                     }
                     style={{ width: '5rem' }}
+                    id="heltUttakSluttAlderMaaneder"
                     label={'Velg måned'}
                     onChange={(it) => {
                       const value = it.target.value

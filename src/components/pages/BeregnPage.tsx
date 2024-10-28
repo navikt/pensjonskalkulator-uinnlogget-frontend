@@ -41,10 +41,7 @@ function BeregnPage() {
       ) {
         draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
       }
-      if (
-        draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0 &&
-        draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder === -1
-      ) {
+      if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0) {
         draft.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
       }
       if (draft.gradertUttak?.grad === 100) {
