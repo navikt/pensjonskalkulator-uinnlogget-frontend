@@ -175,7 +175,7 @@ describe('InntektStep Component', () => {
       expect(draft.gradertUttak.grad).toBe(50)
     })
 
-    describe('Når grad er mellom 1 og 99', () => {
+    describe('Når grad ikke er 0 eller 100', () => {
       test('Burde flere input felt vises', () => {
         renderComponent({
           ...context,
