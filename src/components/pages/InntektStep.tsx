@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useMemo } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
   Radio,
@@ -34,6 +34,26 @@ const InntektStep = () => {
 
     return false
   }
+
+  const yearOptions = useMemo(
+    () =>
+      Array.from({ length: 14 }, (_, i) => (
+        <option value={i + 62} key={i}>
+          {i + 62} år
+        </option>
+      )),
+    []
+  )
+
+  const monthOptions = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => (
+        <option value={i + 1} key={i}>
+          {i + 1} måned
+        </option>
+      )),
+    []
+  )
 
   return (
     <FormWrapper onSubmit={onSubmit}>
@@ -113,11 +133,7 @@ const InntektStep = () => {
                     error={errorFields.gradertAar}
                   >
                     <option value={0}>----</option>
-                    {Array.from({ length: 14 }, (_, i) => (
-                      <option value={i + 62} key={i}>
-                        {i + 62} år
-                      </option>
-                    ))}
+                    {yearOptions}
                   </Select>
 
                   <Select
@@ -136,11 +152,7 @@ const InntektStep = () => {
                     error={errorFields.gradertMaaneder}
                   >
                     <option value={-1}>----</option>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <option value={i} key={i}>
-                        {i + 1}.mnd
-                      </option>
-                    ))}
+                    {monthOptions}
                   </Select>
                 </div>
               </Substep>
@@ -184,11 +196,7 @@ const InntektStep = () => {
               error={errorFields.heltUttakAar}
             >
               <option value={0}>----</option>
-              {Array.from({ length: 14 }, (_, i) => (
-                <option value={i + 62} key={i}>
-                  {i + 62} år
-                </option>
-              ))}
+              {yearOptions}
             </Select>
 
             <Select
@@ -207,11 +215,7 @@ const InntektStep = () => {
               error={errorFields.heltUttakMaaneder}
             >
               <option value={-1}>----</option>
-              {Array.from({ length: 12 }, (_, i) => (
-                <option value={i} key={i}>
-                  {i + 1}.mnd
-                </option>
-              ))}
+              {monthOptions}
             </Select>
           </div>
         </Substep>
@@ -272,11 +276,7 @@ const InntektStep = () => {
                   }}
                 >
                   <option value={'livsvarig'}>Livsvarig</option>
-                  {Array.from({ length: 14 }, (_, i) => (
-                    <option value={i + 62} key={i}>
-                      {i + 62} år
-                    </option>
-                  ))}
+                  {yearOptions}
                 </Select>
                 {!livsvarigInntekt && (
                   <Select
@@ -297,11 +297,7 @@ const InntektStep = () => {
                     error={errorFields.heltUttakSluttAlderMaaneder}
                   >
                     <option value={-1}>----</option>
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <option value={i} key={i}>
-                        {i + 1}.mnd
-                      </option>
-                    ))}
+                    {monthOptions}
                   </Select>
                 )}
               </div>
