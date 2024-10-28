@@ -176,7 +176,7 @@ describe('InntektStep Component', () => {
     })
 
     describe('Når grad ikke er 0 eller 100', () => {
-      test('Burde flere input felt vises', () => {
+      test('Burde input felt for gradert uttak vises', () => {
         renderComponent({
           ...context,
           state: {
