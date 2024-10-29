@@ -9,7 +9,7 @@ describe('StepBox Component', () => {
       </StepBox>
     )
 
-    expect(screen.getByText('Pensjonskalkulator')).toBeInTheDocument()
+    expect(screen.getByText('Pensjonskalkulator')).toBeVisible()
     expect(screen.getByTestId('child')).toBeInTheDocument()
   })
 
@@ -20,8 +20,8 @@ describe('StepBox Component', () => {
       </StepBox>
     )
 
-    expect(screen.getByText('Neste')).toBeInTheDocument()
-    expect(screen.getByText('Forrige')).toBeInTheDocument()
+    expect(screen.getByText('Neste')).toBeVisible()
+    expect(screen.getByText('Forrige')).toBeVisible()
   })
 
   test('Burde rendre Box komponentene med korrekt data-testid attributter', () => {
@@ -34,7 +34,7 @@ describe('StepBox Component', () => {
     const outerBox = screen.getByTestId('outer-box')
     const innerBox = screen.getByTestId('inner-box')
 
-    expect(outerBox).toBeInTheDocument()
-    expect(innerBox).toBeInTheDocument()
+    expect(outerBox).toBeVisible()
+    expect(innerBox).toBeVisible()
   })
 })
