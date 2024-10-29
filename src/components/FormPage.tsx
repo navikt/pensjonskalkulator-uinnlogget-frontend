@@ -15,7 +15,7 @@ import BeregnPage from './pages/BeregnPage'
 import { initialFormState } from '@/defaults/defaultFormState'
 
 interface FormPageProps {
-  grunnbelop: number
+  grunnbelop?: number
 }
 
 interface Pages {
