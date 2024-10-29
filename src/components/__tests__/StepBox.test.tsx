@@ -10,7 +10,7 @@ describe('StepBox Component', () => {
     )
 
     expect(screen.getByText('Pensjonskalkulator')).toBeVisible()
-    expect(screen.getByTestId('child')).toBeInTheDocument()
+    expect(screen.getByTestId('child')).toBeVisible()
   })
 
   test('Burde rendre Neste- og Forrige knappene', () => {
