@@ -1,16 +1,20 @@
-import FormPage from '@/components/FormPage'
-import { getGrunnbelop } from '@/functions/functions'
-import React, { Suspense } from 'react'
+'use client'
 
-const Page = async () => {
-  const grunnbelop = await getGrunnbelop()
+import FormPage from '@/components/FormPage'
+import { getGrunnbelop } from '@/functions/grunnbelop'
+import React, { Suspense, useEffect, useState } from 'react'
+
+const Page = () => {
+  const [grunnbelop, setGrunnbelop] = useState<number | undefined>(undefined)
+
+  useEffect(() => {
+    getGrunnbelop().then(setGrunnbelop)
+  }, [])
 
   return (
-    <>
-      <Suspense fallback={<div>Laster...</div>}>
-        <FormPage grunnbelop={grunnbelop} />
-      </Suspense>
-    </>
+    <Suspense fallback={<div>Loading...</div>}>
+      <FormPage grunnbelop={grunnbelop} />
+    </Suspense>
   )
 }
 
