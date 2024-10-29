@@ -54,8 +54,8 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           <Substep>
             <RadioGroup
               legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
-                grunnbelop
-              } ${grunnbelop === 2 ? '2G' : 'kr'} når du starter å ta ut pensjon?`}
+                grunnbelop ? `${grunnbelop} kr` : '2G'
+              } når du starter å ta ut pensjon?`}
               defaultValue={state.epsHarInntektOver2G}
               onChange={(it) =>
                 handleFieldChange((draft) => {
