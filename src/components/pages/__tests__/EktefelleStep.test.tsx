@@ -154,6 +154,36 @@ describe('EktefelleStep Component', () => {
         fireEvent.click(screen.getAllByLabelText('Nei')[1])
         expect(radioButton).toBeChecked()
       })
+
+      test('Burde epsHarInntektOver2G bli rendret riktig med en definert grunnbelop verdi', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+          ...context,
+          state: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        expect(
+          screen.getByText(
+            /Har du ektefelle, partner eller samboer som har inntekt større enn 100000 kr/
+          )
+        ).toBeInTheDocument()
+      })
+
+      test('Burde epsHarInntektOver2G bli rendret riktig med udefinert grunnbelop verdi', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={undefined} />, {
+          ...context,
+          state: {
+            ...initialFormState,
+            sivilstand: 'GIFT',
+          },
+        })
+        expect(
+          screen.getByText(
+            /Har du ektefelle, partner eller samboer som har inntekt større enn 2G/
+          )
+        ).toBeInTheDocument()
+      })
     })
   })
 })

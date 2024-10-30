@@ -38,7 +38,7 @@ describe('submitForm', () => {
     expect(result).toEqual({ success: true })
   })
 
-  it('Burde kaste en error når fetch feiler', async () => {
+  it('Burde returnere undefined med standardmelding når errorData.message er undefined', async () => {
     const mockResponse = {
       ok: false,
       status: 500,
@@ -48,13 +48,11 @@ describe('submitForm', () => {
     }
     ;(global.fetch as jest.Mock).mockResolvedValue(mockResponse)
 
-    await expect(submitForm(mockFormState)).rejects.toEqual({
-      message: 'Failed to submit form',
-      status: 500,
-    })
+    const result = await submitForm(mockFormState)
+    expect(result).toBeUndefined()
   })
 
-  it('Burde kaste en error med standardmelding når errorData.message er undefined', async () => {
+  it('Burde returnere undefined når fetch feiler', async () => {
     const mockResponse = {
       ok: false,
       status: 500,
@@ -62,9 +60,7 @@ describe('submitForm', () => {
     }
     ;(global.fetch as jest.Mock).mockResolvedValue(mockResponse)
 
-    await expect(submitForm(mockFormState)).rejects.toEqual({
-      message: 'Failed to submit form',
-      status: 500,
-    })
+    const result = await submitForm(mockFormState)
+    expect(result).toBeUndefined()
   })
 })
