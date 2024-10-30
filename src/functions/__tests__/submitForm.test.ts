@@ -6,7 +6,12 @@ global.fetch = jest.fn()
 const mockFormState: State = initialFormState
 
 beforeEach(() => {
-  ;(fetch as jest.Mock).mockClear()
+  ;(global.fetch as jest.Mock).mockClear()
+  jest.spyOn(console, 'error').mockImplementation(() => {})
+})
+
+afterEach(() => {
+  jest.restoreAllMocks()
 })
 
 describe('submitForm', () => {
