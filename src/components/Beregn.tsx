@@ -17,12 +17,14 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
   const beregnResult = resource.read()
 
   const getChartOptions = () => {
-    const alderspensjonData =
-      beregnResult?.alderspensjon?.map((item) => item.beloep) || []
+    const alderspensjonData = beregnResult
+      ? beregnResult.alderspensjon.map((item) => item.beloep)
+      : []
     const afpPrivatData =
-      beregnResult?.afpPrivat?.map((item) => item.beloep) || []
-    const categories =
-      beregnResult?.alderspensjon?.map((item) => item.alder) || []
+      beregnResult?.afpPrivat?.map((item) => item.beloep) ?? []
+    const categories = beregnResult
+      ? beregnResult.alderspensjon.map((item) => item.alder)
+      : []
     const heltUttakAlder = state.heltUttak.uttakAlder.aar
     const inntektVsaHelPensjonBeloep =
       state.heltUttak.aarligInntektVsaPensjon?.beloep
@@ -116,10 +118,16 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
         borderColor="border-default"
         padding={'4'}
         borderRadius={'large'}
+        role="region"
       >
         <h1>Resultat</h1>
-        <ResultTable beregnResult={beregnResult!} />
-        <HighchartsReact highcharts={Highcharts} options={getChartOptions()} />
+        <>
+          {beregnResult && <ResultTable beregnResult={beregnResult} />}
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={getChartOptions()}
+          />
+        </>
       </Box>
     </div>
   )

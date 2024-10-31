@@ -1,10 +1,13 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import InntektStep from '../InntektStep'
-import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
 import { initialFormState } from '@/defaults/defaultFormState'
 import { useFieldChange } from '@/helpers/useFormState'
+import {
+  renderMockedComponent,
+  generateDefaultFormPageProps,
+} from '../test-utils/testSetup'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -26,19 +29,10 @@ const mockHandleFieldChange = jest.fn((updateFn) => {
   return draft
 })
 
-const defaultFormPageProps = {
-  curStep: 1,
-  length: 5,
-  goBack: jest.fn(),
-  onStepChange: jest.fn(),
-  handleSubmit: jest.fn(),
-  goToNext: mockGoToNext,
-}
-
 const context = {
   setState: mockSetState,
   state: initialFormState,
-  formPageProps: defaultFormPageProps,
+  formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
 const mockValidateFields = jest.fn()
@@ -55,17 +49,9 @@ beforeEach(() => {
   })
 })
 
-const renderComponent = (contextOverride = context) => {
-  return render(
-    <FormContext.Provider value={contextOverride}>
-      <InntektStep />
-    </FormContext.Provider>
-  )
-}
-
 describe('InntektStep Component', () => {
   test('Burde rendre komponenten', () => {
-    renderComponent()
+    renderMockedComponent(InntektStep, context)
     expect(screen.getByText('Inntekt og alderspensjon')).toBeInTheDocument()
     expect(
       screen.getByLabelText('Hva er din forventede årlige inntekt?')
@@ -74,7 +60,7 @@ describe('InntektStep Component', () => {
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
-    renderComponent()
+    renderMockedComponent(InntektStep, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('InntektStep')
@@ -83,7 +69,7 @@ describe('InntektStep Component', () => {
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
-    renderComponent()
+    renderMockedComponent(InntektStep, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('InntektStep')
@@ -92,7 +78,7 @@ describe('InntektStep Component', () => {
 
   describe('Gitt at tekstfeltet for aarligInntektFoerUttakBeloep finnes', () => {
     test('Burde aarligInntektFoerUttakBeloep endres når bruker skriver inn inntekt', () => {
-      renderComponent()
+      renderMockedComponent(InntektStep, context)
       const input = screen.getByLabelText(
         'Hva er din forventede årlige inntekt?'
       )
@@ -107,7 +93,7 @@ describe('InntektStep Component', () => {
     })
 
     test('Burde sette aarligInntektFoerUttakBeloep til 0 når input er tom', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -129,7 +115,7 @@ describe('InntektStep Component', () => {
     })
 
     test('Burde vise tom input når aarligInntektFoerUttakBeloep er 0', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -143,7 +129,7 @@ describe('InntektStep Component', () => {
     })
 
     test('Burde vise riktig input når aarligInntektFoerUttakBeloep ikke er 0', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -158,7 +144,7 @@ describe('InntektStep Component', () => {
   })
   describe('Gitt at tekstfeltet for uttaksgrad finnes', () => {
     test('Burde gradertUttak.grad endres når bruker velger uttaksgrad', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -177,7 +163,7 @@ describe('InntektStep Component', () => {
 
     describe('Når grad ikke er 0 eller 100', () => {
       test('Burde input felt for gradert uttak vises', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -206,7 +192,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde gradertUttak.uttakAlder.aar endres når bruker velger uttakalder', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -227,7 +213,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde gradertUttak.uttakAlder.maaneder endres når bruker velger uttaksmåned', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -250,7 +236,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde gradertUttak.aarligInntektVsaPensjonBeloep endres når bruker angir inntekt ved siden av gradert pensjon som er større enn 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -272,7 +258,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til 0 når input er tom', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -298,7 +284,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde vise tom input når gradertUttak.aarligInntektVsaPensjonBeloep er 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -317,7 +303,7 @@ describe('InntektStep Component', () => {
     })
     describe('Når grad er 0 eller 100', () => {
       test('Burde ikke input felt vises dersom grad er 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -347,7 +333,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde ikke input felt vises dersom grad er 100', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -373,7 +359,7 @@ describe('InntektStep Component', () => {
   })
   describe('Gitt at dropdowns for heltUttak alder og måned finnes', () => {
     test('Burde heltUttak.uttakAlder.aar endres når bruker velger uttaksalder', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -394,7 +380,7 @@ describe('InntektStep Component', () => {
     })
 
     test('Burde heltUttak.uttakAlder.maaneder endres når bruker velger uttaksmåned', () => {
-      renderComponent({
+      renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialFormState,
@@ -418,7 +404,7 @@ describe('InntektStep Component', () => {
   })
   describe('Gitt at radioknappen for inntekt etter uttak av hel pensjon finnes', () => {
     test('Burde inntektVsaHelPensjon endres når handleFieldChange kalles på', () => {
-      renderComponent()
+      renderMockedComponent(InntektStep, context)
       const radio = screen.getByLabelText('Ja')
       fireEvent.click(radio)
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -432,7 +418,7 @@ describe('InntektStep Component', () => {
 
     describe('Når inntektVsaHelPensjon er "Nei"', () => {
       test('Burde ikke input felt for heltUttak.aarligInntektVsaPensjon.beloep vises', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -449,7 +435,7 @@ describe('InntektStep Component', () => {
 
     describe('Når inntektVsaHelPensjon er "Ja"', () => {
       test('Burde input felt for heltUttak.aarligInntektVsaPensjon.beloep vises', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -464,7 +450,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde heltUttak.aarligInntektVsaPensjonBeloep endres når bruker angir inntekt ved siden av hel pensjon som er større enn 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -486,7 +472,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde sette heltUttak.aarligInntektVsaPensjon.beloep til 0 når input er tom', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -521,7 +507,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde vise tom input når heltUttak.aarligInntektVsaPensjon.beloep er 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -548,7 +534,7 @@ describe('InntektStep Component', () => {
       })
 
       test('Burde vise riktig input når heltUttak.aarligInntektVsaPensjon.beloep ikke er 0', () => {
-        renderComponent({
+        renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialFormState,
@@ -577,7 +563,7 @@ describe('InntektStep Component', () => {
       describe('Gitt at dropdown for sluttAlder finnes', () => {
         describe('Når sluttAlder er livsvarig', () => {
           test('Burde ikke input felt for heltUttak.sluttAlder.maaneder vises', () => {
-            renderComponent({
+            renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialFormState,
@@ -594,7 +580,7 @@ describe('InntektStep Component', () => {
         })
         describe('Når sluttAlder ikke er livsvarig', () => {
           test('Burde input felt for heltUttak.sluttAlder.maaneder vises', () => {
-            renderComponent({
+            renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialFormState,
@@ -639,7 +625,7 @@ describe('InntektStep Component', () => {
           })
 
           test('Burde sette riktig verdi når sluttAlder.aar er definert', () => {
-            renderComponent({
+            renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialFormState,
@@ -667,7 +653,7 @@ describe('InntektStep Component', () => {
           })
 
           test('Burde sette riktig verdi når sluttAlder er udefinert', () => {
-            renderComponent({
+            renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialFormState,
@@ -692,7 +678,7 @@ describe('InntektStep Component', () => {
           })
 
           test('Burde sette sluttAlder.aar til 0 når livsvarig er valgt', () => {
-            renderComponent({
+            renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialFormState,
