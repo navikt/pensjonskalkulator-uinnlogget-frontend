@@ -9,7 +9,7 @@ import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 
 interface FormPageProps {
-  grunnbelop: number
+  grunnbelop?: number
 }
 
 const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
@@ -54,8 +54,8 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           <Substep>
             <RadioGroup
               legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
-                2 * grunnbelop
-              }kr når du starter å ta ut pensjon?`}
+                grunnbelop ? `${grunnbelop} kr` : '2G'
+              } når du starter å ta ut pensjon?`}
               defaultValue={state.epsHarInntektOver2G}
               onChange={(it) =>
                 handleFieldChange((draft) => {

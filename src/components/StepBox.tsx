@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Link } from '@navikt/ds-react'
+import { Box, Button, HStack } from '@navikt/ds-react'
 import React from 'react'
 
 import { ReactNode } from 'react'
@@ -9,7 +9,12 @@ interface LayoutProps {
 
 function StepBox({ children }: LayoutProps) {
   return (
-    <Box padding={'8'} width={'full'} background="surface-subtle">
+    <Box
+      padding={'8'}
+      width={'full'}
+      background="surface-subtle"
+      data-testid="outer-box"
+    >
       <div className="flex items-center w-full">
         <div className="mx-auto">
           <h2 className=" mb-3">Pensjonskalkulator</h2>
@@ -18,15 +23,13 @@ function StepBox({ children }: LayoutProps) {
             width={'fit-content'}
             padding={'4'}
             background="bg-default"
+            data-testid="inner-box"
           >
             {children}
             <HStack gap={'2'}>
               <Button variant="primary">Neste</Button>
               <Button variant="tertiary">Forrige</Button>
             </HStack>
-            <Link href="https://staging.ekstern.dev.nav.no/pensjon/kalkulator/start#:~:text=Personopplysninger%20som%20brukes%20i%20pensjonskalkulator">
-              Personopplysninger som brukes i pensjonskalkulator
-            </Link>
           </Box>
         </div>
       </div>
