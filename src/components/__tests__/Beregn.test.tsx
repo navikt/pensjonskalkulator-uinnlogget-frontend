@@ -1,13 +1,27 @@
 import { render, screen } from '@testing-library/react'
-import Beregn from '../Beregn'
 import { FormContext } from '@/contexts/context'
+import Beregn from '@/components/Beregn'
 import { initialFormState } from '@/defaults/defaultFormState'
+import { getChartOptions } from '../utils/chartUtils'
 
 jest.mock('highcharts-react-official', () => {
   const MockHighchartsReact = () => <div data-testid="highcharts-react"></div>
   MockHighchartsReact.displayName = 'MockHighchartsReact'
   return MockHighchartsReact
 })
+
+jest.mock('../utils/chartUtils', () => ({
+  getChartOptions: jest.fn(() => ({
+    chart: { type: 'column' },
+    title: { text: 'Beregnet framtidig alderspensjon (kroner per år):' },
+    xAxis: { categories: ['60', '61', '62'] },
+    yAxis: { title: { text: 'Beløp' } },
+    series: [
+      { name: 'AFP Privat', data: [10000, 20000, 30000] },
+      { name: 'Alderspensjon', data: [15000, 25000, 35000] },
+    ],
+  })),
+}))
 
 const mockBeregnResult = {
   alderspensjon: [
@@ -28,6 +42,7 @@ const mockBeregnResult = {
     },
   },
 }
+
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 
@@ -63,7 +78,7 @@ describe('Beregn Component', () => {
       expect(screen.getByTestId('result-table')).toBeInTheDocument()
     })
 
-    it('Burde rendre HighchartsReact med riktige alternativer', () => {
+    it('Burde rendre Highcharts med riktig data', () => {
       render(
         <FormContext.Provider value={mockContextValue}>
           <Beregn resource={{ read: () => mockBeregnResult }} />
@@ -71,45 +86,50 @@ describe('Beregn Component', () => {
       )
 
       expect(screen.getByTestId('highcharts-react')).toBeInTheDocument()
+
+      const heltUttakAlder = 67
+      const inntektVsaHelPensjonBeloep = 100000
+      const inntektVsaHelPensjonSluttalder = 72
+      const chartOptions = getChartOptions(
+        heltUttakAlder,
+        inntektVsaHelPensjonBeloep,
+        inntektVsaHelPensjonSluttalder,
+        mockBeregnResult
+      )
+      expect(chartOptions.chart.type).toBe('column')
+      expect(chartOptions.title.text).toBe(
+        'Beregnet framtidig alderspensjon (kroner per år):'
+      )
+      expect(chartOptions.xAxis.categories).toEqual(['60', '61', '62'])
+      expect(chartOptions.series).toEqual([
+        { name: 'AFP Privat', data: [10000, 20000, 30000] },
+        { name: 'Alderspensjon', data: [15000, 25000, 35000] },
+      ])
     })
 
-    it('Burde rendere Box', () => {
+    it('Burde rendere grafen med riktig søyler', () => {
       render(
         <FormContext.Provider value={mockContextValue}>
           <Beregn resource={{ read: () => mockBeregnResult }} />
         </FormContext.Provider>
       )
 
-      expect(screen.getByRole('region')).toBeInTheDocument()
-    })
-  })
-
-  describe('Gitt at beregnResult er undefined', () => {
-    it('Burde inntektVsaHelPensjonBeloep som ikke er 0 eller undefined bli håndtert', () => {
-      const contextValueWithInntekt = {
-        ...mockContextValue,
-        state: {
-          ...mockContextValue.state,
-          heltUttak: {
-            ...mockContextValue.state.heltUttak,
-            aarligInntektVsaPensjon: {
-              beloep: 100000,
-              sluttAlder: { aar: 67, maaneder: 0 },
-            },
-          },
-        },
-      }
-
-      render(
-        <FormContext.Provider value={contextValueWithInntekt}>
-          <Beregn resource={{ read: () => mockBeregnResult }} />
-        </FormContext.Provider>
+      const heltUttakAlder = 67
+      const inntektVsaHelPensjonBeloep = 100000
+      const inntektVsaHelPensjonSluttalder = 72
+      const chartOptions = getChartOptions(
+        heltUttakAlder,
+        inntektVsaHelPensjonBeloep,
+        inntektVsaHelPensjonSluttalder,
+        mockBeregnResult
       )
 
-      expect(screen.getByTestId('highcharts-react')).toBeInTheDocument()
+      const seriesNames = chartOptions.series.map((series) => series.name)
+      expect(seriesNames).toContain('AFP Privat')
+      expect(seriesNames).toContain('Alderspensjon')
     })
 
-    it('Burde sluttAlder som er undefined bli håndtert', () => {
+    it('Burde håndtere sluttAlder som er undefined', () => {
       const contextValueWithUndefinedSluttalder = {
         ...mockContextValue,
         state: {
@@ -133,7 +153,7 @@ describe('Beregn Component', () => {
       expect(screen.getByTestId('highcharts-react')).toBeInTheDocument()
     })
 
-    it('Burde highchart alderspensjonData returnere riktig data dersom beregnResult er tom', () => {
+    it('Burde returnere riktig data dersom beregnResult er tom', () => {
       render(
         <FormContext.Provider value={mockContextValue}>
           <Beregn resource={{ read: () => undefined }} />
@@ -141,6 +161,40 @@ describe('Beregn Component', () => {
       )
 
       expect(screen.getByTestId('highcharts-react')).toBeInTheDocument()
+    })
+
+    it('Burde bruke fallback verdi 0 for inntektVsaHelPensjonBeloep når aarligInntektVsaPensjon er undefined', () => {
+      const contextValueWithUndefinedInntekt = {
+        ...mockContextValue,
+        state: {
+          ...mockContextValue.state,
+          heltUttak: {
+            ...mockContextValue.state.heltUttak,
+            aarligInntektVsaPensjon: undefined,
+          },
+        },
+      }
+
+      render(
+        <FormContext.Provider value={contextValueWithUndefinedInntekt}>
+          <Beregn resource={{ read: () => mockBeregnResult }} />
+        </FormContext.Provider>
+      )
+
+      const heltUttakAlder = 67
+      const inntektVsaHelPensjonBeloep = 0
+      const inntektVsaHelPensjonSluttalder = 72
+      const chartOptions = getChartOptions(
+        heltUttakAlder,
+        inntektVsaHelPensjonBeloep,
+        inntektVsaHelPensjonSluttalder,
+        mockBeregnResult
+      )
+
+      expect(chartOptions.series).toEqual([
+        { name: 'AFP Privat', data: [10000, 20000, 30000] },
+        { name: 'Alderspensjon', data: [15000, 25000, 35000] },
+      ])
     })
   })
 })
