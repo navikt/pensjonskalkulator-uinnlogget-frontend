@@ -44,7 +44,11 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
         <h1>Resultat</h1>
         <>
           {beregnResult && <ResultTable beregnResult={beregnResult} />}
-          <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+          <HighchartsReact
+            highcharts={Highcharts}
+            options={chartOptions}
+            containerProps={{ 'data-testid': 'highcharts-react' }}
+          />
         </>
       </Box>
     </div>

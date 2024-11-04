@@ -37,6 +37,9 @@ export const getChartOptions = (
     credits: {
       enabled: false,
     },
+    accessibility: {
+      enabled: false,
+    },
     plotOptions: {
       column: {
         stacking: 'normal',
@@ -86,6 +89,8 @@ export const getChartOptions = (
       data: filteredInntektVsaHelPensjonData,
     })
   }
+
+  console.log('chartOptions:', chartOptions)
 
   return chartOptions
 }
