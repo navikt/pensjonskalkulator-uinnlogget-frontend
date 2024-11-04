@@ -129,7 +129,7 @@ describe('Beregn Component', () => {
           expect(inntektVsaHelPensjonBeloep).toBe(0)
         })
 
-        it('Burde ikke chartOptions inneholde "Inntekt ved siden av hel pensjon', () => {
+        it('Burde ikke chartOptions inneholde serien "Inntekt ved siden av hel pensjon"', () => {
           render(
             <FormContext.Provider value={mockContextValue}>
               <Beregn resource={{ read: () => mockBeregnResult }} />
