@@ -32,7 +32,7 @@ const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
     state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
 
   return (
-    <Table>
+    <Table data-testid="result-table">
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>

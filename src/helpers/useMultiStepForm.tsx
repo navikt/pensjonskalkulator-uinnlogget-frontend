@@ -1,4 +1,5 @@
 'use client'
+
 import { useState } from 'react'
 
 interface Pages {
@@ -11,23 +12,26 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
 
   const goToNext = () => {
     setCurStep((prev) => {
-      prev = prev + 1
-      console.log(prev)
-
+      if (prev < pages.length) {
+        return prev + 1
+      }
       return prev
     })
   }
 
   const goBack = () => {
     setCurStep((prev) => {
-      prev = prev - 1
-
+      if (prev > 0) {
+        return prev - 1
+      }
       return prev
     })
   }
 
   const goTo = (step: number) => {
-    setCurStep(step)
+    if (step >= 0 && step <= pages.length) {
+      setCurStep(step)
+    }
   }
 
   return {
