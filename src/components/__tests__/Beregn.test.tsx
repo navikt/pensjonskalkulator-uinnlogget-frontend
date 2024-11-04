@@ -29,11 +29,6 @@ const mockBeregnResult = {
   afpOffentlig: [],
   vilkaarsproeving: {
     vilkaarErOppfylt: true,
-    alternativ: {
-      heltUttaksalder: { aar: 67, maaneder: 0 },
-      gradertUttaksalder: { aar: 67, maaneder: 0 },
-      uttaksgrad: 100,
-    },
   },
 }
 
