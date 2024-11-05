@@ -5,11 +5,7 @@ import FormProgressComponent from './FormProgressComponent'
 interface FormContainerComponentProps {
   totalSteps: number
   activeStep: number
-  goBack: () => void
-  onStepChange?: (step: number) => void
   step: ReactElement | null
-  curStep: number
-  length: number
 }
 
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({

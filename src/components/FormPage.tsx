@@ -59,11 +59,8 @@ function FormPage({ grunnbelop }: FormPageProps) {
         {curStep !== length ? (
           <FormContainerComponent
             totalSteps={length}
-            activeStep={curStep + 1}
-            goBack={goBack}
+            activeStep={curStep}
             step={step}
-            curStep={curStep}
-            length={length}
           />
         ) : (
           <BeregnPage />
