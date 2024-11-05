@@ -1,35 +1,60 @@
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { FormContext } from '@/contexts/context'
 import { FormValueResult } from '@/common'
 import { Table } from '@navikt/ds-react'
 
 interface BeregnProps {
-  beregnResult: FormValueResult
+  alderspensjon: FormValueResult['alderspensjon']
+  afpPrivat: FormValueResult['afpPrivat']
 }
 
-const ResultTable: React.FC<BeregnProps> = ({ beregnResult }) => {
+const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
   const { state } = useContext(FormContext)
 
-  const alderspensjonHel =
-    beregnResult?.alderspensjon?.find(
-      (item) => item.alder === state.heltUttak.uttakAlder.aar
-    )?.beloep || 0
-  const alderspensjonGradert =
-    beregnResult?.alderspensjon?.find(
-      (item) => item.alder === state.gradertUttak?.uttakAlder.aar
-    )?.beloep || 0
-  const afpPrivatHel =
-    beregnResult?.afpPrivat?.find(
-      (item) => item.alder === state.heltUttak.uttakAlder.aar
-    )?.beloep || 0
-  const afpPrivatGradert =
-    beregnResult?.afpPrivat?.find(
-      (item) => item.alder === state.gradertUttak?.uttakAlder.aar
-    )?.beloep || 0
-  const aarligbelopVsaGradertuttak =
-    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
-  const aarligbelopVsaHeltuttak =
-    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+  const {
+    alderspensjonHel,
+    alderspensjonGradert,
+    afpPrivatHel,
+    afpPrivatGradert,
+    aarligbelopVsaGradertuttak,
+    aarligbelopVsaHeltuttak,
+  } = useMemo(() => {
+    const alderspensjonHel =
+      alderspensjon.find(
+        (item) => item.alder === state.heltUttak.uttakAlder.aar
+      )?.beloep || 0
+    const alderspensjonGradert =
+      alderspensjon.find(
+        (item) => item.alder === state.gradertUttak?.uttakAlder.aar
+      )?.beloep || 0
+    const afpPrivatHel =
+      afpPrivat?.find((item) => item.alder === state.heltUttak.uttakAlder.aar)
+        ?.beloep || 0
+    const afpPrivatGradert =
+      afpPrivat?.find(
+        (item) => item.alder === state.gradertUttak?.uttakAlder.aar
+      )?.beloep || 0
+    const aarligbelopVsaGradertuttak =
+      state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
+    const aarligbelopVsaHeltuttak =
+      state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+
+    return {
+      alderspensjonHel,
+      alderspensjonGradert,
+      afpPrivatHel,
+      afpPrivatGradert,
+      aarligbelopVsaGradertuttak,
+      aarligbelopVsaHeltuttak,
+    }
+  }, [
+    alderspensjon,
+    afpPrivat,
+    state.heltUttak.uttakAlder.aar,
+    state.gradertUttak?.uttakAlder.aar,
+    state.gradertUttak?.aarligInntektVsaPensjonBeloep,
+    state.heltUttak?.aarligInntektVsaPensjon?.beloep,
+  ])
 
   return (
     <Table data-testid="result-table">

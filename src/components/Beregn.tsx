@@ -43,7 +43,12 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
       >
         <h1>Resultat</h1>
         <>
-          {beregnResult && <ResultTable beregnResult={beregnResult} />}
+          {beregnResult && (
+            <ResultTable
+              alderspensjon={beregnResult.alderspensjon}
+              afpPrivat={beregnResult.afpPrivat}
+            />
+          )}
           <HighchartsReact
             highcharts={Highcharts}
             options={chartOptions}
