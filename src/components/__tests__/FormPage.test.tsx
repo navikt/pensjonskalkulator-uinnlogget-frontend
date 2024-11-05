@@ -51,20 +51,20 @@ describe('FormPage Component', () => {
     expect(screen.getByText('Mocked UtlandsStep')).toBeInTheDocument()
   })
 
-  describe('BeregnPages Component', () => {})
+  describe('BeregnPage Component', () => {
+    test('Burde rendre når curStep er lik lenged av antall steps', () => {
+      // Set up the mock to return the BeregnPage
+      ;(useMultiStepForm as jest.Mock).mockReturnValue({
+        curStep: length,
+        length: length,
+        step: null,
+        next: jest.fn(),
+        back: jest.fn(),
+        goTo: jest.fn(),
+      })
 
-  test('Burde rendre når curStep er lik antall sider', () => {
-    // Set up the mock to return the BeregnPage
-    ;(useMultiStepForm as jest.Mock).mockReturnValue({
-      curStep: length,
-      length: length,
-      step: null,
-      next: jest.fn(),
-      back: jest.fn(),
-      goTo: jest.fn(),
+      render(<FormPage />)
+      expect(screen.getByText('Mocked BeregnPage')).toBeInTheDocument()
     })
-
-    render(<FormPage />)
-    expect(screen.getByText('Mocked BeregnPage')).toBeInTheDocument()
   })
 })
