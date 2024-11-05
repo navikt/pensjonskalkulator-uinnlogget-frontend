@@ -51,7 +51,7 @@ export interface FormPageProps {
   curStep: number
   length: number
   goBack: () => void
-  onStepChange: (step: number) => void
-  handleSubmit: () => void
+  onStepChange?: (step: number) => void
+  handleSubmit?: () => void
   goToNext: () => void
 }

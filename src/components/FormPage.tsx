@@ -36,27 +36,11 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const lastPage = <BeregnPage key="beregn" />
 
-  const { curStep, step, goToNext, goBack, goTo } = useMultiStepForm(
+  const { curStep, step, goToNext, goBack } = useMultiStepForm(
     pagesDict,
     lastPage
   )
   const length = pagesNames.length
-
-  const handleSubmit = async () => {
-    // if (curStep === length - 1) {
-    //   setLoading(true)
-    //   try {
-    //     const resultData = await submitForm(formState)
-    //     setBeregnResult(JSON.parse(resultData))
-    //     console.log(resultData)
-    //   } catch (error) {
-    //     console.error(error)
-    //   } finally {
-    //     setLoading(false)
-    //     setShowBeregnPage(true)
-    //   }
-    // }
-  }
 
   return (
     <FormContext.Provider
@@ -67,8 +51,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
           curStep,
           length,
           goBack,
-          onStepChange: goTo,
-          handleSubmit,
           goToNext,
         },
       }}
@@ -79,8 +61,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
             totalSteps={length}
             activeStep={curStep + 1}
             goBack={goBack}
-            onStepChange={(i) => goTo(i)}
-            handleSubmit={handleSubmit}
             step={step}
             curStep={curStep}
             length={length}
