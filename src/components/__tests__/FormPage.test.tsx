@@ -1,41 +1,70 @@
 import { render, screen } from '@testing-library/react'
-import FormPage from '@/components/FormPage'
+import FormPage from '../FormPage'
+import useMultiStepForm from '@/helpers/useMultiStepForm'
 
-// Mock the necessary modules and functions
-jest.mock('@/functions/submitForm', () => jest.fn())
+// Mock the useMultiStepForm hook
+jest.mock('@/helpers/useMultiStepForm')
+jest.mock('@/components/pages/BeregnPage', () =>
+  jest.fn(() => <div>Mocked BeregnPage</div>)
+)
 
-const steps = [
-  <div key="step1">First Step</div>,
-  <div key="step2">Second Step</div>,
-  <div key="step3">Third Step</div>,
-]
+const mockPagesDict = {
+  alder: <div key="alder">Mocked AlderStep</div>,
+  utland: <div key="utland">Mocked UtlandsStep</div>,
+  inntekt: <div key="inntekt">Mocked InntektStep</div>,
+  ektefelle: <div key="ektefelle">Mocked EktefelleStep</div>,
+  afp: <div key="afp">Mocked AFPStep</div>,
+}
 
-jest.mock('@/helpers/useMultiStepForm', () => ({
-  __esModule: true,
-  default: jest.fn(() => ({
-    curStep: 0,
-    length: steps.length,
-    step: steps[0],
-    next: jest.fn(),
-    back: jest.fn(),
-    goTo: jest.fn(),
-  })),
-}))
+const pagesNames = Object.keys(mockPagesDict)
+
+const length = pagesNames.length
 
 describe('FormPage Component', () => {
-  const grunnbelop = 100000
+  test('Burde rendre første steg', () => {
+    // Set up the mock to return the first step
+    ;(useMultiStepForm as jest.Mock).mockReturnValue({
+      curStep: 0,
+      length: length,
+      step: mockPagesDict.alder,
+      next: jest.fn(),
+      back: jest.fn(),
+      goTo: jest.fn(),
+    })
 
-  const renderFormPage = () => {
-    return render(<FormPage grunnbelop={grunnbelop} />)
-  }
-
-  test('Burde rendre komponenten', () => {
-    renderFormPage()
-    expect(screen.getByText('Pensjonskalkulator')).toBeInTheDocument()
+    render(<FormPage />)
+    expect(screen.getByText('Mocked AlderStep')).toBeInTheDocument()
   })
 
-  test('Burde rendre første steget', () => {
-    renderFormPage()
-    expect(screen.getByText('First Step')).toBeInTheDocument()
+  test('Burde rendre andre steg', () => {
+    // Set up the mock to return the second step
+    ;(useMultiStepForm as jest.Mock).mockReturnValue({
+      curStep: 1,
+      length: length,
+      step: mockPagesDict.utland,
+      next: jest.fn(),
+      back: jest.fn(),
+      goTo: jest.fn(),
+    })
+
+    render(<FormPage />)
+    expect(screen.getByText('Mocked UtlandsStep')).toBeInTheDocument()
+  })
+
+  describe('BeregnPage Component', () => {
+    test('Burde rendre når curStep er lik lenged av antall steps', () => {
+      // Set up the mock to return the BeregnPage
+      ;(useMultiStepForm as jest.Mock).mockReturnValue({
+        curStep: length,
+        length: length,
+        step: null,
+        next: jest.fn(),
+        back: jest.fn(),
+        goTo: jest.fn(),
+      })
+
+      render(<FormPage />)
+      expect(screen.getByText('Mocked BeregnPage')).toBeInTheDocument()
+    })
   })
 })

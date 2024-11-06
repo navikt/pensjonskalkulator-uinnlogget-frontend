@@ -21,7 +21,7 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
   return (
     <FormProgress
       totalSteps={totalSteps}
-      activeStep={activeStep}
+      activeStep={activeStep + 1}
       data-testid="form-progress"
     >
       {steps.map((step, index) => (

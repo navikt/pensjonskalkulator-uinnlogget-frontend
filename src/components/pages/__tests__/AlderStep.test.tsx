@@ -44,7 +44,6 @@ beforeEach(() => {
   ])
 })
 describe('AlderStep Component', () => {
-
   const renderComponent = () => {
     return render(
       <FormContext.Provider value={context}>
@@ -85,6 +84,5 @@ describe('AlderStep Component', () => {
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
     expect(screen.getByText('Dette feltet er påkrevd')).toBeInTheDocument()
-
   })
 })

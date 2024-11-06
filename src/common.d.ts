@@ -40,18 +40,18 @@ export type ErrorFields = {
 export interface ContextForm {
   state: State
   setState: Dispatch<React.SetStateAction<FormValues>>
-  formPageProps: FormPageProps
+  formPageProps: NavigationProps
 }
 
 export interface StepRef {
   onSubmit: () => void
 }
 
-export interface FormPageProps {
+export interface NavigationProps {
   curStep: number
   length: number
   goBack: () => void
-  onStepChange: (step: number) => void
-  handleSubmit: () => void
+  onStepChange?: (step: number) => void
+  handleSubmit?: () => void
   goToNext: () => void
 }
