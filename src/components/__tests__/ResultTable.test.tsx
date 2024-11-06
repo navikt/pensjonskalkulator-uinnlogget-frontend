@@ -188,6 +188,33 @@ describe('ResultTable Component', () => {
     expect(heltRow).toHaveTextContent('265000')
   })
 
+  test('Burde sette afpPrivatHel og afpPrivatGradert til 0 hvis afpPrivat er undefined', () => {
+    render(
+      <FormContext.Provider value={mockContextValue}>
+        <ResultTable
+          alderspensjon={mockBeregnResult.alderspensjon}
+          afpPrivat={undefined}
+        />
+      </FormContext.Provider>
+    )
+
+    const rows = screen.getAllByRole('row')
+
+    const gradertRow = rows[1]
+    expect(gradertRow).toHaveTextContent('Ved 67 (50 %)')
+    expect(gradertRow).toHaveTextContent('200000')
+    expect(gradertRow).toHaveTextContent('0')
+    expect(gradertRow).toHaveTextContent('50000')
+    expect(gradertRow).toHaveTextContent('250000')
+
+    const heltRow = rows[2]
+    expect(heltRow).toHaveTextContent('Ved 68 (100 %)')
+    expect(heltRow).toHaveTextContent('210000')
+    expect(heltRow).toHaveTextContent('0')
+    expect(heltRow).toHaveTextContent('100000')
+    expect(heltRow).toHaveTextContent('310000')
+  })
+
   test('Burde vise fallback verdier til alderspensjon og afpPrivat når ingen matchende elementer finnes', () => {
     const mockBeregnResultEmpty = {
       alderspensjon: [],

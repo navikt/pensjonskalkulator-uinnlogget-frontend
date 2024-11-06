@@ -11,14 +11,7 @@ interface BeregnProps {
 const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
   const { state } = useContext(FormContext)
 
-  const {
-    alderspensjonHel,
-    alderspensjonGradert,
-    afpPrivatHel,
-    afpPrivatGradert,
-    aarligbelopVsaGradertuttak,
-    aarligbelopVsaHeltuttak,
-  } = useMemo(() => {
+  const { alderspensjonHel, alderspensjonGradert } = useMemo(() => {
     const alderspensjonHel =
       alderspensjon.find(
         (item) => item.alder === state.heltUttak.uttakAlder.aar
@@ -27,6 +20,10 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
       alderspensjon.find(
         (item) => item.alder === state.gradertUttak?.uttakAlder.aar
       )?.beloep || 0
+    return { alderspensjonHel, alderspensjonGradert }
+  }, [alderspensjon])
+
+  const { afpPrivatHel, afpPrivatGradert } = useMemo(() => {
     const afpPrivatHel =
       afpPrivat?.find((item) => item.alder === state.heltUttak.uttakAlder.aar)
         ?.beloep || 0
@@ -34,27 +31,13 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
       afpPrivat?.find(
         (item) => item.alder === state.gradertUttak?.uttakAlder.aar
       )?.beloep || 0
-    const aarligbelopVsaGradertuttak =
-      state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
-    const aarligbelopVsaHeltuttak =
-      state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+    return { afpPrivatHel, afpPrivatGradert }
+  }, [afpPrivat])
 
-    return {
-      alderspensjonHel,
-      alderspensjonGradert,
-      afpPrivatHel,
-      afpPrivatGradert,
-      aarligbelopVsaGradertuttak,
-      aarligbelopVsaHeltuttak,
-    }
-  }, [
-    alderspensjon,
-    afpPrivat,
-    state.heltUttak.uttakAlder.aar,
-    state.gradertUttak?.uttakAlder.aar,
-    state.gradertUttak?.aarligInntektVsaPensjonBeloep,
-    state.heltUttak?.aarligInntektVsaPensjon?.beloep,
-  ])
+  const aarligbelopVsaGradertuttak =
+    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
+  const aarligbelopVsaHeltuttak =
+    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
 
   return (
     <Table data-testid="result-table">
