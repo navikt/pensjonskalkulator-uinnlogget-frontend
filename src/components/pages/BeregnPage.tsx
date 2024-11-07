@@ -8,7 +8,7 @@ import { FormContext } from '@/contexts/context'
 import LoadingComponent from '../LoadingComponent'
 import { produce } from 'immer'
 
-function fetchBeregnData(formState: State) {
+export function fetchBeregnData(formState: State) {
   return wrapPromise(
     submitForm(formState).then((data) => JSON.parse(data) as FormValueResult)
   )

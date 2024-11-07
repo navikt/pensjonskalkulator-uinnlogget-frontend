@@ -94,7 +94,7 @@
     ],
     "afpOffentlig": [],
     "vilkaarsproeving": {
-      "vilkaarErOppfylt": true,
+      "vilkaarErOppfylt": false,
       "alternativ": null
     }
   }

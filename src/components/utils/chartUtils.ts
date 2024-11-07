@@ -31,7 +31,7 @@ export const getChartOptions = (
     yAxis: {
       min: 0,
       title: {
-        text: 'Beløp',
+        text: 'Beløp (i kr)',
       },
     },
     credits: {
