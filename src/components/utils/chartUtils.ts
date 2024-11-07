@@ -90,7 +90,5 @@ export const getChartOptions = (
     })
   }
 
-  console.log('chartOptions:', chartOptions)
-
   return chartOptions
 }
