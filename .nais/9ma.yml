@@ -6,7 +6,7 @@ metadata:
   name: pensjonskalkulator-uinnlogget-magic
   namespace: pensjonskalkulator
 spec:
-  image: { { image } }
+  image: {{image}}
   ingresses:
     - https://pensjonskalkulator-uinnlogget-magic.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
   port: 8080
