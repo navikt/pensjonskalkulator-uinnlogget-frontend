@@ -1,18 +1,18 @@
-import { FormValueResult } from '@/common'
+import { Simuleringsresultat } from '@/common'
 
 export const getChartOptions = (
   heltUttakAlder: number,
   inntektVsaHelPensjonSluttalder: number,
   inntektVsaHelPensjonBeloep: number,
-  beregnResult: FormValueResult | undefined
+  simuleringsresultat: Simuleringsresultat | undefined
 ) => {
-  const alderspensjonData = beregnResult
-    ? beregnResult.alderspensjon.map((item) => item.beloep)
+  const alderspensjonData = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
     : []
   const afpPrivatData =
-    beregnResult?.afpPrivat?.map((item) => item.beloep) ?? []
-  const categories = beregnResult
-    ? beregnResult.alderspensjon.map((item) => item.alder)
+    simuleringsresultat?.afpPrivat?.map((item) => item.beloep) ?? []
+  const categories = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.alder)
     : []
 
   const chartOptions = {

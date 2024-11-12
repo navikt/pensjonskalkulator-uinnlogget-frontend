@@ -5,15 +5,15 @@ import { FormContext } from '@/contexts/context'
 import { getChartOptions } from './utils/chartUtils'
 import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
-import { FormValueResult } from '@/common'
+import { Simuleringsresultat } from '@/common'
 
 interface BeregnResource {
-  resource: { read(): FormValueResult | undefined }
+  asyncSimuleringsresultat: { read(): Simuleringsresultat | undefined }
 }
 
-const Beregn: React.FC<BeregnResource> = ({ resource }) => {
+const Beregn: React.FC<BeregnResource> = ({ asyncSimuleringsresultat }) => {
   const { state } = useContext(FormContext)
-  const beregnResult = resource.read()
+  const simuleringsresultat = asyncSimuleringsresultat.read()
 
   const chartOptions = useMemo(() => {
     const heltUttakAlder = state.heltUttak.uttakAlder.aar
@@ -26,9 +26,9 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
       heltUttakAlder,
       inntektVsaHelPensjonSluttalder,
       inntektVsaHelPensjonBeloep,
-      beregnResult
+      simuleringsresultat
     )
-  }, [state, beregnResult])
+  }, [state, simuleringsresultat])
 
   return (
     <div>
@@ -43,10 +43,10 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
       >
         <h1>Resultat</h1>
         <>
-          {beregnResult && (
+          {simuleringsresultat && (
             <ResultTable
-              alderspensjon={beregnResult.alderspensjon}
-              afpPrivat={beregnResult.afpPrivat}
+              alderspensjon={simuleringsresultat.alderspensjon}
+              afpPrivat={simuleringsresultat.afpPrivat}
             />
           )}
           <HighchartsReact
