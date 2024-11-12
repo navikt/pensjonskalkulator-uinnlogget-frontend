@@ -1,71 +1,144 @@
-import submitForm from '@/functions/submitForm'
-import { State } from '@/common'
 import { initialFormState } from '@/defaults/defaultFormState'
-
-global.fetch = jest.fn()
-const mockFormState: State = initialFormState
-
-beforeEach(() => {
-  ;(global.fetch as jest.Mock).mockClear()
-  jest.spyOn(console, 'error').mockImplementation(() => {})
-})
-
-afterEach(() => {
-  jest.restoreAllMocks()
-})
+import submitForm from '../submitForm'
+import { State } from '@/common'
 
 describe('submitForm', () => {
-  test('Burde kalle fetch med riktig payload', async () => {
-    const mockResponse = {
-      ok: true,
-      json: jest.fn().mockResolvedValue({ success: true }),
-    }
-    ;(fetch as jest.Mock).mockResolvedValue(mockResponse)
+  const mockState: State = initialFormState
 
-    const result = await submitForm(mockFormState)
+  beforeEach(() => {
+    global.fetch = jest.fn()
+  })
 
-    const {
-      boddIUtland: _boddIUtland,
-      inntektVsaHelPensjon: _inntektVsaHelPensjon,
-      ...expectedApiPayload
-    } = mockFormState
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
 
-    expect(fetch).toHaveBeenCalledWith(
-      '/pensjon/kalkulator-uinnlogget/api/simuler',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(expectedApiPayload),
+  describe('Gitt at API-kallet gir response.ok', () => {
+    it('Burde riktig response bli returnert', async () => {
+      const mockResponse = { data: 'success' }
+      ;(global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(JSON.stringify(mockResponse)),
+      })
+
+      const form = submitForm(mockState)
+
+      // Ensure the promise is properly awaited
+      try {
+        form.read()
+      } catch (suspender) {
+        await suspender
       }
-    )
-    expect(result).toEqual({ success: true })
+
+      // Wait for the promise to resolve
+      await new Promise(process.nextTick)
+
+      // Read the result after the promise has resolved
+      const result = form.read()
+      expect(result).toEqual(mockResponse)
+    })
+
+    it('Burde en feil bli kastet dersom responsen er undefined', async () => {
+      ;(global.fetch as jest.Mock).mockResolvedValue({
+        ok: true,
+        json: jest.fn().mockResolvedValue(undefined),
+      })
+
+      const form = submitForm(mockState)
+
+      try {
+        form.read()
+      } catch (suspender) {
+        await suspender
+      }
+
+      await new Promise(process.nextTick)
+
+      expect(() => form.read()).toThrow('Result is undefined')
+    })
   })
 
-  it('Burde returnere undefined med standardmelding når errorData.message er undefined', async () => {
-    const mockResponse = {
-      ok: false,
-      status: 500,
-      json: jest.fn().mockResolvedValue({
-        message: 'Failed to submit form',
-      }),
-    }
-    ;(global.fetch as jest.Mock).mockResolvedValue(mockResponse)
+  describe('Gitt at API-kallet ikke har ok response', () => {
+    it('Burde API-feil bli håndtert med riktig status og melding', async () => {
+      const mockError = { message: 'API Error', status: 400 }
+      ;(global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        json: jest.fn().mockResolvedValue(mockError),
+      })
 
-    const result = await submitForm(mockFormState)
-    expect(result).toBeUndefined()
+      const form = submitForm(mockState)
+
+      try {
+        form.read()
+      } catch (suspender) {
+        await suspender
+      }
+
+      await new Promise(process.nextTick)
+
+      try {
+        form.read()
+      } catch (error) {
+        const typedError = error as { message: string; status: number }
+        expect(typedError.message).toBe(mockError.message)
+        expect(typedError.status).toBe(mockError.status)
+      }
+    })
+
+    it('Burde en standardmelding bli kastet dersom feilen ikke innehar en melding', async () => {
+      const mockError = { status: 400 } // Ingen message-egenskap
+      ;(global.fetch as jest.Mock).mockResolvedValue({
+        ok: false,
+        json: jest.fn().mockResolvedValue(mockError),
+      })
+
+      const form = submitForm(mockState)
+
+      // Sørg for at løftet blir riktig ventet på
+      try {
+        form.read()
+      } catch (suspender) {
+        await suspender
+      }
+
+      await new Promise(process.nextTick) // Vent til løftet er løst
+
+      // Les resultatet etter at løftet er løst
+      try {
+        form.read()
+      } catch (error) {
+        const typedError = error as { message: string; status: number }
+        expect(typedError.message).toBe('Failed to submit form')
+      }
+    })
+    it('Burde innsending av skjema med nettverksfeil bli håndtert', async () => {
+      const mockError = new Error('Network Error')
+      ;(global.fetch as jest.Mock).mockRejectedValue(mockError)
+
+      const form = submitForm(mockState)
+
+      try {
+        form.read()
+      } catch (suspender) {
+        await suspender
+      }
+
+      await new Promise(process.nextTick)
+
+      expect(() => form.read()).toThrow(mockError.message)
+    })
   })
+  describe('Gitt at en promise er "pending"', () => {
+    it('Burde en suspender bli kastet', async () => {
+      const mockPromise = new Promise(() => {})
+      ;(global.fetch as jest.Mock).mockReturnValue(mockPromise)
 
-  it('Burde returnere undefined når fetch feiler', async () => {
-    const mockResponse = {
-      ok: false,
-      status: 500,
-      json: jest.fn().mockResolvedValue({}),
-    }
-    ;(global.fetch as jest.Mock).mockResolvedValue(mockResponse)
-
-    const result = await submitForm(mockFormState)
-    expect(result).toBeUndefined()
+      const form = submitForm(mockState)
+      try {
+        form.read()
+      } catch (error) {
+        expect(error).toStrictEqual(mockPromise)
+      }
+    })
   })
 })

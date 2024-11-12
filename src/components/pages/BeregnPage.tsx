@@ -1,18 +1,11 @@
 import React, { Suspense, useContext, useEffect, useState } from 'react'
 import Beregn from '../Beregn'
-import { FormValueResult, State } from '@/common'
-import wrapPromise from '@/utils/wrapPromise'
+import { FormValueResult } from '@/common'
 import submitForm from '@/functions/submitForm'
 import { FormContext } from '@/contexts/context'
 
 import LoadingComponent from '../LoadingComponent'
 import { produce } from 'immer'
-
-export function fetchBeregnData(formState: State) {
-  return wrapPromise(
-    submitForm(formState).then((data) => JSON.parse(data) as FormValueResult)
-  )
-}
 
 // The resource itself is just the object returned by wrapPromise
 interface Resource {
@@ -20,9 +13,9 @@ interface Resource {
 }
 
 function BeregnPage() {
-  const [beregnResource, setBeregnResource] = useState<Resource>({
-    read: () => undefined,
-  })
+  const [beregnResource, setBeregnResource] = useState<Resource | undefined>(
+    undefined
+  )
 
   const { state, setState } = useContext(FormContext)
 
@@ -58,9 +51,13 @@ function BeregnPage() {
 
     setState(payload)
 
-    const resource = fetchBeregnData(payload)
+    const resource = submitForm(payload)
     setBeregnResource(resource)
   }, [])
+
+  if (beregnResource === undefined) {
+    return <LoadingComponent />
+  }
 
   return (
     <Suspense fallback={<LoadingComponent />}>

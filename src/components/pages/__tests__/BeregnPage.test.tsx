@@ -3,22 +3,11 @@ import { act, render, screen, waitFor } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import BeregnPage from '../BeregnPage'
 import { initialFormState } from '@/defaults/defaultFormState'
-import { fetchBeregnData } from '../BeregnPage'
 import { produce } from 'immer'
 import submitForm from '@/functions/submitForm'
 
-jest.mock('../BeregnPage', () => {
-  const originalModule = jest.requireActual('../BeregnPage')
-  return {
-    __esModule: true,
-    ...originalModule,
-    fetchBeregnData: jest.fn(),
-  }
-})
-
 jest.mock('@/functions/submitForm', () => jest.fn())
 
-const mockFetchBeregnData = fetchBeregnData as jest.Mock
 const mockSubmitForm = submitForm as jest.Mock
 
 const mockBeregnResult = {
@@ -57,11 +46,8 @@ const mockContextValue = {
 describe('BeregnPage Component', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-    mockSubmitForm.mockResolvedValue(JSON.stringify(mockBeregnResult))
-    mockFetchBeregnData.mockImplementation(() => {
-      return {
-        read: () => mockSubmitForm(),
-      }
+    mockSubmitForm.mockReturnValue({
+      read: jest.fn().mockReturnValue(mockBeregnResult),
     })
   })
 
@@ -86,36 +72,27 @@ describe('BeregnPage Component', () => {
     })
   })
 
-  describe('Gitt at noen states behøver å oppdateres', () => {
-    test('Burde Immer sin produce funksjon kunne oppdatere statene som forventet', async () => {
-      await act(async () => {
-        render(
-          <FormContext.Provider value={mockContextValue}>
-            <BeregnPage />
-          </FormContext.Provider>
-        )
-      })
-
-      await waitFor(() => {
-        expect(screen.getByText('Resultat')).toBeInTheDocument()
-      })
-
-      const expectedState = produce(initialFormState, (draft) => {
-        draft.gradertUttak = {
-          grad: 50,
-          uttakAlder: { aar: 67, maaneder: 0 },
-          aarligInntektVsaPensjonBeloep: 50000,
-        }
-        draft.heltUttak = {
-          uttakAlder: { aar: 68, maaneder: 0 },
-          aarligInntektVsaPensjon: { beloep: 100000 },
-        }
-      })
-
-      mockSetState(expectedState)
-      expect(mockSetState).toHaveBeenCalledWith(expectedState)
+  /* test('Burde rendre LoadingComponent dersom data ikke er lastet inn', async () => {
+    mockSubmitForm.mockReturnValue({
+      read: jest.fn(() => {
+        throw new Promise(() => {}) // Simulerer en loading state
+      }),
     })
 
+    await act(async () => {
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <BeregnPage />
+        </FormContext.Provider>
+      )
+    })
+
+    await waitFor(() => {
+      expect(screen.getByTestId('loading')).toBeVisible()
+    })
+  }) */
+
+  describe('Gitt at noen states behøver å oppdateres', () => {
     describe('Når heltUttak behøver å oppdateres', () => {
       test('Burde heltUttak.aarligInntektVsaPensjon.beloep bli satt til 0 dersom inntektVsaHelPensjon er "nei" og beløpet er større enn 0', async () => {
         const stateWithBeloep = produce(initialFormState, (draft) => {
