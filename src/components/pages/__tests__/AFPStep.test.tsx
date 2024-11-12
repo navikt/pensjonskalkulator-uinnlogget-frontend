@@ -82,7 +82,7 @@ describe('AFPStep Component', () => {
   })
 
   describe('Gitt at brukeren velger AFP', () => {
-    test('Burde state få riktig verdi ved Ja', () => {
+    test('Burde state få riktig verdi ved "Ja"', () => {
       renderMockedComponent(() => <AFPStep />, context)
       const select = screen.getByLabelText('Ja')
       fireEvent.click(select)
@@ -95,7 +95,7 @@ describe('AFPStep Component', () => {
       expect(draft.simuleringType).toBe('ALDERSPENSJON_MED_AFP_PRIVAT')
     })
 
-    test('Burde state få riktig verdi ved Nei', () => {
+    test('Burde state få riktig verdi ved "Nei"', () => {
       renderMockedComponent(() => <AFPStep />, context)
       const select = screen.getByLabelText('Nei')
       fireEvent.click(select)
