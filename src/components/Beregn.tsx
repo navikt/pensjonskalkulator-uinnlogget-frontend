@@ -7,13 +7,12 @@ import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
 import { Simuleringsresultat } from '@/common'
 
-interface BeregnResource {
-  asyncSimuleringsresultat: { read(): Simuleringsresultat | undefined }
+interface Props {
+  simuleringsresultat?: Simuleringsresultat
 }
 
-const Beregn: React.FC<BeregnResource> = ({ asyncSimuleringsresultat }) => {
+const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
-  const simuleringsresultat = asyncSimuleringsresultat.read()
 
   const chartOptions = useMemo(() => {
     const heltUttakAlder = state.heltUttak.uttakAlder.aar
@@ -30,6 +29,14 @@ const Beregn: React.FC<BeregnResource> = ({ asyncSimuleringsresultat }) => {
     )
   }, [state, simuleringsresultat])
 
+  if (!simuleringsresultat) {
+    return (
+      <div>
+        <h1>Woopsy</h1>
+        <p>We are having an error</p>
+      </div>
+    )
+  }
   return (
     <div>
       <Box
@@ -43,12 +50,11 @@ const Beregn: React.FC<BeregnResource> = ({ asyncSimuleringsresultat }) => {
       >
         <h1>Resultat</h1>
         <>
-          {simuleringsresultat && (
-            <ResultTable
-              alderspensjon={simuleringsresultat.alderspensjon}
-              afpPrivat={simuleringsresultat.afpPrivat}
-            />
-          )}
+          <ResultTable
+            alderspensjon={simuleringsresultat.alderspensjon}
+            afpPrivat={simuleringsresultat.afpPrivat}
+          />
+
           <HighchartsReact
             highcharts={Highcharts}
             options={chartOptions}

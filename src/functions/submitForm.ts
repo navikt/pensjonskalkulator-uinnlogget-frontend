@@ -1,90 +1,82 @@
 import { State, Simuleringsresultat } from '@/common'
+import { produce } from 'immer'
 
 const transformPayload = (formState: State) => {
-  const draft = { ...formState }
-
-  if (
-    draft.inntektVsaHelPensjon === 'nei' &&
-    draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
-    draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
-  ) {
-    draft.heltUttak.aarligInntektVsaPensjon!.beloep = 0
-  }
-  if (
-    draft.inntektVsaHelPensjon === 'nei' &&
-    draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
-  ) {
-    draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
-  }
-  if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0) {
-    draft.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
-  }
-  if (draft.gradertUttak?.grad === 100) {
-    draft.gradertUttak = undefined
-  }
-  if (draft.sivilstand === 'UGIFT') {
-    draft.epsHarInntektOver2G = undefined
-    draft.epsHarPensjon = undefined
-  }
-  if (draft.boddIUtland === 'nei') {
-    draft.utenlandsAntallAar = 0
-  }
+  const payload = produce(formState, (draft) => {
+    if (
+      draft.inntektVsaHelPensjon === 'nei' &&
+      draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
+      draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
+    ) {
+      draft.heltUttak.aarligInntektVsaPensjon.beloep = 0
+    }
+    if (
+      draft.inntektVsaHelPensjon === 'nei' &&
+      draft.heltUttak?.aarligInntektVsaPensjon &&
+      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
+    ) {
+      draft.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
+    }
+    if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0) {
+      draft.heltUttak!.aarligInntektVsaPensjon.sluttAlder = undefined
+    }
+    if (draft.gradertUttak?.grad === 100) {
+      draft.gradertUttak = undefined
+    }
+    if (draft.sivilstand === 'UGIFT') {
+      draft.epsHarInntektOver2G = undefined
+      draft.epsHarPensjon = undefined
+    }
+    if (draft.boddIUtland === 'nei') {
+      draft.utenlandsAntallAar = 0
+    }
+  })
 
   const {
     boddIUtland: _boddIUtland,
     inntektVsaHelPensjon: _inntektVsaHelPensjon,
     ...apiPayload
-  } = draft
+  } = payload
 
   return apiPayload
 }
 
-const submitForm = (formState: State) => {
+const submitForm = async (
+  formState: State
+): Promise<Simuleringsresultat | undefined> => {
   const apiPayload = transformPayload(formState)
 
-  let data: Simuleringsresultat | undefined
-
-  fetch('/pensjon/kalkulator-uinnlogget/api/simuler', {
+  return fetch('/pensjon/kalkulator-uinnlogget/api/simuler', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(apiPayload),
   })
-    .then((response) => {
+    .then(async (response) => {
       if (response.ok) {
-        response
+        return response
           .json()
           .then((jsonData) => {
-            data = jsonData
+            return JSON.parse(jsonData) as Simuleringsresultat
           })
           .catch(async () => {
-            // TODO feilhåndtering ved feil i json parsing
+            return Promise.reject('Error parsing JSON')
           })
       } else {
-        response
+        return response
           .json()
-          .then((error) => {
-            // TODO feilhåndtering ved error
-            console.log('>>> Error:', error)
+          .then(() => {
+            return Promise.reject('Error while fetching')
           })
           .catch(() => {
-            //      TODO feilhåndtering ved error
+            return Promise.reject('Unhandled error')
           })
       }
     })
     .catch(() => {
-      //      TODO feilhåndtering ved feil i manipulering
+      return Promise.reject('Unhandled error')
     })
-
-  return {
-    read() {
-      if (!data) {
-        return undefined
-      }
-      return data
-    },
-  }
 }
 
 export default submitForm

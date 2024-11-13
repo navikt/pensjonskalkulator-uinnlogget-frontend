@@ -6,9 +6,9 @@
     "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
     "testc": "jest --c",
     "test": "jest",
-    "dev": "concurrently \"next dev\" \"json-server mockdb/db.json --port 3001 \"",
     "build": "next build",
-    "start": "next start",
+    "preview": "next start",
+    "dev": "concurrently \"next dev\" \"json-server mockdb/db.json --port 3001 \"",
     "lint": "next lint",
     "prepare": "husky install"
   },
