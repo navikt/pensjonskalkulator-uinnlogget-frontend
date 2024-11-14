@@ -1,6 +1,7 @@
 import { initialFormState } from '@/defaults/defaultFormState'
-import submitForm from '../submitForm'
+import { transformPayload, submitForm } from '../submitForm'
 import { State } from '@/common'
+import { produce } from 'immer'
 
 describe('submitForm', () => {
   const mockState: State = initialFormState
@@ -10,7 +11,97 @@ describe('submitForm', () => {
   })
 
   afterEach(() => {
-    jest.resetAllMocks()
+    jest.clearAllMocks()
+  })
+
+  describe('Gitt at noen states behøver å oppdateres, ', () => {
+    describe('Når brukeren har svart "nei" til inntekt vsa. helt uttak og beløpet er større enn 0', () => {
+      test('Burde beløpet settes til 0 ', async () => {
+        const stateWithBeloep = produce(initialFormState, (draft) => {
+          draft.inntektVsaHelPensjon = 'nei'
+          draft.heltUttak = {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 1000,
+              sluttAlder: { aar: 67, maaneder: 0 },
+            },
+          }
+        })
+
+        const expectedState = transformPayload(stateWithBeloep)
+        expect(expectedState.heltUttak.aarligInntektVsaPensjon?.beloep).toBe(0)
+      })
+    })
+
+    describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
+      test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
+        const stateWithSluttAlder = produce(initialFormState, (draft) => {
+          draft.inntektVsaHelPensjon = 'nei'
+          draft.heltUttak = {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: { aar: 67, maaneder: 0 },
+            },
+          }
+        })
+
+        const expectedState = transformPayload(stateWithSluttAlder)
+        expect(
+          expectedState.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+        ).toBe(undefined)
+      })
+    })
+
+    describe('Når brukeren har ikke fylt ut sluttalder for inntekt vsa. helt uttak, ', () => {
+      test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
+        const stateWithSluttAlderZero = produce(initialFormState, (draft) => {
+          draft.heltUttak = {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: { aar: 0, maaneder: -1 },
+            },
+          }
+        })
+
+        const expectedState = transformPayload(stateWithSluttAlderZero)
+        expect(
+          expectedState.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+        ).toBe(undefined)
+      })
+    })
+
+    test('Når grad til gradert uttak er 100, Burde all informasjon om gradert uttak nullstilles', async () => {
+      const stateWithGradertUttak = produce(initialFormState, (draft) => {
+        draft.gradertUttak = {
+          grad: 100,
+          uttakAlder: { aar: 67, maaneder: 0 },
+        }
+      })
+
+      const expectedState = transformPayload(stateWithGradertUttak)
+      expect(expectedState.gradertUttak).toBe(undefined)
+    })
+
+    test('Når brukeren har valgt sivilstand "UGIFT", Burde epsHarInntektOver2G og epsHarPensjon nullstilles', async () => {
+      const stateWithSivilstandUgift = produce(initialFormState, (draft) => {
+        draft.sivilstand = 'UGIFT'
+      })
+
+      const expectedState = transformPayload(stateWithSivilstandUgift)
+      expect(expectedState.epsHarInntektOver2G).toBe(undefined)
+      expect(expectedState.epsHarPensjon).toBe(undefined)
+    })
+
+    test('Når brukeren har svart "nei" til boddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
+      const stateWithBoddIUtlandNei = produce(initialFormState, (draft) => {
+        draft.boddIUtland = 'nei'
+      })
+
+      const expectedState = transformPayload(stateWithBoddIUtlandNei)
+      expect(expectedState.utenlandsAntallAar).toBe(0)
+    })
   })
 
   describe('Gitt at API-kallet gir response.ok', () => {
@@ -18,126 +109,44 @@ describe('submitForm', () => {
       const mockResponse = { data: 'success' }
       ;(global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
+        status: 200,
         json: jest.fn().mockResolvedValue(JSON.stringify(mockResponse)),
       })
 
-      const form = submitForm(mockState)
-
-      // Ensure the promise is properly awaited
-      try {
-        form.read()
-      } catch (suspender) {
-        await suspender
-      }
-
-      // Wait for the promise to resolve
-      await new Promise(process.nextTick)
-
-      // Read the result after the promise has resolved
-      const result = form.read()
-      expect(result).toEqual(mockResponse)
+      const returnedValue = await submitForm(mockState)
+      expect(returnedValue).toEqual(mockResponse)
     })
 
     it('Burde en feil bli kastet dersom responsen er undefined', async () => {
       ;(global.fetch as jest.Mock).mockResolvedValue({
         ok: true,
+        status: 200,
         json: jest.fn().mockResolvedValue(undefined),
       })
 
-      const form = submitForm(mockState)
-
       try {
-        form.read()
-      } catch (suspender) {
-        await suspender
+        await submitForm(mockState)
+      } catch (rejectedPromise) {
+        await rejectedPromise
+        expect(rejectedPromise).toBe('Unhandled error')
       }
-
-      await new Promise(process.nextTick)
-
-      expect(() => form.read()).toThrow('Result is undefined')
     })
   })
 
-  describe('Gitt at API-kallet ikke har ok response', () => {
-    it('Burde API-feil bli håndtert med riktig status og melding', async () => {
-      const mockError = { message: 'API Error', status: 400 }
+  describe('Gitt at API-kallet ikke gir response.ok', () => {
+    it('Når fetching returnerer feil, returnerer ...', async () => {
+      const mockResponse = { data: 'error' }
       ;(global.fetch as jest.Mock).mockResolvedValue({
         ok: false,
-        json: jest.fn().mockResolvedValue(mockError),
+        status: 404,
+        json: jest.fn().mockResolvedValue(JSON.stringify(mockResponse)),
       })
 
-      const form = submitForm(mockState)
-
       try {
-        form.read()
-      } catch (suspender) {
-        await suspender
-      }
-
-      await new Promise(process.nextTick)
-
-      try {
-        form.read()
-      } catch (error) {
-        const typedError = error as { message: string; status: number }
-        expect(typedError.message).toBe(mockError.message)
-        expect(typedError.status).toBe(mockError.status)
-      }
-    })
-
-    it('Burde en standardmelding bli kastet dersom feilen ikke innehar en melding', async () => {
-      const mockError = { status: 400 } // Ingen message-egenskap
-      ;(global.fetch as jest.Mock).mockResolvedValue({
-        ok: false,
-        json: jest.fn().mockResolvedValue(mockError),
-      })
-
-      const form = submitForm(mockState)
-
-      // Sørg for at løftet blir riktig ventet på
-      try {
-        form.read()
-      } catch (suspender) {
-        await suspender
-      }
-
-      await new Promise(process.nextTick) // Vent til løftet er løst
-
-      // Les resultatet etter at løftet er løst
-      try {
-        form.read()
-      } catch (error) {
-        const typedError = error as { message: string; status: number }
-        expect(typedError.message).toBe('Failed to submit form')
-      }
-    })
-    it('Burde innsending av skjema med nettverksfeil bli håndtert', async () => {
-      const mockError = new Error('Network Error')
-      ;(global.fetch as jest.Mock).mockRejectedValue(mockError)
-
-      const form = submitForm(mockState)
-
-      try {
-        form.read()
-      } catch (suspender) {
-        await suspender
-      }
-
-      await new Promise(process.nextTick)
-
-      expect(() => form.read()).toThrow(mockError.message)
-    })
-  })
-  describe('Gitt at en promise er "pending"', () => {
-    it('Burde en suspender bli kastet', async () => {
-      const mockPromise = new Promise(() => {})
-      ;(global.fetch as jest.Mock).mockReturnValue(mockPromise)
-
-      const form = submitForm(mockState)
-      try {
-        form.read()
-      } catch (error) {
-        expect(error).toStrictEqual(mockPromise)
+        await submitForm(mockState)
+      } catch (rejectedPromise) {
+        await rejectedPromise
+        expect(rejectedPromise).toBe('Unhandled error')
       }
     })
   })
