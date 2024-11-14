@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import FormContainerComponent from '../FormContainerComponent'
+import FormContainerComponent from '../FormContainer'
 import FormProgressComponent from '../FormProgressComponent'
 
 // Mock FormProgressComponent for å isolere testene
@@ -8,7 +8,7 @@ jest.mock('../FormProgressComponent', () => ({
   default: jest.fn(() => <div>Mocked FormProgressComponent</div>),
 }))
 
-describe('FormContainerComponent', () => {
+describe('FormContainer component', () => {
   const defaultProps = {
     totalSteps: 5,
     activeStep: 1,
