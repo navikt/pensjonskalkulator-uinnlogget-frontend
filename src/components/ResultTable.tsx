@@ -1,11 +1,11 @@
 import { useContext, useMemo } from 'react'
 import { FormContext } from '@/contexts/context'
-import { FormValueResult } from '@/common'
+import { Simuleringsresultat } from '@/common'
 import { Table } from '@navikt/ds-react'
 
 interface BeregnProps {
-  alderspensjon: FormValueResult['alderspensjon']
-  afpPrivat: FormValueResult['afpPrivat']
+  alderspensjon: Simuleringsresultat['alderspensjon']
+  afpPrivat: Simuleringsresultat['afpPrivat']
 }
 
 const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {

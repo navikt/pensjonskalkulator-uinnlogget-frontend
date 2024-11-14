@@ -1,9 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import FormPage from '@/components/FormPage'
 
-// Mock the necessary modules and functions
-jest.mock('@/functions/submitForm', () => jest.fn())
-
 const steps = [
   <div key="step1">First Step</div>,
   <div key="step2">Second Step</div>,

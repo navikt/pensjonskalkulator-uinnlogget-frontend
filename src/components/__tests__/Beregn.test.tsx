@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import Beregn from '@/components/Beregn'
 import { initialFormState } from '@/defaults/defaultFormState'
-import { getChartOptions } from '../utils/chartUtils'
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({
@@ -17,7 +16,7 @@ jest.mock('../utils/chartUtils', () => ({
   })),
 }))
 
-const mockBeregnResult = {
+const mockSimuleringsresultat = {
   alderspensjon: [
     { alder: 67, beloep: 200000 },
     { alder: 68, beloep: 210000 },
@@ -55,158 +54,39 @@ describe('Beregn Component', () => {
     jest.clearAllMocks()
   })
 
-  describe('Rendring', () => {
-    it('Burde rendre ResultTable med riktige props', () => {
-      render(
-        <FormContext.Provider value={mockContextValue}>
-          <Beregn resource={{ read: () => mockBeregnResult }} />
-        </FormContext.Provider>
-      )
+  it('Når simuleringsresultat er undefined, burde vise feilmelding', () => {
+    render(
+      <FormContext.Provider value={mockContextValue}>
+        <Beregn />
+      </FormContext.Provider>
+    )
 
-      expect(screen.getByText('Resultat')).toBeInTheDocument()
-      expect(screen.getByTestId('result-table')).toBeInTheDocument()
-    })
+    expect(screen.queryByText('Resultat')).not.toBeInTheDocument()
+    expect(screen.getByText('Woopsy')).toBeVisible()
+    expect(screen.getByText('We are having an error')).toBeVisible()
+  })
 
-    it('Burde rendre Highcharts med riktig data', () => {
-      const { container } = render(
-        <FormContext.Provider value={mockContextValue}>
-          <Beregn resource={{ read: () => mockBeregnResult }} />
-        </FormContext.Provider>
-      )
+  it('Når simuleringsresultat er oppgitt, burde vise tittel, resultat-table og graf', () => {
+    const { container } = render(
+      <FormContext.Provider value={mockContextValue}>
+        <Beregn simuleringsresultat={mockSimuleringsresultat} />
+      </FormContext.Provider>
+    )
 
-      // Sjekk at Highcharts-react er rendret
-      const highchartsReact = screen.getByTestId('highcharts-react')
-      expect(highchartsReact).toBeInTheDocument()
+    expect(screen.getByText('Resultat')).toBeVisible()
+    expect(screen.getByTestId('result-table')).toBeVisible()
+    const highchartsReact = screen.getByTestId('highcharts-react')
+    expect(highchartsReact).toBeInTheDocument()
 
-      // Sjekk etter relevante DOM-elementer som Highcharts rendrer
-      const chartContainer = container.querySelector('.highcharts-container')
-      expect(chartContainer).toBeInTheDocument()
+    // Sjekk etter relevante DOM-elementer som Highcharts rendrer
+    const chartContainer = container.querySelector('.highcharts-container')
+    expect(chartContainer).toBeInTheDocument()
 
-      const legendItems = container.querySelectorAll('.highcharts-legend-item')
-      expect(legendItems).toHaveLength(2)
+    const legendItems = container.querySelectorAll('.highcharts-legend-item')
+    expect(legendItems).toHaveLength(2)
 
-      const seriesNames = Array.from(legendItems).map(
-        (item) => item.textContent
-      )
-      expect(seriesNames).toContain('AFP Privat')
-      expect(seriesNames).toContain('Alderspensjon')
-    })
-
-    it('Burde ikke rendre ResultTable dersom beregnResult er undefined', () => {
-      render(
-        <FormContext.Provider value={mockContextValue}>
-          <Beregn resource={{ read: () => undefined }} />
-        </FormContext.Provider>
-      )
-
-      expect(screen.queryByTestId('result-table')).not.toBeInTheDocument()
-    })
-
-    describe('Gitt at contexten har undefined verdier', () => {
-      describe('Når heltUttak.aarligInntektVsaPensjon.beloep er undefined', () => {
-        it('Burde aarligInntektVsaPensjon settes til 0', () => {
-          const contextValueWithUndefinedInntekt: typeof mockContextValue = {
-            ...mockContextValue,
-            state: {
-              ...mockContextValue.state,
-              heltUttak: {
-                ...mockContextValue.state.heltUttak,
-                aarligInntektVsaPensjon: undefined,
-              },
-            },
-          }
-
-          render(
-            <FormContext.Provider value={contextValueWithUndefinedInntekt}>
-              <Beregn resource={{ read: () => mockBeregnResult }} />
-            </FormContext.Provider>
-          )
-
-          const inntektVsaHelPensjonBeloep =
-            contextValueWithUndefinedInntekt.state.heltUttak
-              .aarligInntektVsaPensjon?.beloep ?? 0
-
-          expect(inntektVsaHelPensjonBeloep).toBe(0)
-        })
-
-        it('Burde ikke chartOptions inneholde serien "Inntekt ved siden av hel pensjon"', () => {
-          render(
-            <FormContext.Provider value={mockContextValue}>
-              <Beregn resource={{ read: () => mockBeregnResult }} />
-            </FormContext.Provider>
-          )
-
-          const heltUttakAlder = 67
-          const inntektVsaHelPensjonBeloep = 0
-          const inntektVsaHelPensjonSluttalder = 72
-          const chartOptions = getChartOptions(
-            heltUttakAlder,
-            inntektVsaHelPensjonBeloep,
-            inntektVsaHelPensjonSluttalder,
-            mockBeregnResult
-          )
-
-          const seriesNames = chartOptions.series.map((series) => series.name)
-          expect(seriesNames).not.toContain('Inntekt ved siden av hel pensjon')
-        })
-      })
-
-      describe('Når heltUttak.aarligInntektVsaPensjon er undefined', () => {
-        it('Burde sette inntektVsaHelPensjonBeloep til 0', () => {
-          const contextValueWithUndefinedInntekt: typeof mockContextValue = {
-            ...mockContextValue,
-            state: {
-              ...mockContextValue.state,
-              heltUttak: {
-                ...mockContextValue.state.heltUttak,
-                aarligInntektVsaPensjon: undefined,
-              },
-            },
-          }
-
-          render(
-            <FormContext.Provider value={contextValueWithUndefinedInntekt}>
-              <Beregn resource={{ read: () => mockBeregnResult }} />
-            </FormContext.Provider>
-          )
-
-          const inntektVsaHelPensjonBeloep =
-            contextValueWithUndefinedInntekt.state.heltUttak
-              .aarligInntektVsaPensjon?.beloep ?? 0
-
-          expect(inntektVsaHelPensjonBeloep).toBe(0)
-        })
-      })
-
-      describe('Når heltUttak.aarligInntektVsaPensjon.sluttAlder.aar er undefined', () => {
-        it('Burde sette inntektVsaHelPensjonSluttalder til 0', () => {
-          const contextValueWithUndefinedSluttalder: typeof mockContextValue = {
-            ...mockContextValue,
-            state: {
-              ...mockContextValue.state,
-              heltUttak: {
-                ...mockContextValue.state.heltUttak,
-                aarligInntektVsaPensjon: {
-                  beloep: 100000,
-                  sluttAlder: undefined,
-                },
-              },
-            },
-          }
-
-          render(
-            <FormContext.Provider value={contextValueWithUndefinedSluttalder}>
-              <Beregn resource={{ read: () => mockBeregnResult }} />
-            </FormContext.Provider>
-          )
-
-          const inntektVsaHelPensjonSluttalder =
-            contextValueWithUndefinedSluttalder.state.heltUttak
-              .aarligInntektVsaPensjon?.sluttAlder?.aar ?? 0
-
-          expect(inntektVsaHelPensjonSluttalder).toBe(0)
-        })
-      })
-    })
+    const seriesNames = Array.from(legendItems).map((item) => item.textContent)
+    expect(seriesNames).toContain('AFP Privat')
+    expect(seriesNames).toContain('Alderspensjon')
   })
 })

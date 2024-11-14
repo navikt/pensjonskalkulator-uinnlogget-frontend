@@ -1,18 +1,25 @@
-import { FormValueResult } from '@/common'
+import { Simuleringsresultat } from '@/common'
 
-export const getChartOptions = (
-  heltUttakAlder: number,
-  inntektVsaHelPensjonSluttalder: number,
-  inntektVsaHelPensjonBeloep: number,
-  beregnResult: FormValueResult | undefined
-) => {
-  const alderspensjonData = beregnResult
-    ? beregnResult.alderspensjon.map((item) => item.beloep)
+export const getChartOptions = (input: {
+  simuleringsresultat: Simuleringsresultat | undefined
+  heltUttakAar: number
+  inntektVsaHelPensjonSluttalder?: number
+  inntektVsaHelPensjonBeloep?: number
+}) => {
+  const {
+    simuleringsresultat,
+    heltUttakAar,
+    inntektVsaHelPensjonSluttalder = 0,
+    inntektVsaHelPensjonBeloep = 0,
+  } = input
+
+  const alderspensjonData = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
     : []
   const afpPrivatData =
-    beregnResult?.afpPrivat?.map((item) => item.beloep) ?? []
-  const categories = beregnResult
-    ? beregnResult.alderspensjon.map((item) => item.alder)
+    simuleringsresultat?.afpPrivat?.map((item) => item.beloep) ?? []
+  const categories = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.alder)
     : []
 
   const chartOptions = {
@@ -64,14 +71,11 @@ export const getChartOptions = (
     const inntektVsaHelPensjonData = []
     const inntektVsaHelPensjonInterval: number[] = []
 
-    if (
-      inntektVsaHelPensjonSluttalder === 0 ||
-      inntektVsaHelPensjonSluttalder === undefined
-    ) {
-      inntektVsaHelPensjonSluttalder = categories[categories.length - 1]
-    }
+    const maxAar = inntektVsaHelPensjonSluttalder
+      ? inntektVsaHelPensjonSluttalder
+      : categories[categories.length - 1]
 
-    for (let i = heltUttakAlder; i <= inntektVsaHelPensjonSluttalder; i++) {
+    for (let i = heltUttakAar; i <= maxAar; i++) {
       inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep)
       inntektVsaHelPensjonInterval.push(i)
     }
