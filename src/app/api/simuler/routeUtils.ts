@@ -15,11 +15,7 @@ export const generateBearerToken = async (): Promise<string> => {
   }
 }
 
-export const postDev = async (req: NextRequest) => {
-  if (req.method !== 'POST') {
-    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 })
-  }
-
+export const postDev = async () => {
   const backendUrl = 'http://localhost:3001/anonym-simulering'
   const backendResponse = await fetch(backendUrl)
 
@@ -33,10 +29,6 @@ export const postDev = async (req: NextRequest) => {
 }
 
 export const postProd = async (req: NextRequest) => {
-  if (req.method !== 'POST') {
-    return NextResponse.json({ message: 'Method not allowed' }, { status: 405 })
-  }
-
   const backendUrl =
     'http://pensjonskalkulator-backend/api/v1/alderspensjon/anonym-simulering'
 

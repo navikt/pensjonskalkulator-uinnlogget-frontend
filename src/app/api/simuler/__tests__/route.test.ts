@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 import * as route from '../route'
 import * as routeUtils from '../routeUtils'
@@ -65,8 +64,14 @@ describe('route.ts', () => {
         NODE_ENV: 'development',
       }
 
-      const resp = await route.POST({} as unknown as NextRequest)
-      expect(resp?.status).toBe(405)
+      global.fetch = jest.fn().mockResolvedValue({
+        status: 200,
+        text: jest.fn().mockResolvedValue('backend response'),
+      })
+
+      const req = new NextRequest('http://localhost', { method: 'POST' })
+      const resp = await route.POST(req)
+      expect(resp?.status).toBe(200)
     })
 
     it('Burde kalle postProd i prod miljø', async () => {
@@ -75,40 +80,38 @@ describe('route.ts', () => {
         NODE_ENV: 'production',
       }
 
-      const resp = await route.POST({} as unknown as NextRequest)
-      expect(resp?.status).toBe(405)
-    })
-  })
-
-  describe('postDev', () => {
-    it('Burde returnere "Method not allowed" for requests som ikke er POST', async () => {
-      const req = new NextRequest('http://localhost', { method: 'GET' })
-      const response = await routeUtils.postDev(req)
-      expect(response.status).toBe(405)
-      expect(await response.json()).toEqual({ message: 'Method not allowed' })
-    })
-
-    it('Burde returnere en backend response for POST request', async () => {
-      const req = new NextRequest('http://localhost', { method: 'POST' })
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
         text: jest.fn().mockResolvedValue('backend response'),
       })
 
-      const response = await routeUtils.postDev(req)
+      const req = new NextRequest('http://localhost', { method: 'POST' })
+      const resp = await route.POST(req)
+      expect(resp?.status).toBe(500)
+    })
+
+    it('Burde returnere "Method not allowed" for requests som ikke er POST', async () => {
+      const req = new NextRequest('http://localhost', { method: 'GET' })
+      const response = await route.POST(req)
+      expect(response?.status).toBe(405)
+      expect(await response?.json()).toEqual({ message: 'Method not allowed' })
+    })
+  })
+
+  describe('postDev', () => {
+    it('Burde returnere en backend response for POST request', async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        status: 200,
+        text: jest.fn().mockResolvedValue('backend response'),
+      })
+
+      const response = await routeUtils.postDev()
       expect(response.status).toBe(200)
       expect(await response.json()).toBe('backend response')
     })
   })
 
   describe('postProd', () => {
-    it('Burde returnere "Method not allowed" for requests som ikke er POST', async () => {
-      const req = new NextRequest('http://localhost', { method: 'GET' })
-      const response = await routeUtils.postProd(req)
-      expect(response.status).toBe(405)
-      expect(await response.json()).toEqual({ message: 'Method not allowed' })
-    })
-
     it('Burde returnere backend response for POST request', async () => {
       const req = new NextRequest('http://localhost', { method: 'POST' })
       req.text = jest.fn().mockResolvedValue('request body')
