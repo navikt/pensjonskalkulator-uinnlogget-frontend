@@ -58,7 +58,7 @@ describe('getChartOptions', () => {
   })
 
   describe('Gitt at det er udefinerte parametere i getChartOptions', () => {
-    describe('Når inntektVsaHelPensjonBeloep er undefined', () => {
+    describe('Når inntekt vsa. helt uttak er undefined', () => {
       it('Burde ikke serien "Inntekt ved siden av hel pensjon" vises', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: mockSimuleringsresultat,
@@ -74,8 +74,8 @@ describe('getChartOptions', () => {
       })
     })
 
-    describe('Når inntektVsaHelPensjonSluttalder er undefined', () => {
-      it('Burde intervallet til beløpet være like langt som alderspensjon.alder (livsvarig inntekt)', () => {
+    describe('Når sluttalder for inntakt vsa. helt uttak er undefined', () => {
+      it('Burde intervallet til beløpet være like langt som uttaksalderen (livsvarig inntekt)', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: mockSimuleringsresultat,
           heltUttakAar,
@@ -89,7 +89,7 @@ describe('getChartOptions', () => {
         })
       })
     })
-    describe('Når beregnResult.afpPrivat er undefined', () => {
+    describe('Når afpPrivat er undefined', () => {
       it('Burde data for serien "AFP Privat" være tom', () => {
         const emptySimuleringsresultat = {
           alderspensjon: [
@@ -118,8 +118,8 @@ describe('getChartOptions', () => {
         ])
       })
     })
-    describe('Når beregnResult.alderspensjon er undefined', () => {
-      it('Burde data for serien "AldersPensjon" være tom', () => {
+    describe('Når simuleringsresultat for alderspensjon er undefined', () => {
+      it('Burde data for serien "Alderspensjon" være tom', () => {
         const emptySimuleringsresultat = {
           alderspensjon: [],
           afpPrivat: [
@@ -147,7 +147,7 @@ describe('getChartOptions', () => {
         ])
       })
     })
-    describe('Når beregnResult er undefined', () => {
+    describe('Når simuleringsresultat er undefined', () => {
       it('Burde alle serier inneha tom data', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: undefined,
