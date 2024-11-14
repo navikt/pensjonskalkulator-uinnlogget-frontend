@@ -4,7 +4,7 @@ import Beregn from '../Beregn'
 import { FormContext } from '@/contexts/context'
 import { Simuleringsresultat, State } from '@/common'
 import LoadingComponent from '../LoadingComponent'
-import submitForm from '@/functions/submitForm'
+import { submitForm } from '@/functions/submitForm'
 
 const useAsyncLoader = (
   asyncMethod: (state: State) => Promise<Simuleringsresultat | undefined>,
@@ -41,6 +41,7 @@ const useAsyncLoader = (
         .catch(() => {
           storage.current.promise = undefined
           storage.current.rejected = true
+          // TODO PEK-722 utvide med mer logikk ved behov
           return undefined
         })
 

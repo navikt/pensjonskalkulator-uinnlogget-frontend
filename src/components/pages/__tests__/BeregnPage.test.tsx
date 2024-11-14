@@ -1,16 +1,17 @@
 import React from 'react'
-import { act, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import BeregnPage from '../BeregnPage'
 import { initialFormState } from '@/defaults/defaultFormState'
-import { produce } from 'immer'
-import submitForm from '@/functions/submitForm'
+import { submitForm } from '@/functions/submitForm'
 
-jest.mock('@/functions/submitForm', () => jest.fn())
+jest.mock('@/functions/submitForm', () => ({
+  submitForm: jest.fn(),
+}))
 
 const mockSubmitForm = submitForm as jest.Mock
 
-const mockBeregnResult = {
+const mockSimuleringsresultat = {
   alderspensjon: [
     { alder: 67, beloep: 200000 },
     { alder: 68, beloep: 210000 },
@@ -44,223 +45,58 @@ const mockContextValue = {
 }
 
 describe('BeregnPage Component', () => {
-  beforeEach(() => {
+  afterEach(() => {
     jest.clearAllMocks()
-    mockSubmitForm.mockReturnValue({
-      read: jest.fn().mockReturnValue(mockBeregnResult),
-    })
   })
 
   describe('Rendring', () => {
-    test('Burde rendre Beregn komponenten', async () => {
-      await act(async () => {
-        render(
-          <FormContext.Provider value={mockContextValue}>
-            <BeregnPage />
-          </FormContext.Provider>
-        )
-      })
+    test('Når data hentes, vises LoadingComponent', async () => {
+      const pendingPromise = new Promise(() => {})
+      mockSubmitForm.mockReturnValue(pendingPromise)
 
-      await waitFor(() => {
-        expect(screen.getByRole('region')).toBeInTheDocument()
-      })
-
-      const beregnElement = screen.getByText('Resultat')
-      expect(beregnElement).toBeInTheDocument()
-      const boxElement = screen.getByRole('region')
-      expect(boxElement).toBeInTheDocument()
-    })
-  })
-
-  /* test('Burde rendre LoadingComponent dersom data ikke er lastet inn', async () => {
-    mockSubmitForm.mockReturnValue({
-      read: jest.fn(() => {
-        throw new Promise(() => {}) // Simulerer en loading state
-      }),
-    })
-
-    await act(async () => {
       render(
         <FormContext.Provider value={mockContextValue}>
           <BeregnPage />
         </FormContext.Provider>
       )
+
+      expect(screen.getByTestId('loader')).toBeVisible()
     })
 
-    await waitFor(() => {
-      expect(screen.getByTestId('loading')).toBeVisible()
-    })
-  }) */
+    test('Når det oppstår en feil ved henting av data, returneres det child-component med undefined resultat', async () => {
+      mockSubmitForm.mockReturnValue(Promise.reject('Error parsing JSON'))
 
-  describe('Gitt at noen states behøver å oppdateres', () => {
-    describe('Når heltUttak behøver å oppdateres', () => {
-      test('Burde heltUttak.aarligInntektVsaPensjon.beloep bli satt til 0 dersom inntektVsaHelPensjon er "nei" og beløpet er større enn 0', async () => {
-        const stateWithBeloep = produce(initialFormState, (draft) => {
-          draft.inntektVsaHelPensjon = 'nei'
-          draft.heltUttak = {
-            uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: {
-              beloep: 1000,
-              sluttAlder: { aar: 67, maaneder: 0 },
-            },
-          }
-        })
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <BeregnPage />
+        </FormContext.Provider>
+      )
+      expect(screen.getByTestId('loader')).toBeVisible()
 
-        const expectedState = produce(stateWithBeloep, (draft) => {
-          draft.heltUttak.aarligInntektVsaPensjon!.beloep = 0
-        })
-
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithBeloep }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
+      await waitFor(() => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
       })
 
-      test('Burde heltUttak.aarligInntektVsaPensjon.sluttAlder bli satt til undefined når inntektVsaHelPensjon er "nei" og sluttAlder.aar er definert', async () => {
-        const stateWithSluttAlder = produce(initialFormState, (draft) => {
-          draft.inntektVsaHelPensjon = 'nei'
-          draft.heltUttak = {
-            uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: {
-              beloep: 0,
-              sluttAlder: { aar: 67, maaneder: 0 },
-            },
-          }
-        })
-
-        const expectedState = produce(stateWithSluttAlder, (draft) => {
-          draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
-        })
-
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithSluttAlder }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
-      })
-
-      test('Burde heltUttak.aarligInntektVsaPensjon.sluttAlder bli satt til undefined når sluttAlder.aar er 0', async () => {
-        const stateWithSluttAlderZero = produce(initialFormState, (draft) => {
-          draft.heltUttak = {
-            uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: {
-              beloep: 0,
-              sluttAlder: { aar: 0, maaneder: -1 },
-            },
-          }
-        })
-
-        const expectedState = produce(stateWithSluttAlderZero, (draft) => {
-          draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
-        })
-
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithSluttAlderZero }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
-      })
+      expect(screen.queryByText('Resultat')).not.toBeInTheDocument()
+      expect(screen.getByText('Woopsy')).toBeVisible()
+      expect(screen.getByText('We are having an error')).toBeVisible()
     })
 
-    describe('Når gradertUttak.grad er 100', () => {
-      test('Burde gradertUttak bli satt til undefined', async () => {
-        const stateWithGradertUttak = produce(initialFormState, (draft) => {
-          draft.gradertUttak = {
-            grad: 100,
-            uttakAlder: { aar: 67, maaneder: 0 },
-          }
-        })
+    test('Når henting av data er vellykket, returneres det child-component med resultat', async () => {
+      mockSubmitForm.mockReturnValue(Promise.resolve(mockSimuleringsresultat))
 
-        const expectedState = produce(stateWithGradertUttak, (draft) => {
-          draft.gradertUttak = undefined
-        })
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <BeregnPage />
+        </FormContext.Provider>
+      )
+      expect(screen.getByTestId('loader')).toBeVisible()
 
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithGradertUttak }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
+      await waitFor(() => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
       })
-    })
 
-    describe('Når sivilstand er "UGIFT"', () => {
-      test('Burde epsHarInntektOver2G og epsHarPensjon bli satt til undefined', async () => {
-        const stateWithSivilstandUgift = produce(initialFormState, (draft) => {
-          draft.sivilstand = 'UGIFT'
-        })
-
-        const expectedState = produce(stateWithSivilstandUgift, (draft) => {
-          draft.epsHarInntektOver2G = undefined
-          draft.epsHarPensjon = undefined
-        })
-
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithSivilstandUgift }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
-      })
-    })
-
-    describe('Når boddIUtland er "nei"', () => {
-      test('Burde utenlandsAntallAar bli satt til 0', async () => {
-        const stateWithBoddIUtlandNei = produce(initialFormState, (draft) => {
-          draft.boddIUtland = 'nei'
-        })
-
-        const expectedState = produce(stateWithBoddIUtlandNei, (draft) => {
-          draft.utenlandsAntallAar = 0
-        })
-
-        await act(async () => {
-          render(
-            <FormContext.Provider
-              value={{ ...mockContextValue, state: stateWithBoddIUtlandNei }}
-            >
-              <BeregnPage />
-            </FormContext.Provider>
-          )
-        })
-
-        mockSetState(expectedState)
-        expect(mockSetState).toHaveBeenCalledWith(expectedState)
-      })
+      expect(screen.getByText('Resultat')).toBeVisible()
     })
   })
 })

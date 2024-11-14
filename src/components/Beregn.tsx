@@ -15,28 +15,26 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
 
   const chartOptions = useMemo(() => {
-    const heltUttakAlder = state.heltUttak.uttakAlder.aar
-    const inntektVsaHelPensjonBeloep =
-      state.heltUttak.aarligInntektVsaPensjon?.beloep ?? 0
-    const inntektVsaHelPensjonSluttalder =
-      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ?? 0
-
-    return getChartOptions(
-      heltUttakAlder,
-      inntektVsaHelPensjonSluttalder,
-      inntektVsaHelPensjonBeloep,
-      simuleringsresultat
-    )
+    return getChartOptions({
+      simuleringsresultat,
+      heltUttakAar: state.heltUttak.uttakAlder.aar,
+      inntektVsaHelPensjonSluttalder:
+        state.heltUttak.aarligInntektVsaPensjon?.beloep,
+      inntektVsaHelPensjonBeloep:
+        state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
+    })
   }, [state, simuleringsresultat])
 
   if (!simuleringsresultat) {
     return (
+      // TODO PEK-722 vise fornuftig feilmelding
       <div>
         <h1>Woopsy</h1>
         <p>We are having an error</p>
       </div>
     )
   }
+
   return (
     <div>
       <Box

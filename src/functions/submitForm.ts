@@ -1,7 +1,7 @@
 import { State, Simuleringsresultat } from '@/common'
 import { produce } from 'immer'
 
-const transformPayload = (formState: State) => {
+export const transformPayload = (formState: State) => {
   const payload = produce(formState, (draft) => {
     if (
       draft.inntektVsaHelPensjon === 'nei' &&
@@ -41,9 +41,9 @@ const transformPayload = (formState: State) => {
   return apiPayload
 }
 
-const submitForm = async (
+export const submitForm = async (
   formState: State
-): Promise<Simuleringsresultat | undefined> => {
+): Promise<Simuleringsresultat> => {
   const apiPayload = transformPayload(formState)
 
   return fetch('/pensjon/kalkulator-uinnlogget/api/simuler', {
@@ -78,5 +78,3 @@ const submitForm = async (
       return Promise.reject('Unhandled error')
     })
 }
-
-export default submitForm
