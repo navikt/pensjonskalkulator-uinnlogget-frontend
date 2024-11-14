@@ -1,16 +1,11 @@
-import React, { FormEvent, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { Box } from '@navikt/ds-react'
 import FormProgressComponent from './FormProgressComponent'
 
 interface FormContainerComponentProps {
   totalSteps: number
   activeStep: number
-  goBack: () => void
-  onStepChange: (step: number) => void
-  handleSubmit: (e: FormEvent) => void
   step: ReactElement | null
-  curStep: number
-  length: number
 }
 
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({

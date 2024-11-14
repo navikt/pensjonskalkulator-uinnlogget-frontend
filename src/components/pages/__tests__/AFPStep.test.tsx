@@ -1,8 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent } from '@testing-library/react'
 import AFPStep from '../AFPStep'
-import { FormContext } from '@/contexts/context'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { initialFormState } from '@/defaults/defaultFormState'
+import { renderMockedComponent } from '../test-utils/testSetup'
+import { State } from '@/common'
+import { useFieldChange } from '@/helpers/useFormState'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -10,14 +12,19 @@ jest.mock('../../../helpers/useErrorHandling', () => ({
   default: jest.fn(),
 }))
 
-// Mock the FormButtons component
-jest.mock('../../FormButtons', () => ({
+// Mock the useFieldChange hook
+jest.mock('@/helpers/useFormState', () => ({
   __esModule: true,
-  default: jest.fn(() => <div>Mocked FormButtons</div>),
+  useFieldChange: jest.fn(),
 }))
 
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
+const mockHandleFieldChange = jest.fn((updateFn) => {
+  const draft: State = { ...initialFormState }
+  updateFn(draft)
+  return draft
+})
 
 const defaultFormPageProps = {
   curStep: 1,
@@ -43,101 +50,93 @@ beforeEach(() => {
     {},
     { validateFields: mockValidateFields, clearError: mockClearError },
   ])
+  ;(useFieldChange as jest.Mock).mockReturnValue({
+    handleFieldChange: mockHandleFieldChange,
+  })
 })
 
-const renderComponent = () => {
-  return render(
-    <FormContext.Provider value={context}>
-      <AFPStep />
-    </FormContext.Provider>
-  )
-}
 describe('AFPStep Component', () => {
-
   test('Burde rendre komponenten', () => {
-    renderComponent()
+    renderMockedComponent(() => <AFPStep />, context)
     expect(
       screen.getByText('Har du rett til AFP i privat sektor?')
     ).toBeInTheDocument()
-    expect(screen.getByText('Mocked FormButtons')).toBeInTheDocument()
   })
 
-  test('skal kalle handleFieldChange når radio endres', () => {
-    renderComponent()
-    const radioButton = screen.getByLabelText('Ja')
-    fireEvent.click(radioButton)
-    expect(mockSetState).toHaveBeenCalledWith(expect.any(Function))
-    expect(mockClearError).toHaveBeenCalledWith('simuleringType')
-  })
-
-  test('skal kalle validateFields og goToNext når skjemaet sendes inn uten feil', () => {
+  test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
-    renderComponent()
+    renderMockedComponent(() => <AFPStep />, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AFPStep')
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
-  test('skal ikke kalle validateFields og goToNext når skjemaet sendes inn med feil', () => {
+  test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
-    renderComponent()
+    renderMockedComponent(() => <AFPStep />, context)
     const form = screen.getByRole('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AFPStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
-  //Test if correct default value
-  test('Burde ikke være huket av', () => {
-    renderComponent()
-  
-    expect(screen.getByLabelText('Ja')).not.toBeChecked()
-    expect(screen.getByLabelText('Nei')).not.toBeChecked()
-    
+  describe('Gitt at brukeren velger AFP', () => {
+    test('Burde state få riktig verdi ved "Ja"', () => {
+      renderMockedComponent(() => <AFPStep />, context)
+      const select = screen.getByLabelText('Ja')
+      fireEvent.click(select)
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'simuleringType'
+      )
+
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.simuleringType).toBe('ALDERSPENSJON_MED_AFP_PRIVAT')
+    })
+
+    test('Burde state få riktig verdi ved "Nei"', () => {
+      renderMockedComponent(() => <AFPStep />, context)
+      const select = screen.getByLabelText('Nei')
+      fireEvent.click(select)
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'simuleringType'
+      )
+
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.simuleringType).toBe('ALDERSPENSJON')
+    })
   })
 
+  describe('Gitt at brukeren har valgt AFP tidligere', () => {
+    test('Burde "Ja" være avhuket dersom "Ja" er tidligere avhuket', () => {
+      const contextWithState = {
+        ...context,
+        state: {
+          ...initialFormState,
+          simuleringType: 'ALDERSPENSJON_MED_AFP_PRIVAT',
+        },
+      }
+      renderMockedComponent(() => <AFPStep />, contextWithState)
 
+      expect(screen.getByLabelText('Ja')).toBeChecked()
+      expect(screen.getByLabelText('Nei')).not.toBeChecked()
+    })
 
-})
-describe('Dersom det tidligere er huket av JA for AFP, ', () => {
-  const contextWithState = {
-    ...context,
-    state: {
-      ...initialFormState,
-      simuleringType: 'ALDERSPENSJON_MED_AFP_PRIVAT',
-    },
-  }
+    test('Burde "Nei" være avhuket dersom "Nei" er tidligere avhuket', () => {
+      const contextWithState = {
+        ...context,
+        state: {
+          ...initialFormState,
+          simuleringType: 'ALDERSPENSJON',
+        },
+      }
 
-  test('Burde rendre komponenten med Ja huket av', () => {
-    render(
-      <FormContext.Provider value={contextWithState}>
-        <AFPStep />
-      </FormContext.Provider>
-    )
+      renderMockedComponent(() => <AFPStep />, contextWithState)
 
-    expect(screen.getByLabelText('Ja')).toBeChecked()
-    expect(screen.getByLabelText('Nei')).not.toBeChecked()
-  })
-})
-
-describe('Dersom det tidligere er huket av NEI for AFP, ', () => {
-  const contextWithState = {
-    ...context,
-    state: {
-      ...initialFormState,
-      simuleringType: 'ALDERSPENSJON',
-    },
-  }
-
-  test('Burde rendre komponenten med Nei huket av', () => {
-    render(
-      <FormContext.Provider value={contextWithState}>
-        <AFPStep />
-      </FormContext.Provider>
-    )
-
-    expect(screen.getByLabelText('Ja')).not.toBeChecked()
-    expect(screen.getByLabelText('Nei')).toBeChecked()
+      expect(screen.getByLabelText('Ja')).not.toBeChecked()
+      expect(screen.getByLabelText('Nei')).toBeChecked()
+    })
   })
 })
