@@ -5,30 +5,35 @@ import { FormContext } from '@/contexts/context'
 import { getChartOptions } from './utils/chartUtils'
 import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
-import { FormValueResult } from '@/common'
+import { Simuleringsresultat } from '@/common'
 
-interface BeregnResource {
-  resource: { read(): FormValueResult | undefined }
+interface Props {
+  simuleringsresultat?: Simuleringsresultat
 }
 
-const Beregn: React.FC<BeregnResource> = ({ resource }) => {
+const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
-  const beregnResult = resource.read()
 
   const chartOptions = useMemo(() => {
-    const heltUttakAlder = state.heltUttak.uttakAlder.aar
-    const inntektVsaHelPensjonBeloep =
-      state.heltUttak.aarligInntektVsaPensjon?.beloep ?? 0
-    const inntektVsaHelPensjonSluttalder =
-      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ?? 0
+    return getChartOptions({
+      simuleringsresultat,
+      heltUttakAar: state.heltUttak.uttakAlder.aar,
+      inntektVsaHelPensjonSluttalder:
+        state.heltUttak.aarligInntektVsaPensjon?.beloep,
+      inntektVsaHelPensjonBeloep:
+        state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
+    })
+  }, [state, simuleringsresultat])
 
-    return getChartOptions(
-      heltUttakAlder,
-      inntektVsaHelPensjonSluttalder,
-      inntektVsaHelPensjonBeloep,
-      beregnResult
+  if (!simuleringsresultat) {
+    return (
+      // TODO PEK-722 vise fornuftig feilmelding
+      <div>
+        <h1>Woopsy</h1>
+        <p>We are having an error</p>
+      </div>
     )
-  }, [state, beregnResult])
+  }
 
   return (
     <div>
@@ -43,12 +48,11 @@ const Beregn: React.FC<BeregnResource> = ({ resource }) => {
       >
         <h1>Resultat</h1>
         <>
-          {beregnResult && (
-            <ResultTable
-              alderspensjon={beregnResult.alderspensjon}
-              afpPrivat={beregnResult.afpPrivat}
-            />
-          )}
+          <ResultTable
+            alderspensjon={simuleringsresultat.alderspensjon}
+            afpPrivat={simuleringsresultat.afpPrivat}
+          />
+
           <HighchartsReact
             highcharts={Highcharts}
             options={chartOptions}

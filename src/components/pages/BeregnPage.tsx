@@ -1,70 +1,80 @@
-import React, { Suspense, useContext, useEffect, useState } from 'react'
+import React, { Suspense, useContext, useRef } from 'react'
 import Beregn from '../Beregn'
-import { FormValueResult, State } from '@/common'
-import wrapPromise from '@/utils/wrapPromise'
-import submitForm from '@/functions/submitForm'
+
 import { FormContext } from '@/contexts/context'
-
+import { Simuleringsresultat, State } from '@/common'
 import LoadingComponent from '../LoadingComponent'
-import { produce } from 'immer'
+import { submitForm } from '@/functions/submitForm'
 
-function fetchBeregnData(formState: State) {
-  return wrapPromise(
-    submitForm(formState).then((data) => JSON.parse(data) as FormValueResult)
-  )
+const useAsyncLoader = (
+  asyncMethod: (state: State) => Promise<Simuleringsresultat | undefined>,
+  state: State
+) => {
+  const storage = useRef<{
+    resolved: boolean
+    rejected: boolean
+    promise?: Promise<Simuleringsresultat | undefined>
+    result: Simuleringsresultat | undefined
+  }>({
+    resolved: false,
+    rejected: false,
+    promise: undefined,
+    result: undefined,
+  })
+
+  return {
+    loader: () => {
+      // If the promise has been rejected, return
+      if (storage.current.rejected) return
+      // If the promise has been resolved, return the result
+      if (storage.current.resolved) return storage.current.result
+      // If the promise is ongoing, return the promise itself
+      if (storage.current.promise) throw storage.current.promise
+
+      storage.current.promise = asyncMethod(state)
+        .then((res) => {
+          storage.current.promise = undefined
+          storage.current.resolved = true
+          storage.current.result = res
+          return res
+        })
+        .catch(() => {
+          storage.current.promise = undefined
+          storage.current.rejected = true
+          // TODO PEK-722 utvide med mer logikk ved behov
+          return undefined
+        })
+
+      throw storage.current.promise
+    },
+  }
 }
 
-// The resource itself is just the object returned by wrapPromise
-interface Resource {
-  read(): FormValueResult | undefined
+const AwaitComponent = ({
+  loader,
+  render,
+}: {
+  loader: () => Simuleringsresultat | undefined
+  render: (
+    simuleringsresultat: Simuleringsresultat | undefined
+  ) => JSX.Element | null | undefined
+}) => {
+  const result = loader()
+  return render(result)
 }
 
 function BeregnPage() {
-  const [beregnResource, setBeregnResource] = useState<Resource>({
-    read: () => undefined,
-  })
-
-  const { state, setState } = useContext(FormContext)
-
-  useEffect(() => {
-    const payload = produce(state, (draft) => {
-      if (
-        draft.inntektVsaHelPensjon === 'nei' &&
-        draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
-        draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
-      ) {
-        draft.heltUttak.aarligInntektVsaPensjon!.beloep = 0
-      }
-      if (
-        draft.inntektVsaHelPensjon === 'nei' &&
-        draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
-      ) {
-        draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder = undefined
-      }
-      if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0) {
-        draft.heltUttak!.aarligInntektVsaPensjon!.sluttAlder = undefined
-      }
-      if (draft.gradertUttak?.grad === 100) {
-        draft.gradertUttak = undefined
-      }
-      if (draft.sivilstand === 'UGIFT') {
-        draft.epsHarInntektOver2G = undefined
-        draft.epsHarPensjon = undefined
-      }
-      if (draft.boddIUtland === 'nei') {
-        draft.utenlandsAntallAar = 0
-      }
-    })
-
-    setState(payload)
-
-    const resource = fetchBeregnData(payload)
-    setBeregnResource(resource)
-  }, [])
+  const { state } = useContext(FormContext)
+  const { loader } = useAsyncLoader(submitForm, state)
 
   return (
     <Suspense fallback={<LoadingComponent />}>
-      <Beregn resource={beregnResource} />
+      <AwaitComponent
+        loader={loader}
+        render={(simuleringsresultat: Simuleringsresultat | undefined) => (
+          <Beregn simuleringsresultat={simuleringsresultat} />
+        )}
+      />
     </Suspense>
   )
 }

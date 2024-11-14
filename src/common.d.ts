@@ -7,7 +7,8 @@ export type State = SchemaFormValues & {
   inntektVsaHelPensjon: string // fjernes fra ApiPayloaden
 }
 
-export type FormValueResult = components['schemas']['AnonymSimuleringResultV1']
+export type Simuleringsresultat =
+  components['schemas']['AnonymSimuleringResultV1']
 
 export type StepName =
   | 'AlderStep'

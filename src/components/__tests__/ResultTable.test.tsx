@@ -4,7 +4,7 @@ import ResultTable from '../ResultTable'
 import { FormContext } from '@/contexts/context'
 import { initialFormState } from '@/defaults/defaultFormState'
 
-const mockBeregnResult = {
+const mockSimuleringsresultat = {
   alderspensjon: [
     { alder: 67, beloep: 200000 },
     { alder: 68, beloep: 210000 },
@@ -54,8 +54,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -66,8 +66,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -79,8 +79,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -97,8 +97,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -117,8 +117,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -145,8 +145,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValueWithoutGradertUttak}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -172,8 +172,8 @@ describe('ResultTable Component', () => {
         value={mockContextValueWithoutAarligInntektVsaPensjon}
       >
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
-          afpPrivat={mockBeregnResult.afpPrivat}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
+          afpPrivat={mockSimuleringsresultat.afpPrivat}
         />
       </FormContext.Provider>
     )
@@ -192,7 +192,7 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResult.alderspensjon}
+          alderspensjon={mockSimuleringsresultat.alderspensjon}
           afpPrivat={undefined}
         />
       </FormContext.Provider>
@@ -216,7 +216,7 @@ describe('ResultTable Component', () => {
   })
 
   test('Burde vise fallback verdier til alderspensjon og afpPrivat når ingen matchende elementer finnes', () => {
-    const mockBeregnResultEmpty = {
+    const mockSimuleringsresultatEmpty = {
       alderspensjon: [],
       afpPrivat: [],
       afpOffentlig: [],
@@ -228,8 +228,8 @@ describe('ResultTable Component', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <ResultTable
-          alderspensjon={mockBeregnResultEmpty.alderspensjon}
-          afpPrivat={mockBeregnResultEmpty.afpPrivat}
+          alderspensjon={mockSimuleringsresultatEmpty.alderspensjon}
+          afpPrivat={mockSimuleringsresultatEmpty.afpPrivat}
         />
       </FormContext.Provider>
     )
