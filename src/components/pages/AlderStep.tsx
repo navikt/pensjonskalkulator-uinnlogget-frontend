@@ -29,7 +29,7 @@ const AlderStep = () => {
       <FormWrapper onSubmit={onSubmit}>
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
-            maxLength={3}
+            style={{ width: '6rem' }}
             onChange={(it) =>
               handleFieldChange((draft) => {
                 draft.foedselAar =
@@ -46,18 +46,18 @@ const AlderStep = () => {
         <Substep>
           <Box maxWidth={{ md: '30%', sm: '8rem' }}>
             <TextField
-              maxLength={3}
+              style={{ width: '6rem' }}
               onChange={(it) =>
                 handleFieldChange((draft) => {
                   draft.inntektOver1GAntallAar =
-                    it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                    it.target.value === '' ? -1 : parseInt(it.target.value, 10)
                 }, 'inntektOver1GAntallAar')
               }
               type="number"
               inputMode="numeric"
               label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
               value={
-                state.inntektOver1GAntallAar === 0
+                state.inntektOver1GAntallAar === -1
                   ? ''
                   : state.inntektOver1GAntallAar
               }

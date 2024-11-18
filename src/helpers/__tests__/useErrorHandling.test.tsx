@@ -98,8 +98,8 @@ describe('useErrorHandling', () => {
         expect(errorFields.inntektOver1GAntallAar).toBe('Fyll ut antall år')
       })
 
-      test('Skal gi feilmelding når antall år er 0', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: 0 }
+      test('Skal gi feilmelding når antall år er -1', () => {
+        const state = { ...initialFormState, inntektOver1GAntallAar: -1 }
         renderWithState(state)
 
         act(() => {
@@ -110,7 +110,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år er negativt', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: -1 }
+        const state = { ...initialFormState, inntektOver1GAntallAar: -10 }
         renderWithState(state)
 
         act(() => {

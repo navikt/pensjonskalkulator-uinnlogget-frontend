@@ -136,8 +136,8 @@ describe('AlderStep Component', () => {
       expect(draft.inntektOver1GAntallAar).toBe(10)
     })
 
-    test('Burde være tom dersom inntektOver1GAntallAar er 0', () => {
-      const state = { ...initialFormState, inntektOver1GAntallAar: 0 }
+    test('Burde være tom dersom inntektOver1GAntallAar er -1', () => {
+      const state = { ...initialFormState, inntektOver1GAntallAar: -1 }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'

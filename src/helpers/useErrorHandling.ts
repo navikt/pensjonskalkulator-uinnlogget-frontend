@@ -3,13 +3,13 @@ import { StepName, ErrorFields, State } from '@/common'
 
 const useErrorHandling = (states: State) => {
   const validateInntektOver1GAntallAar = (): string => {
-    if (states.inntektOver1GAntallAar === undefined || states.inntektOver1GAntallAar === 0) {
+    if (states.inntektOver1GAntallAar === undefined || states.inntektOver1GAntallAar === -1) {
       return 'Fyll ut antall år';
     }
-    if (states.inntektOver1GAntallAar < 0) {
+    else if (states.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
     }
-    if (states.inntektOver1GAntallAar > 50) {
+    else if (states.inntektOver1GAntallAar > 50) {
       return 'Du kan ikke være yrkesaktiv i mer enn 50 år';
     }
     return '';

@@ -9,7 +9,7 @@ export const initialFormState: State = {
   boddIUtland: '', // fjernes fra ApiPayloaded
   inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
   utenlandsAntallAar: 0,
-  inntektOver1GAntallAar: 0, //Spør espen om dette. Hva er denne verdien og hvilket intervall kan den være mellom. Fiks useErrorHandling.ts i henhold til dette.
+  inntektOver1GAntallAar: -1,
   aarligInntektFoerUttakBeloep: 0,
   gradertUttak: {
     grad: 0,
