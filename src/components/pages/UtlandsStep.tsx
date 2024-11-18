@@ -52,6 +52,7 @@ const UtlandsStep = () => {
           {state.boddIUtland === 'ja' && (
             <Substep>
               <TextField
+                style={{ width: '6rem' }}
                 onChange={(it) =>
                   handleFieldChange((draft) => {
                     draft.utenlandsAntallAar =
