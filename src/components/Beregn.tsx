@@ -19,9 +19,9 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
       simuleringsresultat,
       heltUttakAar: state.heltUttak.uttakAlder.aar,
       inntektVsaHelPensjonSluttalder:
-        state.heltUttak.aarligInntektVsaPensjon?.beloep,
-      inntektVsaHelPensjonBeloep:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
+      inntektVsaHelPensjonBeloep:
+        state.heltUttak.aarligInntektVsaPensjon?.beloep,
     })
   }, [state, simuleringsresultat])
 

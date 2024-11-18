@@ -19,6 +19,8 @@ const customJestConfig = {
     '!prettify.js',
     '!sorter.js',
     '!src/types/**',
+    '!src/app/page.tsx',
+    '!src/common.d.ts',
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
