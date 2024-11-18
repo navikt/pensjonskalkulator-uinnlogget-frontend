@@ -14,6 +14,11 @@ jest.mock('../../../components/FormPage.tsx', () => ({
 }))
 
 describe('Page Component', () => {
+  it('Skal kalle getGrunnbelop når komponenten renderes', async () => {
+    render(await Page())
+    expect(getGrunnbelop).toHaveBeenCalled()
+  })
+
   it('Skal rendre "FormPage" med riktig grunnbeløp', async () => {
     const mockGrunnbelop = 12345
     ;(getGrunnbelop as jest.Mock).mockResolvedValue(mockGrunnbelop)
