@@ -10,7 +10,7 @@ import useMultiStepForm from '@/helpers/useMultiStepForm'
 
 import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
-import FormContainerComponent from './FormContainerComponent'
+import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import { initialFormState } from '@/defaults/defaultFormState'
 
