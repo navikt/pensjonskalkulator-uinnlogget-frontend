@@ -33,37 +33,37 @@ const AlderStep = () => {
             onChange={(it) =>
               handleFieldChange((draft) => {
                 draft.foedselAar =
-                  it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                  it.target.value === '' ? null : parseInt(it.target.value)
               }, 'foedselAar')
             }
             type="number"
             inputMode="numeric"
             label="I hvilket år er du født?"
-            value={state.foedselAar === 0 ? '' : state.foedselAar}
+            value={state.foedselAar === null ? '' : state.foedselAar}
             error={errorFields.foedselAar}
           ></TextField>
         </Box>
         <Substep>
-          <Box maxWidth={{ md: '30%', sm: '8rem' }}>
-            <TextField
-              style={{ width: '6rem' }}
-              onChange={(it) =>
-                handleFieldChange((draft) => {
-                  draft.inntektOver1GAntallAar =
-                    it.target.value === '' ? -1 : parseInt(it.target.value, 10)
-                }, 'inntektOver1GAntallAar')
-              }
-              type="number"
-              inputMode="numeric"
-              label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
-              value={
-                state.inntektOver1GAntallAar === -1
-                  ? ''
-                  : state.inntektOver1GAntallAar
-              }
-              error={errorFields.inntektOver1GAntallAar}
-            ></TextField>
-          </Box>
+          <TextField
+            style={{ width: '6rem' }}
+            onChange={(it) =>
+              handleFieldChange((draft) => {
+                draft.inntektOver1GAntallAar =
+                  it.target.value === ''
+                    ? undefined
+                    : parseInt(it.target.value, 10)
+              }, 'inntektOver1GAntallAar')
+            }
+            type="number"
+            inputMode="numeric"
+            label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
+            value={
+              state.inntektOver1GAntallAar === undefined
+                ? ''
+                : state.inntektOver1GAntallAar
+            }
+            error={errorFields.inntektOver1GAntallAar}
+          ></TextField>
         </Substep>
         <FormButtons />
       </FormWrapper>

@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import UtlandsStep from '../UtlandsStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,
@@ -24,14 +24,14 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: State = { ...initialFormState }
+  const draft: State = { ...initialState }
   updateFn(draft)
   return draft
 })
 
 const context = {
   setState: mockSetState,
-  state: initialFormState,
+  state: initialState,
   formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
@@ -100,7 +100,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'nei',
           },
         })
@@ -115,7 +115,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'ja',
           },
         })
@@ -128,7 +128,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'ja',
           },
         })
@@ -149,7 +149,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'ja',
             utenlandsAntallAar: 5,
           },
@@ -172,7 +172,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'ja',
             utenlandsAntallAar: 0,
           },
@@ -187,7 +187,7 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             boddIUtland: 'ja',
             utenlandsAntallAar: 5,
           },

@@ -1,5 +1,5 @@
 import { ContextForm } from '@/common'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 import { createContext } from 'react'
 
 const defaultFormPageProps = {
@@ -12,7 +12,7 @@ const defaultFormPageProps = {
 }
 
 export const FormContext = createContext<ContextForm>({
-  state: initialFormState,
+  state: initialState,
   setState: () => {},
   formPageProps: defaultFormPageProps,
 })

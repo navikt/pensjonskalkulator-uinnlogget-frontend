@@ -12,7 +12,7 @@ import React, { useState } from 'react'
 import EktefelleStep from './pages/EktefelleStep'
 import FormContainerComponent from './FormContainerComponent'
 import BeregnPage from './pages/BeregnPage'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -23,7 +23,7 @@ interface Pages {
 }
 
 function FormPage({ grunnbelop }: FormPageProps) {
-  const [formState, setFormState] = useState<State>(initialFormState)
+  const [formState, setFormState] = useState<State>(initialState)
 
   const pagesDict: Pages = {
     alder: <AlderStep key="alder" />,

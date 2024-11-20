@@ -1,34 +1,34 @@
 import { State } from '@/common'
 
-export const initialFormState: State = {
-  simuleringType: '',
-  foedselAar: 0,
-  sivilstand: 'UGIFT',
+export const initialState: State = {
+  simuleringType: undefined,
+  foedselAar: null,
+  sivilstand: undefined,
   epsHarInntektOver2G: undefined,
   epsHarPensjon: undefined,
-  boddIUtland: '', // fjernes fra ApiPayloaded
-  inntektVsaHelPensjon: '', // fjernes fra ApiPayloaded
-  utenlandsAntallAar: 0,
-  inntektOver1GAntallAar: -1,
-  aarligInntektFoerUttakBeloep: 0,
+  boddIUtland: null,
+  harInntektVsaHelPensjon: null,
+  utenlandsAntallAar: undefined,
+  inntektOver1GAntallAar: undefined,
+  aarligInntektFoerUttakBeloep: undefined,
   gradertUttak: {
-    grad: 0,
+    grad: null,
     uttakAlder: {
-      aar: 0,
-      maaneder: -1,
+      aar: null,
+      maaneder: null,
     },
-    aarligInntektVsaPensjonBeloep: 0,
+    aarligInntektVsaPensjonBeloep: null,
   },
   heltUttak: {
     uttakAlder: {
-      aar: 0,
-      maaneder: -1,
+      aar: null,
+      maaneder: null,
     },
     aarligInntektVsaPensjon: {
-      beloep: 0,
+      beloep: null,
       sluttAlder: {
-        aar: 0,
-        maaneder: -1,
+        aar: null,
+        maaneder: null,
       },
     },
   },

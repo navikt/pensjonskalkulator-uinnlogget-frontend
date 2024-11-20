@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import Beregn from '@/components/Beregn'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({
@@ -44,7 +44,7 @@ const defaultFormPageProps = {
 }
 
 const mockContextValue = {
-  state: initialFormState,
+  state: initialState,
   setState: mockSetState,
   formPageProps: defaultFormPageProps,
 }

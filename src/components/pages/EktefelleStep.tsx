@@ -44,12 +44,13 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           }
           error={errorFields.sivilstand}
         >
+          <option value={undefined}>----</option>
           <option value={'UGIFT'}>Ugift</option>
           <option value={'GIFT'}>Gift</option>
           <option value={'SAMBOER'}>Samboer</option>
         </Select>
       </Substep>
-      {state.sivilstand !== 'UGIFT' && (
+      {state.sivilstand !== undefined && state.sivilstand !== 'UGIFT' && (
         <>
           <Substep>
             <RadioGroup

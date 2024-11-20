@@ -1,10 +1,10 @@
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 import { transformPayload, submitForm } from '../submitForm'
-import { State } from '@/common'
+import { BooleanRadio, State } from '@/common'
 import { produce } from 'immer'
 
 describe('submitForm', () => {
-  const mockState: State = initialFormState
+  const mockState: State = initialState
 
   beforeEach(() => {
     global.fetch = jest.fn()
@@ -17,8 +17,8 @@ describe('submitForm', () => {
   describe('Gitt at noen states behøver å oppdateres, ', () => {
     describe('Når brukeren har svart "nei" til inntekt vsa. helt uttak og beløpet er større enn 0', () => {
       test('Burde beløpet settes til 0 ', async () => {
-        const stateWithBeloep = produce(initialFormState, (draft) => {
-          draft.inntektVsaHelPensjon = 'nei'
+        const stateWithBeloep = produce(initialState, (draft) => {
+          draft.harInntektVsaHelPensjon = 'nei' as BooleanRadio
           draft.heltUttak = {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -35,8 +35,8 @@ describe('submitForm', () => {
 
     describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
-        const stateWithSluttAlder = produce(initialFormState, (draft) => {
-          draft.inntektVsaHelPensjon = 'nei'
+        const stateWithSluttAlder = produce(initialState, (draft) => {
+          draft.harInntektVsaHelPensjon = 'nei' as BooleanRadio
           draft.heltUttak = {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -55,12 +55,12 @@ describe('submitForm', () => {
 
     describe('Når brukeren har ikke fylt ut sluttalder for inntekt vsa. helt uttak, ', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
-        const stateWithSluttAlderZero = produce(initialFormState, (draft) => {
+        const stateWithSluttAlderZero = produce(initialState, (draft) => {
           draft.heltUttak = {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: 0,
-              sluttAlder: { aar: 0, maaneder: -1 },
+              sluttAlder: { aar: null, maaneder: 1 },
             },
           }
         })
@@ -73,9 +73,10 @@ describe('submitForm', () => {
     })
 
     test('Når grad til gradert uttak er 100, Burde all informasjon om gradert uttak nullstilles', async () => {
-      const stateWithGradertUttak = produce(initialFormState, (draft) => {
+      const stateWithGradertUttak = produce(initialState, (draft) => {
         draft.gradertUttak = {
           grad: 100,
+          aarligInntektVsaPensjonBeloep: 1000,
           uttakAlder: { aar: 67, maaneder: 0 },
         }
       })
@@ -85,7 +86,7 @@ describe('submitForm', () => {
     })
 
     test('Når brukeren har valgt sivilstand "UGIFT", Burde epsHarInntektOver2G og epsHarPensjon nullstilles', async () => {
-      const stateWithSivilstandUgift = produce(initialFormState, (draft) => {
+      const stateWithSivilstandUgift = produce(initialState, (draft) => {
         draft.sivilstand = 'UGIFT'
       })
 
@@ -95,7 +96,7 @@ describe('submitForm', () => {
     })
 
     test('Når brukeren har svart "nei" til boddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
-      const stateWithBoddIUtlandNei = produce(initialFormState, (draft) => {
+      const stateWithBoddIUtlandNei = produce(initialState, (draft) => {
         draft.boddIUtland = 'nei'
       })
 

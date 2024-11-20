@@ -1,23 +1,23 @@
-import { State, Simuleringsresultat } from '@/common'
+import { APIPayload, State, Simuleringsresultat, BooleanRadio } from '@/common'
 import { produce } from 'immer'
 
-export const transformPayload = (formState: State) => {
+export const transformPayload = (formState: State): APIPayload => {
   const payload = produce(formState, (draft) => {
     if (
-      draft.inntektVsaHelPensjon === 'nei' &&
+      draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
       draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
       draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
     ) {
       draft.heltUttak.aarligInntektVsaPensjon.beloep = 0
     }
     if (
-      draft.inntektVsaHelPensjon === 'nei' &&
+      draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
       draft.heltUttak?.aarligInntektVsaPensjon &&
-      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== undefined
+      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== null
     ) {
       draft.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
     }
-    if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === 0) {
+    if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
       draft.heltUttak!.aarligInntektVsaPensjon.sluttAlder = undefined
     }
     if (draft.gradertUttak?.grad === 100) {
@@ -34,11 +34,13 @@ export const transformPayload = (formState: State) => {
 
   const {
     boddIUtland: _boddIUtland,
-    inntektVsaHelPensjon: _inntektVsaHelPensjon,
+    harInntektVsaHelPensjon: _inntektVsaHelPensjon,
     ...apiPayload
   } = payload
 
-  return apiPayload
+  console.log(apiPayload)
+
+  return apiPayload as APIPayload
 }
 
 export const submitForm = async (

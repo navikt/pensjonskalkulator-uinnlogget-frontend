@@ -48,7 +48,7 @@ const InntektStep = () => {
   const monthOptions = useMemo(
     () =>
       Array.from({ length: 12 }, (_, i) => (
-        <option value={i + 1} key={i}>
+        <option value={i} key={i}>
           {i + 1} måned
         </option>
       )),
@@ -62,19 +62,14 @@ const InntektStep = () => {
         <TextField
           onChange={(it) =>
             handleFieldChange((draft) => {
-              draft.aarligInntektFoerUttakBeloep =
-                it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+              draft.aarligInntektFoerUttakBeloep = parseInt(it.target.value)
             }, 'aarligInntektFoerUttakBeloep')
           }
           type="number"
           inputMode="numeric"
           label="Hva er din forventede årlige inntekt?"
           description="Dagens kroneverdi før skatt"
-          value={
-            state.aarligInntektFoerUttakBeloep === 0
-              ? ''
-              : state.aarligInntektFoerUttakBeloep
-          }
+          value={state.aarligInntektFoerUttakBeloep}
           error={errorFields.aarligInntektFoerUttakBeloep}
         />
         <ReadMore header="Om pensjonsgivende inntekt">
@@ -98,7 +93,8 @@ const InntektStep = () => {
             label={'Hvilken uttaksgrad ønsker du?'}
             onChange={(it) => {
               handleFieldChange((draft) => {
-                draft.gradertUttak!.grad = parseInt(it.target.value)
+                draft.gradertUttak!.grad =
+                  it.target.value === '0' ? null : parseInt(it.target.value)
               }, 'uttaksgrad')
             }}
             error={errorFields.uttaksgrad}
@@ -113,45 +109,51 @@ const InntektStep = () => {
           </Select>
         </Substep>
         {state.gradertUttak !== undefined &&
-          state.gradertUttak?.grad !== 0 &&
+          state.gradertUttak.grad !== null &&
           state.gradertUttak?.grad !== 100 && (
             <>
               <Substep>
                 <div className="flex space-x-4">
                   <Select
-                    value={state.gradertUttak?.uttakAlder.aar}
+                    value={state.gradertUttak?.uttakAlder?.aar}
                     style={{ width: '5rem' }}
                     label={`Når planlegger du å ta ut ${state.gradertUttak?.grad}% pensjon?`}
                     description="Velg alder"
                     onChange={(it) => {
                       handleFieldChange((draft) => {
-                        draft.gradertUttak!.uttakAlder.aar = parseInt(
-                          it.target.value
-                        )
+                        if (draft.gradertUttak?.uttakAlder) {
+                          draft.gradertUttak.uttakAlder.aar =
+                            it.target.value === ''
+                              ? null
+                              : parseInt(it.target.value)
+                        }
                       }, 'gradertAar')
                     }}
                     error={errorFields.gradertAar}
                   >
-                    <option value={0}>----</option>
+                    <option value={''}>----</option>
                     {yearOptions}
                   </Select>
 
                   <Select
-                    value={state.gradertUttak?.uttakAlder.maaneder}
+                    value={state.gradertUttak?.uttakAlder?.maaneder}
                     style={{ width: '5rem' }}
                     id={'gradertMaaneder'}
                     label={'-'}
                     description="Velg måned"
                     onChange={(it) => {
                       handleFieldChange((draft) => {
-                        draft.gradertUttak!.uttakAlder.maaneder = parseInt(
-                          it.target.value
-                        )
+                        if (draft.gradertUttak?.uttakAlder) {
+                          draft.gradertUttak.uttakAlder.maaneder =
+                            it.target.value === ''
+                              ? null
+                              : parseInt(it.target.value)
+                        }
                       }, 'gradertMaaneder')
                     }}
                     error={errorFields.gradertMaaneder}
                   >
-                    <option value={-1}>----</option>
+                    <option value={''}>----</option>
                     {monthOptions}
                   </Select>
                 </div>
@@ -163,19 +165,15 @@ const InntektStep = () => {
                     handleFieldChange((draft) => {
                       draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
                         it.target.value === ''
-                          ? 0
-                          : parseInt(it.target.value, 10)
+                          ? null
+                          : parseInt(it.target.value)
                     }, 'gradertInntekt')
                   }}
                   type="number"
                   inputMode="numeric"
                   style={{ width: '10rem' }}
                   label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon?`}
-                  value={
-                    state.gradertUttak?.aarligInntektVsaPensjonBeloep === 0
-                      ? ''
-                      : state.gradertUttak?.aarligInntektVsaPensjonBeloep
-                  }
+                  value={state.gradertUttak?.aarligInntektVsaPensjonBeloep}
                   error={errorFields.gradertInntekt}
                 />
               </Substep>
@@ -184,37 +182,41 @@ const InntektStep = () => {
         <Substep>
           <div className="flex space-x-4">
             <Select
-              value={state.heltUttak.uttakAlder.aar}
+              value={state.heltUttak.uttakAlder?.aar ?? ''}
               style={{ width: '5rem' }}
               label={`Når planlegger du å ta ut 100% pensjon?`}
               description="Velg alder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.heltUttak.uttakAlder.aar = parseInt(it.target.value)
+                  if (draft.heltUttak.uttakAlder) {
+                    draft.heltUttak.uttakAlder.aar =
+                      it.target.value === '' ? null : parseInt(it.target.value)
+                  }
                 }, 'heltUttakAar')
               }}
               error={errorFields.heltUttakAar}
             >
-              <option value={0}>----</option>
+              <option value={''}>----</option>
               {yearOptions}
             </Select>
 
             <Select
-              value={state.heltUttak.uttakAlder.maaneder}
+              value={state.heltUttak.uttakAlder?.maaneder ?? ''}
               style={{ width: '5rem' }}
               id={'heltUttakMaaneder'}
               label={'-'}
               description="Velg måned"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.heltUttak.uttakAlder.maaneder = parseInt(
-                    it.target.value
-                  )
+                  if (draft.heltUttak.uttakAlder) {
+                    draft.heltUttak.uttakAlder.maaneder =
+                      it.target.value === '' ? null : parseInt(it.target.value)
+                  }
                 }, 'heltUttakMaaneder')
               }}
               error={errorFields.heltUttakMaaneder}
             >
-              <option value={-1}>----</option>
+              <option value={''}>----</option>
               {monthOptions}
             </Select>
           </div>
@@ -222,34 +224,31 @@ const InntektStep = () => {
         <Substep>
           <RadioGroup
             legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
-            value={state.inntektVsaHelPensjon}
+            value={state.harInntektVsaHelPensjon}
             onChange={(it) =>
               handleFieldChange((draft) => {
-                draft.inntektVsaHelPensjon = it
-              }, 'inntektVsaHelPensjon')
+                draft.harInntektVsaHelPensjon = it
+              }, 'harInntektVsaHelPensjon')
             }
-            error={errorFields.inntektVsaHelPensjon}
+            error={errorFields.harInntektVsaHelPensjon}
           >
             <Radio value={'ja'}>Ja</Radio>
             <Radio value={'nei'}>Nei</Radio>
           </RadioGroup>
         </Substep>
-        {state.inntektVsaHelPensjon === 'ja' && (
+        {state.harInntektVsaHelPensjon === 'ja' && (
           <>
             <Substep>
               <TextField
                 label="Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?"
-                value={
-                  state.heltUttak.aarligInntektVsaPensjon?.beloep === 0
-                    ? ''
-                    : state.heltUttak.aarligInntektVsaPensjon?.beloep
-                }
+                value={state.heltUttak.aarligInntektVsaPensjon?.beloep}
                 type="number"
                 inputMode="numeric"
                 onChange={(it) => {
                   handleFieldChange((draft) => {
-                    draft.heltUttak.aarligInntektVsaPensjon!.beloep =
-                      it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                    draft.heltUttak.aarligInntektVsaPensjon!.beloep = parseInt(
+                      it.target.value
+                    )
                   }, 'helPensjonInntekt')
                 }}
                 error={errorFields.helPensjonInntekt}
@@ -271,7 +270,7 @@ const InntektStep = () => {
                     setLivsvarigInntekt(value === 'livsvarig' ? true : false)
                     handleFieldChange((draft) => {
                       draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder!.aar =
-                        value === 'livsvarig' ? 0 : parseInt(value)
+                        value === 'livsvarig' ? null : parseInt(value)
                     }, 'heltUttakAar')
                   }}
                 >
@@ -291,12 +290,12 @@ const InntektStep = () => {
                       const value = it.target.value
                       handleFieldChange((draft) => {
                         draft.heltUttak.aarligInntektVsaPensjon!.sluttAlder!.maaneder =
-                          parseInt(value)
+                          it.target.value === '' ? null : parseInt(value)
                       }, 'heltUttakSluttAlderMaaneder')
                     }}
                     error={errorFields.heltUttakSluttAlderMaaneder}
                   >
-                    <option value={-1}>----</option>
+                    <option value={''}>----</option>
                     {monthOptions}
                   </Select>
                 )}

@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import AlderStep from '../AlderStep'
 
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/defaultFormState'
 import { State } from '@/common'
 import {
   generateDefaultFormPageProps,
@@ -24,14 +24,14 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: State = { ...initialFormState }
+  const draft: State = { ...initialState }
   updateFn(draft)
   return draft
 })
 
 const context = {
   setState: mockSetState,
-  state: initialFormState,
+  state: initialState,
   formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
@@ -97,17 +97,31 @@ describe('AlderStep Component', () => {
       expect(draft.foedselAar).toBe(1990)
     })
 
-    test('Burde være tom dersom foedselAar er 0', () => {
-      const state = { ...initialFormState, foedselAar: 0 }
+    test('Burde være tom dersom foedselAar er null', () => {
+      const state = { ...initialState, foedselAar: null }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'I hvilket år er du født?'
       ) as HTMLInputElement
+
       expect(input.value).toBe('')
     })
 
+    test('Burde settes til null dersom input er tom', () => {
+      const state = { ...initialState, foedselAar: 1960 }
+      renderMockedComponent(AlderStep, { ...context, state })
+      const input = screen.getByLabelText('I hvilket år er du født?')
+      fireEvent.change(input, { target: { value: '' } })
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'foedselAar'
+      )
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.foedselAar).toBe(null)
+    })
+
     test('Burde vise foedselAar dersom det er satt', () => {
-      const state = { ...initialFormState, foedselAar: 1998 }
+      const state = { ...initialState, foedselAar: 1998 }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText('I hvilket år er du født?')
       expect(input).toHaveValue(1998)
@@ -136,8 +150,8 @@ describe('AlderStep Component', () => {
       expect(draft.inntektOver1GAntallAar).toBe(10)
     })
 
-    test('Burde være tom dersom inntektOver1GAntallAar er -1', () => {
-      const state = { ...initialFormState, inntektOver1GAntallAar: -1 }
+    test('Burde være tom dersom inntektOver1GAntallAar er undefined', () => {
+      const state = { ...initialState, inntektOver1GAntallAar: undefined }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
@@ -145,8 +159,23 @@ describe('AlderStep Component', () => {
       expect(input.value).toBe('')
     })
 
+    test('Burde settes til undefined dersom input er tom', () => {
+      const state = { ...initialState, inntektOver1GAntallAar: 30 }
+      renderMockedComponent(AlderStep, { ...context, state })
+      const input = screen.getByLabelText(
+        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+      )
+      fireEvent.change(input, { target: { value: '' } })
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'inntektOver1GAntallAar'
+      )
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.inntektOver1GAntallAar).toBe(undefined)
+    })
+
     test('Burde vise inntektOver1GAntallAar dersom det er satt', () => {
-      const state = { ...initialFormState, inntektOver1GAntallAar: 30 }
+      const state = { ...initialState, inntektOver1GAntallAar: 30 }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
