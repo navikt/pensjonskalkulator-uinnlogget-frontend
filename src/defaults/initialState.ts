@@ -11,25 +11,12 @@ export const initialState: State = {
   utenlandsAntallAar: undefined,
   inntektOver1GAntallAar: undefined,
   aarligInntektFoerUttakBeloep: undefined,
-  gradertUttak: {
-    grad: null,
-    uttakAlder: {
-      aar: null,
-      maaneder: null,
-    },
-    aarligInntektVsaPensjonBeloep: null,
-  },
+  gradertUttak: undefined,
   heltUttak: {
     uttakAlder: {
       aar: null,
       maaneder: null,
     },
-    aarligInntektVsaPensjon: {
-      beloep: null,
-      sluttAlder: {
-        aar: null,
-        maaneder: null,
-      },
-    },
+    aarligInntektVsaPensjon: undefined,
   },
 }
