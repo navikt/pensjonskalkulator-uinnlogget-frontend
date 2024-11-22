@@ -81,27 +81,27 @@ describe('UtlandsStep Component', () => {
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
-  describe('Gitt at radioknappene for boddIUtland finnes', () => {
-    test('Burde boddIUtland endres når handleFieldChange kalles på', () => {
+  describe('Gitt at radioknappene for harBoddIUtland finnes', () => {
+    test('Burde harBoddIUtland endres når handleFieldChange kalles på', () => {
       renderMockedComponent(UtlandsStep, context)
       const radio = screen.getByLabelText('Ja')
       fireEvent.click(radio)
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
-        'boddIUtland'
+        'harBoddIUtland'
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.boddIUtland).toBe('ja')
+      expect(draft.harBoddIUtland).toBe('ja')
     })
 
-    describe('Når boddIUtland er "Nei"', () => {
+    describe('Når harBoddIUtland er "Nei"', () => {
       test('Burde ikke tekstfelt for utenlandsAntallAar vises', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'nei',
+            harBoddIUtland: 'nei',
           },
         })
         expect(
@@ -110,13 +110,13 @@ describe('UtlandsStep Component', () => {
       })
     })
 
-    describe('Når boddIUtland er "Ja"', () => {
+    describe('Når harBoddIUtland er "Ja"', () => {
       test('Burde tekstfeltet for utenlandsAntallAar vises', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'ja',
+            harBoddIUtland: 'ja',
           },
         })
         expect(
@@ -129,7 +129,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'ja',
+            harBoddIUtland: 'ja',
           },
         })
         const input = screen.getByLabelText(
@@ -150,7 +150,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'ja',
+            harBoddIUtland: 'ja',
             utenlandsAntallAar: 5,
           },
         })
@@ -173,7 +173,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'ja',
+            harBoddIUtland: 'ja',
             utenlandsAntallAar: 0,
           },
         })
@@ -188,7 +188,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            boddIUtland: 'ja',
+            harBoddIUtland: 'ja',
             utenlandsAntallAar: 5,
           },
         })

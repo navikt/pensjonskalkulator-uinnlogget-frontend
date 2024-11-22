@@ -150,7 +150,10 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: null,
-              uttakAlder: null,
+              uttakAlder: {
+                aar: null,
+                maaneder: null,
+              },
             },
           },
         })
@@ -658,7 +661,7 @@ describe('InntektStep Component', () => {
 
             expect(
               document.getElementById(
-                'heltUttakSluttAlderMaaneder'
+                'heltUttakSluttAlder'
               ) as HTMLSelectElement
             ).not.toBeInTheDocument()
           })
@@ -701,7 +704,7 @@ describe('InntektStep Component', () => {
             fireEvent.change(monthSelect, { target: { value: '6' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakSluttAlderMaaneder'
+              'heltUttakSluttAlder'
             )
 
             const draft = mockHandleFieldChange.mock.results[1].value
@@ -745,7 +748,7 @@ describe('InntektStep Component', () => {
             fireEvent.change(monthSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakSluttAlderMaaneder'
+              'heltUttakSluttAlder'
             )
 
             const draft = mockHandleFieldChange.mock.results[1].value

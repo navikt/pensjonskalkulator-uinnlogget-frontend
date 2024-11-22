@@ -28,14 +28,14 @@ export const transformPayload = (formState: State): APIPayload => {
       draft.epsHarInntektOver2G = undefined
       draft.epsHarPensjon = undefined
     }
-    if (draft.boddIUtland === 'nei') {
+    if (draft.harBoddIUtland === 'nei') {
       draft.utenlandsAntallAar = 0
     }
   })
 
   const {
-    boddIUtland: _boddIUtland,
-    harInntektVsaHelPensjon: _inntektVsaHelPensjon,
+    harBoddIUtland: _harBoddIUtland,
+    harInntektVsaHelPensjon: _harInntektVsaHelPensjon,
     ...apiPayload
   } = payload
 

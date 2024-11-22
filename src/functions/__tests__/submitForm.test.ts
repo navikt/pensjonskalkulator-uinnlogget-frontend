@@ -95,9 +95,9 @@ describe('submitForm', () => {
       expect(expectedState.epsHarPensjon).toBe(undefined)
     })
 
-    test('Når brukeren har svart "nei" til boddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
+    test('Når brukeren har svart "nei" til harBoddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
       const stateWithBoddIUtlandNei = produce(initialState, (draft) => {
-        draft.boddIUtland = 'nei'
+        draft.harBoddIUtland = 'nei'
       })
 
       const expectedState = transformPayload(stateWithBoddIUtlandNei)

@@ -6,12 +6,18 @@ export const initialState: State = {
   sivilstand: undefined,
   epsHarInntektOver2G: undefined,
   epsHarPensjon: undefined,
-  boddIUtland: null,
+  harBoddIUtland: null,
   harInntektVsaHelPensjon: null,
   utenlandsAntallAar: undefined,
   inntektOver1GAntallAar: undefined,
   aarligInntektFoerUttakBeloep: undefined,
-  gradertUttak: undefined,
+  gradertUttak: {
+    grad: null,
+    uttakAlder: {
+      aar: null,
+      maaneder: null,
+    },
+  },
   heltUttak: {
     uttakAlder: {
       aar: null,

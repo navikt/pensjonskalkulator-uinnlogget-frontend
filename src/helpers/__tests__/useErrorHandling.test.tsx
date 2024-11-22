@@ -149,36 +149,36 @@ describe('useErrorHandling', () => {
   })
 
   describe('Validering for UtlandsStep', () => {
-    describe('boddIUtland', () => {
-      test('Skal gi feilmelding når boddIUtland ikke er valgt', () => {
-        const state = { ...initialState, boddIUtland: null }
+    describe('harBoddIUtland', () => {
+      test('Skal gi feilmelding når harBoddIUtland ikke er valgt', () => {
+        const state = { ...initialState, harBoddIUtland: null }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('UtlandsStep')
         })
 
-        expect(errorFields.boddIUtland).toBe('Du må velge et alternativ')
+        expect(errorFields.harBoddIUtland).toBe('Du må velge et alternativ')
       })
 
-      test('Skal ikke gi feilmelding når boddIUtland er valgt', () => {
-        const state = { ...initialState, boddIUtland: 'ja' as BooleanRadio }
+      test('Skal ikke gi feilmelding når harBoddIUtland er valgt', () => {
+        const state = { ...initialState, harBoddIUtland: 'ja' as BooleanRadio }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('UtlandsStep')
         })
 
-        expect(errorFields.boddIUtland).toBe('')
+        expect(errorFields.harBoddIUtland).toBe('')
       })
     })
 
     describe('utenlandsAntallAar', () => {
-      describe('Når boddIUtland er nei', () => {
+      describe('Når harBoddIUtland er nei', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er undefined', () => {
           const state = {
             ...initialState,
-            boddIUtland: 'nei' as BooleanRadio,
+            harBoddIUtland: 'nei' as BooleanRadio,
             utenlandsAntallAar: undefined,
           }
           renderWithState(state)
@@ -192,7 +192,7 @@ describe('useErrorHandling', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
             ...initialState,
-            boddIUtland: 'nei' as BooleanRadio,
+            harBoddIUtland: 'nei' as BooleanRadio,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -204,11 +204,11 @@ describe('useErrorHandling', () => {
           expect(errorFields.utenlandsAntallAar).toBe('')
         })
       })
-      describe('Når boddIUtland er ja', () => {
+      describe('Når harBoddIUtland er ja', () => {
         test('Skal gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
             ...initialState,
-            boddIUtland: 'ja' as BooleanRadio,
+            harBoddIUtland: 'ja' as BooleanRadio,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -225,7 +225,7 @@ describe('useErrorHandling', () => {
         test('Skal gi feilmelding når utenlandsAntallAar er negativt', () => {
           const state = {
             ...initialState,
-            boddIUtland: 'ja' as BooleanRadio,
+            harBoddIUtland: 'ja' as BooleanRadio,
             utenlandsAntallAar: -1,
           }
           renderWithState(state)
@@ -242,7 +242,7 @@ describe('useErrorHandling', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er gyldig', () => {
           const state = {
             ...initialState,
-            boddIUtland: 'ja' as BooleanRadio,
+            harBoddIUtland: 'ja' as BooleanRadio,
             utenlandsAntallAar: 5,
           }
           renderWithState(state)
@@ -642,7 +642,7 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('heltUttakSluttAlderMaaneder', () => {
+    describe('heltUttakSluttAlder', () => {
       test('Skal gi feilmelding når måned i sluttalder ikke er satt', () => {
         const state = {
           ...initialState,
@@ -660,9 +660,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlderMaaneder).toBe(
-          'Du må velge måned'
-        )
+        expect(errorFields.heltUttakSluttAlder).toBe('Du må velge måned')
       })
 
       test('Skal ikke gi feilmelding når måned i sluttalder er satt', () => {
@@ -682,7 +680,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlderMaaneder).toBe('')
+        expect(errorFields.heltUttakSluttAlder).toBe('')
       })
 
       test('Skal ikke gi feilmelding dersom sluttalder ikke er satt (livsvarig inntekt ved siden av pensjon)', () => {
@@ -702,7 +700,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlderMaaneder).toBe('')
+        expect(errorFields.heltUttakSluttAlder).toBe('')
       })
     })
 

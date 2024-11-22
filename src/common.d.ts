@@ -7,15 +7,15 @@ export interface State extends Omit<APIPayload, 'foedselAar'> {
     | components['schemas']['AnonymSimuleringSpecV1']['foedselAar']
   gradertUttak?: OptionalGradertUttak
   heltUttak: OptionalHeltUttak
-  boddIUtland: BooleanRadio | null
-  harInntektVsaHelPensjon: string | null
+  harBoddIUtland: BooleanRadio | null
+  harInntektVsaHelPensjon: BooleanRadio | null
 }
 export type OptionalGradertUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['gradertUttak'],
   'grad' | 'uttakAlder' | 'aarligInntektVsaPensjonBeloep'
 > & {
   grad: null | components['schemas']['AnonymSimuleringGradertUttakV1']['grad']
-  uttakAlder: null | {
+  uttakAlder: {
     aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
     maaneder:
       | null
@@ -55,7 +55,7 @@ export type StepName =
 export type ErrorFields = {
   foedselAar?: string
   inntektOver1GAntallAar?: string
-  boddIUtland?: string
+  harBoddIUtland?: string
   utenlandsAntallAar?: string
   aarligInntektFoerUttakBeloep?: string
   uttaksgrad?: string
@@ -65,7 +65,7 @@ export type ErrorFields = {
   heltUttakAar?: string
   heltUttakMaaneder?: string
   helPensjonInntekt?: string
-  heltUttakSluttAlderMaaneder?: string
+  heltUttakSluttAlder?: string
   harInntektVsaHelPensjon?: string
   sivilstand?: string
   epsHarInntektOver2G?: string

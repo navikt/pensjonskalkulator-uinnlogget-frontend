@@ -16,7 +16,7 @@ const useErrorHandling = (states: State) => {
   }
 
   const validateUtenlandsAntallAar = (): string => {
-      if ((!states.utenlandsAntallAar || states.utenlandsAntallAar === 0) && states.boddIUtland === 'ja' as BooleanRadio) {
+      if ((!states.utenlandsAntallAar || states.utenlandsAntallAar === 0) && states.harBoddIUtland === 'ja' as BooleanRadio) {
         return 'Du må fylle ut antall år';
       }
       if (states.utenlandsAntallAar && states.utenlandsAntallAar < 0) {
@@ -73,7 +73,7 @@ const useErrorHandling = (states: State) => {
     return '';
   }
 
-  const validateHeltUttakSluttAlderMaaneder = (): string => {
+  const validateHeltUttakSluttAlder = (): string => {
     const heltUttak = states.heltUttak;
     if (
       heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
@@ -94,20 +94,21 @@ const useErrorHandling = (states: State) => {
     }
 
     if (step === 'UtlandsStep') {
-      errors.boddIUtland = !states.boddIUtland? 'Du må velge et alternativ': ''
+      errors.harBoddIUtland = !states.harBoddIUtland? 'Du må velge et alternativ': ''
       errors.utenlandsAntallAar = validateUtenlandsAntallAar()
     }
 
     if (step === 'InntektStep') {
+      console.log('>>> (InntektStep)', states.gradertUttak)
       errors.aarligInntektFoerUttakBeloep = validateAarligInntektFoerUttakBeloep()
-      errors.uttaksgrad = states.gradertUttak?.grad === undefined ? 'Du må velge uttaksgrad' : '' // grad på 100% tilsvarer states.gradertUttak?.grad = null
+      errors.uttaksgrad = states.gradertUttak && states.gradertUttak.grad === null ? 'Du må velge uttaksgrad' : '' // grad på 100% tilsvarer states.gradertUttak?.grad = null
       errors.gradertAar = validateGradertUttak().aar
       errors.gradertMaaneder = validateGradertUttak().maaneder
       errors.gradertInntekt = validateGradertInntekt()
       errors.heltUttakAar = states.heltUttak.uttakAlder?.aar === null ? 'Du må velge alder' : ''
       errors.heltUttakMaaneder = states.heltUttak.uttakAlder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()
-      errors.heltUttakSluttAlderMaaneder = validateHeltUttakSluttAlderMaaneder()
+      errors.heltUttakSluttAlder = validateHeltUttakSluttAlder()
       errors.harInntektVsaHelPensjon = !states.harInntektVsaHelPensjon ? 'Velg alternativ' : ''
     }
 
