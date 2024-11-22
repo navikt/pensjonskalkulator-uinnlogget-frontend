@@ -5,22 +5,23 @@ export const transformPayload = (formState: State): APIPayload => {
   const payload = produce(formState, (draft) => {
     if (
       draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
-      draft.heltUttak?.aarligInntektVsaPensjon?.beloep !== undefined &&
-      draft.heltUttak.aarligInntektVsaPensjon.beloep > 0
+      draft.heltUttak.aarligInntektVsaPensjon?.beloep &&
+      draft.heltUttak.aarligInntektVsaPensjon?.beloep > 0
     ) {
-      draft.heltUttak.aarligInntektVsaPensjon.beloep = 0
+      console.log('KOM INN')
+      draft.heltUttak.aarligInntektVsaPensjon = undefined
     }
     if (
       draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
       draft.heltUttak?.aarligInntektVsaPensjon &&
-      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar !== null
+      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar
     ) {
       draft.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
     }
     if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
       draft.heltUttak!.aarligInntektVsaPensjon.sluttAlder = undefined
     }
-    if (draft.gradertUttak?.grad === 100) {
+    if (draft.gradertUttak?.grad === null) {
       draft.gradertUttak = undefined
     }
     if (draft.sivilstand === 'UGIFT') {

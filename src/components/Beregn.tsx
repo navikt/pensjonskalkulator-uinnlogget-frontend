@@ -17,7 +17,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const chartOptions = useMemo(() => {
     return getChartOptions({
       simuleringsresultat,
-      heltUttakAar: state.heltUttak.uttakAlder?.aar ?? 0, //sjekk om dette blir riktig
+      heltUttakAar: state.heltUttak.uttakAlder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
       inntektVsaHelPensjonBeloep:

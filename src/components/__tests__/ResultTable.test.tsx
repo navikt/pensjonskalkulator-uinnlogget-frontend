@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ResultTable from '../ResultTable'
 import { FormContext } from '@/contexts/context'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 
 const mockSimuleringsresultat = {
   alderspensjon: [

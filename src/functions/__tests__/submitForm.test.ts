@@ -1,4 +1,4 @@
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { transformPayload, submitForm } from '../submitForm'
 import { BooleanRadio, State } from '@/common'
 import { produce } from 'immer'

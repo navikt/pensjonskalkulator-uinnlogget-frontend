@@ -3,7 +3,7 @@ import { StepName, ErrorFields, State, BooleanRadio } from '@/common'
 
 const useErrorHandling = (states: State) => {
   const validateInntektOver1GAntallAar = (): string => {
-    if (states.inntektOver1GAntallAar === undefined) {
+    if (!states.inntektOver1GAntallAar) {
       return 'Fyll ut antall år';
     }
     else if (states.inntektOver1GAntallAar < 0) {
@@ -16,14 +16,12 @@ const useErrorHandling = (states: State) => {
   }
 
   const validateUtenlandsAntallAar = (): string => {
-    if (states.utenlandsAntallAar !== undefined) {
-      if (states.utenlandsAntallAar === 0 && states.boddIUtland === 'ja' as BooleanRadio) {
+      if ((!states.utenlandsAntallAar || states.utenlandsAntallAar === 0) && states.boddIUtland === 'ja' as BooleanRadio) {
         return 'Du må fylle ut antall år';
       }
-      if (states.utenlandsAntallAar < 0) {
+      if (states.utenlandsAntallAar && states.utenlandsAntallAar < 0) {
         return 'Antall år må være positiv';
       }
-    }
     return '';
   }
 
@@ -37,33 +35,29 @@ const useErrorHandling = (states: State) => {
     return '';
   }
 
-  const validateGradertInntekt = (): string => {
-    const gradertUttak = states.gradertUttak;
-    if (gradertUttak !== undefined && gradertUttak.grad > 0 && gradertUttak.grad !== 100) {
-      if (gradertUttak.aarligInntektVsaPensjonBeloep === null) {
-        return 'Du må fylle ut inntekt';
-      }
-      if (gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
-        return 'Inntekt kan ikke være negativ';
-      }
-    }
-    return '';
-  }
-
   const validateGradertUttak = (): { aar: string, maaneder: string } => {
     let aarError = '';
     let maanederError = '';
   
-    if (states.gradertUttak !== undefined && states.gradertUttak.grad > 0 && states.gradertUttak.grad !== 100) {
-      if (states.gradertUttak.uttakAlder?.aar === null) {
+    if (states.gradertUttak?.grad) {
+      if (!states.gradertUttak.uttakAlder?.aar) {
         aarError = 'Du må velge alder';
       }
-      if (states.gradertUttak.uttakAlder?.maaneder === null) {
+      if (!states.gradertUttak.uttakAlder?.maaneder) {
         maanederError = 'Du må velge måned';
       }
     }
   
     return { aar: aarError, maaneder: maanederError };
+  }
+
+  const validateGradertInntekt = (): string => {
+    if (states.gradertUttak?.grad) {
+      if (states.gradertUttak.aarligInntektVsaPensjonBeloep && states.gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
+        return 'Inntekt kan ikke være negativ';
+      }
+    }
+    return '';
   }
 
   const validateHelPensjonInntekt = (): string => {
@@ -106,10 +100,10 @@ const useErrorHandling = (states: State) => {
 
     if (step === 'InntektStep') {
       errors.aarligInntektFoerUttakBeloep = validateAarligInntektFoerUttakBeloep()
-      errors.uttaksgrad = !states.gradertUttak?.grad ? 'Du må velge uttaksgrad' : ''
-      errors.gradertInntekt = validateGradertInntekt()
+      errors.uttaksgrad = states.gradertUttak?.grad === undefined ? 'Du må velge uttaksgrad' : '' // grad på 100% tilsvarer states.gradertUttak?.grad = null
       errors.gradertAar = validateGradertUttak().aar
       errors.gradertMaaneder = validateGradertUttak().maaneder
+      errors.gradertInntekt = validateGradertInntekt()
       errors.heltUttakAar = states.heltUttak.uttakAlder?.aar === null ? 'Du må velge alder' : ''
       errors.heltUttakMaaneder = states.heltUttak.uttakAlder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()

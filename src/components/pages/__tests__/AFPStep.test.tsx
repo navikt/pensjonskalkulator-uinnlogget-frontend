@@ -1,7 +1,7 @@
 import { screen, fireEvent } from '@testing-library/react'
 import AFPStep from '../AFPStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { renderMockedComponent } from '../test-utils/testSetup'
 import { State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'

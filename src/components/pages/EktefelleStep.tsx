@@ -39,18 +39,19 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           label={'Hva er din sivilstand?'}
           onChange={(it) =>
             handleFieldChange((draft) => {
-              draft.sivilstand = it.target.value
+              draft.sivilstand =
+                it.target.value === '' ? undefined : it.target.value
             }, 'sivilstand')
           }
           error={errorFields.sivilstand}
         >
-          <option value={undefined}>----</option>
+          <option value={''}>----</option>
           <option value={'UGIFT'}>Ugift</option>
           <option value={'GIFT'}>Gift</option>
           <option value={'SAMBOER'}>Samboer</option>
         </Select>
       </Substep>
-      {state.sivilstand !== undefined && state.sivilstand !== 'UGIFT' && (
+      {state.sivilstand && state.sivilstand !== 'UGIFT' && (
         <>
           <Substep>
             <RadioGroup

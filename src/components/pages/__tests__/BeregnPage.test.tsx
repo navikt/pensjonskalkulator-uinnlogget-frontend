@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import BeregnPage from '../BeregnPage'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { submitForm } from '@/functions/submitForm'
 
 jest.mock('@/functions/submitForm', () => ({

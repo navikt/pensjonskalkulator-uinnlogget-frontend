@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import Beregn from '@/components/Beregn'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({

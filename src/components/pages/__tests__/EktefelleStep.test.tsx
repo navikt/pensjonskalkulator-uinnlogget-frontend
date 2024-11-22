@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import EktefelleStep from '../EktefelleStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,

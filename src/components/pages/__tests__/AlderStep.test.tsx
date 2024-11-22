@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import AlderStep from '../AlderStep'
 
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { State } from '@/common'
 import {
   generateDefaultFormPageProps,
@@ -124,14 +124,19 @@ describe('AlderStep Component', () => {
       const state = { ...initialState, foedselAar: 1998 }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText('I hvilket år er du født?')
-      expect(input).toHaveValue(1998)
+      expect(input).toHaveValue('1998')
     })
 
     test('Burde ikke godta bokstaver', () => {
       renderMockedComponent(AlderStep, context)
       const input = screen.getByLabelText('I hvilket år er du født?')
       fireEvent.change(input, { target: { value: 'abc' } })
-      expect(mockHandleFieldChange).not.toHaveBeenCalled()
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'foedselAar'
+      )
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.foedselAar).toBe(null)
     })
   })
 
@@ -180,7 +185,7 @@ describe('AlderStep Component', () => {
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
       )
-      expect(input).toHaveValue(30)
+      expect(input).toHaveValue('30')
     })
 
     test('Burde ikke godta bokstaver', () => {
@@ -189,7 +194,12 @@ describe('AlderStep Component', () => {
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
       )
       fireEvent.change(input, { target: { value: 'abc' } })
-      expect(mockHandleFieldChange).not.toHaveBeenCalled()
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'inntektOver1GAntallAar'
+      )
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.inntektOver1GAntallAar).toBe(undefined)
     })
   })
 })

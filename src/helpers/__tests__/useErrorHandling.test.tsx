@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
-import { initialState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
 import { BooleanRadio, State } from '@/common'
 
