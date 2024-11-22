@@ -3,7 +3,7 @@ import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
-import { BooleanRadio, State } from '@/common'
+import { State } from '@/common'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }
@@ -162,7 +162,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feilmelding når harBoddIUtland er valgt', () => {
-        const state = { ...initialState, harBoddIUtland: 'ja' as BooleanRadio }
+        const state = { ...initialState, harBoddIUtland: true }
         renderWithState(state)
 
         act(() => {
@@ -178,7 +178,7 @@ describe('useErrorHandling', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er undefined', () => {
           const state = {
             ...initialState,
-            harBoddIUtland: 'nei' as BooleanRadio,
+            harBoddIUtland: false,
             utenlandsAntallAar: undefined,
           }
           renderWithState(state)
@@ -192,7 +192,7 @@ describe('useErrorHandling', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
             ...initialState,
-            harBoddIUtland: 'nei' as BooleanRadio,
+            harBoddIUtland: false,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -208,7 +208,7 @@ describe('useErrorHandling', () => {
         test('Skal gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
             ...initialState,
-            harBoddIUtland: 'ja' as BooleanRadio,
+            harBoddIUtland: true,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -225,8 +225,8 @@ describe('useErrorHandling', () => {
         test('Skal gi feilmelding når utenlandsAntallAar er negativt', () => {
           const state = {
             ...initialState,
-            harBoddIUtland: 'ja' as BooleanRadio,
-            utenlandsAntallAar: -1,
+            harBoddIUtland: true,
+            utenlandsAntallAar: null,
           }
           renderWithState(state)
 
@@ -242,7 +242,7 @@ describe('useErrorHandling', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er gyldig', () => {
           const state = {
             ...initialState,
-            harBoddIUtland: 'ja' as BooleanRadio,
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           }
           renderWithState(state)
@@ -313,7 +313,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 0,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
           },
         }
         renderWithState(state)
@@ -331,7 +331,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -350,7 +350,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: null,
+            aarligInntektVsaPensjonBeloep: undefined,
             uttakAlder: { aar: null, maaneder: null },
           },
         }
@@ -369,7 +369,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: -1000,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -387,7 +387,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 300000,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -425,7 +425,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 67, maaneder: -1 },
+            uttakAlder: { aar: 67, maaneder: null },
           },
         }
         renderWithState(state)
@@ -443,7 +443,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
           },
         }
         renderWithState(state)
@@ -499,7 +499,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
           },
         }
         renderWithState(state)
@@ -534,7 +534,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: -1 },
+            uttakAlder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
@@ -588,9 +588,9 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er ikke utfylt', () => {
         const state = {
           ...initialState,
-          harInntektVsaHelPensjon: 'ja',
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
@@ -606,9 +606,9 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er negativ', () => {
         const state = {
           ...initialState,
-          harInntektVsaHelPensjon: 'ja',
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: -5000, sluttAlder: undefined },
           },
         }
@@ -626,9 +626,9 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når hel pensjon er valgt og inntekt er utfylt', () => {
         const state = {
           ...initialState,
-          harInntektVsaHelPensjon: 'ja',
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: 200000, sluttAlder: undefined },
           },
         }
@@ -690,7 +690,7 @@ describe('useErrorHandling', () => {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: 0,
-              sluttAlder: { aar: 0, maaneder: -1 },
+              sluttAlder: { aar: 0, maaneder: null },
             },
           },
         }
@@ -706,7 +706,7 @@ describe('useErrorHandling', () => {
 
     describe('harInntektVsaHelPensjon', () => {
       test('Skal gi feilmelding når brukeren ikke har valgt om de har inntekt ved hel pensjon', () => {
-        const state = { ...initialState, harInntektVsaHelPensjon: '' }
+        const state = { ...initialState, harInntektVsaHelPensjon: null }
         renderWithState(state)
 
         act(() => {
@@ -717,7 +717,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feilmelding når brukeren har valgt om de har inntekt ved hel pensjon', () => {
-        const state = { ...initialState, harInntektVsaHelPensjon: 'nei' }
+        const state = { ...initialState, harInntektVsaHelPensjon: false }
         renderWithState(state)
 
         act(() => {

@@ -39,6 +39,10 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           label={'Hva er din sivilstand?'}
           onChange={(it) =>
             handleFieldChange((draft) => {
+              if (draft.sivilstand === 'UGIFT') {
+                draft.epsHarInntektOver2G = undefined
+                draft.epsHarPensjon = undefined
+              }
               draft.sivilstand =
                 it.target.value === '' ? undefined : it.target.value
             }, 'sivilstand')
@@ -59,7 +63,7 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
                 grunnbelop ? `${grunnbelop} kr` : '2G'
               } når du starter å ta ut pensjon?`}
               defaultValue={state.epsHarInntektOver2G}
-              onChange={(it) =>
+              onChange={(it: boolean) =>
                 handleFieldChange((draft) => {
                   draft.epsHarInntektOver2G = it
                 }, 'epsHarInntektOver2G')
@@ -76,7 +80,7 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
                 'Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?'
               }
               defaultValue={state.epsHarPensjon}
-              onChange={(it) =>
+              onChange={(it: boolean) =>
                 handleFieldChange((draft) => {
                   draft.epsHarPensjon = it
                 }, 'epsHarPensjon')

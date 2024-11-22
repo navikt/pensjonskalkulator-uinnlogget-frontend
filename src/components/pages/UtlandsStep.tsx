@@ -35,22 +35,22 @@ const UtlandsStep = () => {
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
             value={state.harBoddIUtland}
-            onChange={(it) =>
+            onChange={(it: boolean) =>
               handleFieldChange((draft) => {
                 draft.harBoddIUtland = it
               }, 'harBoddIUtland')
             }
             error={errorFields.harBoddIUtland}
           >
-            <Radio value={'ja'}>Ja</Radio>
-            <Radio value={'nei'}>Nei</Radio>
+            <Radio value={true}>Ja</Radio>
+            <Radio value={false}>Nei</Radio>
           </RadioGroup>
           <ReadMore header="Om opphold utenfor Norge">
             Hvis du har bodd eller arbeidet utenfor Norge, kan det påvirke
             pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
             pensjon fra det landet du har bodd i.
           </ReadMore>
-          {state.harBoddIUtland === 'ja' && (
+          {state.harBoddIUtland && (
             <Substep>
               <TextField
                 className={stepStyles.textfieldAar}

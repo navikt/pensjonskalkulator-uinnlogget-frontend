@@ -7,8 +7,8 @@ export interface State extends Omit<APIPayload, 'foedselAar'> {
     | components['schemas']['AnonymSimuleringSpecV1']['foedselAar']
   gradertUttak?: OptionalGradertUttak
   heltUttak: OptionalHeltUttak
-  harBoddIUtland: BooleanRadio | null
-  harInntektVsaHelPensjon: BooleanRadio | null
+  harBoddIUtland: boolean | null
+  harInntektVsaHelPensjon: boolean | null
 }
 export type OptionalGradertUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['gradertUttak'],
@@ -43,7 +43,6 @@ export type OptionalHeltUttak = Omit<
     }
   }
 }
-export type BooleanRadio = 'ja' | 'nei'
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 export type StepName =

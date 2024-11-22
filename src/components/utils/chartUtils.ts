@@ -74,7 +74,6 @@ export const getChartOptions = (input: {
     const maxAar = inntektVsaHelPensjonSluttalder
       ? inntektVsaHelPensjonSluttalder
       : categories[categories.length - 1]
-    console.log(maxAar)
 
     for (let i = heltUttakAar; i <= maxAar; i++) {
       inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep)

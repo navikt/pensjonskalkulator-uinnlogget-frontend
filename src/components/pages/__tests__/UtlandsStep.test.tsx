@@ -92,7 +92,7 @@ describe('UtlandsStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.harBoddIUtland).toBe('ja')
+      expect(draft.harBoddIUtland).toBeTruthy()
     })
 
     describe('Når harBoddIUtland er "Nei"', () => {
@@ -101,7 +101,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'nei',
+            harBoddIUtland: false,
           },
         })
         expect(
@@ -116,7 +116,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'ja',
+            harBoddIUtland: true,
           },
         })
         expect(
@@ -129,7 +129,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'ja',
+            harBoddIUtland: true,
           },
         })
         const input = screen.getByLabelText(
@@ -150,7 +150,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'ja',
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           },
         })
@@ -173,7 +173,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'ja',
+            harBoddIUtland: true,
             utenlandsAntallAar: 0,
           },
         })
@@ -188,7 +188,7 @@ describe('UtlandsStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harBoddIUtland: 'ja',
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           },
         })

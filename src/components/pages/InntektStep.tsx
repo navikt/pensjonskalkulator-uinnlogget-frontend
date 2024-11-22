@@ -265,18 +265,21 @@ const InntektStep = () => {
           <RadioGroup
             legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
             value={state.harInntektVsaHelPensjon}
-            onChange={(it) =>
+            onChange={(it: boolean) =>
               handleFieldChange((draft) => {
+                if (it === false) {
+                  draft.heltUttak.aarligInntektVsaPensjon = undefined
+                }
                 draft.harInntektVsaHelPensjon = it
               }, 'harInntektVsaHelPensjon')
             }
             error={errorFields.harInntektVsaHelPensjon}
           >
-            <Radio value={'ja'}>Ja</Radio>
-            <Radio value={'nei'}>Nei</Radio>
+            <Radio value={true}>Ja</Radio>
+            <Radio value={false}>Nei</Radio>
           </RadioGroup>
         </Substep>
-        {state.harInntektVsaHelPensjon === 'ja' && (
+        {state.harInntektVsaHelPensjon === true && (
           <>
             <Substep>
               <TextField

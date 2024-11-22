@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { StepName, ErrorFields, State, BooleanRadio } from '@/common'
+import { StepName, ErrorFields, State } from '@/common'
 
 const useErrorHandling = (states: State) => {
   const validateInntektOver1GAntallAar = (): string => {
@@ -16,7 +16,7 @@ const useErrorHandling = (states: State) => {
   }
 
   const validateUtenlandsAntallAar = (): string => {
-      if ((!states.utenlandsAntallAar || states.utenlandsAntallAar === 0) && states.harBoddIUtland === 'ja' as BooleanRadio) {
+      if ((!states.utenlandsAntallAar || states.utenlandsAntallAar === 0) && states.harBoddIUtland === true) {
         return 'Du må fylle ut antall år';
       }
       if (states.utenlandsAntallAar && states.utenlandsAntallAar < 0) {
@@ -62,7 +62,7 @@ const useErrorHandling = (states: State) => {
 
   const validateHelPensjonInntekt = (): string => {
     const heltUttak = states.heltUttak;
-    if (states.harInntektVsaHelPensjon === 'ja') {
+    if (states.harInntektVsaHelPensjon === true) {
       if (!heltUttak.aarligInntektVsaPensjon?.beloep) {
         return 'Du må fylle ut inntekt';
       }
@@ -94,12 +94,11 @@ const useErrorHandling = (states: State) => {
     }
 
     if (step === 'UtlandsStep') {
-      errors.harBoddIUtland = !states.harBoddIUtland? 'Du må velge et alternativ': ''
+      errors.harBoddIUtland = states.harBoddIUtland === null ? 'Du må velge et alternativ': ''
       errors.utenlandsAntallAar = validateUtenlandsAntallAar()
     }
 
     if (step === 'InntektStep') {
-      console.log('>>> (InntektStep)', states.gradertUttak)
       errors.aarligInntektFoerUttakBeloep = validateAarligInntektFoerUttakBeloep()
       errors.uttaksgrad = states.gradertUttak && states.gradertUttak.grad === null ? 'Du må velge uttaksgrad' : '' // grad på 100% tilsvarer states.gradertUttak?.grad = null
       errors.gradertAar = validateGradertUttak().aar
@@ -109,7 +108,7 @@ const useErrorHandling = (states: State) => {
       errors.heltUttakMaaneder = states.heltUttak.uttakAlder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()
       errors.heltUttakSluttAlder = validateHeltUttakSluttAlder()
-      errors.harInntektVsaHelPensjon = !states.harInntektVsaHelPensjon ? 'Velg alternativ' : ''
+      errors.harInntektVsaHelPensjon = states.harInntektVsaHelPensjon === null ? 'Velg alternativ' : ''
     }
 
     if (step === 'EktefelleStep') {

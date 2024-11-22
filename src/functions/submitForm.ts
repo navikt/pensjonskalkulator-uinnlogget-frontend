@@ -1,21 +1,16 @@
-import { APIPayload, State, Simuleringsresultat, BooleanRadio } from '@/common'
+import { APIPayload, State, Simuleringsresultat } from '@/common'
 import { produce } from 'immer'
 
 export const transformPayload = (formState: State): APIPayload => {
   const payload = produce(formState, (draft) => {
     if (
-      draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
+      draft.harInntektVsaHelPensjon === false &&
       draft.heltUttak.aarligInntektVsaPensjon?.beloep &&
       draft.heltUttak.aarligInntektVsaPensjon?.beloep > 0
     ) {
-      console.log('KOM INN')
       draft.heltUttak.aarligInntektVsaPensjon = undefined
     }
-    if (
-      draft.harInntektVsaHelPensjon === ('nei' as BooleanRadio) &&
-      draft.heltUttak?.aarligInntektVsaPensjon &&
-      draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar
-    ) {
+    if (draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
       draft.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
     }
     if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
@@ -24,12 +19,8 @@ export const transformPayload = (formState: State): APIPayload => {
     if (draft.gradertUttak?.grad === null) {
       draft.gradertUttak = undefined
     }
-    if (draft.sivilstand === 'UGIFT') {
-      draft.epsHarInntektOver2G = undefined
-      draft.epsHarPensjon = undefined
-    }
-    if (draft.harBoddIUtland === 'nei') {
-      draft.utenlandsAntallAar = 0
+    if (draft.harBoddIUtland === false) {
+      draft.utenlandsAntallAar = undefined
     }
   })
 
@@ -38,8 +29,6 @@ export const transformPayload = (formState: State): APIPayload => {
     harInntektVsaHelPensjon: _harInntektVsaHelPensjon,
     ...apiPayload
   } = payload
-
-  console.log(apiPayload)
 
   return apiPayload as APIPayload
 }

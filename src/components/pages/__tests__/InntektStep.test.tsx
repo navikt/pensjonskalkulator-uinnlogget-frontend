@@ -58,7 +58,7 @@ describe('InntektStep Component', () => {
     ).toBeInTheDocument()
   })
 
-  test.skip('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
+  test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(InntektStep, context)
     const form = screen.getByRole('form')
@@ -67,7 +67,7 @@ describe('InntektStep Component', () => {
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
-  test.skip('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
+  test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(InntektStep, context)
     const form = screen.getByRole('form')
@@ -76,7 +76,7 @@ describe('InntektStep Component', () => {
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
-  describe.skip('Gitt at tekstfeltet for aarligInntektFoerUttakBeloep finnes', () => {
+  describe('Gitt at tekstfeltet for aarligInntektFoerUttakBeloep finnes', () => {
     test('Burde aarligInntektFoerUttakBeloep endres når bruker skriver inn inntekt', () => {
       renderMockedComponent(InntektStep, context)
       const input = screen.getByLabelText(
@@ -121,7 +121,7 @@ describe('InntektStep Component', () => {
     })
   })
 
-  describe.skip('Gitt at tekstfeltet for uttaksgrad finnes', () => {
+  describe('Gitt at tekstfeltet for uttaksgrad finnes', () => {
     test('Burde gradertUttak.grad endres når bruker velger uttaksgrad', () => {
       renderMockedComponent(InntektStep, {
         ...context,
@@ -141,6 +141,10 @@ describe('InntektStep Component', () => {
       const draft = mockHandleFieldChange.mock.results[0].value
       expect(draft.gradertUttak.grad).toBe(50)
     })
+
+    // gradertUttak = undefined -> grad er egentlig 100 %
+    // gradertUttak er initialisert med grad null -> brukeren har ikke valgt uttaksgrad
+    // Når brukeren ikke har valgt uttaksagrad,, ...
 
     describe('Når gradertUttak ikke er undefined og grad ikke er 100', () => {
       test('Burde input felt for gradert uttak vises', () => {
@@ -167,7 +171,6 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        console.log('Draft:', draft)
         expect(draft.gradertUttak.grad).toBe(50)
 
         expect(
@@ -190,7 +193,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: -1 },
+              uttakAlder: { aar: 0, maaneder: null },
             },
           },
         })
@@ -214,7 +217,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 66, maaneder: -1 },
+              uttakAlder: { aar: 66, maaneder: null },
             },
           },
         })
@@ -238,7 +241,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: -1 },
+              uttakAlder: { aar: 0, maaneder: null },
             },
           },
         })
@@ -264,7 +267,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 66, maaneder: -1 },
+              uttakAlder: { aar: 66, maaneder: null },
             },
           },
         })
@@ -289,7 +292,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: -1 },
+              uttakAlder: { aar: 0, maaneder: null },
             },
           },
         })
@@ -314,7 +317,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: -1 },
+              uttakAlder: { aar: 0, maaneder: null },
               aarligInntektVsaPensjonBeloep: 500000,
             },
           },
@@ -340,7 +343,10 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: null,
+              uttakAlder: {
+                aar: null,
+                maaneder: null,
+              },
             },
           },
         })
@@ -391,7 +397,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 100,
-              uttakAlder: { aar: 0, maaneder: -1 },
+              uttakAlder: { aar: 0, maaneder: null },
             },
           },
         })
@@ -415,14 +421,14 @@ describe('InntektStep Component', () => {
     })
   })
 
-  describe.skip('Gitt at dropdowns for heltUttak alder og måned finnes', () => {
+  describe('Gitt at dropdowns for heltUttak alder og måned finnes', () => {
     test('Burde heltUttak.uttakAlder.aar endres når bruker velger uttaksalder', () => {
       renderMockedComponent(InntektStep, {
         ...context,
         state: {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: {
               beloep: null,
               sluttAlder: undefined,
@@ -449,7 +455,7 @@ describe('InntektStep Component', () => {
         state: {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: -1 },
+            uttakAlder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: {
               beloep: null,
               sluttAlder: undefined,
@@ -476,7 +482,7 @@ describe('InntektStep Component', () => {
         state: {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: {
               beloep: null,
               sluttAlder: undefined,
@@ -500,7 +506,7 @@ describe('InntektStep Component', () => {
     })
   })
 
-  test.skip('Burde heltUttak.uttakAlder.maaneder settes til null når bruker velger tom uttaksalder', () => {
+  test('Burde heltUttak.uttakAlder.maaneder settes til null når bruker velger tom uttaksalder', () => {
     renderMockedComponent(InntektStep, {
       ...context,
       state: {
@@ -528,7 +534,7 @@ describe('InntektStep Component', () => {
     expect(draft.heltUttak.uttakAlder.maaneder).toBe(null)
   })
 
-  describe.skip('Gitt at radioknappen for inntekt etter uttak av hel pensjon finnes', () => {
+  describe('Gitt at radioknappen for inntekt etter uttak av hel pensjon finnes', () => {
     test('Burde harInntektVsaHelPensjon endres når handleFieldChange kalles på', () => {
       renderMockedComponent(InntektStep, context)
       const radio = screen.getByLabelText('Ja')
@@ -539,7 +545,7 @@ describe('InntektStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.harInntektVsaHelPensjon).toBe('ja')
+      expect(draft.harInntektVsaHelPensjon).toBeTruthy()
     })
 
     describe('Når harInntektVsaHelPensjon er "Nei"', () => {
@@ -548,7 +554,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harInntektVsaHelPensjon: 'nei',
+            harInntektVsaHelPensjon: false,
           },
         })
         expect(
@@ -565,7 +571,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harInntektVsaHelPensjon: 'ja',
+            harInntektVsaHelPensjon: true,
           },
         })
         expect(
@@ -580,7 +586,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harInntektVsaHelPensjon: 'ja',
+            harInntektVsaHelPensjon: true,
           },
         })
 
@@ -602,11 +608,11 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harInntektVsaHelPensjon: 'ja',
+            harInntektVsaHelPensjon: true,
             heltUttak: {
               uttakAlder: {
                 aar: 0,
-                maaneder: -1,
+                maaneder: null,
               },
               aarligInntektVsaPensjon: {
                 beloep: null,
@@ -626,17 +632,17 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            harInntektVsaHelPensjon: 'ja',
+            harInntektVsaHelPensjon: true,
             heltUttak: {
               uttakAlder: {
                 aar: 0,
-                maaneder: -1,
+                maaneder: null,
               },
               aarligInntektVsaPensjon: {
                 beloep: 500000,
                 sluttAlder: {
                   aar: 0,
-                  maaneder: -1,
+                  maaneder: null,
                 },
               },
             },
@@ -655,7 +661,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
               },
             })
 
@@ -673,17 +679,17 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttakAlder: {
                     aar: 0,
-                    maaneder: -1,
+                    maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
                     sluttAlder: {
                       aar: 0,
-                      maaneder: -1,
+                      maaneder: null,
                     },
                   },
                 },
@@ -718,11 +724,11 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttakAlder: {
                     aar: 0,
-                    maaneder: -1,
+                    maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
@@ -762,17 +768,17 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttakAlder: {
                     aar: 0,
-                    maaneder: -1,
+                    maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
                     sluttAlder: {
                       aar: 65,
-                      maaneder: -1,
+                      maaneder: null,
                     },
                   },
                 },
@@ -790,11 +796,11 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttakAlder: {
                     aar: 0,
-                    maaneder: -1,
+                    maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
@@ -815,7 +821,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                harInntektVsaHelPensjon: 'ja',
+                harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttakAlder: {
                     aar: 62,

@@ -1,6 +1,6 @@
 import { initialState } from '@/defaults/initialState'
 import { transformPayload, submitForm } from '../submitForm'
-import { BooleanRadio, State } from '@/common'
+import { State } from '@/common'
 import { produce } from 'immer'
 
 describe('submitForm', () => {
@@ -18,7 +18,7 @@ describe('submitForm', () => {
     describe('Når brukeren har svart "nei" til inntekt vsa. helt uttak og beløpet er større enn 0', () => {
       test('Burde beløpet settes til 0 ', async () => {
         const stateWithBeloep = produce(initialState, (draft) => {
-          draft.harInntektVsaHelPensjon = 'nei' as BooleanRadio
+          draft.harInntektVsaHelPensjon = false
           draft.heltUttak = {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -36,7 +36,7 @@ describe('submitForm', () => {
     describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
         const stateWithSluttAlder = produce(initialState, (draft) => {
-          draft.harInntektVsaHelPensjon = 'nei' as BooleanRadio
+          draft.harInntektVsaHelPensjon = false
           draft.heltUttak = {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -97,7 +97,7 @@ describe('submitForm', () => {
 
     test('Når brukeren har svart "nei" til harBoddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
       const stateWithBoddIUtlandNei = produce(initialState, (draft) => {
-        draft.harBoddIUtland = 'nei'
+        draft.harBoddIUtland = false
       })
 
       const expectedState = transformPayload(stateWithBoddIUtlandNei)
