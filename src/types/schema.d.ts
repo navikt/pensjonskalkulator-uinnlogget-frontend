@@ -674,6 +674,13 @@ export interface components {
             gradertUttak?: components["schemas"]["AnonymSimuleringGradertUttakV1"];
             heltUttak: components["schemas"]["AnonymSimuleringHeltUttakV1"];
         };
+        AnonymSimuleringErrorV1: {
+            error?: components["schemas"]["SimuleringError"];
+        };
+        SimuleringError: {
+            status: string;
+            message: string;
+        };
         AnonymAlderV1: {
             /** Format: int32 */
             aar: number;
@@ -973,12 +980,12 @@ export interface operations {
                 };
             };
             /** @description Simulering kunne ikke utføres av tekniske årsaker */
-            503: {
+            "4xx": {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": unknown;
+                    "*/*": components["schemas"]["AnonymSimuleringErrorV1"];
                 };
             };
         };

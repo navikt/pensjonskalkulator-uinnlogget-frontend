@@ -10,6 +10,9 @@ export type State = SchemaFormValues & {
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 
+export type AnonymSimuleringError =
+  components['schemas']['AnonymSimuleringErrorV1']
+
 export type StepName =
   | 'AlderStep'
   | 'UtlandsStep'
@@ -52,7 +55,7 @@ export interface NavigationProps {
   curStep: number
   length: number
   goBack: () => void
-  onStepChange?: (step: number) => void
+  onStepChange: (step: number) => void
   handleSubmit?: () => void
   goToNext: () => void
 }
