@@ -1,12 +1,12 @@
-import { AnonymSimuleringError } from '@/common'
+import { SimuleringError } from '@/common'
 
-export const isAnonymSimuleringError = (
-  error: unknown
-): error is AnonymSimuleringError => {
+export const isSimuleringError = (error: unknown): error is SimuleringError => {
   return (
     typeof error === 'object' &&
     error !== null &&
-    'error' in error &&
-    typeof (error as AnonymSimuleringError).error?.status === 'string'
+    'status' in error &&
+    'message' in error &&
+    typeof (error as SimuleringError).status === 'string' &&
+    typeof (error as SimuleringError).message === 'string'
   )
 }

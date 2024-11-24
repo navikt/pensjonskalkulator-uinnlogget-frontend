@@ -2,10 +2,10 @@ import React, { Suspense, useContext, useRef } from 'react'
 import Beregn from '../Beregn'
 
 import { FormContext } from '@/contexts/context'
-import { Simuleringsresultat, State, AnonymSimuleringError } from '@/common'
+import { Simuleringsresultat, State, SimuleringError } from '@/common'
 import LoadingComponent from '../LoadingComponent'
 import { submitForm } from '@/functions/submitForm'
-import { isAnonymSimuleringError } from '@/helpers/typeguards'
+import { isSimuleringError } from '@/helpers/typeguards'
 
 const useAsyncLoader = (
   asyncMethod: (state: State) => Promise<Simuleringsresultat | undefined>,
@@ -16,7 +16,7 @@ const useAsyncLoader = (
     rejected: boolean
     promise?: Promise<Simuleringsresultat | undefined>
     result: Simuleringsresultat | undefined
-    error: AnonymSimuleringError | undefined
+    error: SimuleringError | undefined
   }>({
     resolved: false,
     rejected: false,
@@ -27,7 +27,7 @@ const useAsyncLoader = (
 
   return {
     loader: () => {
-      // If the promise has been rejected, return
+      // If the promise has been rejected, return error
       if (storage.current.rejected) return storage.current.error
       // If the promise has been resolved, return the result
       if (storage.current.resolved) return storage.current.result
@@ -45,7 +45,7 @@ const useAsyncLoader = (
           storage.current.promise = undefined
           storage.current.rejected = true
           // TODO PEK-722 utvide med mer logikk ved behov
-          if (isAnonymSimuleringError(err)) {
+          if (isSimuleringError(err)) {
             storage.current.error = err
           }
           return err
@@ -60,9 +60,9 @@ const AwaitComponent = ({
   loader,
   render,
 }: {
-  loader: () => Simuleringsresultat | AnonymSimuleringError | undefined
+  loader: () => Simuleringsresultat | SimuleringError | undefined
   render: (
-    simuleringsresultat: Simuleringsresultat | AnonymSimuleringError | undefined
+    simuleringsresultat: Simuleringsresultat | SimuleringError | undefined
   ) => JSX.Element | null | undefined
 }) => {
   const result = loader()
@@ -78,10 +78,7 @@ function BeregnPage() {
       <AwaitComponent
         loader={loader}
         render={(
-          simuleringsresultat:
-            | Simuleringsresultat
-            | AnonymSimuleringError
-            | undefined
+          simuleringsresultat: Simuleringsresultat | SimuleringError | undefined
         ) => <Beregn simuleringsresultat={simuleringsresultat} />}
       />
     </Suspense>

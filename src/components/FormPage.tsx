@@ -36,7 +36,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   const lastPage = <BeregnPage key="beregn" />
 
-  const { curStep, step, goToNext, goBack } = useMultiStepForm(
+  const { curStep, step, goToNext, goBack, goTo } = useMultiStepForm(
     pagesDict,
     lastPage
   )
@@ -52,6 +52,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
           length,
           goBack,
           goToNext,
+          onStepChange: goTo,
         },
       }}
     >

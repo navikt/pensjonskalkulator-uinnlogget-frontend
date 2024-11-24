@@ -1,20 +1,20 @@
-import { AnonymSimuleringError } from '@/common'
+import { SimuleringError } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { getErrors } from '@/texts/errors'
 import { Alert, BodyLong, Box, Button, Heading, VStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
 
 interface ResponseWarningProps {
-  error: AnonymSimuleringError
+  error: SimuleringError
 }
 
 function ResponseWarning({ error }: ResponseWarningProps) {
   const { formPageProps } = useContext(FormContext)
 
-  const mapErrorToMessage = (error: AnonymSimuleringError) => {
+  const mapErrorToMessage = (error: SimuleringError) => {
     const errorMessages: { [key: string]: string } = getErrors()
-    if (!error.error?.status) return errorMessages['default']
-    const errorCode = error.error?.status
+    if (!error.status) return errorMessages['default']
+    const errorCode = error.status
     return errorMessages[errorCode]
   }
 

@@ -1,4 +1,4 @@
-import { State, Simuleringsresultat, AnonymSimuleringError } from '@/common'
+import { State, Simuleringsresultat, SimuleringError } from '@/common'
 import { produce } from 'immer'
 
 export const transformPayload = (formState: State) => {
@@ -57,7 +57,7 @@ export const submitForm = async (
       if (response.status === 409) {
         return response.json().then((data) => {
           console.log('Threw 409 conflict error:', data)
-          return Promise.reject(JSON.parse(data) as AnonymSimuleringError)
+          return Promise.reject(JSON.parse(data) as SimuleringError)
         })
       } else if (response.ok) {
         return response

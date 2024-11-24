@@ -10,8 +10,7 @@ export type State = SchemaFormValues & {
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 
-export type AnonymSimuleringError =
-  components['schemas']['AnonymSimuleringErrorV1']
+export type SimuleringError = components['schemas']['AnonymSimuleringErrorV1']
 
 export type StepName =
   | 'AlderStep'

@@ -675,9 +675,6 @@ export interface components {
             heltUttak: components["schemas"]["AnonymSimuleringHeltUttakV1"];
         };
         AnonymSimuleringErrorV1: {
-            error?: components["schemas"]["SimuleringError"];
-        };
-        SimuleringError: {
             status: string;
             message: string;
         };

@@ -5,18 +5,18 @@ import { FormContext } from '@/contexts/context'
 import { getChartOptions } from './utils/chartUtils'
 import { Box } from '@navikt/ds-react'
 import ResultTable from './ResultTable'
-import { AnonymSimuleringError, Simuleringsresultat } from '@/common'
-import { isAnonymSimuleringError } from '@/helpers/typeguards'
+import { SimuleringError, Simuleringsresultat } from '@/common'
+import { isSimuleringError } from '@/helpers/typeguards'
 import ResponseWarning from './ResponseWarning'
 
 interface Props {
-  simuleringsresultat?: Simuleringsresultat | AnonymSimuleringError
+  simuleringsresultat?: Simuleringsresultat | SimuleringError
 }
 
 const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
 
-  if (isAnonymSimuleringError(simuleringsresultat)) {
+  if (isSimuleringError(simuleringsresultat)) {
     return (
       // TODO PEK-722 vise fornuftig feilmelding
       <ResponseWarning error={simuleringsresultat} />
