@@ -119,6 +119,21 @@ describe('InntektStep Component', () => {
       ) as HTMLInputElement
       expect(input.value).toBe('500000')
     })
+
+    test('Burde sette aarligInntektFoerUttakBeloep til undefined når valueAsNumber er NaN', () => {
+      renderMockedComponent(InntektStep, context)
+      const input = screen.getByLabelText(
+        'Hva er din forventede årlige inntekt?'
+      )
+      fireEvent.change(input, { target: { value: 'invalid' } })
+      expect(mockHandleFieldChange).toHaveBeenCalledWith(
+        expect.any(Function),
+        'aarligInntektFoerUttakBeloep'
+      )
+
+      const draft = mockHandleFieldChange.mock.results[0].value
+      expect(draft.aarligInntektFoerUttakBeloep).toBe(undefined)
+    })
   })
 
   describe('Gitt at tekstfeltet for uttaksgrad finnes', () => {
@@ -146,42 +161,26 @@ describe('InntektStep Component', () => {
     // gradertUttak er initialisert med grad null -> brukeren har ikke valgt uttaksgrad
     // Når brukeren ikke har valgt uttaksagrad,, ...
 
-    describe('Når gradertUttak ikke er undefined og grad ikke er 100', () => {
+    describe('Når gradertUttak er initialisert og grad ikke er 100', () => {
       test('Burde input felt for gradert uttak vises', () => {
         renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialState,
             gradertUttak: {
-              grad: null,
-              uttakAlder: {
-                aar: null,
-                maaneder: null,
-              },
+              grad: 50,
+              uttakAlder: { aar: 66, maaneder: 2 },
             },
           },
         })
-        const input = screen.getByLabelText(
-          'Hvor mye alderspensjon vil du ta ut?'
-        )
-        fireEvent.change(input, { target: { value: '50' } })
-        expect(mockHandleFieldChange).toHaveBeenCalledWith(
-          expect.any(Function),
-          'uttaksgrad'
-        )
-
-        const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.grad).toBe(50)
 
         expect(
-          screen.getByLabelText(
-            `Når planlegger du å ta ut ${draft.gradertUttak.grad}% pensjon?`
-          )
+          screen.getByLabelText(`Når planlegger du å ta ut 50% pensjon?`)
         ).toBeInTheDocument()
 
         expect(
           screen.getByLabelText(
-            `Hva forventer du å ha i årlig inntekt samtidig som du tar ${draft.gradertUttak?.grad}% pensjon?`
+            `Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)`
           )
         ).toBeInTheDocument()
       })
@@ -193,7 +192,7 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: null },
+              uttakAlder: { aar: 62, maaneder: null },
             },
           },
         })
@@ -232,6 +231,25 @@ describe('InntektStep Component', () => {
 
         const draft = mockHandleFieldChange.mock.results[0].value
         expect(draft.gradertUttak.uttakAlder.aar).toBe(null)
+      })
+
+      test('Burde vise tom input når gradertUttak.uttakAlder.aar er null', () => {
+        renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            gradertUttak: {
+              grad: 50,
+              uttakAlder: { aar: null, maaneder: null },
+            },
+          },
+        })
+
+        const input = screen.getByLabelText(
+          'Når planlegger du å ta ut 50% pensjon?'
+        ) as HTMLInputElement
+
+        expect(input.value).toBe('')
       })
 
       test('Burde gradertUttak.uttakAlder.maaneder endres når bruker velger uttaksmåned', () => {
@@ -292,13 +310,13 @@ describe('InntektStep Component', () => {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: null },
+              uttakAlder: { aar: 66, maaneder: 0 },
             },
           },
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
         )
         fireEvent.change(input, { target: { value: '500000' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -310,21 +328,21 @@ describe('InntektStep Component', () => {
         expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe(500000)
       })
 
-      test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til null når input er tom', () => {
+      test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til undefined når input er tom', () => {
         renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialState,
             gradertUttak: {
               grad: 50,
-              uttakAlder: { aar: 0, maaneder: null },
+              uttakAlder: { aar: 66, maaneder: 0 },
               aarligInntektVsaPensjonBeloep: 500000,
             },
           },
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
         )
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -333,7 +351,7 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe(null)
+        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe(undefined)
       })
 
       test('Burde vise tom input når gradertUttak.aarligInntektVsaPensjonBeloep er undefined', () => {
@@ -344,26 +362,52 @@ describe('InntektStep Component', () => {
             gradertUttak: {
               grad: 50,
               uttakAlder: {
-                aar: null,
-                maaneder: null,
+                aar: 66,
+                maaneder: 0,
               },
             },
           },
         })
-        const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+
+        const inputAarlinginntektVsaGradert = screen.getByLabelText(
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
         ) as HTMLInputElement
-        expect(input.value).toBe('')
+
+        expect(inputAarlinginntektVsaGradert.value).toBe('')
       })
     })
 
-    describe('Når gradertUttak er undefined eller grad er 100', () => {
-      test('Burde ikke input felt vises dersom gradertUttak er undefined', () => {
+    describe('Når gradertUttak ikke er initialisert eller grad er 100', () => {
+      test('Burde gradertUttak settes til undefined når grad er 100', () => {
         renderMockedComponent(InntektStep, {
           ...context,
           state: {
             ...initialState,
             gradertUttak: undefined,
+          },
+        })
+
+        const input = screen.getByLabelText(
+          'Hvor mye alderspensjon vil du ta ut?'
+        )
+        fireEvent.change(input, { target: { value: '100' } })
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'uttaksgrad'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.gradertUttak).toBe(undefined)
+      })
+      test('Burde ikke input felt vises dersom gradertUttak kun innehar null-verdier', () => {
+        renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            gradertUttak: {
+              grad: null,
+              uttakAlder: { aar: null, maaneder: null },
+            },
           },
         })
 
@@ -377,7 +421,10 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak).toBeUndefined()
+        expect(draft.gradertUttak).toStrictEqual({
+          grad: null,
+          uttakAlder: { aar: null, maaneder: null },
+        })
         expect(
           screen.queryByLabelText(
             `Når planlegger du å ta ut ${draft.gradertUttak?.grad}% pensjon?`
@@ -396,8 +443,8 @@ describe('InntektStep Component', () => {
           state: {
             ...initialState,
             gradertUttak: {
-              grad: 100,
-              uttakAlder: { aar: 0, maaneder: null },
+              grad: null,
+              uttakAlder: { aar: null, maaneder: null },
             },
           },
         })
@@ -411,7 +458,7 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.grad).toBe(null)
+        expect(draft.gradertUttak).toBe(undefined)
         expect(
           screen.queryByLabelText(
             `Hva forventer du å ha i årlig inntekt samtidig som du tar ${draft.gradertUttak?.grad}% pensjon?`
@@ -428,7 +475,7 @@ describe('InntektStep Component', () => {
         state: {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: null },
+            uttakAlder: { aar: 62, maaneder: null },
             aarligInntektVsaPensjon: {
               beloep: null,
               sluttAlder: undefined,
@@ -548,7 +595,7 @@ describe('InntektStep Component', () => {
       expect(draft.harInntektVsaHelPensjon).toBeTruthy()
     })
 
-    describe('Når harInntektVsaHelPensjon er "Nei"', () => {
+    describe('Når harInntektVsaHelPensjon er false', () => {
       test('Burde ikke input felt for heltUttak.aarligInntektVsaPensjon.beloep vises', () => {
         renderMockedComponent(InntektStep, {
           ...context,
@@ -563,9 +610,36 @@ describe('InntektStep Component', () => {
           )
         ).not.toBeInTheDocument()
       })
+
+      test('Burde sette heltUttak.aarligInntektVsaPensjon til undefined', () => {
+        renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            harInntektVsaHelPensjon: true,
+            heltUttak: {
+              uttakAlder: { aar: 67, maaneder: 0 },
+              aarligInntektVsaPensjon: {
+                beloep: 100000,
+                sluttAlder: { aar: 67, maaneder: 0 },
+              },
+            },
+          },
+        })
+
+        const radio = screen.getByLabelText('Nei')
+        fireEvent.click(radio)
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'harInntektVsaHelPensjon'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.heltUttak.aarligInntektVsaPensjon).toBe(undefined)
+      })
     })
 
-    describe('Når harInntektVsaHelPensjon er "Ja"', () => {
+    describe('Når harInntektVsaHelPensjon er true', () => {
       test('Burde input felt for heltUttak.aarligInntektVsaPensjon.beloep vises', () => {
         renderMockedComponent(InntektStep, {
           ...context,
@@ -634,16 +708,10 @@ describe('InntektStep Component', () => {
             ...initialState,
             harInntektVsaHelPensjon: true,
             heltUttak: {
-              uttakAlder: {
-                aar: 0,
-                maaneder: null,
-              },
+              uttakAlder: { aar: 0, maaneder: null },
               aarligInntektVsaPensjon: {
                 beloep: 500000,
-                sluttAlder: {
-                  aar: 0,
-                  maaneder: null,
-                },
+                sluttAlder: { aar: null, maaneder: null },
               },
             },
           },
@@ -652,6 +720,30 @@ describe('InntektStep Component', () => {
           'Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
         ) as HTMLInputElement
         expect(input.value).toBe('500000')
+      })
+
+      test('Burde sette heltUttak.aarligInntektVsaPensjon.beloep til undefined når valueAsNumber er NaN', () => {
+        renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            harInntektVsaHelPensjon: true,
+            heltUttak: {
+              uttakAlder: { aar: 63, maaneder: 0 },
+              aarligInntektVsaPensjon: {
+                beloep: 500000,
+                sluttAlder: { aar: null, maaneder: null },
+              },
+            },
+          },
+        })
+        const input = screen.getByLabelText(
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
+        )
+        fireEvent.change(input, { target: { value: 'invalid' } })
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe(null)
       })
 
       describe('Gitt at dropdown for sluttAlder finnes', () => {
@@ -688,7 +780,7 @@ describe('InntektStep Component', () => {
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
                     sluttAlder: {
-                      aar: 0,
+                      aar: null,
                       maaneder: null,
                     },
                   },
@@ -702,7 +794,7 @@ describe('InntektStep Component', () => {
             fireEvent.change(ageSelect, { target: { value: '65' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakAar'
+              'heltUttakSluttAlderAar'
             )
             const monthSelect = screen.getByLabelText('Velg måned')
             expect(monthSelect).toBeInTheDocument()
@@ -710,13 +802,95 @@ describe('InntektStep Component', () => {
             fireEvent.change(monthSelect, { target: { value: '6' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakSluttAlder'
+              'heltUttakSluttAlderMaaneder'
             )
 
             const draft = mockHandleFieldChange.mock.results[1].value
             expect(
               draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder
             ).toBe(6)
+          })
+
+          test('Burde sette heltUttak.aarligInntektVsaPensjon.sluttAlder.aar til null når sluttAlder.aar ikke er definert', () => {
+            renderMockedComponent(InntektStep, {
+              ...context,
+              state: {
+                ...initialState,
+                harInntektVsaHelPensjon: true,
+                heltUttak: {
+                  uttakAlder: {
+                    aar: 0,
+                    maaneder: null,
+                  },
+                  aarligInntektVsaPensjon: {
+                    beloep: 500000,
+                    sluttAlder: {
+                      aar: 65,
+                      maaneder: 6,
+                    },
+                  },
+                },
+              },
+            })
+
+            const ageSelect = screen.getByLabelText(
+              'Til hvilken alder forventer du å ha inntekten?'
+            )
+            fireEvent.change(ageSelect, { target: { value: '' } })
+            expect(mockHandleFieldChange).toHaveBeenCalledWith(
+              expect.any(Function),
+              'heltUttakSluttAlderAar'
+            )
+            const monthSelect = screen.getByLabelText('Velg måned')
+            expect(monthSelect).toBeInTheDocument()
+
+            fireEvent.change(monthSelect, { target: { value: '' } })
+            expect(mockHandleFieldChange).toHaveBeenCalledWith(
+              expect.any(Function),
+              'heltUttakSluttAlderMaaneder'
+            )
+
+            const draft = mockHandleFieldChange.mock.results[1].value
+            expect(
+              draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder
+            ).toBe(null)
+          })
+
+          test('Burde sette heltUttak.sluttAlder.aar til null når bruker velger tom alder', () => {
+            renderMockedComponent(InntektStep, {
+              ...context,
+              state: {
+                ...initialState,
+                harInntektVsaHelPensjon: true,
+                heltUttak: {
+                  uttakAlder: {
+                    aar: 0,
+                    maaneder: null,
+                  },
+                  aarligInntektVsaPensjon: {
+                    beloep: 500000,
+                    sluttAlder: {
+                      aar: 65,
+                      maaneder: 6,
+                    },
+                  },
+                },
+              },
+            })
+
+            const ageSelect = screen.getByLabelText(
+              'Til hvilken alder forventer du å ha inntekten?'
+            )
+            fireEvent.change(ageSelect, { target: { value: '' } })
+            expect(mockHandleFieldChange).toHaveBeenCalledWith(
+              expect.any(Function),
+              'heltUttakSluttAlderAar'
+            )
+
+            const draft = mockHandleFieldChange.mock.results[0].value
+            expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar).toBe(
+              null
+            )
           })
 
           test('Burde sette heltUttak.sluttAlder.maaneder til null når bruker velger tom måned', () => {
@@ -747,20 +921,55 @@ describe('InntektStep Component', () => {
             fireEvent.change(ageSelect, { target: { value: '65' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakAar'
+              'heltUttakSluttAlderAar'
             )
 
             const monthSelect = screen.getByLabelText('Velg måned')
             fireEvent.change(monthSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakSluttAlder'
+              'heltUttakSluttAlderMaaneder'
             )
 
             const draft = mockHandleFieldChange.mock.results[1].value
             expect(
               draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder
             ).toBe(null)
+          })
+
+          test('Burde sette heltUttak.aarligInntektVsaPensjon hvis det ikke eksisterer', () => {
+            renderMockedComponent(InntektStep, {
+              ...context,
+              state: {
+                ...initialState,
+                harInntektVsaHelPensjon: true,
+                heltUttak: {
+                  uttakAlder: {
+                    aar: null,
+                    maaneder: null,
+                  },
+                  aarligInntektVsaPensjon: undefined,
+                },
+              },
+            })
+
+            const ageSelect = screen.getByLabelText(
+              'Til hvilken alder forventer du å ha inntekten?'
+            )
+            fireEvent.change(ageSelect, { target: { value: '' } })
+            expect(mockHandleFieldChange).toHaveBeenCalledWith(
+              expect.any(Function),
+              'heltUttakSluttAlderAar'
+            )
+
+            const draft = mockHandleFieldChange.mock.results[0].value
+            expect(draft.heltUttak.aarligInntektVsaPensjon).toEqual({
+              beloep: null,
+              sluttAlder: {
+                aar: null,
+                maaneder: null,
+              },
+            })
           })
 
           test('Burde sette riktig verdi når sluttAlder.aar er definert', () => {
@@ -844,12 +1053,12 @@ describe('InntektStep Component', () => {
             fireEvent.change(ageSelect, { target: { value: 'livsvarig' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
-              'heltUttakAar'
+              'heltUttakSluttAlderAar'
             )
 
             const draft = mockHandleFieldChange.mock.results[0].value
-            expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar).toBe(
-              null
+            expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder).toBe(
+              undefined
             )
           })
         })

@@ -10,17 +10,11 @@ export const transformPayload = (formState: State): APIPayload => {
     ) {
       draft.heltUttak.aarligInntektVsaPensjon = undefined
     }
-    if (draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
-      draft.heltUttak.aarligInntektVsaPensjon.sluttAlder = undefined
-    }
     if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
       draft.heltUttak!.aarligInntektVsaPensjon.sluttAlder = undefined
     }
     if (draft.gradertUttak?.grad === null) {
       draft.gradertUttak = undefined
-    }
-    if (draft.harBoddIUtland === false) {
-      draft.utenlandsAntallAar = undefined
     }
   })
 
@@ -29,6 +23,8 @@ export const transformPayload = (formState: State): APIPayload => {
     harInntektVsaHelPensjon: _harInntektVsaHelPensjon,
     ...apiPayload
   } = payload
+
+  console.log(apiPayload)
 
   return apiPayload as APIPayload
 }

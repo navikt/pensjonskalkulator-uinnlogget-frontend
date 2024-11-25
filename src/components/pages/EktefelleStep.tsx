@@ -39,12 +39,12 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           label={'Hva er din sivilstand?'}
           onChange={(it) =>
             handleFieldChange((draft) => {
+              draft.sivilstand =
+                it.target.value === '' ? undefined : it.target.value
               if (draft.sivilstand === 'UGIFT') {
                 draft.epsHarInntektOver2G = undefined
                 draft.epsHarPensjon = undefined
               }
-              draft.sivilstand =
-                it.target.value === '' ? undefined : it.target.value
             }, 'sivilstand')
           }
           error={errorFields.sivilstand}

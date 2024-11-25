@@ -16,7 +16,7 @@ describe('submitForm', () => {
 
   describe('Gitt at noen states behøver å oppdateres, ', () => {
     describe('Når brukeren har svart "nei" til inntekt vsa. helt uttak og beløpet er større enn 0', () => {
-      test('Burde beløpet settes til 0 ', async () => {
+      test('Burde aarling inntekt vsa. pensjon settes til undefined ', async () => {
         const stateWithBeloep = produce(initialState, (draft) => {
           draft.harInntektVsaHelPensjon = false
           draft.heltUttak = {
@@ -29,11 +29,13 @@ describe('submitForm', () => {
         })
 
         const expectedState = transformPayload(stateWithBeloep)
-        expect(expectedState.heltUttak.aarligInntektVsaPensjon?.beloep).toBe(0)
+        expect(expectedState.heltUttak.aarligInntektVsaPensjon?.beloep).toBe(
+          undefined
+        )
       })
     })
-
-    describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
+    //SKAL TIL INNTEKTSTEP
+    /* describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
         const stateWithSluttAlder = produce(initialState, (draft) => {
           draft.harInntektVsaHelPensjon = false
@@ -51,7 +53,7 @@ describe('submitForm', () => {
           expectedState.heltUttak.aarligInntektVsaPensjon?.sluttAlder
         ).toBe(undefined)
       })
-    })
+    }) */
 
     describe('Når brukeren har ikke fylt ut sluttalder for inntekt vsa. helt uttak, ', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
@@ -72,10 +74,10 @@ describe('submitForm', () => {
       })
     })
 
-    test('Når grad til gradert uttak er 100, Burde all informasjon om gradert uttak nullstilles', async () => {
+    test('Når grad til gradert uttak er null, Burde gradert uttak bli satt til undefined', async () => {
       const stateWithGradertUttak = produce(initialState, (draft) => {
         draft.gradertUttak = {
-          grad: 100,
+          grad: null,
           aarligInntektVsaPensjonBeloep: 1000,
           uttakAlder: { aar: 67, maaneder: 0 },
         }
@@ -93,15 +95,6 @@ describe('submitForm', () => {
       const expectedState = transformPayload(stateWithSivilstandUgift)
       expect(expectedState.epsHarInntektOver2G).toBe(undefined)
       expect(expectedState.epsHarPensjon).toBe(undefined)
-    })
-
-    test('Når brukeren har svart "nei" til harBoddIUtland, Burde antall år i utlandet settes til 0 ', async () => {
-      const stateWithBoddIUtlandNei = produce(initialState, (draft) => {
-        draft.harBoddIUtland = false
-      })
-
-      const expectedState = transformPayload(stateWithBoddIUtlandNei)
-      expect(expectedState.utenlandsAntallAar).toBe(0)
     })
   })
 

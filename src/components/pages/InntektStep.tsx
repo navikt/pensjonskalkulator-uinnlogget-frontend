@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react'
+import React, { useContext, useMemo } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
   Radio,
@@ -17,7 +17,6 @@ import stepStyles from '../styles/stepStyles.module.css'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
-  const [, /* livsvarigInntekt */ setLivsvarigInntekt] = useState(true)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
   const { handleFieldChange } = useFieldChange<State>({
@@ -305,70 +304,87 @@ const InntektStep = () => {
               <div className="flex space-x-4">
                 <Select
                   value={
-                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ??
-                    'livsvarig'
+                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
+                    undefined
+                      ? 'livsvarig'
+                      : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
+                          state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                        ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                        : ''
                   }
                   style={{ width: '5rem' }}
                   label={'Til hvilken alder forventer du å ha inntekten?'}
                   description="Velg alder"
                   onChange={(it) => {
-                    // TODO - denne staten kan kanskje fases ut?
-                    setLivsvarigInntekt(
-                      it.target.value === 'livsvarig' ? true : false
-                    )
-
                     handleFieldChange((draft) => {
-                      draft.heltUttak.aarligInntektVsaPensjon = {
-                        beloep:
-                          draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
-                          null,
-                        sluttAlder: {
-                          aar:
-                            it.target.value === 'livsvarig'
-                              ? null
-                              : parseInt(it.target.value),
-                          maaneder: null,
-                        },
+                      if (
+                        it.target.value === '' ||
+                        !draft.heltUttak.aarligInntektVsaPensjon
+                      ) {
+                        draft.heltUttak.aarligInntektVsaPensjon = {
+                          beloep:
+                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
+                            null,
+                          sluttAlder: {
+                            aar: null,
+                            maaneder:
+                              draft.heltUttak.aarligInntektVsaPensjon
+                                ?.sluttAlder?.maaneder ?? null,
+                          },
+                        }
+                      } else if (it.target.value === 'livsvarig') {
+                        draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
+                          undefined
+                      } else {
+                        draft.heltUttak.aarligInntektVsaPensjon = {
+                          beloep:
+                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
+                            null,
+                          sluttAlder: {
+                            aar: parseInt(it.target.value),
+                            maaneder: null,
+                          },
+                        }
                       }
-                    }, 'heltUttakAar')
+                    }, 'heltUttakSluttAlderAar')
                   }}
+                  error={errorFields.heltUttakSluttAlderAar}
                 >
+                  <option value={''}>----</option>
                   <option value={'livsvarig'}>Livsvarig</option>
                   {yearOptions}
                 </Select>
-                {state.heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
-                  state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar !==
-                    null && (
-                    <Select
-                      value={
-                        state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                          ?.maaneder ?? ''
-                      }
-                      className={stepStyles.textfieldMaaneder}
-                      id="heltUttakSluttAlder"
-                      label={'Velg måned'}
-                      onChange={(it) => {
-                        const value = it.target.value
-                        handleFieldChange((draft) => {
-                          draft.heltUttak.aarligInntektVsaPensjon = {
-                            beloep:
-                              draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
-                              null,
-                            sluttAlder: {
-                              aar:
-                                draft.heltUttak.aarligInntektVsaPensjon
-                                  ?.sluttAlder?.aar ?? null,
-                              maaneder: value === '' ? null : parseInt(value),
-                            },
-                          }
-                        }, 'heltUttakSluttAlder')
-                      }}
-                      error={errorFields.heltUttakSluttAlder}
-                    >
-                      <option value={''}>----</option>
-                      {monthOptions}
-                    </Select>
-                  )}
+                {state.heltUttak.aarligInntektVsaPensjon?.sluttAlder && (
+                  <Select
+                    value={
+                      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                        ?.maaneder ?? ''
+                    }
+                    className={stepStyles.textfieldMaaneder}
+                    id="heltUttakSluttAlder"
+                    label={'Velg måned'}
+                    onChange={(it) => {
+                      const value = it.target.value
+                      handleFieldChange((draft) => {
+                        draft.heltUttak.aarligInntektVsaPensjon = {
+                          beloep:
+                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
+                            null,
+                          sluttAlder: {
+                            aar:
+                              draft.heltUttak.aarligInntektVsaPensjon
+                                ?.sluttAlder?.aar ?? null,
+                            maaneder: value === '' ? null : parseInt(value),
+                          },
+                        }
+                      }, 'heltUttakSluttAlderMaaneder')
+                    }}
+                    error={errorFields.heltUttakSluttAlderMaaneder}
+                  >
+                    <option value={''}>----</option>
+                    {monthOptions}
+                  </Select>
+                )}
               </div>
             </Substep>
           </>

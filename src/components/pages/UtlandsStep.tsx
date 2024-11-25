@@ -37,6 +37,9 @@ const UtlandsStep = () => {
             value={state.harBoddIUtland}
             onChange={(it: boolean) =>
               handleFieldChange((draft) => {
+                if (it === false) {
+                  draft.utenlandsAntallAar = undefined
+                }
                 draft.harBoddIUtland = it
               }, 'harBoddIUtland')
             }

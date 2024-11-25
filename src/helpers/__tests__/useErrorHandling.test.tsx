@@ -226,7 +226,7 @@ describe('useErrorHandling', () => {
           const state = {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: null,
+            utenlandsAntallAar: -1,
           }
           renderWithState(state)
 
@@ -307,14 +307,9 @@ describe('useErrorHandling', () => {
     })
 
     describe('uttaksgrad', () => {
-      test('Skal gi feilmelding når uttaksgrad er 0', () => {
+      test('Skal gi feilmelding når uttaksgrad er null', () => {
         const state = {
           ...initialState,
-          gradertUttak: {
-            grad: 0,
-            aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: null },
-          },
         }
         renderWithState(state)
 
@@ -345,7 +340,7 @@ describe('useErrorHandling', () => {
     })
 
     describe('gradertInntekt', () => {
-      test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt er ikke utfylt', () => {
+      test('Skal ikke gi feilmelding når gradert uttak har gyldig grad, men inntekt er ikke utfylt', () => {
         const state = {
           ...initialState,
           gradertUttak: {
@@ -360,7 +355,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertInntekt).toBe('Du må fylle ut inntekt')
+        expect(errorFields.gradertInntekt).toBe('')
       })
 
       test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt er negativ', () => {
@@ -443,7 +438,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: null },
+            uttakAlder: { aar: 62, maaneder: null },
           },
         }
         renderWithState(state)
@@ -481,7 +476,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: 0 },
+            uttakAlder: { aar: 62, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -493,14 +488,10 @@ describe('useErrorHandling', () => {
         expect(errorFields.gradertMaaneder).toBe('')
       })
 
-      test('Skal ikke gi feilmelding når grad er 100 og uttaksmåned ikke er valgt', () => {
+      test('Skal ikke gi feilmelding når grad er 100 (undefined) og uttaksmåned ikke er valgt', () => {
         const state = {
           ...initialState,
-          gradertUttak: {
-            grad: 100,
-            aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: null },
-          },
+          gradertUttak: undefined,
         }
         renderWithState(state)
 
@@ -508,7 +499,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertAar).toBe('')
+        expect(errorFields.gradertMaaneder).toBe('')
       })
     })
 
@@ -642,8 +633,8 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('heltUttakSluttAlder', () => {
-      test('Skal gi feilmelding når måned i sluttalder ikke er satt', () => {
+    describe('heltUttakSluttAlderAar', () => {
+      /* test('Skal gi feilmelding når måned i sluttalder ikke er satt', () => {
         const state = {
           ...initialState,
           heltUttak: {
@@ -661,9 +652,9 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.heltUttakSluttAlder).toBe('Du må velge måned')
-      })
+      }) */
 
-      test('Skal ikke gi feilmelding når måned i sluttalder er satt', () => {
+      /* test('Skal ikke gi feilmelding når måned i sluttalder er satt', () => {
         const state = {
           ...initialState,
           heltUttak: {
@@ -681,16 +672,16 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.heltUttakSluttAlder).toBe('')
-      })
+      }) */
 
-      test('Skal ikke gi feilmelding dersom sluttalder ikke er satt (livsvarig inntekt ved siden av pensjon)', () => {
+      test('Skal gi feilmelding når sluttalder.aar ikke er satt', () => {
         const state = {
           ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: 0,
-              sluttAlder: { aar: 0, maaneder: null },
+              sluttAlder: { aar: null, maaneder: 0 },
             },
           },
         }
@@ -700,7 +691,71 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlder).toBe('')
+        expect(errorFields.heltUttakSluttAlderAar).toBe('Du må velge alder')
+      })
+
+      test('Skal ikke gi feilmelding dersom sluttalder er undefined (livsvarig inntekt ved siden av pensjon)', () => {
+        const state = {
+          ...initialState,
+          heltUttak: {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: undefined,
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlderAar).toBe('')
+      })
+    })
+
+    describe('heltUttakSluttAlderMaaneder', () => {
+      test('Skal gi feilmelding når sluttalder.maaneder ikke er satt', () => {
+        const state = {
+          ...initialState,
+          heltUttak: {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: { aar: 67, maaneder: null },
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlderMaaneder).toBe(
+          'Du må velge måned'
+        )
+      })
+
+      test('Skal ikke gi feilmelding når sluttalder er satt', () => {
+        const state = {
+          ...initialState,
+          heltUttak: {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: { aar: 67, maaneder: 0 },
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlderMaaneder).toBe('')
       })
     })
 

@@ -23,6 +23,12 @@ export const initialState: State = {
       aar: null,
       maaneder: null,
     },
-    aarligInntektVsaPensjon: undefined,
+    aarligInntektVsaPensjon: {
+      beloep: null,
+      sluttAlder: {
+        aar: null,
+        maaneder: null,
+      },
+    },
   },
 }

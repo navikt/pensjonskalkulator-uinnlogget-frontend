@@ -90,6 +90,27 @@ describe('EktefelleStep Component', () => {
       expect(draft.sivilstand).toBe('GIFT')
     })
 
+    describe('Når sivilstand ikke er valgt', () => {
+      test('Burde ikke radioknapper bli vist', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+          ...context,
+          state: {
+            ...initialState,
+            sivilstand: undefined,
+          },
+        })
+        const select = screen.getByLabelText('Hva er din sivilstand?')
+        fireEvent.change(select, { target: { value: '' } })
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'sivilstand'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.sivilstand).toBe(undefined)
+      })
+    })
+
     describe('Når sivilstand er satt til UGIFT', () => {
       test('Burde ikke radioknapper bli vist', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
@@ -101,6 +122,30 @@ describe('EktefelleStep Component', () => {
         })
         expect(screen.queryByLabelText('Ja')).not.toBeInTheDocument()
         expect(screen.queryByLabelText('Nei')).not.toBeInTheDocument()
+      })
+
+      test('Burde epsHarInntektOver2G og epsHarPensjon bli nullstilt', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+          ...context,
+          state: {
+            ...initialState,
+            sivilstand: 'GIFT',
+            epsHarInntektOver2G: true,
+            epsHarPensjon: false,
+          },
+        })
+
+        const select = screen.getByLabelText('Hva er din sivilstand?')
+        fireEvent.change(select, { target: { value: 'UGIFT' } })
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'sivilstand'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.sivilstand).toBe('UGIFT')
+        expect(draft.epsHarInntektOver2G).toBe(undefined)
+        expect(draft.epsHarPensjon).toBe(undefined)
       })
     })
 

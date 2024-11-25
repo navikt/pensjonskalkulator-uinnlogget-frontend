@@ -108,6 +108,18 @@ describe('UtlandsStep Component', () => {
           screen.queryByLabelText('Hvor mange år har du bodd i utlandet?')
         ).not.toBeInTheDocument()
       })
+      test('Burde utenlandsAntallAar bli satt til undefined', async () => {
+        renderMockedComponent(UtlandsStep, context)
+        const radio = screen.getByLabelText('Nei')
+        fireEvent.click(radio)
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'harBoddIUtland'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.utenlandsAntallAar).toBe(undefined)
+      })
     })
 
     describe('Når harBoddIUtland er "Ja"', () => {
@@ -145,7 +157,7 @@ describe('UtlandsStep Component', () => {
         expect(draft.utenlandsAntallAar).toBe(5)
       })
 
-      test('Burde sette utenlandsAntallAar til 0 når input er tom', () => {
+      test('Burde sette utenlandsAntallAar til undefined når input er tom', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
@@ -165,16 +177,16 @@ describe('UtlandsStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.utenlandsAntallAar).toBe(0)
+        expect(draft.utenlandsAntallAar).toBe(undefined)
       })
 
-      test('Burde vise tom input når utenlandsAntallAar er 0', () => {
+      test('Burde vise tom input når utenlandsAntallAar er undefined', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: 0,
+            utenlandsAntallAar: undefined,
           },
         })
         const input = screen.getByLabelText(
