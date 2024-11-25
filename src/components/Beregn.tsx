@@ -16,17 +16,13 @@ interface Props {
 const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
 
-  if (isSimuleringError(simuleringsresultat)) {
+  if (
+    isSimuleringError(simuleringsresultat) ||
+    simuleringsresultat === undefined
+  ) {
     return (
       // TODO PEK-722 vise fornuftig feilmelding
       <ResponseWarning error={simuleringsresultat} />
-    )
-  } else if (!simuleringsresultat) {
-    return (
-      <div>
-        <h1>Woopsy</h1>
-        <p>We are having an error</p>
-      </div>
     )
   }
 

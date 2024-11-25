@@ -5,15 +5,15 @@ import { Alert, BodyLong, Box, Button, Heading, VStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
 
 interface ResponseWarningProps {
-  error: SimuleringError
+  error: SimuleringError | undefined
 }
 
 function ResponseWarning({ error }: ResponseWarningProps) {
   const { formPageProps } = useContext(FormContext)
 
-  const mapErrorToMessage = (error: SimuleringError) => {
+  const mapErrorToMessage = (error: SimuleringError | undefined) => {
     const errorMessages: { [key: string]: string } = getErrors()
-    if (!error.status) return errorMessages['default']
+    if (!error) return errorMessages['default']
     const errorCode = error.status
     return errorMessages[errorCode]
   }
