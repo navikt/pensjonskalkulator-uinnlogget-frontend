@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import UtlandsStep from '../UtlandsStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,
@@ -24,14 +24,14 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: State = { ...initialFormState }
+  const draft: State = { ...initialState }
   updateFn(draft)
   return draft
 })
 
 const context = {
   setState: mockSetState,
-  state: initialFormState,
+  state: initialState,
   formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
@@ -81,42 +81,54 @@ describe('UtlandsStep Component', () => {
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
-  describe('Gitt at radioknappene for boddIUtland finnes', () => {
-    test('Burde boddIUtland endres når handleFieldChange kalles på', () => {
+  describe('Gitt at radioknappene for harBoddIUtland finnes', () => {
+    test('Burde harBoddIUtland endres når handleFieldChange kalles på', () => {
       renderMockedComponent(UtlandsStep, context)
       const radio = screen.getByLabelText('Ja')
       fireEvent.click(radio)
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
-        'boddIUtland'
+        'harBoddIUtland'
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.boddIUtland).toBe('ja')
+      expect(draft.harBoddIUtland).toBeTruthy()
     })
 
-    describe('Når boddIUtland er "Nei"', () => {
+    describe('Når harBoddIUtland er "Nei"', () => {
       test('Burde ikke tekstfelt for utenlandsAntallAar vises', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'nei',
+            ...initialState,
+            harBoddIUtland: false,
           },
         })
         expect(
           screen.queryByLabelText('Hvor mange år har du bodd i utlandet?')
         ).not.toBeInTheDocument()
       })
+      test('Burde utenlandsAntallAar bli satt til undefined', async () => {
+        renderMockedComponent(UtlandsStep, context)
+        const radio = screen.getByLabelText('Nei')
+        fireEvent.click(radio)
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'harBoddIUtland'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.utenlandsAntallAar).toBe(undefined)
+      })
     })
 
-    describe('Når boddIUtland er "Ja"', () => {
+    describe('Når harBoddIUtland er "Ja"', () => {
       test('Burde tekstfeltet for utenlandsAntallAar vises', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
           },
         })
         expect(
@@ -128,8 +140,8 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
           },
         })
         const input = screen.getByLabelText(
@@ -145,12 +157,12 @@ describe('UtlandsStep Component', () => {
         expect(draft.utenlandsAntallAar).toBe(5)
       })
 
-      test('Burde sette utenlandsAntallAar til 0 når input er tom', () => {
+      test('Burde sette utenlandsAntallAar til undefined når input er tom', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           },
         })
@@ -165,16 +177,16 @@ describe('UtlandsStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.utenlandsAntallAar).toBe(0)
+        expect(draft.utenlandsAntallAar).toBe(undefined)
       })
 
-      test('Burde vise tom input når utenlandsAntallAar er 0', () => {
+      test('Burde vise tom input når utenlandsAntallAar er undefined', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'ja',
-            utenlandsAntallAar: 0,
+            ...initialState,
+            harBoddIUtland: true,
+            utenlandsAntallAar: undefined,
           },
         })
         const input = screen.getByLabelText(
@@ -187,8 +199,8 @@ describe('UtlandsStep Component', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
           state: {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           },
         })

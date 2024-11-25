@@ -2,9 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import '@navikt/ds-css'
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-//import { Inter } from 'next/font/google'
-
-//const inter = Inter({ subsets: ['latin'] })
 
 const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
 

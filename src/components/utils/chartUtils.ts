@@ -3,8 +3,8 @@ import { Simuleringsresultat } from '@/common'
 export const getChartOptions = (input: {
   simuleringsresultat: Simuleringsresultat | undefined
   heltUttakAar: number
-  inntektVsaHelPensjonSluttalder?: number
-  inntektVsaHelPensjonBeloep?: number
+  inntektVsaHelPensjonSluttalder?: number | null
+  inntektVsaHelPensjonBeloep?: number | null
 }) => {
   const {
     simuleringsresultat,
@@ -84,13 +84,27 @@ export const getChartOptions = (input: {
       inntektVsaHelPensjonInterval.includes(category)
     )
 
-    const filteredInntektVsaHelPensjonData = filteredCategories.map(
-      () => inntektVsaHelPensjonBeloep
+    const filteredInntektVsaHelPensjonData = filteredCategories
+      .map(() => inntektVsaHelPensjonBeloep)
+      .filter((value): value is number => value !== null)
+
+    // Create an array of the same length as categories filled with null
+    const alignedInntektVsaHelPensjonData = new Array(categories.length).fill(
+      null
     )
+
+    // Place the filtered data at the correct indices
+    filteredCategories.forEach((category, index) => {
+      const categoryIndex = categories.indexOf(category)
+      if (categoryIndex !== -1) {
+        alignedInntektVsaHelPensjonData[categoryIndex] =
+          filteredInntektVsaHelPensjonData[index]
+      }
+    })
 
     chartOptions.series.push({
       name: 'Inntekt ved siden av hel pensjon',
-      data: filteredInntektVsaHelPensjonData,
+      data: alignedInntektVsaHelPensjonData,
     })
   }
 

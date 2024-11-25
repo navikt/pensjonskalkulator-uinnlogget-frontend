@@ -7,6 +7,7 @@ import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
+import stepStyles from '../styles/stepStyles.module.css'
 
 const UtlandsStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -33,37 +34,39 @@ const UtlandsStep = () => {
         <div>
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
-            value={state.boddIUtland}
-            onChange={(it) =>
+            value={state.harBoddIUtland}
+            onChange={(it: boolean) =>
               handleFieldChange((draft) => {
-                draft.boddIUtland = it
-              }, 'boddIUtland')
+                if (it === false) {
+                  draft.utenlandsAntallAar = undefined
+                }
+                draft.harBoddIUtland = it
+              }, 'harBoddIUtland')
             }
-            error={errorFields.boddIUtland}
+            error={errorFields.harBoddIUtland}
           >
-            <Radio value={'ja'}>Ja</Radio>
-            <Radio value={'nei'}>Nei</Radio>
+            <Radio value={true}>Ja</Radio>
+            <Radio value={false}>Nei</Radio>
           </RadioGroup>
           <ReadMore header="Om opphold utenfor Norge">
             Hvis du har bodd eller arbeidet utenfor Norge, kan det påvirke
             pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
             pensjon fra det landet du har bodd i.
           </ReadMore>
-          {state.boddIUtland === 'ja' && (
+          {state.harBoddIUtland && (
             <Substep>
               <TextField
+                className={stepStyles.textfieldAar}
                 onChange={(it) =>
                   handleFieldChange((draft) => {
-                    draft.utenlandsAntallAar =
-                      it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                    const value = parseInt(it.target.value)
+                    draft.utenlandsAntallAar = isNaN(value) ? undefined : value
                   }, 'utenlandsAntallAar')
                 }
                 type="number"
                 inputMode="numeric"
                 label="Hvor mange år har du bodd i utlandet?"
-                value={
-                  state.utenlandsAntallAar === 0 ? '' : state.utenlandsAntallAar
-                }
+                value={state.utenlandsAntallAar ?? ''}
                 error={errorFields.utenlandsAntallAar}
               ></TextField>
             </Substep>

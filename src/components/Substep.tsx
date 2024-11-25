@@ -7,8 +7,8 @@ interface SubstepProps {
 
 function Substep({ children }: SubstepProps) {
   return (
-    <Box marginBlock='1 5' borderWidth='1 0 0 0' borderColor='border-subtle'>
-      <Box paddingBlock='4 0'>{children}</Box>
+    <Box marginBlock="8" borderWidth="1 0 0 0" borderColor="border-subtle">
+      <Box marginBlock="8">{children}</Box>
     </Box>
   )
 }

@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react'
 import FormButtons from '../FormButtons'
 import { FormContext } from '@/contexts/context'
 import { FormEvent } from 'react'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 
 const mockedContextValues = {
   setState: jest.fn(),
-  state: initialFormState,
+  state: initialState,
   formPageProps: {
     curStep: 0,
     length: 5,
@@ -106,7 +106,7 @@ describe('Når brukeren trykker på', () => {
 
   const context = {
     setState: jest.fn(),
-    state: initialFormState,
+    state: initialState,
     formPageProps: defaultFormPageProps,
   }
 

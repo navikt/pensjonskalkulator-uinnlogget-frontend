@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import ResultTable from '../ResultTable'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 
 const mockSimuleringsresultat = {
   alderspensjon: [
@@ -33,16 +33,18 @@ const defaultFormPageProps = {
 
 const mockContextValue = {
   state: {
-    ...initialFormState,
+    ...initialState,
     gradertUttak: {
       grad: 50,
       uttakAlder: { aar: 67, maaneder: 0 },
       aarligInntektVsaPensjonBeloep: 50000,
     },
     heltUttak: {
-      ...initialFormState.heltUttak,
       uttakAlder: { aar: 68, maaneder: 0 },
-      aarligInntektVsaPensjon: { beloep: 100000 },
+      aarligInntektVsaPensjon: {
+        beloep: 100000,
+        sluttAlder: { aar: null, maaneder: null },
+      },
     },
   },
   setState: mockSetState,
