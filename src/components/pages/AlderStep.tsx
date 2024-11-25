@@ -7,6 +7,7 @@ import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import Substep from '../Substep'
 import { useFieldChange } from '@/helpers/useFormState'
+import stepStyles from '../styles/stepStyles.module.css'
 
 const AlderStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -29,41 +30,34 @@ const AlderStep = () => {
       <FormWrapper onSubmit={onSubmit}>
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
-            maxLength={3}
+            className={stepStyles.textfieldAar}
+            style={{ width: '6rem' }}
             onChange={(it) =>
               handleFieldChange((draft) => {
-                draft.foedselAar =
-                  it.target.value === '' ? 0 : parseInt(it.target.value, 10)
+                const value = parseInt(it.target.value)
+                draft.foedselAar = isNaN(value) ? null : value
               }, 'foedselAar')
             }
-            type="number"
             inputMode="numeric"
             label="I hvilket år er du født?"
-            value={state.foedselAar === 0 ? '' : state.foedselAar}
+            value={state.foedselAar ?? ''}
             error={errorFields.foedselAar}
           ></TextField>
         </Box>
         <Substep>
-          <Box maxWidth={{ md: '30%', sm: '8rem' }}>
-            <TextField
-              maxLength={3}
-              onChange={(it) =>
-                handleFieldChange((draft) => {
-                  draft.inntektOver1GAntallAar =
-                    it.target.value === '' ? 0 : parseInt(it.target.value, 10)
-                }, 'inntektOver1GAntallAar')
-              }
-              type="number"
-              inputMode="numeric"
-              label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
-              value={
-                state.inntektOver1GAntallAar === 0
-                  ? ''
-                  : state.inntektOver1GAntallAar
-              }
-              error={errorFields.inntektOver1GAntallAar}
-            ></TextField>
-          </Box>
+          <TextField
+            className={stepStyles.textfieldAar}
+            onChange={(it) =>
+              handleFieldChange((draft) => {
+                const value = parseInt(it.target.value)
+                draft.inntektOver1GAntallAar = isNaN(value) ? undefined : value
+              }, 'inntektOver1GAntallAar')
+            }
+            inputMode="numeric"
+            label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
+            value={state.inntektOver1GAntallAar ?? ''}
+            error={errorFields.inntektOver1GAntallAar}
+          ></TextField>
         </Substep>
         <FormButtons />
       </FormWrapper>

@@ -2,7 +2,7 @@ import React from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import BeregnPage from '../BeregnPage'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { submitForm } from '@/functions/submitForm'
 
 jest.mock('@/functions/submitForm', () => ({
@@ -39,7 +39,7 @@ const defaultFormPageProps = {
 }
 
 const mockContextValue = {
-  state: initialFormState,
+  state: initialState,
   setState: mockSetState,
   formPageProps: defaultFormPageProps,
 }

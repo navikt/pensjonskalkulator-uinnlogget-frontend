@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
 import { State } from '@/common'
 
@@ -50,7 +50,7 @@ describe('useErrorHandling', () => {
   describe('Validering for AlderStep', () => {
     describe('foedselAar', () => {
       test('Skal validere at foedselAar ikke er mindre enn 1900', () => {
-        const state = { ...initialFormState, foedselAar: 1800 }
+        const state = { ...initialState, foedselAar: 1800 }
         renderWithState(state)
 
         act(() => {
@@ -62,7 +62,7 @@ describe('useErrorHandling', () => {
 
       test('Skal validere at foedselAar ikke er etter dagens dato', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           foedselAar: new Date().getFullYear() + 1,
         }
         renderWithState(state)
@@ -75,7 +75,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feil ved gyldig foedselAar', () => {
-        const state = { ...initialFormState, foedselAar: 1990 }
+        const state = { ...initialState, foedselAar: 1990 }
         renderWithState(state)
 
         act(() => {
@@ -88,7 +88,7 @@ describe('useErrorHandling', () => {
 
     describe('inntektOver1GAntallAar', () => {
       test('Skal gi feilmelding når antall år er undefined', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: undefined }
+        const state = { ...initialState, inntektOver1GAntallAar: undefined }
         renderWithState(state)
 
         act(() => {
@@ -98,8 +98,8 @@ describe('useErrorHandling', () => {
         expect(errorFields.inntektOver1GAntallAar).toBe('Fyll ut antall år')
       })
 
-      test('Skal gi feilmelding når antall år er 0', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: 0 }
+      test('Skal gi feilmelding når antall år er undefined', () => {
+        const state = { ...initialState, inntektOver1GAntallAar: undefined }
         renderWithState(state)
 
         act(() => {
@@ -110,7 +110,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år er negativt', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: -1 }
+        const state = { ...initialState, inntektOver1GAntallAar: -10 }
         renderWithState(state)
 
         act(() => {
@@ -123,7 +123,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år overstiger 50', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: 51 }
+        const state = { ...initialState, inntektOver1GAntallAar: 51 }
         renderWithState(state)
 
         act(() => {
@@ -136,7 +136,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feilmelding ved gyldig antall år', () => {
-        const state = { ...initialFormState, inntektOver1GAntallAar: 25 }
+        const state = { ...initialState, inntektOver1GAntallAar: 25 }
         renderWithState(state)
 
         act(() => {
@@ -149,36 +149,36 @@ describe('useErrorHandling', () => {
   })
 
   describe('Validering for UtlandsStep', () => {
-    describe('boddIUtland', () => {
-      test('Skal gi feilmelding når boddIUtland ikke er valgt', () => {
-        const state = { ...initialFormState, boddIUtland: '' }
+    describe('harBoddIUtland', () => {
+      test('Skal gi feilmelding når harBoddIUtland ikke er valgt', () => {
+        const state = { ...initialState, harBoddIUtland: null }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('UtlandsStep')
         })
 
-        expect(errorFields.boddIUtland).toBe('Du må velge et alternativ')
+        expect(errorFields.harBoddIUtland).toBe('Du må velge et alternativ')
       })
 
-      test('Skal ikke gi feilmelding når boddIUtland er valgt', () => {
-        const state = { ...initialFormState, boddIUtland: 'ja' }
+      test('Skal ikke gi feilmelding når harBoddIUtland er valgt', () => {
+        const state = { ...initialState, harBoddIUtland: true }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('UtlandsStep')
         })
 
-        expect(errorFields.boddIUtland).toBe('')
+        expect(errorFields.harBoddIUtland).toBe('')
       })
     })
 
     describe('utenlandsAntallAar', () => {
-      describe('Når boddIUtland er nei', () => {
+      describe('Når harBoddIUtland er nei', () => {
         test('Skal ikke gi feilmelding når utenlandsAntallAar er undefined', () => {
           const state = {
-            ...initialFormState,
-            boddIUtland: 'nei',
+            ...initialState,
+            harBoddIUtland: false,
             utenlandsAntallAar: undefined,
           }
           renderWithState(state)
@@ -191,8 +191,8 @@ describe('useErrorHandling', () => {
         })
         test('Skal ikke gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
-            ...initialFormState,
-            boddIUtland: 'nei',
+            ...initialState,
+            harBoddIUtland: false,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -204,11 +204,11 @@ describe('useErrorHandling', () => {
           expect(errorFields.utenlandsAntallAar).toBe('')
         })
       })
-      describe('Når boddIUtland er ja', () => {
+      describe('Når harBoddIUtland er ja', () => {
         test('Skal gi feilmelding når utenlandsAntallAar er 0', () => {
           const state = {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
             utenlandsAntallAar: 0,
           }
           renderWithState(state)
@@ -224,8 +224,8 @@ describe('useErrorHandling', () => {
 
         test('Skal gi feilmelding når utenlandsAntallAar er negativt', () => {
           const state = {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
             utenlandsAntallAar: -1,
           }
           renderWithState(state)
@@ -241,8 +241,8 @@ describe('useErrorHandling', () => {
 
         test('Skal ikke gi feilmelding når utenlandsAntallAar er gyldig', () => {
           const state = {
-            ...initialFormState,
-            boddIUtland: 'ja',
+            ...initialState,
+            harBoddIUtland: true,
             utenlandsAntallAar: 5,
           }
           renderWithState(state)
@@ -261,7 +261,7 @@ describe('useErrorHandling', () => {
     describe('aarligInntektFoerUttakBeloep', () => {
       test('Skal gi feilmelding når inntekt er undefined', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           aarligInntektFoerUttakBeloep: undefined,
         }
         renderWithState(state)
@@ -275,22 +275,9 @@ describe('useErrorHandling', () => {
         )
       })
 
-      test('Skal gi feilmelding når inntekt er 0', () => {
-        const state = { ...initialFormState, aarligInntektFoerUttakBeloep: 0 }
-        renderWithState(state)
-
-        act(() => {
-          handlers.validateFields('InntektStep')
-        })
-
-        expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
-          'Inntekt kan ikke være 0'
-        )
-      })
-
       test('Skal gi feilmelding når inntekt er negativ', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           aarligInntektFoerUttakBeloep: -1000,
         }
         renderWithState(state)
@@ -306,7 +293,7 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når inntekt er gyldig', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           aarligInntektFoerUttakBeloep: 500000,
         }
         renderWithState(state)
@@ -320,14 +307,9 @@ describe('useErrorHandling', () => {
     })
 
     describe('uttaksgrad', () => {
-      test('Skal gi feilmelding når uttaksgrad er 0', () => {
+      test('Skal gi feilmelding når uttaksgrad er null', () => {
         const state = {
-          ...initialFormState,
-          gradertUttak: {
-            grad: 0,
-            aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
-          },
+          ...initialState,
         }
         renderWithState(state)
 
@@ -340,11 +322,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når uttaksgrad er gyldig', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -358,13 +340,13 @@ describe('useErrorHandling', () => {
     })
 
     describe('gradertInntekt', () => {
-      test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt er ikke utfylt', () => {
+      test('Skal ikke gi feilmelding når gradert uttak har gyldig grad, men inntekt er ikke utfylt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            aarligInntektVsaPensjonBeloep: undefined,
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -373,16 +355,16 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertInntekt).toBe('Du må fylle ut inntekt')
+        expect(errorFields.gradertInntekt).toBe('')
       })
 
       test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt er negativ', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: -1000,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -396,11 +378,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og inntekt er utfylt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 300000,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -416,11 +398,11 @@ describe('useErrorHandling', () => {
     describe('gradertAar', () => {
       test('Skal gi feilmelding når gradert uttak har gyldig grad', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: null, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -434,11 +416,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og alder er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 67, maaneder: -1 },
+            uttakAlder: { aar: 67, maaneder: null },
           },
         }
         renderWithState(state)
@@ -452,11 +434,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når grad er 100 og uttaksår ikke er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 62, maaneder: null },
           },
         }
         renderWithState(state)
@@ -472,11 +454,11 @@ describe('useErrorHandling', () => {
     describe('gradertMaaneder', () => {
       test('Skal gi feilmelding når gradert uttak har gyldig grad', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
+            uttakAlder: { aar: 62, maaneder: null },
           },
         }
         renderWithState(state)
@@ -490,11 +472,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og måned er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: 0 },
+            uttakAlder: { aar: 62, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -506,14 +488,10 @@ describe('useErrorHandling', () => {
         expect(errorFields.gradertMaaneder).toBe('')
       })
 
-      test('Skal ikke gi feilmelding når grad er 100 og uttaksmåned ikke er valgt', () => {
+      test('Skal ikke gi feilmelding når grad er 100 (undefined) og uttaksmåned ikke er valgt', () => {
         const state = {
-          ...initialFormState,
-          gradertUttak: {
-            grad: 100,
-            aarligInntektVsaPensjonBeloep: 0,
-            uttakAlder: { aar: 0, maaneder: -1 },
-          },
+          ...initialState,
+          gradertUttak: undefined,
         }
         renderWithState(state)
 
@@ -521,17 +499,17 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertAar).toBe('')
+        expect(errorFields.gradertMaaneder).toBe('')
       })
     })
 
     describe('heltUttakAar', () => {
-      test('Skal gi feilmelding når heltUttakAar er 0', () => {
+      test('Skal gi feilmelding når heltUttakAar er null', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: 0 },
+            uttakAlder: { aar: null, maaneder: 1 },
+            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -545,10 +523,10 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når heltUttakAar er gyldig', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: 0 },
+            uttakAlder: { aar: 67, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -562,12 +540,12 @@ describe('useErrorHandling', () => {
     })
 
     describe('heltUttakMaaneder', () => {
-      test('Skal gi feilmelding når heltUttakMaaneder er -1', () => {
+      test('Skal gi feilmelding når heltUttakMaaneder er null', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: 0 },
+            uttakAlder: { aar: 67, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -581,10 +559,10 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når heltUttakMaaneder er gyldig', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: { beloep: 0 },
+            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -600,11 +578,11 @@ describe('useErrorHandling', () => {
     describe('helPensjonInntekt', () => {
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er ikke utfylt', () => {
         const state = {
-          ...initialFormState,
-          inntektVsaHelPensjon: 'ja',
+          ...initialState,
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: 0 },
+            uttakAlder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -618,11 +596,11 @@ describe('useErrorHandling', () => {
 
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er negativ', () => {
         const state = {
-          ...initialFormState,
-          inntektVsaHelPensjon: 'ja',
+          ...initialState,
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: -5000 },
+            uttakAlder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: -5000, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -638,11 +616,11 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når hel pensjon er valgt og inntekt er utfylt', () => {
         const state = {
-          ...initialFormState,
-          inntektVsaHelPensjon: 'ja',
+          ...initialState,
+          harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: -1 },
-            aarligInntektVsaPensjon: { beloep: 200000 },
+            uttakAlder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: 200000, sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -655,15 +633,57 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('heltUttakSluttAlderMaaneder', () => {
-      test('Skal gi feilmelding når måned i sluttalder ikke er satt', () => {
+    describe('heltUttakSluttAlderAar', () => {
+      test('Skal gi feilmelding når sluttalder.aar ikke er satt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: 0,
-              sluttAlder: { aar: 67, maaneder: -1 },
+              sluttAlder: { aar: null, maaneder: 0 },
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlderAar).toBe('Du må velge alder')
+      })
+
+      test('Skal ikke gi feilmelding dersom sluttalder er undefined (livsvarig inntekt ved siden av pensjon)', () => {
+        const state = {
+          ...initialState,
+          heltUttak: {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: undefined,
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlderAar).toBe('')
+      })
+    })
+
+    describe('heltUttakSluttAlderMaaneder', () => {
+      test('Skal gi feilmelding når sluttalder.maaneder ikke er satt', () => {
+        const state = {
+          ...initialState,
+          heltUttak: {
+            uttakAlder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: 0,
+              sluttAlder: { aar: 67, maaneder: null },
             },
           },
         }
@@ -678,9 +698,9 @@ describe('useErrorHandling', () => {
         )
       })
 
-      test('Skal ikke gi feilmelding når måned i sluttalder er satt', () => {
+      test('Skal ikke gi feilmelding når sluttalder er satt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -697,49 +717,29 @@ describe('useErrorHandling', () => {
 
         expect(errorFields.heltUttakSluttAlderMaaneder).toBe('')
       })
-
-      test('Skal ikke gi feilmelding dersom sluttalder ikke er satt (livsvarig inntekt ved siden av pensjon)', () => {
-        const state = {
-          ...initialFormState,
-          heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: {
-              beloep: 0,
-              sluttAlder: { aar: 0, maaneder: -1 },
-            },
-          },
-        }
-        renderWithState(state)
-
-        act(() => {
-          handlers.validateFields('InntektStep')
-        })
-
-        expect(errorFields.heltUttakSluttAlderMaaneder).toBe('')
-      })
     })
 
-    describe('inntektVsaHelPensjon', () => {
+    describe('harInntektVsaHelPensjon', () => {
       test('Skal gi feilmelding når brukeren ikke har valgt om de har inntekt ved hel pensjon', () => {
-        const state = { ...initialFormState, inntektVsaHelPensjon: '' }
+        const state = { ...initialState, harInntektVsaHelPensjon: null }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.inntektVsaHelPensjon).toBe('Velg alternativ')
+        expect(errorFields.harInntektVsaHelPensjon).toBe('Velg alternativ')
       })
 
       test('Skal ikke gi feilmelding når brukeren har valgt om de har inntekt ved hel pensjon', () => {
-        const state = { ...initialFormState, inntektVsaHelPensjon: 'nei' }
+        const state = { ...initialState, harInntektVsaHelPensjon: false }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.inntektVsaHelPensjon).toBe('')
+        expect(errorFields.harInntektVsaHelPensjon).toBe('')
       })
     })
   })
@@ -748,7 +748,7 @@ describe('useErrorHandling', () => {
     describe('sivilstand', () => {
       test('Skal gi feilmelding når sivilstand ikke er satt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: undefined,
         }
         renderWithState(state)
@@ -762,7 +762,7 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når sivilstand er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: 'UGIFT',
         }
         renderWithState(state)
@@ -778,7 +778,7 @@ describe('useErrorHandling', () => {
     describe('epsHarInntektOver2G', () => {
       test('Skal gi feilmelding når epsHarInntektOver2G ikke er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: 'GIFT',
           epsHarInntektOver2G: undefined,
         }
@@ -795,7 +795,7 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når epsHarInntektOver2G er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: 'GIFT',
           epsHarInntektOver2G: true,
         }
@@ -812,7 +812,7 @@ describe('useErrorHandling', () => {
     describe('epsHarPensjon', () => {
       test('Skal gi feilmelding når epsHarPensjon ikke er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: 'GIFT',
           epsHarPensjon: undefined,
         }
@@ -827,7 +827,7 @@ describe('useErrorHandling', () => {
 
       test('Skal ikke gi feilmelding når epsHarPensjon er valgt', () => {
         const state = {
-          ...initialFormState,
+          ...initialState,
           sivilstand: 'GIFT',
           epsHarPensjon: false,
         }
@@ -845,7 +845,7 @@ describe('useErrorHandling', () => {
   describe('Validering for AFPStep', () => {
     describe('simuleringType', () => {
       test('Skal gi feilmelding når simuleringType ikke er valgt', () => {
-        const state = { ...initialFormState, simuleringType: undefined }
+        const state = { ...initialState, simuleringType: undefined }
         renderWithState(state)
 
         act(() => {
@@ -856,7 +856,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feilmelding når simuleringType er valgt', () => {
-        const state = { ...initialFormState, simuleringType: 'ALDERSPENSJON' }
+        const state = { ...initialState, simuleringType: 'ALDERSPENSJON' }
         renderWithState(state)
 
         act(() => {
@@ -870,7 +870,7 @@ describe('useErrorHandling', () => {
 
   describe('clearError', () => {
     test('Skal fjerne feilmelding for et spesifikt felt', () => {
-      const state = { ...initialFormState, foedselAar: 1800 }
+      const state = { ...initialState, foedselAar: 1800 }
       renderWithState(state)
 
       act(() => {
@@ -888,7 +888,7 @@ describe('useErrorHandling', () => {
 
     test('Skal ikke påvirke andre feilmeldinger når et spesifikt felt er fjernet', () => {
       const state = {
-        ...initialFormState,
+        ...initialState,
         simuleringType: '',
         foedselAar: 1800,
       }

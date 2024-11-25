@@ -2,7 +2,7 @@ import { screen, fireEvent } from '@testing-library/react'
 import EktefelleStep from '../EktefelleStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,
@@ -24,14 +24,14 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: State = { ...initialFormState }
+  const draft: State = { ...initialState }
   updateFn(draft)
   return draft
 })
 
 const context = {
   setState: mockSetState,
-  state: initialFormState,
+  state: initialState,
   formPageProps: generateDefaultFormPageProps(mockGoToNext),
 }
 
@@ -90,17 +90,62 @@ describe('EktefelleStep Component', () => {
       expect(draft.sivilstand).toBe('GIFT')
     })
 
+    describe('Når sivilstand ikke er valgt', () => {
+      test('Burde ikke radioknapper bli vist', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+          ...context,
+          state: {
+            ...initialState,
+            sivilstand: undefined,
+          },
+        })
+        const select = screen.getByLabelText('Hva er din sivilstand?')
+        fireEvent.change(select, { target: { value: '' } })
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'sivilstand'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.sivilstand).toBe(undefined)
+      })
+    })
+
     describe('Når sivilstand er satt til UGIFT', () => {
       test('Burde ikke radioknapper bli vist', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'UGIFT',
           },
         })
         expect(screen.queryByLabelText('Ja')).not.toBeInTheDocument()
         expect(screen.queryByLabelText('Nei')).not.toBeInTheDocument()
+      })
+
+      test('Burde epsHarInntektOver2G og epsHarPensjon bli nullstilt', () => {
+        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+          ...context,
+          state: {
+            ...initialState,
+            sivilstand: 'GIFT',
+            epsHarInntektOver2G: true,
+            epsHarPensjon: false,
+          },
+        })
+
+        const select = screen.getByLabelText('Hva er din sivilstand?')
+        fireEvent.change(select, { target: { value: 'UGIFT' } })
+        expect(mockHandleFieldChange).toHaveBeenCalledWith(
+          expect.any(Function),
+          'sivilstand'
+        )
+
+        const draft = mockHandleFieldChange.mock.results[0].value
+        expect(draft.sivilstand).toBe('UGIFT')
+        expect(draft.epsHarInntektOver2G).toBe(undefined)
+        expect(draft.epsHarPensjon).toBe(undefined)
       })
     })
 
@@ -109,7 +154,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })
@@ -121,7 +166,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })
@@ -133,7 +178,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })
@@ -146,7 +191,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })
@@ -159,7 +204,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })
@@ -174,7 +219,7 @@ describe('EktefelleStep Component', () => {
         renderMockedComponent(() => <EktefelleStep grunnbelop={undefined} />, {
           ...context,
           state: {
-            ...initialFormState,
+            ...initialState,
             sivilstand: 'GIFT',
           },
         })

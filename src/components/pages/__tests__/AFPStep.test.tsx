@@ -1,7 +1,7 @@
 import { screen, fireEvent } from '@testing-library/react'
 import AFPStep from '../AFPStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { initialFormState } from '@/defaults/defaultFormState'
+import { initialState } from '@/defaults/initialState'
 import { renderMockedComponent } from '../test-utils/testSetup'
 import { State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'
@@ -21,7 +21,7 @@ jest.mock('@/helpers/useFormState', () => ({
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
 const mockHandleFieldChange = jest.fn((updateFn) => {
-  const draft: State = { ...initialFormState }
+  const draft: State = { ...initialState }
   updateFn(draft)
   return draft
 })
@@ -37,7 +37,7 @@ const defaultFormPageProps = {
 
 const context = {
   setState: mockSetState,
-  state: initialFormState,
+  state: initialState,
   formPageProps: defaultFormPageProps,
 }
 
@@ -114,7 +114,7 @@ describe('AFPStep Component', () => {
       const contextWithState = {
         ...context,
         state: {
-          ...initialFormState,
+          ...initialState,
           simuleringType: 'ALDERSPENSJON_MED_AFP_PRIVAT',
         },
       }
@@ -128,7 +128,7 @@ describe('AFPStep Component', () => {
       const contextWithState = {
         ...context,
         state: {
-          ...initialFormState,
+          ...initialState,
           simuleringType: 'ALDERSPENSJON',
         },
       }
