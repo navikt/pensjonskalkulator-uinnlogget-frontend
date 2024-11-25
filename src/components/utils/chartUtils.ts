@@ -68,17 +68,12 @@ export const getChartOptions = (input: {
     inntektVsaHelPensjonBeloep !== 0 &&
     inntektVsaHelPensjonBeloep !== undefined
   ) {
-    const inntektVsaHelPensjonData = []
-    const inntektVsaHelPensjonInterval: number[] = []
+    const maxAar = inntektVsaHelPensjonSluttalder ?? categories[categories.length - 1]
 
-    const maxAar = inntektVsaHelPensjonSluttalder
-      ? inntektVsaHelPensjonSluttalder
-      : categories[categories.length - 1]
-
-    for (let i = heltUttakAar; i <= maxAar; i++) {
-      inntektVsaHelPensjonData.push(inntektVsaHelPensjonBeloep)
-      inntektVsaHelPensjonInterval.push(i)
-    }
+    const inntektVsaHelPensjonInterval = Array.from(
+      { length: maxAar - heltUttakAar + 1 },
+      (_, i) => heltUttakAar + i
+    )
 
     const filteredCategories = categories.filter((category) =>
       inntektVsaHelPensjonInterval.includes(category)
