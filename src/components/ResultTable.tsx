@@ -15,29 +15,29 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
     const alderspensjonHel =
       alderspensjon.find(
         (item) => item.alder === state.heltUttak.uttakAlder?.aar
-      )?.beloep || 0
+      )?.beloep ?? 0
     const alderspensjonGradert =
       alderspensjon.find(
         (item) => item.alder === state.gradertUttak?.uttakAlder?.aar
-      )?.beloep || 0
+      )?.beloep ?? 0
     return { alderspensjonHel, alderspensjonGradert }
   }, [alderspensjon])
 
   const { afpPrivatHel, afpPrivatGradert } = useMemo(() => {
     const afpPrivatHel =
       afpPrivat?.find((item) => item.alder === state.heltUttak.uttakAlder?.aar)
-        ?.beloep || 0
+        ?.beloep ?? 0
     const afpPrivatGradert =
       afpPrivat?.find(
         (item) => item.alder === state.gradertUttak?.uttakAlder?.aar
-      )?.beloep || 0
+      )?.beloep ?? 0
     return { afpPrivatHel, afpPrivatGradert }
   }, [afpPrivat])
 
   const aarligbelopVsaGradertuttak =
-    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
+    state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? 0
   const aarligbelopVsaHeltuttak =
-    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+    state.heltUttak?.aarligInntektVsaPensjon?.beloep ?? 0
 
   return (
     <Table data-testid="result-table">
