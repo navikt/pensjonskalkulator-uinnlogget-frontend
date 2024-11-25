@@ -20,10 +20,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
     isSimuleringError(simuleringsresultat) ||
     simuleringsresultat === undefined
   ) {
-    return (
-      // TODO PEK-722 vise fornuftig feilmelding
-      <ResponseWarning error={simuleringsresultat} />
-    )
+    return <ResponseWarning error={simuleringsresultat} />
   }
 
   const chartOptions = useMemo(() => {
