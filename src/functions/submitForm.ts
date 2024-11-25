@@ -24,8 +24,6 @@ export const transformPayload = (formState: State): APIPayload => {
     ...apiPayload
   } = payload
 
-  console.log(apiPayload)
-
   return apiPayload as APIPayload
 }
 

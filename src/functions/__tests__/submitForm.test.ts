@@ -34,26 +34,6 @@ describe('submitForm', () => {
         )
       })
     })
-    //SKAL TIL INNTEKTSTEP
-    /* describe('Når brukeren har svart "nei" til inntekt vsa.,', () => {
-      test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
-        const stateWithSluttAlder = produce(initialState, (draft) => {
-          draft.harInntektVsaHelPensjon = false
-          draft.heltUttak = {
-            uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: {
-              beloep: 0,
-              sluttAlder: { aar: 67, maaneder: 0 },
-            },
-          }
-        })
-
-        const expectedState = transformPayload(stateWithSluttAlder)
-        expect(
-          expectedState.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-        ).toBe(undefined)
-      })
-    }) */
 
     describe('Når brukeren har ikke fylt ut sluttalder for inntekt vsa. helt uttak, ', () => {
       test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
