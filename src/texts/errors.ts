@@ -3,7 +3,7 @@ const error = {
   PKU225AvslagVilkarsprovingForLavtTidligUttakException:
     'Avslag på vilkårsprøving grunnet for lavt tidlig uttak.',
   PKU224AvslagVilkarsprovingForKortTrygdetidException:
-    'Avslag på vilkårsprøving grunnet for kort trygdetid.',
+    'Beregningen viser at du ikke kan ta ut pensjon fra tidspunktet du ønsker fordi du har for lav pensjonsopptjening. Du kan prøve igjen med en lavere uttaksgrad eller et senere tidspunkt for uttak av pensjon.',
   default: 'Det har oppstått en feil. Vennligst prøv igjen senere.',
 }
 

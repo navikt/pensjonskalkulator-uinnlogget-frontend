@@ -128,7 +128,7 @@ describe('submitForm', () => {
         await submitForm(mockState)
       } catch (rejectedPromise) {
         await rejectedPromise
-        expect(rejectedPromise).toBe('Unhandled error')
+        expect(rejectedPromise).toBe('Error parsing JSON')
       }
     })
   })
