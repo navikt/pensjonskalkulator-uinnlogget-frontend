@@ -93,15 +93,13 @@ const InntektStep = () => {
         <Substep>
           <Select
             value={
-              state.gradertUttak === undefined
-                ? '100'
-                : state.gradertUttak && state.gradertUttak.grad
-                  ? state.gradertUttak.grad
-                  : ''
+              state.gradertUttak?.grad ??
+              (state.gradertUttak === undefined ? '100' : '')
             }
             style={{ width: '5rem' }}
             label={'Hvor mye alderspensjon vil du ta ut?'}
             description="Velg uttaksgrad"
+            // TODO: Add event type from navikt
             onChange={(it) => {
               handleFieldChange((draft) => {
                 if (it.target.value === '') {
@@ -304,13 +302,11 @@ const InntektStep = () => {
               <div className="flex space-x-4">
                 <Select
                   value={
-                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
+                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ??
+                    (state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
                     undefined
                       ? 'livsvarig'
-                      : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
-                          state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                        ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                        : ''
+                      : '')
                   }
                   style={{ width: '5rem' }}
                   label={'Til hvilken alder forventer du å ha inntekten?'}

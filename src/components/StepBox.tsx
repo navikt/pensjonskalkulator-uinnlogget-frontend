@@ -1,10 +1,8 @@
 import { Box, Button, HStack } from '@navikt/ds-react'
-import React from 'react'
-
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 
 interface LayoutProps {
-  children: ReactNode
+  readonly children: ReactNode
 }
 
 function StepBox({ children }: LayoutProps) {

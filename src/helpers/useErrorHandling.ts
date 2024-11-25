@@ -16,12 +16,12 @@ const useErrorHandling = (state: State) => {
   }
 
   const validateUtenlandsAntallAar = (): string => {
-      if ((!state.utenlandsAntallAar || state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
-        return 'Du må fylle ut antall år';
-      }
-      if (state.utenlandsAntallAar && state.utenlandsAntallAar < 0) {
-        return 'Antall år må være positiv';
-      }
+    if ((!state.utenlandsAntallAar || state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
+      return 'Du må fylle ut antall år';
+    }
+    if (state.utenlandsAntallAar && state.utenlandsAntallAar < 0) {
+      return 'Antall år må være positiv';
+    }
     return '';
   }
 
@@ -38,7 +38,7 @@ const useErrorHandling = (state: State) => {
   const validateGradertUttak = (): { aar: string, maaneder: string } => {
     let aarError = '';
     let maanederError = '';
-  
+
     if (state.gradertUttak?.grad) {
       if (state.gradertUttak.uttakAlder?.aar === null) {
         aarError = 'Du må velge alder';
@@ -47,7 +47,7 @@ const useErrorHandling = (state: State) => {
         maanederError = 'Du må velge måned';
       }
     }
-  
+
     return { aar: aarError, maaneder: maanederError };
   }
 
@@ -73,15 +73,15 @@ const useErrorHandling = (state: State) => {
     return '';
   }
 
-  const validateHeltUttakSluttAlder = (): {aar: string, maaneder: string} => {
+  const validateHeltUttakSluttAlder = (): { aar: string, maaneder: string } => {
     let aarError = '';
     let maanederError = '';
 
-    if(state.heltUttak.aarligInntektVsaPensjon?.sluttAlder) {
-      if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar === null) {
+    if (state.heltUttak.aarligInntektVsaPensjon?.sluttAlder) {
+      if (state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar === null) {
         aarError = 'Du må velge alder';
       }
-      if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder === null) {
+      if (state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder === null) {
         maanederError = 'Du må velge måned';
       }
     }
@@ -93,12 +93,12 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar || state.foedselAar < 1900 || state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar || state.foedselAar < 1900 || state.foedselAar > new Date().getFullYear() ? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
     if (step === 'UtlandsStep') {
-      errors.harBoddIUtland = state.harBoddIUtland === null ? 'Du må velge et alternativ': ''
+      errors.harBoddIUtland = state.harBoddIUtland === null ? 'Du må velge et alternativ' : ''
       errors.utenlandsAntallAar = validateUtenlandsAntallAar()
     }
 
@@ -136,7 +136,7 @@ const useErrorHandling = (state: State) => {
   const handlers = useMemo(
     () => ({
       validateFields,
-      clearError: (field: string) => { 
+      clearError: (field: string) => {
         setErrorFields((prev) => ({ ...prev, [field]: '' }))
       },
     }),

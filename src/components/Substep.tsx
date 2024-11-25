@@ -2,7 +2,7 @@ import { Box } from '@navikt/ds-react'
 import React, { ReactNode } from 'react'
 
 interface SubstepProps {
-  children: ReactNode
+  readonly children: ReactNode
 }
 
 function Substep({ children }: SubstepProps) {

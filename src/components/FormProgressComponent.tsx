@@ -24,11 +24,11 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
       activeStep={activeStep + 1}
       data-testid="form-progress"
     >
-      {steps.map((step, index) => (
+      {steps.map((step: string, index: number) => (
         <FormProgress.Step
           completed={activeStep > index + 1}
           interactive={activeStep >= index + 1}
-          key={index}
+          key={`step-${index + 1}`}
         >
           {step}
         </FormProgress.Step>

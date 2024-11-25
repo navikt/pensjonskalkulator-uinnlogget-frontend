@@ -2,7 +2,7 @@ import { VStack } from '@navikt/ds-react'
 import React, { FormEvent, ReactNode } from 'react'
 
 interface FormWrapperProps {
-  children: ReactNode
+  readonly children: ReactNode
   onSubmit: () => void
 }
 
@@ -14,7 +14,7 @@ function FormWrapper({ children, onSubmit }: FormWrapperProps) {
 
   return (
     <VStack gap={'4'} paddingBlock={'3'}>
-      <form role="form" onSubmit={handleOnSubmit}>
+      <form onSubmit={handleOnSubmit}>
         {children}
       </form>
     </VStack>
