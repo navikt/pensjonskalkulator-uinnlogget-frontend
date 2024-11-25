@@ -1,2 +1,3 @@
 **/*.yml
 /src/helpers/useErrorHandling.ts
+/src/types/schema.d.ts
