@@ -44,7 +44,6 @@ const useAsyncLoader = (
         .catch((err) => {
           storage.current.promise = undefined
           storage.current.rejected = true
-          // TODO PEK-722 utvide med mer logikk ved behov
           if (isSimuleringError(err)) {
             storage.current.error = err
           }

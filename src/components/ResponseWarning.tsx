@@ -1,4 +1,4 @@
-import { ErrorStatus, SimuleringError } from '@/common'
+import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { getErrors } from '@/texts/errors'
 import { Alert, BodyLong, Box, Button, Heading, VStack } from '@navikt/ds-react'
@@ -12,7 +12,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
   const { formPageProps } = useContext(FormContext)
 
   const mapErrorToMessage = (error: SimuleringError | undefined) => {
-    const errorMessages = getErrors() as { [key in ErrorStatus]: string }
+    const errorMessages = getErrors() as ErrorMessages
     if (!error) return errorMessages['default']
     const errorCode = error.status as ErrorStatus
     return errorMessages[errorCode]

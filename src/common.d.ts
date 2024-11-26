@@ -1,5 +1,4 @@
 import type { components } from './types/schema.d.ts'
-import { errors } from './texts/errors'
 export type APIPayload = components['schemas']['AnonymSimuleringSpecV1']
 export type ApiPayloadStripped = Omit<ApiPayload, 'foedselAar'>
 export interface State extends Omit<APIPayload, 'foedselAar'> {
@@ -49,7 +48,15 @@ export type Simuleringsresultat =
 
 export type SimuleringError = components['schemas']['AnonymSimuleringErrorV1']
 
-export type ErrorStatus = keyof typeof errors
+export type ErrorStatus =
+  | 'PKU222BeregningstjenesteFeiletException'
+  | 'PKU225AvslagVilkarsprovingForLavtTidligUttakException'
+  | 'PKU224AvslagVilkarsprovingForKortTrygdetidException'
+  | 'default'
+
+export type ErrorMessages = {
+  [key in ErrorStatus]: string
+}
 
 export type StepName =
   | 'AlderStep'
