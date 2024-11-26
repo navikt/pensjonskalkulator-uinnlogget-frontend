@@ -175,12 +175,12 @@ describe('InntektStep Component', () => {
         })
 
         expect(
-          screen.getByLabelText(`Når planlegger du å ta ut 50% pensjon?`)
+          screen.getByText(`Når planlegger du å ta ut 50% pensjon?`)
         ).toBeInTheDocument()
 
         expect(
-          screen.getByLabelText(
-            `Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)`
+          screen.getByText(
+            `Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?`
           )
         ).toBeInTheDocument()
       })
@@ -196,9 +196,7 @@ describe('InntektStep Component', () => {
             },
           },
         })
-        const input = screen.getByLabelText(
-          'Når planlegger du å ta ut 50% pensjon?'
-        )
+        const input = screen.getByTestId('gradertAar') as HTMLSelectElement
         fireEvent.change(input, { target: { value: '66' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
@@ -220,9 +218,7 @@ describe('InntektStep Component', () => {
             },
           },
         })
-        const input = screen.getByLabelText(
-          'Når planlegger du å ta ut 50% pensjon?'
-        )
+        const input = screen.getByTestId('gradertAar') as HTMLSelectElement
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
@@ -245,9 +241,7 @@ describe('InntektStep Component', () => {
           },
         })
 
-        const input = screen.getByLabelText(
-          'Når planlegger du å ta ut 50% pensjon?'
-        ) as HTMLInputElement
+        const input = screen.getByTestId('gradertAar') as HTMLInputElement
 
         expect(input.value).toBe('')
       })
@@ -264,9 +258,7 @@ describe('InntektStep Component', () => {
           },
         })
 
-        const input = document.getElementById(
-          'gradertMaaneder'
-        ) as HTMLSelectElement
+        const input = screen.getByTestId('gradertMaaneder') as HTMLSelectElement
 
         fireEvent.change(input, { target: { value: '6' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -289,9 +281,7 @@ describe('InntektStep Component', () => {
             },
           },
         })
-        const input = document.getElementById(
-          'gradertMaaneder'
-        ) as HTMLSelectElement
+        const input = screen.getByTestId('gradertMaaneder') as HTMLSelectElement
 
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -316,7 +306,7 @@ describe('InntektStep Component', () => {
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
         )
         fireEvent.change(input, { target: { value: '500000' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -342,7 +332,7 @@ describe('InntektStep Component', () => {
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
         )
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -370,7 +360,7 @@ describe('InntektStep Component', () => {
         })
 
         const inputAarlinginntektVsaGradert = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon? (valgfritt)'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
         ) as HTMLInputElement
 
         expect(inputAarlinginntektVsaGradert.value).toBe('')
@@ -483,9 +473,8 @@ describe('InntektStep Component', () => {
           },
         },
       })
-      const input = screen.getByLabelText(
-        'Når planlegger du å ta ut 100% pensjon?'
-      )
+      const input = screen.getByTestId('heltUttakAar') as HTMLSelectElement
+
       fireEvent.change(input, { target: { value: '67' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
@@ -510,9 +499,7 @@ describe('InntektStep Component', () => {
           },
         },
       })
-      const input = screen.getByLabelText(
-        'Når planlegger du å ta ut 100% pensjon?'
-      )
+      const input = screen.getByTestId('heltUttakAar') as HTMLSelectElement
       fireEvent.change(input, { target: { value: '' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
@@ -538,9 +525,7 @@ describe('InntektStep Component', () => {
         },
       })
 
-      const input = document.getElementById(
-        'heltUttakMaaneder'
-      ) as HTMLSelectElement
+      const input = screen.getByTestId('heltUttakMaaneder') as HTMLSelectElement
 
       fireEvent.change(input, { target: { value: '4' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -567,9 +552,7 @@ describe('InntektStep Component', () => {
         },
       },
     })
-    const input = document.getElementById(
-      'heltUttakMaaneder'
-    ) as HTMLSelectElement
+    const input = screen.getByTestId('heltUttakMaaneder') as HTMLSelectElement
 
     fireEvent.change(input, { target: { value: '' } })
     expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -788,15 +771,17 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
+            ) as HTMLSelectElement
             fireEvent.change(ageSelect, { target: { value: '65' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
               'heltUttakSluttAlderAar'
             )
-            const monthSelect = screen.getByLabelText('Velg måned')
+            const monthSelect = screen.getByTestId(
+              'heltUttakSluttAlderMaaneder'
+            ) as HTMLSelectElement
             expect(monthSelect).toBeInTheDocument()
 
             fireEvent.change(monthSelect, { target: { value: '6' } })
@@ -833,15 +818,17 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
+            ) as HTMLSelectElement
             fireEvent.change(ageSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
               'heltUttakSluttAlderAar'
             )
-            const monthSelect = screen.getByLabelText('Velg måned')
+            const monthSelect = screen.getByTestId(
+              'heltUttakSluttAlderMaaneder'
+            ) as HTMLSelectElement
             expect(monthSelect).toBeInTheDocument()
 
             fireEvent.change(monthSelect, { target: { value: '' } })
@@ -878,9 +865,9 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
+            ) as HTMLSelectElement
             fireEvent.change(ageSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
@@ -907,7 +894,7 @@ describe('InntektStep Component', () => {
                   aarligInntektVsaPensjon: {
                     beloep: 500000,
                     sluttAlder: {
-                      aar: 0,
+                      aar: 62,
                       maaneder: 6,
                     },
                   },
@@ -915,16 +902,18 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
+            ) as HTMLSelectElement
             fireEvent.change(ageSelect, { target: { value: '65' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
               'heltUttakSluttAlderAar'
             )
 
-            const monthSelect = screen.getByLabelText('Velg måned')
+            const monthSelect = screen.getByTestId(
+              'heltUttakSluttAlderMaaneder'
+            ) as HTMLSelectElement
             fireEvent.change(monthSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
@@ -953,9 +942,9 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
+            ) as HTMLSelectElement
             fireEvent.change(ageSelect, { target: { value: '' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
@@ -994,8 +983,8 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
             ) as HTMLSelectElement
             expect(ageSelect.value).toBe('65')
           })
@@ -1019,8 +1008,8 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlderAar'
             ) as HTMLSelectElement
             expect(ageSelect.value).toBe('livsvarig')
           })
@@ -1047,9 +1036,7 @@ describe('InntektStep Component', () => {
               },
             })
 
-            const ageSelect = screen.getByLabelText(
-              'Til hvilken alder forventer du å ha inntekten?'
-            )
+            const ageSelect = screen.getByTestId('heltUttakSluttAlderAar')
             fireEvent.change(ageSelect, { target: { value: 'livsvarig' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),

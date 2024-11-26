@@ -2,10 +2,18 @@
   width: 6rem;
 }
 
+.selectAar .navds-select__container {
+  width: 6rem;
+}
+
+.selectMaaneder .navds-select__container {
+  width: 9rem;
+}
+
 .singleSelect select {
   width: 6rem;
 }
 
-.singleSelect label {
+.singleSelect .selectAar .selectMaaneder label {
   width: 100%;
 }

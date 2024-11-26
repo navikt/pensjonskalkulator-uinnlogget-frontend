@@ -61,6 +61,7 @@ const InntektStep = () => {
       <h2>Inntekt og alderspensjon</h2>
       <div className="w-30">
         <TextField
+          value={state.aarligInntektFoerUttakBeloep ?? ''}
           className={stepStyles.textfieldInntekt}
           onChange={(it) =>
             handleFieldChange((draft) => {
@@ -74,7 +75,6 @@ const InntektStep = () => {
           inputMode="numeric"
           label="Hva er din forventede årlige inntekt?"
           description="Dagens kroneverdi før skatt"
-          value={state.aarligInntektFoerUttakBeloep ?? ''}
           error={errorFields.aarligInntektFoerUttakBeloep}
         />
         <ReadMore header="Om pensjonsgivende inntekt">
@@ -160,9 +160,9 @@ const InntektStep = () => {
                 </legend>
                 <Select
                   value={state.gradertUttak.uttakAlder.aar ?? ''}
-                  className={stepStyles.selectAar}
-                  label="Velg alder" //{`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
-                  //description="Velg alder"
+                  className="selectAar"
+                  label="Velg alder"
+                  data-testid="gradertAar"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       draft.gradertUttak!.uttakAlder.aar =
@@ -179,10 +179,9 @@ const InntektStep = () => {
 
                 <Select
                   value={state.gradertUttak.uttakAlder.maaneder ?? ''}
-                  className={stepStyles.selectMaaneder}
-                  id={'gradertMaaneder'}
-                  label="Velg måned" //{'-'}
-                  //description="Velg måned"
+                  className="selectMaaneder"
+                  data-testid="gradertMaaneder"
+                  label="Velg måned"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       draft.gradertUttak!.uttakAlder.maaneder =
@@ -228,9 +227,9 @@ const InntektStep = () => {
             </legend>
             <Select
               value={state.heltUttak.uttakAlder?.aar ?? ''}
-              className={stepStyles.selectAar}
-              label="Velg alder" //{`Når planlegger du å ta ut 100% pensjon?`}
-              //description="Velg alder"
+              className="selectAar"
+              data-testid="heltUttakAar"
+              label="Velg alder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   draft.heltUttak.uttakAlder.aar =
@@ -245,10 +244,9 @@ const InntektStep = () => {
 
             <Select
               value={state.heltUttak.uttakAlder?.maaneder ?? ''}
-              className={stepStyles.selectMaaneder}
-              id={'heltUttakMaaneder'}
-              label="Velg måned" //{'-'}
-              //description="Velg måned"
+              className="selectMaaneder"
+              data-testid="heltUttakMaaneder"
+              label="Velg måned"
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   draft.heltUttak.uttakAlder.maaneder =
@@ -317,9 +315,9 @@ const InntektStep = () => {
                         ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
                         : ''
                   }
-                  className={stepStyles.selectAar}
-                  label="Velg alder" //{'Til hvilken alder forventer du å ha inntekten?'}
-                  //description="Velg alder"
+                  className="selectAar"
+                  data-testid="heltUttakSluttAlderAar"
+                  label="Velg alder"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       if (
@@ -365,8 +363,8 @@ const InntektStep = () => {
                       state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
                         ?.maaneder ?? ''
                     }
-                    className={stepStyles.selectMaaneder}
-                    id="heltUttakSluttAlder"
+                    className="selectMaaneder"
+                    data-testid="heltUttakSluttAlderMaaneder"
                     label={'Velg måned'}
                     onChange={(it) => {
                       const value = it.target.value

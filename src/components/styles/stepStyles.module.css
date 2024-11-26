@@ -1,43 +1,12 @@
 .selectWrapper {
   display: flex;
   flex-direction: row;
-  gap: 5rem;
-}
-.selectAar {
-  flex-basis: 6rem;
-  flex-shrink: 0;
-}
-.selectMaaneder {
-  flex-basis: 9rem;
-  flex-shrink: 0;
+  padding: 0;
+  gap: 2rem;
 }
 
-.selectAar div {
-  width: 6rem;
-}
-
-.selectMaaneder div {
-  width: 9rem;
-}
-
-.selectAar select {
-  width: 6rem;
-}
-
-.selectMaaneder select {
-  width: 9rem;
-}
-
-.selectAar .selectMaaneder label {
-  width: 100%;
-}
-
-.selectAar div p {
-  width: 14rem;
-}
-
-.selectMaaneder div p {
-  width: 14rem;
+.selectWrapper legend {
+  margin-bottom: 0.5rem;
 }
 
 .textfieldAar input {
