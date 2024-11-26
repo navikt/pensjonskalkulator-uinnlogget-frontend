@@ -1,0 +1,11 @@
+.singleSelect .navds-select__container {
+  width: 6rem;
+}
+
+.singleSelect select {
+  width: 6rem;
+}
+
+.singleSelect label {
+  width: 100%;
+}

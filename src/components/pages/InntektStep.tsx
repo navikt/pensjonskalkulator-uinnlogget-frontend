@@ -14,6 +14,7 @@ import Substep from '../Substep'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 import stepStyles from '../styles/stepStyles.module.css'
+import '../styles/selectStyle.css'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -99,7 +100,7 @@ const InntektStep = () => {
                   ? state.gradertUttak.grad
                   : ''
             }
-            style={{ width: '5rem' }}
+            className="singleSelect"
             label={'Hvor mye alderspensjon vil du ta ut?'}
             description="Velg uttaksgrad"
             onChange={(it) => {
@@ -151,19 +152,17 @@ const InntektStep = () => {
           </Select>
         </Substep>
         {state.gradertUttak && state.gradertUttak?.grad && (
-          <>
-            <b>
-              <h4>
-                Alle felt må fylles ut, unntatt felt markert med (valgfritt)
-              </h4>
-            </b>
+          <div>
             <Substep>
-              <div className="flex space-x-4">
+              <fieldset className={stepStyles.selectWrapper}>
+                <legend>
+                  <b>{`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}</b>
+                </legend>
                 <Select
                   value={state.gradertUttak.uttakAlder.aar ?? ''}
-                  style={{ width: '5rem' }}
-                  label={`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
-                  description="Velg alder"
+                  className={stepStyles.selectAar}
+                  label="Velg alder" //{`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
+                  //description="Velg alder"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       draft.gradertUttak!.uttakAlder.aar =
@@ -180,10 +179,10 @@ const InntektStep = () => {
 
                 <Select
                   value={state.gradertUttak.uttakAlder.maaneder ?? ''}
-                  className={stepStyles.textfieldMaaneder}
+                  className={stepStyles.selectMaaneder}
                   id={'gradertMaaneder'}
-                  label={'-'}
-                  description="Velg måned"
+                  label="Velg måned" //{'-'}
+                  //description="Velg måned"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       draft.gradertUttak!.uttakAlder.maaneder =
@@ -197,7 +196,7 @@ const InntektStep = () => {
                   <option value={''}>----</option>
                   {monthOptions}
                 </Select>
-              </div>
+              </fieldset>
             </Substep>
 
             <Substep>
@@ -215,20 +214,23 @@ const InntektStep = () => {
                 type="text"
                 inputMode="numeric"
                 className={stepStyles.textfieldInntekt}
-                label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon? (valgfritt)`}
+                label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon?`}
                 error={errorFields.gradertInntekt}
                 value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
               />
             </Substep>
-          </>
+          </div>
         )}
         <Substep>
-          <div className="flex space-x-4">
+          <fieldset className={stepStyles.selectWrapper}>
+            <legend>
+              <b>Når planlegger du å ta ut 100% pensjon?</b>
+            </legend>
             <Select
               value={state.heltUttak.uttakAlder?.aar ?? ''}
-              style={{ width: '5rem' }}
-              label={`Når planlegger du å ta ut 100% pensjon?`}
-              description="Velg alder"
+              className={stepStyles.selectAar}
+              label="Velg alder" //{`Når planlegger du å ta ut 100% pensjon?`}
+              //description="Velg alder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   draft.heltUttak.uttakAlder.aar =
@@ -243,10 +245,10 @@ const InntektStep = () => {
 
             <Select
               value={state.heltUttak.uttakAlder?.maaneder ?? ''}
-              className={stepStyles.textfieldMaaneder}
+              className={stepStyles.selectMaaneder}
               id={'heltUttakMaaneder'}
-              label={'-'}
-              description="Velg måned"
+              label="Velg måned" //{'-'}
+              //description="Velg måned"
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   draft.heltUttak.uttakAlder.maaneder =
@@ -258,7 +260,7 @@ const InntektStep = () => {
               <option value={''}>----</option>
               {monthOptions}
             </Select>
-          </div>
+          </fieldset>
         </Substep>
         <Substep>
           <RadioGroup
@@ -301,7 +303,10 @@ const InntektStep = () => {
             </Substep>
 
             <Substep>
-              <div className="flex space-x-4">
+              <fieldset className={stepStyles.selectWrapper}>
+                <legend>
+                  <b>Til hvilken alder forventer du å ha inntekten?</b>
+                </legend>
                 <Select
                   value={
                     state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
@@ -312,9 +317,9 @@ const InntektStep = () => {
                         ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
                         : ''
                   }
-                  style={{ width: '5rem' }}
-                  label={'Til hvilken alder forventer du å ha inntekten?'}
-                  description="Velg alder"
+                  className={stepStyles.selectAar}
+                  label="Velg alder" //{'Til hvilken alder forventer du å ha inntekten?'}
+                  //description="Velg alder"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
                       if (
@@ -360,7 +365,7 @@ const InntektStep = () => {
                       state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
                         ?.maaneder ?? ''
                     }
-                    className={stepStyles.textfieldMaaneder}
+                    className={stepStyles.selectMaaneder}
                     id="heltUttakSluttAlder"
                     label={'Velg måned'}
                     onChange={(it) => {
@@ -385,7 +390,7 @@ const InntektStep = () => {
                     {monthOptions}
                   </Select>
                 )}
-              </div>
+              </fieldset>
             </Substep>
           </>
         )}
