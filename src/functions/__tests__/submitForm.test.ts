@@ -1,6 +1,6 @@
 import { initialState } from '@/defaults/initialState'
 import { transformPayload, submitForm } from '../submitForm'
-import { State } from '@/common'
+import { SimuleringError, State } from '@/common'
 import { produce } from 'immer'
 
 describe('submitForm', () => {
@@ -78,6 +78,26 @@ describe('submitForm', () => {
     })
   })
 
+  describe('Gitt at API-kallet gir response.status 409', () => {
+    it('Burde kaste en SimuleringError', async () => {
+      const mockError: SimuleringError = {
+        status: 'PEK100',
+        message: 'En feilmelding',
+      }
+      ;(global.fetch as jest.Mock).mockResolvedValue({
+        status: 409,
+        json: jest.fn().mockResolvedValue(JSON.stringify(mockError)),
+      })
+
+      try {
+        await submitForm(mockState)
+      } catch (rejectedPromise) {
+        await rejectedPromise
+        expect(rejectedPromise).toEqual(mockError)
+      }
+    })
+  })
+
   describe('Gitt at API-kallet gir response.ok', () => {
     it('Burde riktig response bli returnert', async () => {
       const mockResponse = { data: 'success' }
@@ -102,7 +122,7 @@ describe('submitForm', () => {
         await submitForm(mockState)
       } catch (rejectedPromise) {
         await rejectedPromise
-        expect(rejectedPromise).toBe('Unhandled error')
+        expect(rejectedPromise).toBe('Error parsing JSON')
       }
     })
   })
