@@ -1,4 +1,9 @@
-import { APIPayload, State, Simuleringsresultat } from '@/common'
+import {
+  APIPayload,
+  State,
+  Simuleringsresultat,
+  SimuleringError,
+} from '@/common'
 import { produce } from 'immer'
 
 export const transformPayload = (formState: State): APIPayload => {
@@ -40,7 +45,12 @@ export const submitForm = async (
     body: JSON.stringify(apiPayload),
   })
     .then(async (response) => {
-      if (response.ok) {
+      if (response.status === 409) {
+        return response.json().then((data) => {
+          console.log('Threw 409 conflict error:', data)
+          return Promise.reject(JSON.parse(data) as SimuleringError)
+        })
+      } else if (response.ok) {
         return response
           .json()
           .then((jsonData) => {
@@ -60,7 +70,7 @@ export const submitForm = async (
           })
       }
     })
-    .catch(() => {
-      return Promise.reject('Unhandled error')
+    .catch((err) => {
+      return Promise.reject(err)
     })
 }

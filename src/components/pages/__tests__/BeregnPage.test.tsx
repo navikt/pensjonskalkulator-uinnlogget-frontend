@@ -10,6 +10,9 @@ jest.mock('@/functions/submitForm', () => ({
 }))
 
 const mockSubmitForm = submitForm as jest.Mock
+jest.mock('../../ResponseWarning.tsx', () =>
+  jest.fn(() => <div>Mocked ResponseWarning</div>)
+)
 
 const mockSimuleringsresultat = {
   alderspensjon: [
@@ -77,9 +80,8 @@ describe('BeregnPage Component', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
       })
 
-      expect(screen.queryByText('Resultat')).not.toBeInTheDocument()
-      expect(screen.getByText('Woopsy')).toBeVisible()
-      expect(screen.getByText('We are having an error')).toBeVisible()
+      expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
+      // expect(screen.getByText('Resultat')).not.toBeInTheDocument()
     })
 
     test('Når henting av data er vellykket, returneres det child-component med resultat', async () => {

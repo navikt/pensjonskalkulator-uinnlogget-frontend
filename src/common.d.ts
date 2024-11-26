@@ -45,6 +45,19 @@ export type OptionalHeltUttak = Omit<
 }
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
+
+export type SimuleringError = components['schemas']['AnonymSimuleringErrorV1']
+
+export type ErrorStatus =
+  | 'PKU222BeregningstjenesteFeiletException'
+  | 'PKU225AvslagVilkarsprovingForLavtTidligUttakException'
+  | 'PKU224AvslagVilkarsprovingForKortTrygdetidException'
+  | 'default'
+
+export type ErrorMessages = {
+  [key in ErrorStatus]: string
+}
+
 export type StepName =
   | 'AlderStep'
   | 'UtlandsStep'
@@ -84,7 +97,7 @@ export interface NavigationProps {
   curStep: number
   length: number
   goBack: () => void
-  onStepChange?: (step: number) => void
+  onStepChange: (step: number) => void
   handleSubmit?: () => void
   goToNext: () => void
 }

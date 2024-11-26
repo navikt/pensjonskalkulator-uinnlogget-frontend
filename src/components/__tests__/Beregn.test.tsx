@@ -16,6 +16,10 @@ jest.mock('../utils/chartUtils', () => ({
   })),
 }))
 
+jest.mock('../ResponseWarning', () =>
+  jest.fn(() => <div>Mocked ResponseWarning</div>)
+)
+
 const mockSimuleringsresultat = {
   alderspensjon: [
     { alder: 67, beloep: 200000 },
@@ -54,19 +58,18 @@ describe('Beregn Component', () => {
     jest.clearAllMocks()
   })
 
-  it('Når simuleringsresultat er undefined, burde vise feilmelding', () => {
+  test('Når simuleringsresultat er undefined, burde vise feilmelding', () => {
     render(
       <FormContext.Provider value={mockContextValue}>
         <Beregn />
       </FormContext.Provider>
     )
 
+    expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
     expect(screen.queryByText('Resultat')).not.toBeInTheDocument()
-    expect(screen.getByText('Woopsy')).toBeVisible()
-    expect(screen.getByText('We are having an error')).toBeVisible()
   })
 
-  it('Når simuleringsresultat er oppgitt, burde vise tittel, resultat-table og graf', () => {
+  test('Når simuleringsresultat er oppgitt, burde vise tittel, resultat-table og graf', () => {
     const { container } = render(
       <FormContext.Provider value={mockContextValue}>
         <Beregn simuleringsresultat={mockSimuleringsresultat} />
