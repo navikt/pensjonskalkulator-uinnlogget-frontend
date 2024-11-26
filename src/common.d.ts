@@ -1,4 +1,5 @@
 import type { components } from './types/schema.d.ts'
+import { errors } from './texts/errors'
 export type APIPayload = components['schemas']['AnonymSimuleringSpecV1']
 export type ApiPayloadStripped = Omit<ApiPayload, 'foedselAar'>
 export interface State extends Omit<APIPayload, 'foedselAar'> {
@@ -47,6 +48,8 @@ export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 
 export type SimuleringError = components['schemas']['AnonymSimuleringErrorV1']
+
+export type ErrorStatus = keyof typeof errors
 
 export type StepName =
   | 'AlderStep'

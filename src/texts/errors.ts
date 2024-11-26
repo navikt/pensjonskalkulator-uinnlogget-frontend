@@ -1,4 +1,4 @@
-const error = {
+export const errors = {
   PKU222BeregningstjenesteFeiletException: 'Beregning',
   PKU225AvslagVilkarsprovingForLavtTidligUttakException:
     'Avslag på vilkårsprøving grunnet for lavt tidlig uttak.',
@@ -7,4 +7,4 @@ const error = {
   default: 'Det har oppstått en feil. Vennligst prøv igjen senere.',
 }
 
-export const getErrors = () => error
+export const getErrors = () => errors
