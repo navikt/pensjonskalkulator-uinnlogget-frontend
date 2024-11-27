@@ -95,7 +95,9 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AlderStep')
         })
 
-        expect(errorFields.inntektOver1GAntallAar).toBe('Fyll ut antall år')
+        expect(errorFields.inntektOver1GAntallAar).toBe(
+          'Du må fylle ut antall år'
+        )
       })
 
       test('Skal gi feilmelding når antall år er undefined', () => {
@@ -106,7 +108,9 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AlderStep')
         })
 
-        expect(errorFields.inntektOver1GAntallAar).toBe('Fyll ut antall år')
+        expect(errorFields.inntektOver1GAntallAar).toBe(
+          'Du må fylle ut antall år'
+        )
       })
 
       test('Skal gi feilmelding når antall år er negativt', () => {
@@ -340,7 +344,7 @@ describe('useErrorHandling', () => {
     })
 
     describe('gradertInntekt', () => {
-      test('Skal ikke gi feilmelding når gradert uttak har gyldig grad, men inntekt er ikke utfylt', () => {
+      test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt ikke er utfylt', () => {
         const state = {
           ...initialState,
           gradertUttak: {
@@ -355,7 +359,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertInntekt).toBe('')
+        expect(errorFields.gradertInntekt).toBe('Du må fylle ut inntekt')
       })
 
       test('Skal gi feilmelding når gradert uttak har gyldig grad, men inntekt er negativ', () => {
@@ -637,6 +641,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når sluttalder.aar ikke er satt', () => {
         const state = {
           ...initialState,
+          harInntektVsaHelPensjon: true,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
@@ -679,6 +684,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når sluttalder.maaneder ikke er satt', () => {
         const state = {
           ...initialState,
+          harInntektVsaHelPensjon: true,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
