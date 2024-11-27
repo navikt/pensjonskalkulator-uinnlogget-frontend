@@ -1,4 +1,4 @@
-.singleSelect .navds-select__container {
+.selectGrad .navds-select__container {
   width: 6rem;
 }
 
@@ -10,10 +10,10 @@
   width: 9rem;
 }
 
-.singleSelect select {
+.selectGrad select {
   width: 6rem;
 }
 
-.singleSelect .selectAar .selectMaaneder label {
+.selectGrad .selectAar .selectMaaneder label {
   width: 100%;
 }

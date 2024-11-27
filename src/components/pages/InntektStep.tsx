@@ -100,7 +100,7 @@ const InntektStep = () => {
                   ? state.gradertUttak.grad
                   : ''
             }
-            className="singleSelect"
+            className="selectGrad"
             label={'Hvor mye alderspensjon vil du ta ut?'}
             description="Velg uttaksgrad"
             onChange={(it) => {
