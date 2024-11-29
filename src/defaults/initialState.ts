@@ -9,8 +9,8 @@ export const initialState: State = {
   harBoddIUtland: null,
   harInntektVsaHelPensjon: null,
   utenlandsAntallAar: undefined,
-  inntektOver1GAntallAar: undefined,
-  aarligInntektFoerUttakBeloep: undefined,
+  inntektOver1GAntallAar: null,
+  aarligInntektFoerUttakBeloep: null,
   gradertUttak: {
     grad: null,
     uttakAlder: {

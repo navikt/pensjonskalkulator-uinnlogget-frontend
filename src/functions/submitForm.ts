@@ -5,13 +5,14 @@ import {
   SimuleringError,
 } from '@/common'
 import { produce } from 'immer'
+import apiPayloadMapper from './map/apiPyaloadMapper'
 
 export const transformPayload = (formState: State): APIPayload => {
   const payload = produce(formState, (draft) => {
     if (
       draft.harInntektVsaHelPensjon === false &&
       draft.heltUttak.aarligInntektVsaPensjon?.beloep &&
-      draft.heltUttak.aarligInntektVsaPensjon?.beloep > 0
+      +draft.heltUttak.aarligInntektVsaPensjon?.beloep > 0
     ) {
       draft.heltUttak.aarligInntektVsaPensjon = undefined
     }
@@ -29,7 +30,7 @@ export const transformPayload = (formState: State): APIPayload => {
     ...apiPayload
   } = payload
 
-  return apiPayload as APIPayload
+  return apiPayloadMapper(apiPayload as State)
 }
 
 export const submitForm = async (
