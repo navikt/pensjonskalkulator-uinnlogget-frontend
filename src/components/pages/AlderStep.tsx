@@ -34,8 +34,8 @@ const AlderStep = () => {
             style={{ width: '6rem' }}
             onChange={(it) =>
               handleFieldChange((draft) => {
-                const value = parseInt(it.target.value)
-                draft.foedselAar = isNaN(value) ? null : value
+                const value = it.target.value
+                draft.foedselAar = value.length > 0 ? value : null
               }, 'foedselAar')
             }
             inputMode="numeric"
@@ -49,8 +49,8 @@ const AlderStep = () => {
             className={stepStyles.textfieldAar}
             onChange={(it) =>
               handleFieldChange((draft) => {
-                const value = parseInt(it.target.value)
-                draft.inntektOver1GAntallAar = isNaN(value) ? undefined : value
+                const value = it.target.value
+                draft.inntektOver1GAntallAar = value.length > 0 ? value : null
               }, 'inntektOver1GAntallAar')
             }
             inputMode="numeric"

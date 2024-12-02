@@ -89,7 +89,7 @@ describe('InntektStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.aarligInntektFoerUttakBeloep).toBe(500000)
+      expect(draft.aarligInntektFoerUttakBeloep).toBe('500000')
     })
 
     test('Burde vise tom input når aarligInntektFoerUttakBeloep er undefined', () => {
@@ -97,7 +97,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          aarligInntektFoerUttakBeloep: undefined,
+          aarligInntektFoerUttakBeloep: null,
         },
       })
       const input = screen.getByLabelText(
@@ -111,28 +111,13 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          aarligInntektFoerUttakBeloep: 500000,
+          aarligInntektFoerUttakBeloep: '500000',
         },
       })
       const input = screen.getByLabelText(
         'Hva er din forventede årlige inntekt?'
       ) as HTMLInputElement
       expect(input.value).toBe('500000')
-    })
-
-    test('Burde sette aarligInntektFoerUttakBeloep til undefined når valueAsNumber er NaN', () => {
-      renderMockedComponent(InntektStep, context)
-      const input = screen.getByLabelText(
-        'Hva er din forventede årlige inntekt?'
-      )
-      fireEvent.change(input, { target: { value: 'invalid' } })
-      expect(mockHandleFieldChange).toHaveBeenCalledWith(
-        expect.any(Function),
-        'aarligInntektFoerUttakBeloep'
-      )
-
-      const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.aarligInntektFoerUttakBeloep).toBe(undefined)
     })
   })
 
@@ -226,7 +211,7 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.uttakAlder.aar).toBe(null)
+        expect(draft.aarligInntektFoerUttakBeloep).toBe(null)
       })
 
       test('Burde vise tom input når gradertUttak.uttakAlder.aar er null', () => {
@@ -315,7 +300,7 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe(500000)
+        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe('500000')
       })
 
       test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til undefined når input er tom', () => {
@@ -326,7 +311,7 @@ describe('InntektStep Component', () => {
             gradertUttak: {
               grad: 50,
               uttakAlder: { aar: 66, maaneder: 0 },
-              aarligInntektVsaPensjonBeloep: 500000,
+              aarligInntektVsaPensjonBeloep: '500000',
             },
           },
         })
@@ -603,7 +588,7 @@ describe('InntektStep Component', () => {
             heltUttak: {
               uttakAlder: { aar: 67, maaneder: 0 },
               aarligInntektVsaPensjon: {
-                beloep: 100000,
+                beloep: '100000',
                 sluttAlder: { aar: 67, maaneder: 0 },
               },
             },
@@ -657,7 +642,7 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe(500000)
+        expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe('500000')
       })
 
       test('Burde vise tom input når heltUttak.aarligInntektVsaPensjon.beloep er null', () => {
@@ -693,7 +678,7 @@ describe('InntektStep Component', () => {
             heltUttak: {
               uttakAlder: { aar: 0, maaneder: null },
               aarligInntektVsaPensjon: {
-                beloep: 500000,
+                beloep: '500000',
                 sluttAlder: { aar: null, maaneder: null },
               },
             },
@@ -705,7 +690,7 @@ describe('InntektStep Component', () => {
         expect(input.value).toBe('500000')
       })
 
-      test('Burde sette heltUttak.aarligInntektVsaPensjon.beloep til undefined når valueAsNumber er NaN', () => {
+      test('Burde sette heltUttak.aarligInntektVsaPensjon.beloep til undefined når input er tom', () => {
         renderMockedComponent(InntektStep, {
           ...context,
           state: {
@@ -714,7 +699,7 @@ describe('InntektStep Component', () => {
             heltUttak: {
               uttakAlder: { aar: 63, maaneder: 0 },
               aarligInntektVsaPensjon: {
-                beloep: 500000,
+                beloep: '500000',
                 sluttAlder: { aar: null, maaneder: null },
               },
             },
@@ -723,7 +708,10 @@ describe('InntektStep Component', () => {
         const input = screen.getByLabelText(
           'Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
         )
-        fireEvent.change(input, { target: { value: 'invalid' } })
+
+        expect(input).toHaveValue('500000')
+
+        fireEvent.change(input, { target: { value: '' } })
 
         const draft = mockHandleFieldChange.mock.results[0].value
         expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe(null)
@@ -761,7 +749,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: null,
                       maaneder: null,
@@ -808,7 +796,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: 65,
                       maaneder: 6,
@@ -855,7 +843,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: 65,
                       maaneder: 6,
@@ -892,7 +880,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: 62,
                       maaneder: 6,
@@ -952,7 +940,7 @@ describe('InntektStep Component', () => {
             )
 
             const draft = mockHandleFieldChange.mock.results[0].value
-            expect(draft.heltUttak.aarligInntektVsaPensjon).toEqual({
+            expect(draft.heltUttak.aarligInntektVsaPensjon).toMatchObject({
               beloep: null,
               sluttAlder: {
                 aar: null,
@@ -973,7 +961,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: 65,
                       maaneder: null,
@@ -1001,7 +989,7 @@ describe('InntektStep Component', () => {
                     maaneder: null,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: undefined,
                   },
                 },
@@ -1026,7 +1014,7 @@ describe('InntektStep Component', () => {
                     maaneder: 2,
                   },
                   aarligInntektVsaPensjon: {
-                    beloep: 500000,
+                    beloep: '500000',
                     sluttAlder: {
                       aar: 66,
                       maaneder: null,

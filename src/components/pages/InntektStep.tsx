@@ -65,10 +65,9 @@ const InntektStep = () => {
           className={stepStyles.textfieldInntekt}
           onChange={(it) =>
             handleFieldChange((draft) => {
-              const valueAsNumber = parseInt(it.target.value)
-              draft.aarligInntektFoerUttakBeloep = isNaN(valueAsNumber)
-                ? undefined
-                : valueAsNumber
+              const value = it.target.value
+              draft.aarligInntektFoerUttakBeloep =
+                value.length === 0 ? null : value
             }, 'aarligInntektFoerUttakBeloep')
           }
           type="text"
@@ -202,12 +201,9 @@ const InntektStep = () => {
               <TextField
                 onChange={(it) => {
                   handleFieldChange((draft) => {
-                    const valueAsNumber = parseInt(it.target.value)
-                    draft.gradertUttak!.aarligInntektVsaPensjonBeloep = isNaN(
-                      valueAsNumber
-                    )
-                      ? undefined
-                      : valueAsNumber
+                    const value = it.target.value
+                    draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
+                      value.length === 0 ? undefined : value
                   }, 'gradertInntekt')
                 }}
                 type="text"
@@ -289,10 +285,10 @@ const InntektStep = () => {
                 inputMode="numeric"
                 onChange={(it) => {
                   handleFieldChange((draft) => {
-                    const valueAsNumber = parseInt(it.target.value)
+                    const value = it.target.value
                     draft.heltUttak.aarligInntektVsaPensjon = {
                       ...draft.heltUttak.aarligInntektVsaPensjon,
-                      beloep: isNaN(valueAsNumber) ? null : valueAsNumber,
+                      beloep: value.length === 0 ? null : value,
                     }
                   }, 'helPensjonInntekt')
                 }}

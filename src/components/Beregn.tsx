@@ -26,14 +26,20 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const chartOptions = useMemo(() => {
     return getChartOptions({
       simuleringsresultat,
-      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep,
+      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep
+        ? parseInt(state.aarligInntektFoerUttakBeloep)
+        : undefined,
       heltUttakAar: state.heltUttak.uttakAlder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
-      inntektVsaHelPensjonBeloep:
-        state.heltUttak.aarligInntektVsaPensjon?.beloep,
+      inntektVsaHelPensjonBeloep: state.heltUttak.aarligInntektVsaPensjon
+        ?.beloep
+        ? parseInt(state.heltUttak.aarligInntektVsaPensjon.beloep)
+        : undefined,
       gradertUttakAlder: state.gradertUttak?.uttakAlder?.aar,
-      gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep,
+      gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep
+        ? parseInt(state.gradertUttak.aarligInntektVsaPensjonBeloep)
+        : undefined,
     })
   }, [state, simuleringsresultat])
 

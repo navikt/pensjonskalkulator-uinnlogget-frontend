@@ -79,7 +79,7 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
           <Table.DataCell>{afpPrivatHel}</Table.DataCell>
           <Table.DataCell>{aarligbelopVsaHeltuttak}</Table.DataCell>
           <Table.DataCell>
-            {alderspensjonHel + afpPrivatHel + aarligbelopVsaHeltuttak}
+            {alderspensjonHel + afpPrivatHel + +aarligbelopVsaHeltuttak}
           </Table.DataCell>
         </Table.Row>
       </Table.Body>

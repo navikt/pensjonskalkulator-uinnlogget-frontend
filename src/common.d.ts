@@ -1,15 +1,25 @@
 import type { components } from './types/schema.d.ts'
 export type APIPayload = components['schemas']['AnonymSimuleringSpecV1']
 export type ApiPayloadStripped = Omit<ApiPayload, 'foedselAar'>
-export interface State extends Omit<APIPayload, 'foedselAar'> {
-  foedselAar:
-    | null
-    | components['schemas']['AnonymSimuleringSpecV1']['foedselAar']
+
+export interface State
+  extends Omit<
+    APIPayload,
+    | 'foedselAar'
+    | 'inntektOver1GAntallAar'
+    | 'utenlandsAntallAar'
+    | 'aarligInntektFoerUttakBeloep'
+  > {
+  foedselAar: string | null
+  inntektOver1GAntallAar: string | null
+  aarligInntektFoerUttakBeloep: string | null
+  utenlandsAntallAar?: string
   gradertUttak?: OptionalGradertUttak
   heltUttak: OptionalHeltUttak
   harBoddIUtland: boolean | null
   harInntektVsaHelPensjon: boolean | null
 }
+
 export type OptionalGradertUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['gradertUttak'],
   'grad' | 'uttakAlder' | 'aarligInntektVsaPensjonBeloep'
@@ -21,7 +31,7 @@ export type OptionalGradertUttak = Omit<
       | null
       | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
   }
-  aarligInntektVsaPensjonBeloep?: components['schemas']['AnonymSimuleringGradertUttakV1']['aarligInntektVsaPensjonBeloep']
+  aarligInntektVsaPensjonBeloep?: string
 }
 export type OptionalHeltUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['heltUttak'],
@@ -34,7 +44,7 @@ export type OptionalHeltUttak = Omit<
       | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
   }
   aarligInntektVsaPensjon?: {
-    beloep: null | components['schemas']['AnonymSimuleringInntektV1']['beloep']
+    beloep: string | null
     sluttAlder?: {
       aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
       maaneder:
@@ -43,6 +53,9 @@ export type OptionalHeltUttak = Omit<
     }
   }
 }
+
+export type Alder = components['schemas']['AnonymAlderV1']
+
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 
@@ -101,3 +114,5 @@ export interface NavigationProps {
   handleSubmit?: () => void
   goToNext: () => void
 }
+
+export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]

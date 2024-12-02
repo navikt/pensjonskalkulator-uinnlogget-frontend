@@ -154,7 +154,7 @@ describe('UtlandsStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.utenlandsAntallAar).toBe(5)
+        expect(draft.utenlandsAntallAar).toBe('5')
       })
 
       test('Burde sette utenlandsAntallAar til undefined når input er tom', () => {
@@ -163,7 +163,7 @@ describe('UtlandsStep Component', () => {
           state: {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: 5,
+            utenlandsAntallAar: '5',
           },
         })
         const input = screen.getByLabelText(
@@ -201,7 +201,7 @@ describe('UtlandsStep Component', () => {
           state: {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: 5,
+            utenlandsAntallAar: '5',
           },
         })
         const input = screen.getByLabelText(
