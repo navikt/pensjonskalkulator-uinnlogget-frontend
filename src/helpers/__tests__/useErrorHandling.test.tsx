@@ -50,7 +50,7 @@ describe('useErrorHandling', () => {
   describe('Validering for AlderStep', () => {
     describe('foedselAar', () => {
       test('Skal validere at foedselAar ikke er mindre enn 1900', () => {
-        const state = { ...initialState, foedselAar: 1800 }
+        const state = { ...initialState, foedselAar: '1800' }
         renderWithState(state)
 
         act(() => {
@@ -63,7 +63,7 @@ describe('useErrorHandling', () => {
       test('Skal validere at foedselAar ikke er etter dagens dato', () => {
         const state = {
           ...initialState,
-          foedselAar: new Date().getFullYear() + 1,
+          foedselAar: '' + new Date().getFullYear() + 1,
         }
         renderWithState(state)
 
@@ -75,7 +75,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feil ved gyldig foedselAar', () => {
-        const state = { ...initialState, foedselAar: 1990 }
+        const state = { ...initialState, foedselAar: '1990' }
         renderWithState(state)
 
         act(() => {
@@ -88,7 +88,7 @@ describe('useErrorHandling', () => {
 
     describe('inntektOver1GAntallAar', () => {
       test('Skal gi feilmelding når antall år er undefined', () => {
-        const state = { ...initialState, inntektOver1GAntallAar: undefined }
+        const state = { ...initialState, inntektOver1GAntallAar: null }
         renderWithState(state)
 
         act(() => {
@@ -101,7 +101,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år er undefined', () => {
-        const state = { ...initialState, inntektOver1GAntallAar: undefined }
+        const state = { ...initialState, inntektOver1GAntallAar: null }
         renderWithState(state)
 
         act(() => {
@@ -114,7 +114,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år er negativt', () => {
-        const state = { ...initialState, inntektOver1GAntallAar: -10 }
+        const state = { ...initialState, inntektOver1GAntallAar: '-10' }
         renderWithState(state)
 
         act(() => {
@@ -127,7 +127,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal gi feilmelding når antall år overstiger 50', () => {
-        const state = { ...initialState, inntektOver1GAntallAar: 51 }
+        const state = { ...initialState, inntektOver1GAntallAar: '51' }
         renderWithState(state)
 
         act(() => {
@@ -140,7 +140,7 @@ describe('useErrorHandling', () => {
       })
 
       test('Skal ikke gi feilmelding ved gyldig antall år', () => {
-        const state = { ...initialState, inntektOver1GAntallAar: 25 }
+        const state = { ...initialState, inntektOver1GAntallAar: '25' }
         renderWithState(state)
 
         act(() => {
@@ -197,7 +197,7 @@ describe('useErrorHandling', () => {
           const state = {
             ...initialState,
             harBoddIUtland: false,
-            utenlandsAntallAar: 0,
+            utenlandsAntallAar: '0',
           }
           renderWithState(state)
 
@@ -213,7 +213,7 @@ describe('useErrorHandling', () => {
           const state = {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: 0,
+            utenlandsAntallAar: '0',
           }
           renderWithState(state)
 
@@ -230,7 +230,7 @@ describe('useErrorHandling', () => {
           const state = {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: -1,
+            utenlandsAntallAar: '-1',
           }
           renderWithState(state)
 
@@ -247,7 +247,7 @@ describe('useErrorHandling', () => {
           const state = {
             ...initialState,
             harBoddIUtland: true,
-            utenlandsAntallAar: 5,
+            utenlandsAntallAar: '5',
           }
           renderWithState(state)
 
@@ -266,7 +266,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når inntekt er undefined', () => {
         const state = {
           ...initialState,
-          aarligInntektFoerUttakBeloep: undefined,
+          aarligInntektFoerUttakBeloep: null,
         }
         renderWithState(state)
 
@@ -282,7 +282,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når inntekt er negativ', () => {
         const state = {
           ...initialState,
-          aarligInntektFoerUttakBeloep: -1000,
+          aarligInntektFoerUttakBeloep: '-1000',
         }
         renderWithState(state)
 
@@ -298,7 +298,7 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når inntekt er gyldig', () => {
         const state = {
           ...initialState,
-          aarligInntektFoerUttakBeloep: 500000,
+          aarligInntektFoerUttakBeloep: '500000',
         }
         renderWithState(state)
 
@@ -329,7 +329,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: null, maaneder: null },
           },
         }
@@ -367,7 +367,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: -1000,
+            aarligInntektVsaPensjonBeloep: '-1000',
             uttakAlder: { aar: null, maaneder: null },
           },
         }
@@ -385,7 +385,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 300000,
+            aarligInntektVsaPensjonBeloep: '300000',
             uttakAlder: { aar: null, maaneder: null },
           },
         }
@@ -405,7 +405,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: null, maaneder: 0 },
           },
         }
@@ -423,7 +423,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: 67, maaneder: null },
           },
         }
@@ -441,7 +441,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 100,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: 62, maaneder: null },
           },
         }
@@ -461,7 +461,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: 62, maaneder: null },
           },
         }
@@ -479,7 +479,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           gradertUttak: {
             grad: 50,
-            aarligInntektVsaPensjonBeloep: 0,
+            aarligInntektVsaPensjonBeloep: '0',
             uttakAlder: { aar: 62, maaneder: 0 },
           },
         }
@@ -513,7 +513,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           heltUttak: {
             uttakAlder: { aar: null, maaneder: 1 },
-            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -530,7 +530,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: null },
-            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -549,7 +549,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: null },
-            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -566,7 +566,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
-            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -586,7 +586,7 @@ describe('useErrorHandling', () => {
           harInntektVsaHelPensjon: true,
           heltUttak: {
             uttakAlder: { aar: 0, maaneder: null },
-            aarligInntektVsaPensjon: { beloep: 0, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -604,7 +604,7 @@ describe('useErrorHandling', () => {
           harInntektVsaHelPensjon: true,
           heltUttak: {
             uttakAlder: { aar: 0, maaneder: null },
-            aarligInntektVsaPensjon: { beloep: -5000, sluttAlder: undefined },
+            aarligInntektVsaPensjon: { beloep: '-5000', sluttAlder: undefined },
           },
         }
         renderWithState(state)
@@ -624,7 +624,10 @@ describe('useErrorHandling', () => {
           harInntektVsaHelPensjon: true,
           heltUttak: {
             uttakAlder: { aar: 0, maaneder: null },
-            aarligInntektVsaPensjon: { beloep: 200000, sluttAlder: undefined },
+            aarligInntektVsaPensjon: {
+              beloep: '200000',
+              sluttAlder: undefined,
+            },
           },
         }
         renderWithState(state)
@@ -645,7 +648,7 @@ describe('useErrorHandling', () => {
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
-              beloep: 0,
+              beloep: '0',
               sluttAlder: { aar: null, maaneder: 0 },
             },
           },
@@ -665,7 +668,7 @@ describe('useErrorHandling', () => {
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
-              beloep: 0,
+              beloep: '0',
               sluttAlder: undefined,
             },
           },
@@ -688,7 +691,7 @@ describe('useErrorHandling', () => {
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
-              beloep: 0,
+              beloep: '0',
               sluttAlder: { aar: 67, maaneder: null },
             },
           },
@@ -710,7 +713,7 @@ describe('useErrorHandling', () => {
           heltUttak: {
             uttakAlder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
-              beloep: 0,
+              beloep: '0',
               sluttAlder: { aar: 67, maaneder: 0 },
             },
           },
@@ -876,7 +879,7 @@ describe('useErrorHandling', () => {
 
   describe('clearError', () => {
     test('Skal fjerne feilmelding for et spesifikt felt', () => {
-      const state = { ...initialState, foedselAar: 1800 }
+      const state = { ...initialState, foedselAar: '1800' }
       renderWithState(state)
 
       act(() => {
@@ -896,7 +899,7 @@ describe('useErrorHandling', () => {
       const state = {
         ...initialState,
         simuleringType: '',
-        foedselAar: 1800,
+        foedselAar: '1800',
       }
       renderWithState(state)
 

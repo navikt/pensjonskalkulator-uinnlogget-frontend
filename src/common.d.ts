@@ -53,6 +53,9 @@ export type OptionalHeltUttak = Omit<
     }
   }
 }
+
+export type Alder = components['schemas']['AnonymAlderV1']
+
 export type Simuleringsresultat =
   components['schemas']['AnonymSimuleringResultV1']
 

@@ -1,42 +1,10 @@
-import {
-  APIPayload,
-  State,
-  Simuleringsresultat,
-  SimuleringError,
-} from '@/common'
-import { produce } from 'immer'
-import apiPayloadMapper from './map/apiPyaloadMapper'
-
-export const transformPayload = (formState: State): APIPayload => {
-  const payload = produce(formState, (draft) => {
-    if (
-      draft.harInntektVsaHelPensjon === false &&
-      draft.heltUttak.aarligInntektVsaPensjon?.beloep &&
-      +draft.heltUttak.aarligInntektVsaPensjon?.beloep > 0
-    ) {
-      draft.heltUttak.aarligInntektVsaPensjon = undefined
-    }
-    if (draft.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null) {
-      draft.heltUttak!.aarligInntektVsaPensjon.sluttAlder = undefined
-    }
-    if (draft.gradertUttak?.grad === null) {
-      draft.gradertUttak = undefined
-    }
-  })
-
-  const {
-    harBoddIUtland: _harBoddIUtland,
-    harInntektVsaHelPensjon: _harInntektVsaHelPensjon,
-    ...apiPayload
-  } = payload
-
-  return apiPayloadMapper(apiPayload as State)
-}
+import { State, Simuleringsresultat, SimuleringError } from '@/common'
+import { mapStateToApiPayload } from './map/apiPayloadMapper'
 
 export const submitForm = async (
   formState: State
 ): Promise<Simuleringsresultat> => {
-  const apiPayload = transformPayload(formState)
+  const apiPayload = mapStateToApiPayload(formState)
 
   return fetch('/pensjon/kalkulator-uinnlogget/api/simuler', {
     method: 'POST',

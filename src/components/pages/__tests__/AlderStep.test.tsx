@@ -94,7 +94,7 @@ describe('AlderStep Component', () => {
         'foedselAar'
       )
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.foedselAar).toBe(1990)
+      expect(draft.foedselAar).toBe('1990')
     })
 
     test('Burde være tom dersom foedselAar er null', () => {
@@ -108,7 +108,7 @@ describe('AlderStep Component', () => {
     })
 
     test('Burde settes til null dersom input er tom', () => {
-      const state = { ...initialState, foedselAar: 1960 }
+      const state = { ...initialState, foedselAar: '1960' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText('I hvilket år er du født?')
       fireEvent.change(input, { target: { value: '' } })
@@ -121,13 +121,13 @@ describe('AlderStep Component', () => {
     })
 
     test('Burde vise foedselAar dersom det er satt', () => {
-      const state = { ...initialState, foedselAar: 1998 }
+      const state = { ...initialState, foedselAar: '1998' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText('I hvilket år er du født?')
       expect(input).toHaveValue('1998')
     })
 
-    test('Burde ikke godta bokstaver', () => {
+    test('Burde godta bokstaver', () => {
       renderMockedComponent(AlderStep, context)
       const input = screen.getByLabelText('I hvilket år er du født?')
       fireEvent.change(input, { target: { value: 'abc' } })
@@ -136,7 +136,7 @@ describe('AlderStep Component', () => {
         'foedselAar'
       )
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.foedselAar).toBe(null)
+      expect(draft.foedselAar).toBe('abc')
     })
   })
 
@@ -152,11 +152,11 @@ describe('AlderStep Component', () => {
         'inntektOver1GAntallAar'
       )
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.inntektOver1GAntallAar).toBe(10)
+      expect(draft.inntektOver1GAntallAar).toBe('10')
     })
 
     test('Burde være tom dersom inntektOver1GAntallAar er undefined', () => {
-      const state = { ...initialState, inntektOver1GAntallAar: undefined }
+      const state = { ...initialState, inntektOver1GAntallAar: null }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
@@ -165,7 +165,7 @@ describe('AlderStep Component', () => {
     })
 
     test('Burde settes til undefined dersom input er tom', () => {
-      const state = { ...initialState, inntektOver1GAntallAar: 30 }
+      const state = { ...initialState, inntektOver1GAntallAar: '30' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
@@ -176,11 +176,11 @@ describe('AlderStep Component', () => {
         'inntektOver1GAntallAar'
       )
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.inntektOver1GAntallAar).toBe(undefined)
+      expect(draft.inntektOver1GAntallAar).toBe(null)
     })
 
     test('Burde vise inntektOver1GAntallAar dersom det er satt', () => {
-      const state = { ...initialState, inntektOver1GAntallAar: 30 }
+      const state = { ...initialState, inntektOver1GAntallAar: '30' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
@@ -188,7 +188,7 @@ describe('AlderStep Component', () => {
       expect(input).toHaveValue('30')
     })
 
-    test('Burde ikke godta bokstaver', () => {
+    test('Burde godta bokstaver', () => {
       renderMockedComponent(AlderStep, context)
       const input = screen.getByLabelText(
         'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
@@ -199,7 +199,7 @@ describe('AlderStep Component', () => {
         'inntektOver1GAntallAar'
       )
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.inntektOver1GAntallAar).toBe(undefined)
+      expect(draft.inntektOver1GAntallAar).toBe('abc')
     })
   })
 })

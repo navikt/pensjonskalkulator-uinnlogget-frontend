@@ -79,7 +79,7 @@ const useErrorHandling = (state: State) => {
   const validateHelPensjonInntekt = (): string => {
     const heltUttak = state.heltUttak;
     if (state.harInntektVsaHelPensjon === true) {
-      if (!heltUttak.aarligInntektVsaPensjon?.beloep) {
+      if (!heltUttak.aarligInntektVsaPensjon?.beloep || heltUttak.aarligInntektVsaPensjon?.beloep === '0') {
         return 'Du må fylle ut inntekt';
       }
       if (isNaN(+heltUttak.aarligInntektVsaPensjon.beloep)) {
