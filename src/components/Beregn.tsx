@@ -29,8 +29,10 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
       heltUttakAar: state.heltUttak.uttakAlder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
-      inntektVsaHelPensjonBeloep:
-        state.heltUttak.aarligInntektVsaPensjon?.beloep,
+      inntektVsaHelPensjonBeloep: state.heltUttak.aarligInntektVsaPensjon
+        ?.beloep
+        ? parseInt(state.heltUttak.aarligInntektVsaPensjon.beloep)
+        : undefined,
     })
   }, [state, simuleringsresultat])
 
