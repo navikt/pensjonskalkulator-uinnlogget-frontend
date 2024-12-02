@@ -14,22 +14,22 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
   const { alderspensjonHel, alderspensjonGradert } = useMemo(() => {
     const alderspensjonHel =
       alderspensjon.find(
-        (item) => item.alder === state.heltUttak.uttakAlder?.aar
+        (item) => item.alder === state.heltUttak.uttaksalder?.aar
       )?.beloep || 0
     const alderspensjonGradert =
       alderspensjon.find(
-        (item) => item.alder === state.gradertUttak?.uttakAlder?.aar
+        (item) => item.alder === state.gradertUttak?.uttaksalder?.aar
       )?.beloep || 0
     return { alderspensjonHel, alderspensjonGradert }
   }, [alderspensjon])
 
   const { afpPrivatHel, afpPrivatGradert } = useMemo(() => {
     const afpPrivatHel =
-      afpPrivat?.find((item) => item.alder === state.heltUttak.uttakAlder?.aar)
+      afpPrivat?.find((item) => item.alder === state.heltUttak.uttaksalder?.aar)
         ?.beloep || 0
     const afpPrivatGradert =
       afpPrivat?.find(
-        (item) => item.alder === state.gradertUttak?.uttakAlder?.aar
+        (item) => item.alder === state.gradertUttak?.uttaksalder?.aar
       )?.beloep || 0
     return { afpPrivatHel, afpPrivatGradert }
   }, [afpPrivat])
@@ -52,9 +52,9 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
       </Table.Header>
       <Table.Body>
         {aarligbelopVsaGradertuttak !== 0 && (
-          <Table.Row key={state.gradertUttak?.uttakAlder?.aar}>
+          <Table.Row key={state.gradertUttak?.uttaksalder?.aar}>
             <Table.HeaderCell scope="row">
-              Ved {state.gradertUttak?.uttakAlder?.aar}
+              Ved {state.gradertUttak?.uttaksalder?.aar}
               {' ('}
               {state.gradertUttak?.grad}
               {' %)'}
@@ -67,13 +67,13 @@ const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
             <Table.DataCell>
               {alderspensjonGradert +
                 afpPrivatGradert +
-                aarligbelopVsaGradertuttak}
+                +aarligbelopVsaGradertuttak}
             </Table.DataCell>
           </Table.Row>
         )}
-        <Table.Row key={state.heltUttak.uttakAlder?.aar}>
+        <Table.Row key={state.heltUttak.uttaksalder?.aar}>
           <Table.HeaderCell scope="row">
-            Ved {state.heltUttak.uttakAlder?.aar} {'(100 %)'}
+            Ved {state.heltUttak.uttaksalder?.aar} {'(100 %)'}
           </Table.HeaderCell>
           <Table.DataCell>{alderspensjonHel}</Table.DataCell>
           <Table.DataCell>{afpPrivatHel}</Table.DataCell>

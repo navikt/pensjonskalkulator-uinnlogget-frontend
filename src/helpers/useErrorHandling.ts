@@ -49,10 +49,10 @@ const useErrorHandling = (state: State) => {
     let maanederError = '';
   
     if (state.gradertUttak?.grad) {
-      if (state.gradertUttak.uttakAlder?.aar === null) {
+      if (state.gradertUttak.uttaksalder?.aar === null) {
         aarError = 'Du må velge alder';
       }
-      if (state.gradertUttak.uttakAlder?.maaneder === null) {
+      if (state.gradertUttak.uttaksalder?.maaneder === null) {
         maanederError = 'Du må velge måned';
       }
     }
@@ -126,8 +126,8 @@ const useErrorHandling = (state: State) => {
       errors.gradertAar = validateGradertUttak().aar
       errors.gradertMaaneder = validateGradertUttak().maaneder
       errors.gradertInntekt = validateGradertInntekt()
-      errors.heltUttakAar = state.heltUttak.uttakAlder?.aar === null ? 'Du må velge alder' : ''
-      errors.heltUttakMaaneder = state.heltUttak.uttakAlder?.maaneder === null ? 'Du må velge måned' : ''
+      errors.heltUttakAar = state.heltUttak.uttaksalder?.aar === null ? 'Du må velge alder' : ''
+      errors.heltUttakMaaneder = state.heltUttak.uttaksalder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()
       errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder().aar
       errors.heltUttakSluttAlderMaaneder = validateHeltUttakSluttAlder().maaneder
@@ -135,13 +135,13 @@ const useErrorHandling = (state: State) => {
     }
 
     if (step === 'EktefelleStep') {
-      errors.sivilstand = !state.sivilstand || state.sivilstand === '' ? 'Du må velge et alternativ' : ''
+      errors.sivilstand = !state.sivilstand ? 'Du må velge et alternativ' : ''
       errors.epsHarInntektOver2G = state.sivilstand !== 'UGIFT' && state.epsHarInntektOver2G === undefined ? 'Du må velge et alternativ' : ''
       errors.epsHarPensjon = state.sivilstand !== 'UGIFT' && state.epsHarPensjon === undefined ? 'Du må velge et alternativ' : ''
     }
 
     if (step === 'AFPStep') {
-      errors.simuleringType = state.simuleringType === undefined || state.simuleringType === '' ? 'Du må velge et alternativ' : ''
+      errors.simuleringType = !state.simuleringstype ? 'Du må velge et alternativ' : ''
     }
 
     setErrorFields(errors)

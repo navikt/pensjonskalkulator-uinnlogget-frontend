@@ -107,7 +107,7 @@ const InntektStep = () => {
                 if (it.target.value === '') {
                   draft.gradertUttak = {
                     grad: null,
-                    uttakAlder: {
+                    uttaksalder: {
                       aar: null,
                       maaneder: null,
                     },
@@ -117,7 +117,7 @@ const InntektStep = () => {
                 } else {
                   draft.gradertUttak = {
                     grad: parseInt(it.target.value),
-                    uttakAlder: {
+                    uttaksalder: {
                       aar: null,
                       maaneder: null,
                     },
@@ -158,13 +158,13 @@ const InntektStep = () => {
                   <b>{`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}</b>
                 </legend>
                 <Select
-                  value={state.gradertUttak.uttakAlder.aar ?? ''}
+                  value={state.gradertUttak.uttaksalder.aar ?? ''}
                   className="selectAar"
                   label="Velg alder"
                   data-testid="gradertAar"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
-                      draft.gradertUttak!.uttakAlder.aar =
+                      draft.gradertUttak!.uttaksalder.aar =
                         it.target.value === ''
                           ? null
                           : parseInt(it.target.value)
@@ -177,13 +177,13 @@ const InntektStep = () => {
                 </Select>
 
                 <Select
-                  value={state.gradertUttak.uttakAlder.maaneder ?? ''}
+                  value={state.gradertUttak.uttaksalder.maaneder ?? ''}
                   className="selectMaaneder"
                   data-testid="gradertMaaneder"
                   label="Velg måned"
                   onChange={(it) => {
                     handleFieldChange((draft) => {
-                      draft.gradertUttak!.uttakAlder.maaneder =
+                      draft.gradertUttak!.uttaksalder.maaneder =
                         it.target.value === ''
                           ? null
                           : parseInt(it.target.value)
@@ -222,13 +222,13 @@ const InntektStep = () => {
               <b>Når planlegger du å ta ut 100% pensjon?</b>
             </legend>
             <Select
-              value={state.heltUttak.uttakAlder?.aar ?? ''}
+              value={state.heltUttak.uttaksalder?.aar ?? ''}
               className="selectAar"
               data-testid="heltUttakAar"
               label="Velg alder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.heltUttak.uttakAlder.aar =
+                  draft.heltUttak.uttaksalder.aar =
                     it.target.value === '' ? null : parseInt(it.target.value)
                 }, 'heltUttakAar')
               }}
@@ -239,13 +239,13 @@ const InntektStep = () => {
             </Select>
 
             <Select
-              value={state.heltUttak.uttakAlder?.maaneder ?? ''}
+              value={state.heltUttak.uttaksalder?.maaneder ?? ''}
               className="selectMaaneder"
               data-testid="heltUttakMaaneder"
               label="Velg måned"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.heltUttak.uttakAlder.maaneder =
+                  draft.heltUttak.uttaksalder.maaneder =
                     it.target.value === '' ? null : parseInt(it.target.value)
                 }, 'heltUttakMaaneder')
               }}
