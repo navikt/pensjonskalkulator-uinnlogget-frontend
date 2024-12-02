@@ -33,6 +33,11 @@ export default async function RootLayout({
         dangerouslySetInnerHTML={{ __html: DECORATOR_STYLES }}
         suppressHydrationWarning
       />
+      <link
+        rel="preload"
+        href="https://cdn.nav.no/aksel/@navikt/ds-css/2.9.0/index.min.css"
+        as="style"
+      ></link>
       <body>
         <div
           dangerouslySetInnerHTML={{
