@@ -149,6 +149,19 @@ describe('useErrorHandling', () => {
 
         expect(errorFields.inntektOver1GAntallAar).toBe('')
       })
+
+      test('Skal ikke gi feil når bruker oppgir tekst i antall år', () => {
+        const state = { ...initialState, inntektOver1GAntallAar: '40o' }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('AlderStep')
+        })
+
+        expect(errorFields.inntektOver1GAntallAar).toBe(
+          'Du må fylle ut et gyldig tall'
+        )
+      })
     })
   })
 
@@ -307,6 +320,22 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.aarligInntektFoerUttakBeloep).toBe('')
+      })
+
+      test('Skal gi feilmelding når brukeren har skrevet inn tekst i beløp', () => {
+        const state = {
+          ...initialState,
+          aarligInntektFoerUttakBeloep: '1000o',
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
+          'Du må fylle ut et gyldig tall'
+        )
       })
     })
 
@@ -492,6 +521,24 @@ describe('useErrorHandling', () => {
         expect(errorFields.gradertMaaneder).toBe('')
       })
 
+      test('Skal vise feilmelding når brukeren har valgt gradert uttak og skriver inn tekst i beløp', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '1000o',
+            uttakAlder: { aar: 62, maaneder: 0 },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.gradertInntekt).toBe('Du må fylle ut et gyldig tall')
+      })
+
       test('Skal ikke gi feilmelding når grad er 100 (undefined) og uttaksmåned ikke er valgt', () => {
         const state = {
           ...initialState,
@@ -615,6 +662,26 @@ describe('useErrorHandling', () => {
 
         expect(errorFields.helPensjonInntekt).toBe(
           'Inntekt kan ikke være negativ'
+        )
+      })
+
+      test('Skal gi feilmelding når hel pensjon er valgt og inntekt inneholder tekst', () => {
+        const state = {
+          ...initialState,
+          harInntektVsaHelPensjon: true,
+          heltUttak: {
+            uttakAlder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: '1000o', sluttAlder: undefined },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.helPensjonInntekt).toBe(
+          'Du må fylle ut et gyldig tall'
         )
       })
 

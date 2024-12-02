@@ -3,7 +3,6 @@ import { StepName, ErrorFields, State } from '@/common'
 
 const useErrorHandling = (state: State) => {
   const validateInntektOver1GAntallAar = (): string => {
-    console.log(state.inntektOver1GAntallAar);
     
     if (!state.inntektOver1GAntallAar) {
       return 'Du må fylle ut antall år';
