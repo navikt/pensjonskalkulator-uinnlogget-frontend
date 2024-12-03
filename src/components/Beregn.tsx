@@ -56,11 +56,6 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
       >
         <h1>Resultat</h1>
         <>
-          {/* <ResultTable
-            alderspensjon={simuleringsresultat.alderspensjon}
-            afpPrivat={simuleringsresultat.afpPrivat}
-          /> */}
-
           <ResultTable simuleringsresultat={simuleringsresultat} />
 
           <HighchartsReact
