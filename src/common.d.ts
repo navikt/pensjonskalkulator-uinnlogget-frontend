@@ -22,10 +22,10 @@ export interface State
 
 export type OptionalGradertUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['gradertUttak'],
-  'grad' | 'uttakAlder' | 'aarligInntektVsaPensjonBeloep'
+  'grad' | 'uttaksalder' | 'aarligInntektVsaPensjonBeloep'
 > & {
   grad: null | components['schemas']['AnonymSimuleringGradertUttakV1']['grad']
-  uttakAlder: {
+  uttaksalder: {
     aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
     maaneder:
       | null
@@ -35,9 +35,9 @@ export type OptionalGradertUttak = Omit<
 }
 export type OptionalHeltUttak = Omit<
   components['schemas']['AnonymSimuleringSpecV1']['heltUttak'],
-  'uttakAlder' | 'aarligInntektVsaPensjon'
+  'uttaksalder' | 'aarligInntektVsaPensjon'
 > & {
-  uttakAlder: {
+  uttaksalder: {
     aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
     maaneder:
       | null
@@ -96,7 +96,7 @@ export type ErrorFields = {
   sivilstand?: string
   epsHarInntektOver2G?: string
   epsHarPensjon?: string
-  simuleringType?: string
+  simuleringstype?: string
 }
 export interface ContextForm {
   state: State
@@ -116,3 +116,7 @@ export interface NavigationProps {
 }
 
 export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
+
+export type Sivilstand = PropType<State, 'sivilstand'>
+
+export type Simuleringstype = PropType<State, 'simuleringstype'>

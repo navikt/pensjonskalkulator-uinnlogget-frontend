@@ -3,7 +3,7 @@ import AFPStep from '../AFPStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { initialState } from '@/defaults/initialState'
 import { renderMockedComponent } from '../test-utils/testSetup'
-import { State } from '@/common'
+import { Simuleringstype, State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'
 
 // Mock the useErrorHandling hook
@@ -92,7 +92,7 @@ describe('AFPStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.simuleringType).toBe('ALDERSPENSJON_MED_AFP_PRIVAT')
+      expect(draft.simuleringstype).toBe('ALDERSPENSJON_MED_AFP_PRIVAT')
     })
 
     test('Burde state få riktig verdi ved "Nei"', () => {
@@ -105,7 +105,7 @@ describe('AFPStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.simuleringType).toBe('ALDERSPENSJON')
+      expect(draft.simuleringstype).toBe('ALDERSPENSJON')
     })
   })
 
@@ -115,7 +115,7 @@ describe('AFPStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          simuleringType: 'ALDERSPENSJON_MED_AFP_PRIVAT',
+          simuleringstype: 'ALDERSPENSJON_MED_AFP_PRIVAT' as Simuleringstype,
         },
       }
       renderMockedComponent(() => <AFPStep />, contextWithState)
@@ -129,7 +129,7 @@ describe('AFPStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          simuleringType: 'ALDERSPENSJON',
+          simuleringstype: 'ALDERSPENSJON' as Simuleringstype,
         },
       }
 

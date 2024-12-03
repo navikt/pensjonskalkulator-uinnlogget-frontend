@@ -3,7 +3,7 @@ import { render, act } from '@testing-library/react'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
-import { State } from '@/common'
+import { Simuleringstype, Sivilstand, State } from '@/common'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }
@@ -359,7 +359,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: null, maaneder: null },
+            uttaksalder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -379,7 +379,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: undefined,
-            uttakAlder: { aar: null, maaneder: null },
+            uttaksalder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -397,7 +397,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '-1000',
-            uttakAlder: { aar: null, maaneder: null },
+            uttaksalder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -415,7 +415,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '300000',
-            uttakAlder: { aar: null, maaneder: null },
+            uttaksalder: { aar: null, maaneder: null },
           },
         }
         renderWithState(state)
@@ -435,7 +435,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: null, maaneder: 0 },
+            uttaksalder: { aar: null, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -453,7 +453,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: 67, maaneder: null },
+            uttaksalder: { aar: 67, maaneder: null },
           },
         }
         renderWithState(state)
@@ -471,7 +471,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: 62, maaneder: null },
+            uttaksalder: { aar: 62, maaneder: null },
           },
         }
         renderWithState(state)
@@ -491,7 +491,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: 62, maaneder: null },
+            uttaksalder: { aar: 62, maaneder: null },
           },
         }
         renderWithState(state)
@@ -509,7 +509,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
-            uttakAlder: { aar: 62, maaneder: 0 },
+            uttaksalder: { aar: 62, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -527,7 +527,7 @@ describe('useErrorHandling', () => {
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '1000o',
-            uttakAlder: { aar: 62, maaneder: 0 },
+            uttaksalder: { aar: 62, maaneder: 0 },
           },
         }
         renderWithState(state)
@@ -559,7 +559,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: null, maaneder: 1 },
+            uttaksalder: { aar: null, maaneder: 1 },
             aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
@@ -576,7 +576,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: null },
+            uttaksalder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
@@ -595,7 +595,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: null },
+            uttaksalder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
@@ -612,7 +612,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
@@ -632,7 +632,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: null },
+            uttaksalder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
           },
         }
@@ -650,7 +650,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: null },
+            uttaksalder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: '-5000', sluttAlder: undefined },
           },
         }
@@ -670,7 +670,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: null },
+            uttaksalder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: { beloep: '1000o', sluttAlder: undefined },
           },
         }
@@ -690,7 +690,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 0, maaneder: null },
+            uttaksalder: { aar: 0, maaneder: null },
             aarligInntektVsaPensjon: {
               beloep: '200000',
               sluttAlder: undefined,
@@ -713,7 +713,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: '0',
               sluttAlder: { aar: null, maaneder: 0 },
@@ -733,7 +733,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: '0',
               sluttAlder: undefined,
@@ -756,7 +756,7 @@ describe('useErrorHandling', () => {
           ...initialState,
           harInntektVsaHelPensjon: true,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: '0',
               sluttAlder: { aar: 67, maaneder: null },
@@ -778,7 +778,7 @@ describe('useErrorHandling', () => {
         const state = {
           ...initialState,
           heltUttak: {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: '0',
               sluttAlder: { aar: 67, maaneder: 0 },
@@ -839,7 +839,7 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når sivilstand er valgt', () => {
         const state = {
           ...initialState,
-          sivilstand: 'UGIFT',
+          sivilstand: 'UGIFT' as Sivilstand,
         }
         renderWithState(state)
 
@@ -855,7 +855,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når epsHarInntektOver2G ikke er valgt', () => {
         const state = {
           ...initialState,
-          sivilstand: 'GIFT',
+          sivilstand: 'GIFT' as Sivilstand,
           epsHarInntektOver2G: undefined,
         }
         renderWithState(state)
@@ -872,7 +872,7 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når epsHarInntektOver2G er valgt', () => {
         const state = {
           ...initialState,
-          sivilstand: 'GIFT',
+          sivilstand: 'GIFT' as Sivilstand,
           epsHarInntektOver2G: true,
         }
         renderWithState(state)
@@ -889,7 +889,7 @@ describe('useErrorHandling', () => {
       test('Skal gi feilmelding når epsHarPensjon ikke er valgt', () => {
         const state = {
           ...initialState,
-          sivilstand: 'GIFT',
+          sivilstand: 'GIFT' as Sivilstand,
           epsHarPensjon: undefined,
         }
         renderWithState(state)
@@ -904,7 +904,7 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når epsHarPensjon er valgt', () => {
         const state = {
           ...initialState,
-          sivilstand: 'GIFT',
+          sivilstand: 'GIFT' as Sivilstand,
           epsHarPensjon: false,
         }
         renderWithState(state)
@@ -928,18 +928,21 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AFPStep')
         })
 
-        expect(errorFields.simuleringType).toBe('Du må velge et alternativ')
+        expect(errorFields.simuleringstype).toBe('Du må velge et alternativ')
       })
 
       test('Skal ikke gi feilmelding når simuleringType er valgt', () => {
-        const state = { ...initialState, simuleringType: 'ALDERSPENSJON' }
+        const state = {
+          ...initialState,
+          simuleringstype: 'ALDERSPENSJON' as Simuleringstype,
+        }
         renderWithState(state)
 
         act(() => {
           handlers.validateFields('AFPStep')
         })
 
-        expect(errorFields.simuleringType).toBe('')
+        expect(errorFields.simuleringstype).toBe('')
       })
     })
   })

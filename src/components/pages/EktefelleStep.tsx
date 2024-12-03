@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup, Select } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { State } from '@/common'
+import { PropType, State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -40,7 +40,9 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
           onChange={(it) =>
             handleFieldChange((draft) => {
               draft.sivilstand =
-                it.target.value === '' ? undefined : it.target.value
+                it.target.value === ''
+                  ? undefined
+                  : (it.target.value as PropType<State, 'sivilstand'>)
               if (draft.sivilstand === 'UGIFT') {
                 draft.epsHarInntektOver2G = undefined
                 draft.epsHarPensjon = undefined

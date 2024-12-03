@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
 import { Radio, RadioGroup } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
-import { State } from '@/common'
+import { PropType, State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -33,13 +33,13 @@ const AFPStep = () => {
       <Substep>
         <RadioGroup
           legend={'Har du rett til AFP i privat sektor?'}
-          defaultValue={state.simuleringType}
-          onChange={(it: 'ALDERSPENSJON' | 'ALDERSPENSJON_MED_AFP_PRIVAT') =>
+          defaultValue={state.simuleringstype}
+          onChange={(it: PropType<State, 'simuleringstype'>) =>
             handleFieldChange((draft) => {
-              draft.simuleringType = it
+              draft.simuleringstype = it
             }, 'simuleringType')
           }
-          error={errorFields.simuleringType}
+          error={errorFields.simuleringstype}
         >
           <Radio value="ALDERSPENSJON_MED_AFP_PRIVAT">Ja</Radio>
           <Radio value="ALDERSPENSJON">Nei</Radio>

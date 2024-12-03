@@ -17,7 +17,7 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
       ? {
           ...state.gradertUttak,
           grad: state.gradertUttak.grad as number,
-          uttakAlder: state.gradertUttak.uttakAlder as Alder,
+          uttaksalder: state.gradertUttak.uttaksalder as Alder,
           aarligInntektVsaPensjonBeloep: state.gradertUttak
             .aarligInntektVsaPensjonBeloep
             ? parseInt(state.gradertUttak.aarligInntektVsaPensjonBeloep)
@@ -27,25 +27,23 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
 
   const mappedHeltUttak: PropType<APIPayload, 'heltUttak'> = {
     ...state.heltUttak,
-    uttakAlder: state.heltUttak.uttakAlder as Alder,
-    aarligInntektVsaPensjon:
-      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
-      s.harInntektVsaHelPensjon
-        ? {
-            beloep: !s.harInntektVsaHelPensjon
-              ? 0
-              : aarligInntektVsaPensjonBeloepNumber,
-            sluttAlder:
-              state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null
-                ? undefined
-                : {
-                    aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                      .aar as number,
-                    maaneder: state.heltUttak.aarligInntektVsaPensjon
-                      ?.sluttAlder.maaneder as number,
-                  },
-          }
-        : undefined,
+    uttaksalder: state.heltUttak.uttaksalder as Alder,
+    aarligInntektVsaPensjon: s.harInntektVsaHelPensjon
+      ? {
+          beloep: !s.harInntektVsaHelPensjon
+            ? 0
+            : aarligInntektVsaPensjonBeloepNumber,
+          sluttAlder:
+            state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null
+              ? undefined
+              : {
+                  aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                    ?.aar as number,
+                  maaneder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                    ?.maaneder as number,
+                },
+        }
+      : undefined,
   }
   return {
     ...state,
