@@ -3,33 +3,42 @@ import { StepName, ErrorFields, State } from '@/common'
 
 const useErrorHandling = (state: State) => {
   const validateInntektOver1GAntallAar = (): string => {
+    
     if (!state.inntektOver1GAntallAar) {
       return 'Du må fylle ut antall år';
     }
-    else if (state.inntektOver1GAntallAar < 0) {
+    if (isNaN(+state.inntektOver1GAntallAar)) {
+      return 'Du må fylle ut et gyldig tall';
+    }
+    if (+state.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
     }
-    else if (state.inntektOver1GAntallAar > 50) {
+    if (+state.inntektOver1GAntallAar > 50) {
       return 'Du kan ikke være yrkesaktiv i mer enn 50 år';
     }
     return '';
   }
 
   const validateUtenlandsAntallAar = (): string => {
-      if ((!state.utenlandsAntallAar || state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
+  
+      if ((!state.utenlandsAntallAar || isNaN(+state.utenlandsAntallAar) || +state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
         return 'Du må fylle ut antall år';
       }
-      if (state.utenlandsAntallAar && state.utenlandsAntallAar < 0) {
+      if (state.utenlandsAntallAar && +state.utenlandsAntallAar < 0) {
         return 'Antall år må være positiv';
       }
     return '';
   }
 
   const validateAarligInntektFoerUttakBeloep = (): string => {
-    if (state.aarligInntektFoerUttakBeloep === undefined) {
+    const aarligInntekt = state.aarligInntektFoerUttakBeloep;
+    if (aarligInntekt === null) {
       return 'Du må fylle ut inntekt';
     }
-    if (state.aarligInntektFoerUttakBeloep < 0) {
+    if (isNaN(+aarligInntekt)) {
+      return 'Du må fylle ut et gyldig tall';
+    }
+    if (+aarligInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
     }
     return '';
@@ -40,10 +49,10 @@ const useErrorHandling = (state: State) => {
     let maanederError = '';
   
     if (state.gradertUttak?.grad) {
-      if (state.gradertUttak.uttakAlder?.aar === null) {
+      if (state.gradertUttak.uttaksalder?.aar === null) {
         aarError = 'Du må velge alder';
       }
-      if (state.gradertUttak.uttakAlder?.maaneder === null) {
+      if (state.gradertUttak.uttaksalder?.maaneder === null) {
         maanederError = 'Du må velge måned';
       }
     }
@@ -56,7 +65,10 @@ const useErrorHandling = (state: State) => {
       if(!state.gradertUttak.aarligInntektVsaPensjonBeloep) {
         return 'Du må fylle ut inntekt';
       }
-      if (state.gradertUttak.aarligInntektVsaPensjonBeloep && state.gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
+      if(isNaN(+state.gradertUttak.aarligInntektVsaPensjonBeloep)) {
+        return 'Du må fylle ut et gyldig tall';
+      }
+      if (state.gradertUttak.aarligInntektVsaPensjonBeloep && +state.gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
         return 'Inntekt kan ikke være negativ';
       }
     }
@@ -66,10 +78,13 @@ const useErrorHandling = (state: State) => {
   const validateHelPensjonInntekt = (): string => {
     const heltUttak = state.heltUttak;
     if (state.harInntektVsaHelPensjon === true) {
-      if (!heltUttak.aarligInntektVsaPensjon?.beloep) {
+      if (!heltUttak.aarligInntektVsaPensjon?.beloep || heltUttak.aarligInntektVsaPensjon?.beloep === '0') {
         return 'Du må fylle ut inntekt';
       }
-      if (heltUttak.aarligInntektVsaPensjon.beloep < 0) {
+      if (isNaN(+heltUttak.aarligInntektVsaPensjon.beloep)) {
+        return 'Du må fylle ut et gyldig tall';
+      }
+      if (+heltUttak.aarligInntektVsaPensjon.beloep < 0) {
         return 'Inntekt kan ikke være negativ';
       }
     }
@@ -96,7 +111,7 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar || state.foedselAar < 1900 || state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) || +state.foedselAar < 1900 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
@@ -111,8 +126,8 @@ const useErrorHandling = (state: State) => {
       errors.gradertAar = validateGradertUttak().aar
       errors.gradertMaaneder = validateGradertUttak().maaneder
       errors.gradertInntekt = validateGradertInntekt()
-      errors.heltUttakAar = state.heltUttak.uttakAlder?.aar === null ? 'Du må velge alder' : ''
-      errors.heltUttakMaaneder = state.heltUttak.uttakAlder?.maaneder === null ? 'Du må velge måned' : ''
+      errors.heltUttakAar = state.heltUttak.uttaksalder?.aar === null ? 'Du må velge alder' : ''
+      errors.heltUttakMaaneder = state.heltUttak.uttaksalder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()
       errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder().aar
       errors.heltUttakSluttAlderMaaneder = validateHeltUttakSluttAlder().maaneder
@@ -120,13 +135,13 @@ const useErrorHandling = (state: State) => {
     }
 
     if (step === 'EktefelleStep') {
-      errors.sivilstand = !state.sivilstand || state.sivilstand === '' ? 'Du må velge et alternativ' : ''
+      errors.sivilstand = !state.sivilstand ? 'Du må velge et alternativ' : ''
       errors.epsHarInntektOver2G = state.sivilstand !== 'UGIFT' && state.epsHarInntektOver2G === undefined ? 'Du må velge et alternativ' : ''
       errors.epsHarPensjon = state.sivilstand !== 'UGIFT' && state.epsHarPensjon === undefined ? 'Du må velge et alternativ' : ''
     }
 
     if (step === 'AFPStep') {
-      errors.simuleringType = state.simuleringType === undefined || state.simuleringType === '' ? 'Du må velge et alternativ' : ''
+      errors.simuleringstype = !state.simuleringstype ? 'Du må velge et alternativ' : ''
     }
 
     setErrorFields(errors)

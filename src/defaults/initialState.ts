@@ -1,7 +1,7 @@
 import { State } from '@/common'
 
 export const initialState: State = {
-  simuleringType: undefined,
+  simuleringstype: undefined,
   foedselAar: null,
   sivilstand: undefined,
   epsHarInntektOver2G: undefined,
@@ -9,17 +9,17 @@ export const initialState: State = {
   harBoddIUtland: null,
   harInntektVsaHelPensjon: null,
   utenlandsAntallAar: undefined,
-  inntektOver1GAntallAar: undefined,
-  aarligInntektFoerUttakBeloep: undefined,
+  inntektOver1GAntallAar: null,
+  aarligInntektFoerUttakBeloep: null,
   gradertUttak: {
     grad: null,
-    uttakAlder: {
+    uttaksalder: {
       aar: null,
       maaneder: null,
     },
   },
   heltUttak: {
-    uttakAlder: {
+    uttaksalder: {
       aar: null,
       maaneder: null,
     },

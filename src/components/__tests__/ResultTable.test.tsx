@@ -36,11 +36,11 @@ const mockContextValue = {
     ...initialState,
     gradertUttak: {
       grad: 50,
-      uttakAlder: { aar: 67, maaneder: 0 },
-      aarligInntektVsaPensjonBeloep: 50000,
+      uttaksalder: { aar: 67, maaneder: 0 },
+      aarligInntektVsaPensjonBeloep: '50000',
     },
     heltUttak: {
-      uttakAlder: { aar: 68, maaneder: 0 },
+      uttaksalder: { aar: 68, maaneder: 0 },
       aarligInntektVsaPensjon: {
         beloep: 100000,
         sluttAlder: { aar: 68, maaneder: 0 },

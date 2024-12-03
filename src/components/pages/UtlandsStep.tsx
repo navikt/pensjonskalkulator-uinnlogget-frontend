@@ -59,11 +59,11 @@ const UtlandsStep = () => {
                 className={stepStyles.textfieldAar}
                 onChange={(it) =>
                   handleFieldChange((draft) => {
-                    const value = parseInt(it.target.value)
-                    draft.utenlandsAntallAar = isNaN(value) ? undefined : value
+                    const value = it.target.value
+                    draft.utenlandsAntallAar =
+                      value.length > 0 ? value : undefined
                   }, 'utenlandsAntallAar')
                 }
-                type="number"
                 inputMode="numeric"
                 label="Hvor mange år har du bodd i utlandet?"
                 value={state.utenlandsAntallAar ?? ''}
