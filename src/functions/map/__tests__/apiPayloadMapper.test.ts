@@ -11,7 +11,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
         (draft) => {
           draft.harInntektVsaHelPensjon = false
           draft.heltUttak = {
-            uttakAlder: { aar: 67, maaneder: 0 },
+            uttaksalder: { aar: 67, maaneder: 0 },
             aarligInntektVsaPensjon: {
               beloep: '1000',
               sluttAlder: { aar: 67, maaneder: 0 },
@@ -29,7 +29,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
     test('Burde sluttalder for inntekt vsa. helt uttak nullstilles', async () => {
       const stateWithSluttAlderZero = produce(initialState, (draft) => {
         draft.heltUttak = {
-          uttakAlder: { aar: 67, maaneder: 0 },
+          uttaksalder: { aar: 67, maaneder: 0 },
           aarligInntektVsaPensjon: {
             beloep: '0',
             sluttAlder: { aar: null, maaneder: 1 },
@@ -49,7 +49,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
       draft.gradertUttak = {
         grad: null,
         aarligInntektVsaPensjonBeloep: '1000',
-        uttakAlder: { aar: 67, maaneder: 0 },
+        uttaksalder: { aar: 67, maaneder: 0 },
       }
     })
 
@@ -72,7 +72,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
       const stateWithStringBeloep = produce(initialState, (draft) => {
         draft.harInntektVsaHelPensjon = true
         draft.heltUttak = {
-          uttakAlder: { aar: 67, maaneder: 0 },
+          uttaksalder: { aar: 67, maaneder: 0 },
           aarligInntektVsaPensjon: {
             beloep: '1000',
             sluttAlder: { aar: 67, maaneder: 0 },
@@ -89,7 +89,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
         draft.harInntektVsaHelPensjon = true
         draft.gradertUttak = {
           grad: 50,
-          uttakAlder: { aar: 67, maaneder: 0 },
+          uttaksalder: { aar: 67, maaneder: 0 },
           aarligInntektVsaPensjonBeloep: undefined,
         }
       })
@@ -143,7 +143,7 @@ describe('Gitt at noen states behøver å oppdateres, ', () => {
         draft.gradertUttak = {
           grad: 50,
           aarligInntektVsaPensjonBeloep: '2000',
-          uttakAlder: { aar: 67, maaneder: 0 },
+          uttaksalder: { aar: 67, maaneder: 0 },
         }
       })
 
