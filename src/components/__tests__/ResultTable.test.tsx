@@ -42,7 +42,7 @@ const mockContextValue = {
     heltUttak: {
       uttaksalder: { aar: 68, maaneder: 0 },
       aarligInntektVsaPensjon: {
-        beloep: 100000,
+        beloep: '100000',
         sluttAlder: { aar: 68, maaneder: 0 },
       },
     },
@@ -188,9 +188,9 @@ describe('ResultTable Component', () => {
         ...initialState,
         gradertUttak: undefined,
         heltUttak: {
-          uttakAlder: { aar: 67, maaneder: 0 },
+          uttaksalder: { aar: 67, maaneder: 0 },
           aarligInntektVsaPensjon: {
-            beloep: 100000,
+            beloep: '100000',
             sluttAlder: { aar: 68, maaneder: 0 },
           },
         },

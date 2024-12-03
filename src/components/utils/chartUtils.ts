@@ -1,6 +1,6 @@
 import { Simuleringsresultat } from '@/common'
 
-const alignData = (
+export const alignData = (
   categories: number[],
   interval: number[],
   beloep: number | null

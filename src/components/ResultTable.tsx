@@ -22,8 +22,8 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     ? simuleringsresultat?.afpPrivat?.map((item) => item.beloep)
     : []
 
-  const gradertUttakAlder = state.gradertUttak?.uttakAlder?.aar
-  const heltUttakAar = state.heltUttak?.uttakAlder?.aar
+  const gradertUttakAlder = state.gradertUttak?.uttaksalder?.aar
+  const heltUttakAar = state.heltUttak?.uttaksalder?.aar
   const inntektVsaHelPensjonSluttalder =
     state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
 
@@ -43,10 +43,14 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     }
   }
 
-  const aarligbelopVsaGradertuttak =
-    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
-  const aarligbelopVsaHeltuttak =
-    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+  const aarligbelopVsaGradertuttak = state.gradertUttak
+    ?.aarligInntektVsaPensjonBeloep
+    ? parseInt(state.gradertUttak?.aarligInntektVsaPensjonBeloep)
+    : 0
+  const aarligbelopVsaHeltuttak = state.heltUttak?.aarligInntektVsaPensjon
+    ?.beloep
+    ? parseInt(state.heltUttak?.aarligInntektVsaPensjon?.beloep)
+    : 0
 
   return (
     <ReadMore data-testid="show-result-table" header="Tabell">
