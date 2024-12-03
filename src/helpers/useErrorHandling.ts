@@ -141,7 +141,7 @@ const useErrorHandling = (state: State) => {
     }
 
     if (step === 'AFPStep') {
-      errors.simuleringType = !state.simuleringstype ? 'Du må velge et alternativ' : ''
+      errors.simuleringstype = !state.simuleringstype ? 'Du må velge et alternativ' : ''
     }
 
     setErrorFields(errors)

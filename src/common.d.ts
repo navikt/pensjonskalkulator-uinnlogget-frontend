@@ -96,7 +96,7 @@ export type ErrorFields = {
   sivilstand?: string
   epsHarInntektOver2G?: string
   epsHarPensjon?: string
-  simuleringType?: string
+  simuleringstype?: string
 }
 export interface ContextForm {
   state: State

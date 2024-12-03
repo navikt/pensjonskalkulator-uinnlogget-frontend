@@ -39,7 +39,7 @@ const AFPStep = () => {
               draft.simuleringstype = it
             }, 'simuleringType')
           }
-          error={errorFields.simuleringType}
+          error={errorFields.simuleringstype}
         >
           <Radio value="ALDERSPENSJON_MED_AFP_PRIVAT">Ja</Radio>
           <Radio value="ALDERSPENSJON">Nei</Radio>

@@ -928,7 +928,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AFPStep')
         })
 
-        expect(errorFields.simuleringType).toBe('Du må velge et alternativ')
+        expect(errorFields.simuleringstype).toBe('Du må velge et alternativ')
       })
 
       test('Skal ikke gi feilmelding når simuleringType er valgt', () => {
@@ -942,7 +942,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AFPStep')
         })
 
-        expect(errorFields.simuleringType).toBe('')
+        expect(errorFields.simuleringstype).toBe('')
       })
     })
   })

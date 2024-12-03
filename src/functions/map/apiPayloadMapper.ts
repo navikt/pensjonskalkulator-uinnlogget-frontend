@@ -28,24 +28,22 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
   const mappedHeltUttak: PropType<APIPayload, 'heltUttak'> = {
     ...state.heltUttak,
     uttaksalder: state.heltUttak.uttaksalder as Alder,
-    aarligInntektVsaPensjon:
-      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder &&
-      s.harInntektVsaHelPensjon
-        ? {
-            beloep: !s.harInntektVsaHelPensjon
-              ? 0
-              : aarligInntektVsaPensjonBeloepNumber,
-            sluttAlder:
-              state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null
-                ? undefined
-                : {
-                    aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                      .aar as number,
-                    maaneder: state.heltUttak.aarligInntektVsaPensjon
-                      ?.sluttAlder.maaneder as number,
-                  },
-          }
-        : undefined,
+    aarligInntektVsaPensjon: s.harInntektVsaHelPensjon
+      ? {
+          beloep: !s.harInntektVsaHelPensjon
+            ? 0
+            : aarligInntektVsaPensjonBeloepNumber,
+          sluttAlder:
+            state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null
+              ? undefined
+              : {
+                  aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                    ?.aar as number,
+                  maaneder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                    ?.maaneder as number,
+                },
+        }
+      : undefined,
   }
   return {
     ...state,
