@@ -134,12 +134,6 @@ export const getChartOptions = (input: {
       inntektVsaHelPensjonBeloep
     )
 
-    /* chartOptions.series.push({
-      name: 'Inntekt ved siden av hel pensjon',
-      data: [null, ...alignedInntektVsaHelPensjonData],
-      color: 'var(--a-green-400)',
-    }) */
-
     chartOptions.series[inntektPlacement].data = chartOptions.series[
       inntektPlacement
     ].data.map((value, index) =>
@@ -159,16 +153,10 @@ export const getChartOptions = (input: {
       gradertUttakInntekt
     )
 
-    /* chartOptions.series.push({
-      name: 'Inntekt ved siden av gradert pensjon',
-      data: [null, ...alignedGradertUttakData],
-      color: 'var(--a-gray-500)',
-    }) */
-
     chartOptions.series[inntektPlacement].data = chartOptions.series[
       inntektPlacement
     ].data.map((value, index) =>
-      value !== null ? value : (alignedGradertUttakData[index] ?? value)
+      value !== null ? value : alignedGradertUttakData[index]
     )
   }
 
