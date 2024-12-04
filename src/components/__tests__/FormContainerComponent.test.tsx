@@ -26,7 +26,9 @@ describe('FormContainer component', () => {
 
   test('Skal rendre komponenten', () => {
     renderComponent()
-    expect(screen.getByText('Pensjonskalkulator')).toBeInTheDocument()
+    expect(
+      screen.getByText('Uinnlogget pensjonskalkulator')
+    ).toBeInTheDocument()
   })
 
   test('Skal rendre FormProgressComponent med riktige props', () => {

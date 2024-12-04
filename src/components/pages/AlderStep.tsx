@@ -28,6 +28,7 @@ const AlderStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
+        <h2 className={stepStyles.underOverskrift}>Alder og yrkesaktivitet</h2>
         <Box maxWidth={{ md: '30%', sm: '8rem' }}>
           <TextField
             className={stepStyles.textfieldAar}

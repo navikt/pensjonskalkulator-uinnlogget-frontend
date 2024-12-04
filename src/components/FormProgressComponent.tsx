@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormProgress } from '@navikt/ds-react'
+import stepStyles from './styles/stepStyles.module.css'
 
 interface FormProgressComponentProps {
   totalSteps: number
@@ -11,15 +12,16 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
   activeStep,
 }) => {
   const steps = [
-    'Alder',
+    'Alder og yrkesaktivitet',
     'Utland',
     'Inntekt og alderspensjon',
-    'Ektefelle',
-    'AFP',
+    'Sivilstand',
+    'Avtalefestet pensjon (AFP)',
   ]
 
   return (
     <FormProgress
+      className={stepStyles.formProgress}
       totalSteps={totalSteps}
       activeStep={activeStep + 1}
       data-testid="form-progress"

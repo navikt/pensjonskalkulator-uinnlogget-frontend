@@ -58,7 +58,7 @@ const InntektStep = () => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2>Inntekt og alderspensjon</h2>
+      <h2 className={stepStyles.underOverskrift}>Inntekt og alderspensjon</h2>
       <div className="w-30">
         <TextField
           value={state.aarligInntektFoerUttakBeloep ?? ''}

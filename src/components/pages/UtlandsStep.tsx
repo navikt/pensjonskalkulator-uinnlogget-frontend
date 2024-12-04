@@ -30,7 +30,7 @@ const UtlandsStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
-        <h2>Utland</h2>
+        <h2 className={stepStyles.underOverskrift}>Utland</h2>
         <div>
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"
