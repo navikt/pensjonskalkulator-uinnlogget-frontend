@@ -34,6 +34,7 @@ const defaultFormPageProps = {
 const mockContextValue = {
   state: {
     ...initialState,
+    aarligInntektFoerUttakBeloep: '500000',
     gradertUttak: {
       grad: 50,
       uttaksalder: { aar: 67, maaneder: 0 },
@@ -83,7 +84,7 @@ describe('ResultTable Component', () => {
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(3) // 1 header row + 2 data rows
+    expect(rows).toHaveLength(4) // 1 header row + 3 data rows
   })
 
   test('Burde vise headers med riktig tittel', () => {
@@ -112,7 +113,7 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
     const rows = screen.getAllByRole('row')
 
-    const heltRow = rows[2]
+    const heltRow = rows[3]
     expect(heltRow).toHaveTextContent('68')
     expect(heltRow).toHaveTextContent('210000')
     expect(heltRow).toHaveTextContent('55000')
@@ -130,7 +131,7 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
     const rows = screen.getAllByRole('row')
 
-    const gradertRow = rows[1]
+    const gradertRow = rows[2]
     expect(gradertRow).toHaveTextContent('67')
     expect(gradertRow).toHaveTextContent('200000')
     expect(gradertRow).toHaveTextContent('50000')
@@ -138,7 +139,7 @@ describe('ResultTable Component', () => {
     expect(gradertRow).toHaveTextContent('300000')
   })
 
-  test('Burde sette 0 som fallback dersom gradert uttak er undefined', () => {
+  test('Burde sette rendre tabellen med riktige verdier dersom gradert uttak er undefined', () => {
     const mockContextValueWithoutGradertUttak = {
       ...mockContextValue,
       state: {
@@ -156,21 +157,21 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
 
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(3)
+    expect(rows).toHaveLength(4)
 
-    const gradertRow = rows[1]
+    const gradertRow = rows[2]
     expect(gradertRow).toHaveTextContent('67')
     expect(gradertRow).toHaveTextContent('200000')
     expect(gradertRow).toHaveTextContent('50000')
     expect(gradertRow).toHaveTextContent('0')
     expect(gradertRow).toHaveTextContent('250000')
 
-    const heltRow = rows[2]
+    const heltRow = rows[3]
     expect(heltRow).toHaveTextContent('68')
     expect(heltRow).toHaveTextContent('210000')
     expect(heltRow).toHaveTextContent('55000')
-    expect(heltRow).toHaveTextContent('0')
-    expect(heltRow).toHaveTextContent('265000')
+    expect(heltRow).toHaveTextContent('100000')
+    expect(heltRow).toHaveTextContent('365000')
   })
 
   test('Burde sette riktig sluttalder for inntekt vsa. hel pensjon som ikke er livsvarig', () => {
@@ -239,7 +240,7 @@ describe('ResultTable Component', () => {
 
     const rows = screen.getAllByRole('row')
 
-    const heltRow = rows[2]
+    const heltRow = rows[3]
     expect(heltRow).toHaveTextContent('68')
     expect(heltRow).toHaveTextContent('210000')
     expect(heltRow).toHaveTextContent('55000')
@@ -264,14 +265,21 @@ describe('ResultTable Component', () => {
 
     const rows = screen.getAllByRole('row')
 
-    const gradertRow = rows[1]
+    const inntektRow = rows[1]
+    expect(inntektRow).toHaveTextContent('66')
+    expect(inntektRow).toHaveTextContent('0')
+    expect(inntektRow).toHaveTextContent('0')
+    expect(inntektRow).toHaveTextContent('500000')
+    expect(inntektRow).toHaveTextContent('500000')
+
+    const gradertRow = rows[2]
     expect(gradertRow).toHaveTextContent('67')
     expect(gradertRow).toHaveTextContent('200000')
     expect(gradertRow).toHaveTextContent('0')
     expect(gradertRow).toHaveTextContent('50000')
     expect(gradertRow).toHaveTextContent('250000')
 
-    const heltRow = rows[2]
+    const heltRow = rows[3]
     expect(heltRow).toHaveTextContent('68')
     expect(heltRow).toHaveTextContent('210000')
     expect(heltRow).toHaveTextContent('0')

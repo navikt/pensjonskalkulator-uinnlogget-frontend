@@ -23,25 +23,25 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     ? simuleringsresultat?.afpPrivat?.map((item) => item.beloep)
     : []
 
-  const gradertUttakAlder = state.gradertUttak?.uttaksalder?.aar
-  const heltUttakAar = state.heltUttak?.uttaksalder?.aar
+  const gradertUttaksalder = state.gradertUttak?.uttaksalder?.aar
+  const heltUttakAar = state.heltUttak.uttaksalder.aar!
   const inntektVsaHelPensjonSluttalder =
     state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
 
   const inntektVsaHelPensjonInterval: number[] = []
   const inntektVsaGradertUttakInterval: number[] = []
-  if (gradertUttakAlder && heltUttakAar) {
-    for (let i = gradertUttakAlder; i < heltUttakAar; i++) {
+  if (gradertUttaksalder) {
+    for (let i = gradertUttaksalder; i < heltUttakAar; i++) {
       inntektVsaGradertUttakInterval.push(i)
     }
+  }
 
-    const maxAar = inntektVsaHelPensjonSluttalder
-      ? inntektVsaHelPensjonSluttalder
-      : pensjonsalder[pensjonsalder.length - 1]
+  const maxAar = inntektVsaHelPensjonSluttalder
+    ? inntektVsaHelPensjonSluttalder
+    : pensjonsalder[pensjonsalder.length - 1]
 
-    for (let i = heltUttakAar; i <= maxAar; i++) {
-      inntektVsaHelPensjonInterval.push(i)
-    }
+  for (let i = heltUttakAar; i <= maxAar; i++) {
+    inntektVsaHelPensjonInterval.push(i)
   }
 
   const aarligbelopVsaGradertuttak = state.gradertUttak
@@ -72,6 +72,19 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          <Table.Row>
+            <Table.DataCell>
+              {pensjonsalder.length > 0 ? pensjonsalder[0] - 1 : 0}
+            </Table.DataCell>
+            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>
+              {state.aarligInntektFoerUttakBeloep}
+            </Table.DataCell>
+            <Table.DataCell>
+              {state.aarligInntektFoerUttakBeloep}
+            </Table.DataCell>
+          </Table.Row>
           {pensjonsalder.map((alder, index) => (
             <Table.Row key={index}>
               <Table.DataCell>{alder}</Table.DataCell>
