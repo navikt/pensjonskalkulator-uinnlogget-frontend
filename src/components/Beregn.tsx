@@ -56,13 +56,12 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
       >
         <h1>Resultat</h1>
         <>
-          <ResultTable simuleringsresultat={simuleringsresultat} />
-
           <HighchartsReact
             highcharts={Highcharts}
             options={chartOptions}
             containerProps={{ 'data-testid': 'highcharts-react' }}
           />
+          <ResultTable simuleringsresultat={simuleringsresultat} />
         </>
       </Box>
     </div>

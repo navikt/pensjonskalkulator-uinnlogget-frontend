@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { FormContext } from '@/contexts/context'
 import { Simuleringsresultat } from '@/common'
 import { ReadMore, Table } from '@navikt/ds-react'
@@ -9,6 +9,7 @@ interface Props {
 
 const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const pensjonsalder = simuleringsresultat
     ? simuleringsresultat.alderspensjon.map((item) => item.alder)
@@ -53,7 +54,13 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     : 0
 
   return (
-    <ReadMore data-testid="show-result-table" header="Tabell">
+    <ReadMore
+      data-testid="show-result-table"
+      header={
+        isOpen ? 'Lukk tabell av beregningen' : 'Vis tabell av beregningen'
+      }
+      onClick={() => setIsOpen(!isOpen)}
+    >
       <Table data-testid="result-table">
         <Table.Header>
           <Table.Row>
