@@ -1,6 +1,6 @@
 import { Simuleringsresultat } from '@/common'
 
-const alignData = (
+export const alignData = (
   categories: number[],
   interval: number[],
   beloep: number | null
@@ -53,12 +53,11 @@ export const getChartOptions = (input: {
     : []
   const afpPrivatData =
     simuleringsresultat?.afpPrivat?.map((item) => item.beloep) ?? []
-  //Nå mappes categories til alder, og vi får en liste av alder, men på første element så skal vi ha categories[0] - 1
+
   const categories = simuleringsresultat
     ? simuleringsresultat.alderspensjon.map((item) => item.alder)
     : []
 
-  // Legger til et ekstra element for Pensjonsgivende Inntekt i begynnelsen av categories
   const extendedCategories =
     categories.length > 0 ? [categories[0] - 1, ...categories] : []
 
@@ -117,6 +116,8 @@ export const getChartOptions = (input: {
     })
   }
 
+  const inntektPlacement = afpPrivatData.length !== 0 ? 1 : 0
+
   if (inntektVsaHelPensjonBeloep !== 0 || inntektVsaHelPensjonBeloep) {
     const maxAar = inntektVsaHelPensjonSluttalder
       ? inntektVsaHelPensjonSluttalder
@@ -128,16 +129,16 @@ export const getChartOptions = (input: {
     }
 
     const alignedInntektVsaHelPensjonData = alignData(
-      categories,
+      extendedCategories,
       inntektVsaHelPensjonInterval,
       inntektVsaHelPensjonBeloep
     )
 
-    chartOptions.series.push({
-      name: 'Inntekt ved siden av hel pensjon',
-      data: [null, ...alignedInntektVsaHelPensjonData],
-      color: 'var(--a-green-400)',
-    })
+    chartOptions.series[inntektPlacement].data = chartOptions.series[
+      inntektPlacement
+    ].data.map((value, index) =>
+      value !== null ? value : alignedInntektVsaHelPensjonData[index]
+    )
   }
 
   if (gradertUttakInntekt !== 0 || gradertUttakInntekt) {
@@ -147,16 +148,16 @@ export const getChartOptions = (input: {
     }
 
     const alignedGradertUttakData = alignData(
-      categories,
+      extendedCategories,
       gradertUttakInterval,
       gradertUttakInntekt
     )
 
-    chartOptions.series.push({
-      name: 'Inntekt ved siden av gradert pensjon',
-      data: [null, ...alignedGradertUttakData],
-      color: 'var(--a-gray-500)',
-    })
+    chartOptions.series[inntektPlacement].data = chartOptions.series[
+      inntektPlacement
+    ].data.map((value, index) =>
+      value !== null ? value : alignedGradertUttakData[index]
+    )
   }
 
   return chartOptions

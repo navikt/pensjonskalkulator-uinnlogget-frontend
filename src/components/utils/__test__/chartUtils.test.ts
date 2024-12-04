@@ -1,4 +1,4 @@
-import { getChartOptions } from '../chartUtils'
+import { alignData, getChartOptions } from '../chartUtils'
 
 describe('getChartOptions', () => {
   const heltUttakAar = 67
@@ -52,23 +52,13 @@ describe('getChartOptions', () => {
         },
         {
           name: 'Pensjonsgivende inntekt',
-          data: [500000, null, null, null, null],
+          data: [500000, 200000, 200000, 100000, 100000],
           color: 'var(--a-gray-500)',
         },
         {
           name: 'Alderspensjon',
           data: [null, 180000, 190000, 200000, 210000],
           color: 'var(--a-deepblue-500)',
-        },
-        {
-          name: 'Inntekt ved siden av hel pensjon',
-          data: [null, null, null, 100000, 100000],
-          color: 'var(--a-green-400)',
-        },
-        {
-          name: 'Inntekt ved siden av gradert pensjon',
-          data: [null, 200000, 200000, null, null],
-          color: 'var(--a-gray-500)',
         },
       ])
     })
@@ -84,17 +74,13 @@ describe('getChartOptions', () => {
       })
 
       const filteredInntektVsaHelPensjonData = [
-        null,
-        null,
-        null,
-        100000,
-        100000,
+        500000, 200000, 200000, 100000, 100000,
       ]
 
       expect(chartOptions.series).toContainEqual({
-        name: 'Inntekt ved siden av hel pensjon',
+        name: 'Pensjonsgivende inntekt',
         data: filteredInntektVsaHelPensjonData,
-        color: 'var(--a-green-400)',
+        color: 'var(--a-gray-500)',
       })
     })
   })
@@ -116,6 +102,46 @@ describe('getChartOptions', () => {
       })
     })
 
+    describe('Når gradert uttak er definert', () => {
+      it('Burde serien for "Pensjonsgivende" inntekt oppdateres', () => {
+        const chartOptions = getChartOptions({
+          simuleringsresultat: mockSimuleringsresultat,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder: undefined,
+          inntektVsaHelPensjonBeloep,
+          aarligInntektFoerUttakBeloep,
+          gradertUttakAlder,
+          gradertUttakInntekt,
+        })
+
+        chartOptions.series[1].data = [null, null, null, null, null]
+
+        const gradertUttakInterval = []
+        for (let i = gradertUttakAlder; i < heltUttakAar; i++) {
+          gradertUttakInterval.push(i)
+        }
+
+        const alignedGradertUttakData = alignData(
+          [64, 65, 66, 67, 68],
+          gradertUttakInterval,
+          gradertUttakInntekt
+        )
+
+        chartOptions.series[1].data = chartOptions.series[1].data.map(
+          (value, index) =>
+            value !== null ? value : (alignedGradertUttakData[index] ?? value)
+        )
+
+        expect(chartOptions.series[1].data).toEqual([
+          null,
+          200000,
+          200000,
+          null,
+          null,
+        ])
+      })
+    })
+
     describe('Når sluttalder for inntakt vsa. helt uttak er undefined', () => {
       it('Burde intervallet til beløpet være like langt som uttaksalderen (livsvarig inntekt)', () => {
         const chartOptions = getChartOptions({
@@ -129,12 +155,13 @@ describe('getChartOptions', () => {
         })
 
         expect(chartOptions.series).toContainEqual({
-          name: 'Inntekt ved siden av hel pensjon',
-          data: [null, null, null, 100000, 100000],
-          color: 'var(--a-green-400)',
+          name: 'Pensjonsgivende inntekt',
+          data: [500000, 200000, 200000, 100000, 100000],
+          color: 'var(--a-gray-500)',
         })
       })
     })
+
     describe('Når afpPrivat er tom', () => {
       it('Burde data for serien "AFP Privat" være tom', () => {
         const emptySimuleringsresultat = {
@@ -156,23 +183,13 @@ describe('getChartOptions', () => {
         expect(chartOptions.series).toEqual([
           {
             name: 'Pensjonsgivende inntekt',
-            data: [500000, null, null, null, null],
+            data: [500000, 200000, 200000, 100000, 100000],
             color: 'var(--a-gray-500)',
           },
           {
             name: 'Alderspensjon',
             data: [null, 180000, 190000, 200000, 210000],
             color: 'var(--a-deepblue-500)',
-          },
-          {
-            name: 'Inntekt ved siden av hel pensjon',
-            data: [null, null, null, 100000, 100000],
-            color: 'var(--a-green-400)',
-          },
-          {
-            name: 'Inntekt ved siden av gradert pensjon',
-            data: [null, 200000, 200000, null, null],
-            color: 'var(--a-gray-500)',
           },
         ])
       })
@@ -211,11 +228,6 @@ describe('getChartOptions', () => {
             data: [null],
             color: 'var(--a-deepblue-500)',
           },
-          {
-            name: 'Inntekt ved siden av hel pensjon',
-            data: [null],
-            color: 'var(--a-green-400)',
-          },
         ])
       })
     })
@@ -242,16 +254,6 @@ describe('getChartOptions', () => {
             name: 'Alderspensjon',
             data: [null],
             color: 'var(--a-deepblue-500)',
-          },
-          {
-            name: 'Inntekt ved siden av hel pensjon',
-            data: [null],
-            color: 'var(--a-green-400)',
-          },
-          {
-            name: 'Inntekt ved siden av gradert pensjon',
-            data: [null],
-            color: 'var(--a-gray-500)',
           },
         ])
       })

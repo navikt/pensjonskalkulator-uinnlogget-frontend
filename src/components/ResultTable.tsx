@@ -1,89 +1,105 @@
-import { useContext, useMemo } from 'react'
+import { useContext, useState } from 'react'
 import { FormContext } from '@/contexts/context'
 import { Simuleringsresultat } from '@/common'
-import { Table } from '@navikt/ds-react'
+import { ReadMore, Table } from '@navikt/ds-react'
 
-interface BeregnProps {
-  alderspensjon: Simuleringsresultat['alderspensjon']
-  afpPrivat: Simuleringsresultat['afpPrivat']
+interface Props {
+  simuleringsresultat?: Simuleringsresultat
 }
 
-const ResultTable: React.FC<BeregnProps> = ({ alderspensjon, afpPrivat }) => {
+const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state } = useContext(FormContext)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  const { alderspensjonHel, alderspensjonGradert } = useMemo(() => {
-    const alderspensjonHel =
-      alderspensjon.find(
-        (item) => item.alder === state.heltUttak.uttaksalder?.aar
-      )?.beloep || 0
-    const alderspensjonGradert =
-      alderspensjon.find(
-        (item) => item.alder === state.gradertUttak?.uttaksalder?.aar
-      )?.beloep || 0
-    return { alderspensjonHel, alderspensjonGradert }
-  }, [alderspensjon])
+  const pensjonsalder = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.alder)
+    : []
 
-  const { afpPrivatHel, afpPrivatGradert } = useMemo(() => {
-    const afpPrivatHel =
-      afpPrivat?.find((item) => item.alder === state.heltUttak.uttaksalder?.aar)
-        ?.beloep || 0
-    const afpPrivatGradert =
-      afpPrivat?.find(
-        (item) => item.alder === state.gradertUttak?.uttaksalder?.aar
-      )?.beloep || 0
-    return { afpPrivatHel, afpPrivatGradert }
-  }, [afpPrivat])
+  const alderspensjonData = simuleringsresultat
+    ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
+    : []
 
-  const aarligbelopVsaGradertuttak =
-    state.gradertUttak?.aarligInntektVsaPensjonBeloep || 0
-  const aarligbelopVsaHeltuttak =
-    state.heltUttak?.aarligInntektVsaPensjon?.beloep || 0
+  const afpPrivatData = simuleringsresultat
+    ? simuleringsresultat?.afpPrivat?.map((item) => item.beloep)
+    : []
+
+  const gradertUttakAlder = state.gradertUttak?.uttaksalder?.aar
+  const heltUttakAar = state.heltUttak?.uttaksalder?.aar
+  const inntektVsaHelPensjonSluttalder =
+    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
+
+  const inntektVsaHelPensjonInterval: number[] = []
+  const inntektVsaGradertUttakInterval: number[] = []
+  if (gradertUttakAlder && heltUttakAar) {
+    for (let i = gradertUttakAlder; i < heltUttakAar; i++) {
+      inntektVsaGradertUttakInterval.push(i)
+    }
+
+    const maxAar = inntektVsaHelPensjonSluttalder
+      ? inntektVsaHelPensjonSluttalder
+      : pensjonsalder[pensjonsalder.length - 1]
+
+    for (let i = heltUttakAar; i <= maxAar; i++) {
+      inntektVsaHelPensjonInterval.push(i)
+    }
+  }
+
+  const aarligbelopVsaGradertuttak = state.gradertUttak
+    ?.aarligInntektVsaPensjonBeloep
+    ? parseInt(state.gradertUttak?.aarligInntektVsaPensjonBeloep)
+    : 0
+  const aarligbelopVsaHeltuttak = state.heltUttak?.aarligInntektVsaPensjon
+    ?.beloep
+    ? parseInt(state.heltUttak?.aarligInntektVsaPensjon?.beloep)
+    : 0
 
   return (
-    <Table data-testid="result-table">
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>
-          <Table.HeaderCell scope="col">Fra folketrygden</Table.HeaderCell>
-          <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
-          <Table.HeaderCell scope="col">Arbeidsinntekt</Table.HeaderCell>
-          <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {aarligbelopVsaGradertuttak !== 0 && (
-          <Table.Row key={state.gradertUttak?.uttaksalder?.aar}>
-            <Table.HeaderCell scope="row">
-              Ved {state.gradertUttak?.uttaksalder?.aar}
-              {' ('}
-              {state.gradertUttak?.grad}
-              {' %)'}
-            </Table.HeaderCell>
-            <Table.DataCell>{alderspensjonGradert}</Table.DataCell>
-            <Table.DataCell>{afpPrivatGradert}</Table.DataCell>
-            <Table.DataCell>
-              {state.gradertUttak?.aarligInntektVsaPensjonBeloep}
-            </Table.DataCell>
-            <Table.DataCell>
-              {alderspensjonGradert +
-                afpPrivatGradert +
-                +aarligbelopVsaGradertuttak}
-            </Table.DataCell>
+    <ReadMore
+      data-testid="show-result-table"
+      header={
+        isOpen ? 'Lukk tabell av beregningen' : 'Vis tabell av beregningen'
+      }
+      onClick={() => setIsOpen(!isOpen)}
+    >
+      <Table data-testid="result-table">
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Fra folketrygden</Table.HeaderCell>
+            <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Arbeidsinntekt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
           </Table.Row>
-        )}
-        <Table.Row key={state.heltUttak.uttaksalder?.aar}>
-          <Table.HeaderCell scope="row">
-            Ved {state.heltUttak.uttaksalder?.aar} {'(100 %)'}
-          </Table.HeaderCell>
-          <Table.DataCell>{alderspensjonHel}</Table.DataCell>
-          <Table.DataCell>{afpPrivatHel}</Table.DataCell>
-          <Table.DataCell>{aarligbelopVsaHeltuttak}</Table.DataCell>
-          <Table.DataCell>
-            {alderspensjonHel + afpPrivatHel + +aarligbelopVsaHeltuttak}
-          </Table.DataCell>
-        </Table.Row>
-      </Table.Body>
-    </Table>
+        </Table.Header>
+        <Table.Body>
+          {pensjonsalder.map((alder, index) => (
+            <Table.Row key={index}>
+              <Table.DataCell>{alder}</Table.DataCell>
+              <Table.DataCell>{alderspensjonData[index]}</Table.DataCell>
+              <Table.DataCell>
+                {(afpPrivatData ? afpPrivatData[index] : 0) || 0}
+              </Table.DataCell>
+              <Table.DataCell>
+                {inntektVsaGradertUttakInterval.includes(alder)
+                  ? aarligbelopVsaGradertuttak
+                  : inntektVsaHelPensjonInterval.includes(alder)
+                    ? aarligbelopVsaHeltuttak
+                    : 0}
+              </Table.DataCell>
+              <Table.DataCell>
+                {alderspensjonData[index] +
+                  ((afpPrivatData ? afpPrivatData[index] : 0) || 0) +
+                  (inntektVsaGradertUttakInterval.includes(alder)
+                    ? aarligbelopVsaGradertuttak
+                    : inntektVsaHelPensjonInterval.includes(alder)
+                      ? aarligbelopVsaHeltuttak
+                      : 0)}
+              </Table.DataCell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </ReadMore>
   )
 }
 
