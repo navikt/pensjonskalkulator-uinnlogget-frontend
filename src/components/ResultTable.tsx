@@ -72,6 +72,17 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
+          <Table.Row>
+            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>
+              {state.aarligInntektFoerUttakBeloep}
+            </Table.DataCell>
+            <Table.DataCell>
+              {state.aarligInntektFoerUttakBeloep}
+            </Table.DataCell>
+          </Table.Row>
           {pensjonsalder.map((alder, index) => (
             <Table.Row key={index}>
               <Table.DataCell>{alder}</Table.DataCell>
