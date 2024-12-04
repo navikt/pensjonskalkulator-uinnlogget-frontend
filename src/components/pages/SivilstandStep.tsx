@@ -7,12 +7,13 @@ import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
+import stepStyles from '../styles/stepStyles.module.css'
 
 interface FormPageProps {
   grunnbelop?: number
 }
 
-const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
+const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
@@ -22,7 +23,7 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
   })
 
   const onSubmit = () => {
-    const hasErrors = validateFields('EktefelleStep')
+    const hasErrors = validateFields('SivilstandStep')
     if (!hasErrors) {
       formPageProps.goToNext()
       return true
@@ -32,31 +33,32 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <Substep>
-        <Select
-          value={state.sivilstand}
-          style={{ width: '5rem' }}
-          label={'Hva er din sivilstand?'}
-          onChange={(it) =>
-            handleFieldChange((draft) => {
-              draft.sivilstand =
-                it.target.value === ''
-                  ? undefined
-                  : (it.target.value as PropType<State, 'sivilstand'>)
-              if (draft.sivilstand === 'UGIFT') {
-                draft.epsHarInntektOver2G = undefined
-                draft.epsHarPensjon = undefined
-              }
-            }, 'sivilstand')
-          }
-          error={errorFields.sivilstand}
-        >
-          <option value={''}>----</option>
-          <option value={'UGIFT'}>Ugift</option>
-          <option value={'GIFT'}>Gift</option>
-          <option value={'SAMBOER'}>Samboer</option>
-        </Select>
-      </Substep>
+      <h2 className={stepStyles.underOverskrift}>Sivilstand</h2>
+      {/* <Substep> */}
+      <Select
+        value={state.sivilstand}
+        style={{ width: '5rem' }}
+        label={'Hva er din sivilstand?'}
+        onChange={(it) =>
+          handleFieldChange((draft) => {
+            draft.sivilstand =
+              it.target.value === ''
+                ? undefined
+                : (it.target.value as PropType<State, 'sivilstand'>)
+            if (draft.sivilstand === 'UGIFT') {
+              draft.epsHarInntektOver2G = undefined
+              draft.epsHarPensjon = undefined
+            }
+          }, 'sivilstand')
+        }
+        error={errorFields.sivilstand}
+      >
+        <option value={''}>----</option>
+        <option value={'UGIFT'}>Ugift</option>
+        <option value={'GIFT'}>Gift</option>
+        <option value={'SAMBOER'}>Samboer</option>
+      </Select>
+      {/* </Substep> */}
       {state.sivilstand && state.sivilstand !== 'UGIFT' && (
         <>
           <Substep>
@@ -100,4 +102,4 @@ const EktefelleStep = ({ grunnbelop }: FormPageProps) => {
   )
 }
 
-export default EktefelleStep
+export default SivilstandStep

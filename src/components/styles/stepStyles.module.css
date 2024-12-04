@@ -18,3 +18,15 @@
 .textfieldInntekt input {
   width: 16rem;
 }
+
+.formProgress {
+  margin-bottom: 2rem;
+}
+
+.overskrift {
+  font-size: var(--a-font-size-heading-xlarge);
+}
+.underOverskrift {
+  font-size: var(--a-font-size-heading-medium);
+  margin-bottom: 1.5rem;
+}

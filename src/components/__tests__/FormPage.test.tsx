@@ -12,7 +12,7 @@ const mockPagesDict = {
   alder: <div key="alder">Mocked AlderStep</div>,
   utland: <div key="utland">Mocked UtlandsStep</div>,
   inntekt: <div key="inntekt">Mocked InntektStep</div>,
-  ektefelle: <div key="ektefelle">Mocked EktefelleStep</div>,
+  sivilstand: <div key="sivilstand">Mocked SivilstandStep</div>,
   afp: <div key="afp">Mocked AFPStep</div>,
 }
 

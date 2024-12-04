@@ -13,7 +13,7 @@ describe('useErrorHandling', () => {
         | 'AlderStep'
         | 'UtlandsStep'
         | 'InntektStep'
-        | 'EktefelleStep'
+        | 'SivilstandStep'
         | 'AFPStep'
     ) => boolean
     clearError: (field: string) => void
@@ -820,7 +820,7 @@ describe('useErrorHandling', () => {
     })
   })
 
-  describe('Validering for EktefelleStep', () => {
+  describe('Validering for SivilstandStep', () => {
     describe('sivilstand', () => {
       test('Skal gi feilmelding når sivilstand ikke er satt', () => {
         const state = {
@@ -830,7 +830,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.sivilstand).toBe('Du må velge et alternativ')
@@ -844,7 +844,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.sivilstand).toBe('')
@@ -861,7 +861,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.epsHarInntektOver2G).toBe(
@@ -878,7 +878,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.epsHarInntektOver2G).toBe('')
@@ -895,7 +895,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.epsHarPensjon).toBe('Du må velge et alternativ')
@@ -910,7 +910,7 @@ describe('useErrorHandling', () => {
         renderWithState(state)
 
         act(() => {
-          handlers.validateFields('EktefelleStep')
+          handlers.validateFields('SivilstandStep')
         })
 
         expect(errorFields.epsHarPensjon).toBe('')

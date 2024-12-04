@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Box } from '@navikt/ds-react'
 import FormProgressComponent from './FormProgressComponent'
+import stepStyles from './styles/stepStyles.module.css'
 
 interface FormContainerComponentProps {
   totalSteps: number
@@ -21,9 +22,7 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
     padding={'4'}
     borderRadius={'large'}
   >
-    <Box paddingBlock={'4'} style={{ fontWeight: 'bold', fontSize: '2rem' }}>
-      Pensjonskalkulator
-    </Box>
+    <h1 className={stepStyles.overskrift}>Uinnlogget pensjonskalkulator</h1>
     <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
     {step}
   </Box>
