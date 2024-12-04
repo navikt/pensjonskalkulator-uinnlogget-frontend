@@ -23,15 +23,15 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     ? simuleringsresultat?.afpPrivat?.map((item) => item.beloep)
     : []
 
-  const gradertUttakAlder = state.gradertUttak?.uttaksalder?.aar
+  const gradertUttaksalder = state.gradertUttak?.uttaksalder?.aar
   const heltUttakAar = state.heltUttak.uttaksalder.aar!
   const inntektVsaHelPensjonSluttalder =
     state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
 
   const inntektVsaHelPensjonInterval: number[] = []
   const inntektVsaGradertUttakInterval: number[] = []
-  if (gradertUttakAlder) {
-    for (let i = gradertUttakAlder; i < heltUttakAar; i++) {
+  if (gradertUttaksalder) {
+    for (let i = gradertUttaksalder; i < heltUttakAar; i++) {
       inntektVsaGradertUttakInterval.push(i)
     }
   }
