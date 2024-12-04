@@ -139,7 +139,7 @@ describe('ResultTable Component', () => {
     expect(gradertRow).toHaveTextContent('300000')
   })
 
-  test('Burde sette 0 som fallback dersom gradert uttak er undefined', () => {
+  test('Burde sette rendre tabellen med riktige verdier dersom gradert uttak er undefined', () => {
     const mockContextValueWithoutGradertUttak = {
       ...mockContextValue,
       state: {
@@ -170,8 +170,8 @@ describe('ResultTable Component', () => {
     expect(heltRow).toHaveTextContent('68')
     expect(heltRow).toHaveTextContent('210000')
     expect(heltRow).toHaveTextContent('55000')
-    expect(heltRow).toHaveTextContent('0')
-    expect(heltRow).toHaveTextContent('265000')
+    expect(heltRow).toHaveTextContent('100000')
+    expect(heltRow).toHaveTextContent('365000')
   })
 
   test('Burde sette riktig sluttalder for inntekt vsa. hel pensjon som ikke er livsvarig', () => {
