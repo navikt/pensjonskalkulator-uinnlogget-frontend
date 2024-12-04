@@ -266,7 +266,7 @@ describe('ResultTable Component', () => {
     const rows = screen.getAllByRole('row')
 
     const inntektRow = rows[1]
-    //expect(inntektRow).toHaveTextContent('66')
+    expect(inntektRow).toHaveTextContent('66')
     expect(inntektRow).toHaveTextContent('0')
     expect(inntektRow).toHaveTextContent('0')
     expect(inntektRow).toHaveTextContent('500000')

@@ -73,7 +73,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
         </Table.Header>
         <Table.Body>
           <Table.Row>
-            <Table.DataCell>0</Table.DataCell>
+            <Table.DataCell>
+              {pensjonsalder.length > 0 ? pensjonsalder[0] - 1 : 0}
+            </Table.DataCell>
             <Table.DataCell>0</Table.DataCell>
             <Table.DataCell>0</Table.DataCell>
             <Table.DataCell>
