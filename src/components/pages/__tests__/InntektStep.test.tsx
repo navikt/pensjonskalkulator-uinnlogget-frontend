@@ -8,6 +8,7 @@ import {
   renderMockedComponent,
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
+import { axe } from 'jest-axe'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -50,6 +51,11 @@ beforeEach(() => {
 })
 
 describe('InntektStep Component', () => {
+  test('Burde ikke ha a11y violations', async () => {
+    const { container } = renderMockedComponent(InntektStep, context)
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   test('Burde rendre komponenten', () => {
     renderMockedComponent(InntektStep, context)
     expect(screen.getByText('Inntekt og alderspensjon')).toBeInTheDocument()
@@ -61,7 +67,7 @@ describe('InntektStep Component', () => {
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(InntektStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('InntektStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -70,7 +76,7 @@ describe('InntektStep Component', () => {
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(InntektStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('InntektStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
@@ -147,6 +153,21 @@ describe('InntektStep Component', () => {
     // Når brukeren ikke har valgt uttaksagrad,, ...
 
     describe('Når gradertUttak er initialisert og grad ikke er 100', () => {
+      test('Burde det ikke være noen a11y violations', async () => {
+        const { container } = renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            gradertUttak: {
+              grad: 50,
+              uttaksalder: { aar: 66, maaneder: 2 },
+            },
+          },
+        })
+
+        expect(await axe(container)).toHaveNoViolations()
+      })
+
       test('Burde input felt for gradert uttak vises', () => {
         renderMockedComponent(InntektStep, {
           ...context,
@@ -608,6 +629,18 @@ describe('InntektStep Component', () => {
     })
 
     describe('Når harInntektVsaHelPensjon er true', () => {
+      test('Burde ikke ha noen a11y violations', async () => {
+        const { container } = renderMockedComponent(InntektStep, {
+          ...context,
+          state: {
+            ...initialState,
+            harInntektVsaHelPensjon: true,
+          },
+        })
+
+        expect(await axe(container)).toHaveNoViolations()
+      })
+
       test('Burde input felt for heltUttak.aarligInntektVsaPensjon.beloep vises', () => {
         renderMockedComponent(InntektStep, {
           ...context,

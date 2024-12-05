@@ -9,6 +9,7 @@ import {
   renderMockedComponent,
 } from '../test-utils/testSetup'
 import { useFieldChange } from '@/helpers/useFormState'
+import { axe } from 'jest-axe'
 
 jest.mock('../../../helpers/useErrorHandling', () => ({
   __esModule: true,
@@ -50,10 +51,15 @@ beforeEach(() => {
 })
 
 describe('AlderStep Component', () => {
+  test('Burde ikke ha a11y violations', async () => {
+    const { container } = renderMockedComponent(AlderStep, context)
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   test('Burde gå videre dersom det ikke er feil i input', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(AlderStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -62,7 +68,7 @@ describe('AlderStep Component', () => {
   test('Burde ikke gå videre dersom det er feil i input', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(AlderStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
@@ -77,11 +83,23 @@ describe('AlderStep Component', () => {
       { validateFields: mockValidateFields, clearError: mockClearError },
     ])
     renderMockedComponent(AlderStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
     expect(screen.getByText('Dette feltet er påkrevd')).toBeInTheDocument()
+  })
+
+  test('Burde ikke ha a11y violations dersom errorFields inneholder noe', async () => {
+    const errorFields = {
+      foedselAar: 'Dette feltet er påkrevd',
+    }
+    ;(useErrorHandling as jest.Mock).mockReturnValue([
+      errorFields,
+      { validateFields: mockValidateFields, clearError: mockClearError },
+    ])
+    const { container } = renderMockedComponent(AlderStep, context)
+    expect(await axe(container)).toHaveNoViolations()
   })
 
   describe('TextField for foedselAar', () => {

@@ -4,6 +4,7 @@ import { FormContext } from '@/contexts/context'
 import BeregnPage from '../BeregnPage'
 import { initialState } from '@/defaults/initialState'
 import { submitForm } from '@/functions/submitForm'
+import { axe } from 'jest-axe'
 
 jest.mock('@/functions/submitForm', () => ({
   submitForm: jest.fn(),
@@ -66,6 +67,17 @@ describe('BeregnPage Component', () => {
       expect(screen.getByTestId('loader')).toBeVisible()
     })
 
+    test('Skal ikke være noen a11y violations når komponenten laster', async () => {
+      const pendingPromise = new Promise(() => {})
+      mockSubmitForm.mockReturnValue(pendingPromise)
+      const { container } = render(
+        <FormContext.Provider value={mockContextValue}>
+          <BeregnPage />
+        </FormContext.Provider>
+      )
+      expect(await axe(container)).toHaveNoViolations()
+    })
+
     test('Når det oppstår en feil ved henting av data, returneres det child-component med undefined resultat', async () => {
       mockSubmitForm.mockReturnValue(Promise.reject('Error parsing JSON'))
 
@@ -81,7 +93,6 @@ describe('BeregnPage Component', () => {
       })
 
       expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
-      // expect(screen.getByText('Resultat')).not.toBeInTheDocument()
     })
 
     test('Når henting av data er vellykket, returneres det child-component med resultat', async () => {
@@ -99,6 +110,23 @@ describe('BeregnPage Component', () => {
       })
 
       expect(screen.getByText('Resultat')).toBeVisible()
+    })
+
+    test('Skal ikke være noen a11y violations når det er et resultat', async () => {
+      mockSubmitForm.mockReturnValue(Promise.resolve(mockSimuleringsresultat))
+
+      const { container } = render(
+        <FormContext.Provider value={mockContextValue}>
+          <BeregnPage />
+        </FormContext.Provider>
+      )
+      expect(screen.getByTestId('loader')).toBeVisible()
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
+      })
+
+      expect(await axe(container)).toHaveNoViolations()
     })
   })
 })

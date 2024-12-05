@@ -20,7 +20,7 @@ describe('FormWrapper', () => {
   })
 
   test('Burde kalle onSubmit når formen er sendt inn', () => {
-    fireEvent.submit(screen.getByRole('form'))
+    fireEvent.submit(screen.getByTestId('form'))
     expect(handleSubmit).toHaveBeenCalledTimes(1)
   })
 })

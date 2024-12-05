@@ -5,6 +5,7 @@ import { initialState } from '@/defaults/initialState'
 import { renderMockedComponent } from '../test-utils/testSetup'
 import { Simuleringstype, State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'
+import { axe } from 'jest-axe'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -56,6 +57,12 @@ beforeEach(() => {
 })
 
 describe('AFPStep Component', () => {
+  test('Burde ikke ha a11y violations', async () => {
+    const { container } = renderMockedComponent(() => <AFPStep />, context)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
+  })
+
   test('Burde rendre komponenten', () => {
     renderMockedComponent(() => <AFPStep />, context)
     expect(
@@ -66,7 +73,7 @@ describe('AFPStep Component', () => {
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(() => <AFPStep />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AFPStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -75,10 +82,19 @@ describe('AFPStep Component', () => {
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(() => <AFPStep />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AFPStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
+  })
+
+  test('Burde ikke ha a11y violations når skjemaet valideres med feil', async () => {
+    mockValidateFields.mockReturnValue(true)
+    const { container } = renderMockedComponent(() => <AFPStep />, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    const results = await axe(container)
+    expect(results).toHaveNoViolations()
   })
 
   describe('Gitt at brukeren velger AFP', () => {

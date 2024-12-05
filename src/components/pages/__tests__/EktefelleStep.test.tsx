@@ -58,7 +58,7 @@ describe('SivilstandStep Component', () => {
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -67,7 +67,7 @@ describe('SivilstandStep Component', () => {
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
