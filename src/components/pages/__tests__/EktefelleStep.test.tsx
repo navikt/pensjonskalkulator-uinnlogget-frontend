@@ -58,7 +58,7 @@ describe('EktefelleStep Component', () => {
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -67,7 +67,7 @@ describe('EktefelleStep Component', () => {
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
     expect(mockGoToNext).not.toHaveBeenCalled()

@@ -8,6 +8,7 @@ import {
   renderMockedComponent,
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
+import { axe } from 'jest-axe'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -50,6 +51,11 @@ beforeEach(() => {
 })
 
 describe('UtlandsStep Component', () => {
+  test('Burde ikke ha a11y violations', async () => {
+    const { container } = renderMockedComponent(UtlandsStep, context)
+    expect(await axe(container)).toHaveNoViolations()
+  })
+
   test('Burde rendre komponenten', () => {
     renderMockedComponent(UtlandsStep, context)
     expect(
@@ -66,7 +72,7 @@ describe('UtlandsStep Component', () => {
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
     renderMockedComponent(UtlandsStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
     expect(mockGoToNext).toHaveBeenCalled()
@@ -75,7 +81,7 @@ describe('UtlandsStep Component', () => {
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(UtlandsStep, context)
-    const form = screen.getByRole('form')
+    const form = screen.getByTestId('form')
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
@@ -123,6 +129,18 @@ describe('UtlandsStep Component', () => {
     })
 
     describe('Når harBoddIUtland er "Ja"', () => {
+      test('Burde ikke ha noen a11y violations', async () => {
+        const { container } = renderMockedComponent(UtlandsStep, {
+          ...context,
+          state: {
+            ...initialState,
+            harBoddIUtland: true,
+          },
+        })
+
+        expect(await axe(container)).toHaveNoViolations()
+      })
+
       test('Burde tekstfeltet for utenlandsAntallAar vises', () => {
         renderMockedComponent(UtlandsStep, {
           ...context,
