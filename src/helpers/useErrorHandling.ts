@@ -44,20 +44,16 @@ const useErrorHandling = (state: State) => {
     return '';
   }
 
-  const validateGradertUttak = (): { aar: string, maaneder: string } => {
+  const validateGradertUttak = (): string/* { aar: string, maaneder: string } */ => {
     let aarError = '';
-    let maanederError = '';
   
     if (state.gradertUttak?.grad) {
       if (state.gradertUttak.uttaksalder?.aar === null) {
         aarError = 'Du må velge alder';
       }
-      if (state.gradertUttak.uttaksalder?.maaneder === null) {
-        maanederError = 'Du må velge måned';
-      }
     }
   
-    return { aar: aarError, maaneder: maanederError };
+    return aarError
   }
 
   const validateGradertInntekt = (): string => {
@@ -91,20 +87,16 @@ const useErrorHandling = (state: State) => {
     return '';
   }
 
-  const validateHeltUttakSluttAlder = (): {aar: string, maaneder: string} => {
+  const validateHeltUttakSluttAlder = (): string => {
     let aarError = '';
-    let maanederError = '';
 
     if(state.harInntektVsaHelPensjon && state.heltUttak.aarligInntektVsaPensjon?.sluttAlder) {
       if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar === null) {
         aarError = 'Du må velge alder';
       }
-      if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder === null) {
-        maanederError = 'Du må velge måned';
-      }
     }
 
-    return { aar: aarError, maaneder: maanederError };
+    return aarError
   }
 
   const validateFields = (step: StepName) => {
@@ -123,14 +115,11 @@ const useErrorHandling = (state: State) => {
     if (step === 'InntektStep') {
       errors.aarligInntektFoerUttakBeloep = validateAarligInntektFoerUttakBeloep()
       errors.uttaksgrad = state.gradertUttak && state.gradertUttak.grad === null ? 'Du må velge uttaksgrad' : ''
-      errors.gradertAar = validateGradertUttak().aar
-      errors.gradertMaaneder = validateGradertUttak().maaneder
+      errors.gradertAar = validateGradertUttak()
       errors.gradertInntekt = validateGradertInntekt()
       errors.heltUttakAar = state.heltUttak.uttaksalder?.aar === null ? 'Du må velge alder' : ''
-      errors.heltUttakMaaneder = state.heltUttak.uttaksalder?.maaneder === null ? 'Du må velge måned' : ''
       errors.helPensjonInntekt = validateHelPensjonInntekt()
-      errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder().aar
-      errors.heltUttakSluttAlderMaaneder = validateHeltUttakSluttAlder().maaneder
+      errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder()
       errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Velg alternativ' : ''
     }
 

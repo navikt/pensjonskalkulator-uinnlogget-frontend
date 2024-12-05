@@ -33,15 +33,14 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
           beloep: !s.harInntektVsaHelPensjon
             ? 0
             : aarligInntektVsaPensjonBeloepNumber,
-          sluttAlder:
-            state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar === null
-              ? undefined
-              : {
-                  aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                    ?.aar as number,
-                  maaneder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                    ?.maaneder as number,
-                },
+          sluttAlder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+            ? {
+                aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                  ?.aar as number,
+                maaneder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
+                  ?.maaneder as number,
+              }
+            : undefined,
         }
       : undefined,
   }

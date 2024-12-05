@@ -46,16 +46,6 @@ const InntektStep = () => {
     []
   )
 
-  const monthOptions = useMemo(
-    () =>
-      Array.from({ length: 12 }, (_, i) => (
-        <option value={i} key={i}>
-          {i} måneder
-        </option>
-      )),
-    []
-  )
-
   return (
     <FormWrapper onSubmit={onSubmit}>
       <h2 className={stepStyles.underOverskrift}>Inntekt og alderspensjon</h2>
@@ -153,48 +143,23 @@ const InntektStep = () => {
         {state.gradertUttak && state.gradertUttak?.grad && (
           <div>
             <Substep>
-              <fieldset className={stepStyles.selectWrapper}>
-                <legend>
-                  <b>{`Når planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}</b>
-                </legend>
-                <Select
-                  value={state.gradertUttak.uttaksalder.aar ?? ''}
-                  className="selectAar"
-                  label="Velg alder"
-                  data-testid="gradertAar"
-                  onChange={(it) => {
-                    handleFieldChange((draft) => {
-                      draft.gradertUttak!.uttaksalder.aar =
-                        it.target.value === ''
-                          ? null
-                          : parseInt(it.target.value)
-                    }, 'gradertAar')
-                  }}
-                  error={errorFields.gradertAar}
-                >
-                  <option value={''}>----</option>
-                  {yearOptions}
-                </Select>
-
-                <Select
-                  value={state.gradertUttak.uttaksalder.maaneder ?? ''}
-                  className="selectMaaneder"
-                  data-testid="gradertMaaneder"
-                  label="Velg måned"
-                  onChange={(it) => {
-                    handleFieldChange((draft) => {
-                      draft.gradertUttak!.uttaksalder.maaneder =
-                        it.target.value === ''
-                          ? null
-                          : parseInt(it.target.value)
-                    }, 'gradertMaaneder')
-                  }}
-                  error={errorFields.gradertMaaneder}
-                >
-                  <option value={''}>----</option>
-                  {monthOptions}
-                </Select>
-              </fieldset>
+              <Select
+                value={state.gradertUttak.uttaksalder.aar ?? ''}
+                className="selectAar"
+                label={`Hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
+                data-testid="gradertAar"
+                onChange={(it) => {
+                  handleFieldChange((draft) => {
+                    draft.gradertUttak!.uttaksalder.aar =
+                      it.target.value === '' ? null : parseInt(it.target.value)
+                    draft.gradertUttak!.uttaksalder.maaneder = 0
+                  }, 'gradertAar')
+                }}
+                error={errorFields.gradertAar}
+              >
+                <option value={''}>----</option>
+                {yearOptions}
+              </Select>
             </Substep>
 
             <Substep>
@@ -217,44 +182,23 @@ const InntektStep = () => {
           </div>
         )}
         <Substep>
-          <fieldset className={stepStyles.selectWrapper}>
-            <legend>
-              <b>Når planlegger du å ta ut 100% pensjon?</b>
-            </legend>
-            <Select
-              value={state.heltUttak.uttaksalder?.aar ?? ''}
-              className="selectAar"
-              data-testid="heltUttakAar"
-              label="Velg alder"
-              onChange={(it) => {
-                handleFieldChange((draft) => {
-                  draft.heltUttak.uttaksalder.aar =
-                    it.target.value === '' ? null : parseInt(it.target.value)
-                }, 'heltUttakAar')
-              }}
-              error={errorFields.heltUttakAar}
-            >
-              <option value={''}>----</option>
-              {yearOptions}
-            </Select>
-
-            <Select
-              value={state.heltUttak.uttaksalder?.maaneder ?? ''}
-              className="selectMaaneder"
-              data-testid="heltUttakMaaneder"
-              label="Velg måned"
-              onChange={(it) => {
-                handleFieldChange((draft) => {
-                  draft.heltUttak.uttaksalder.maaneder =
-                    it.target.value === '' ? null : parseInt(it.target.value)
-                }, 'heltUttakMaaneder')
-              }}
-              error={errorFields.heltUttakMaaneder}
-            >
-              <option value={''}>----</option>
-              {monthOptions}
-            </Select>
-          </fieldset>
+          <Select
+            value={state.heltUttak.uttaksalder?.aar ?? ''}
+            className="selectAar"
+            data-testid="heltUttakAar"
+            label="Hvilken alder planlegger du å ta ut 100% pensjon?"
+            onChange={(it) => {
+              handleFieldChange((draft) => {
+                draft.heltUttak.uttaksalder.aar =
+                  it.target.value === '' ? null : parseInt(it.target.value)
+                draft.heltUttak.uttaksalder.maaneder = 0
+              }, 'heltUttakAar')
+            }}
+            error={errorFields.heltUttakAar}
+          >
+            <option value={''}>----</option>
+            {yearOptions}
+          </Select>
         </Substep>
         <Substep>
           <RadioGroup
@@ -297,94 +241,56 @@ const InntektStep = () => {
             </Substep>
 
             <Substep>
-              <fieldset className={stepStyles.selectWrapper}>
-                <legend>
-                  <b>Til hvilken alder forventer du å ha inntekten?</b>
-                </legend>
-                <Select
-                  value={
-                    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
-                    undefined
-                      ? 'livsvarig'
-                      : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
-                          state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                        ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                        : ''
-                  }
-                  className="selectAar"
-                  data-testid="heltUttakSluttAlderAar"
-                  label="Velg alder"
-                  onChange={(it) => {
-                    handleFieldChange((draft) => {
-                      if (
-                        it.target.value === '' ||
-                        !draft.heltUttak.aarligInntektVsaPensjon
-                      ) {
-                        draft.heltUttak.aarligInntektVsaPensjon = {
-                          beloep:
-                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
-                            null,
-                          sluttAlder: {
-                            aar: null,
-                            maaneder:
-                              draft.heltUttak.aarligInntektVsaPensjon
-                                ?.sluttAlder?.maaneder ?? null,
-                          },
-                        }
-                      } else if (it.target.value === 'livsvarig') {
-                        draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
-                          undefined
-                      } else {
-                        draft.heltUttak.aarligInntektVsaPensjon = {
-                          beloep:
-                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
-                            null,
-                          sluttAlder: {
-                            aar: parseInt(it.target.value),
-                            maaneder: null,
-                          },
-                        }
+              <Select
+                value={
+                  state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
+                  undefined
+                    ? 'livsvarig'
+                    : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
+                        state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                      ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                      : ''
+                }
+                className="selectAar"
+                data-testid="heltUttakSluttAlderAar"
+                label="Til hvilken alder forventer du å ha inntekten?"
+                onChange={(it) => {
+                  handleFieldChange((draft) => {
+                    if (
+                      it.target.value === '' ||
+                      !draft.heltUttak.aarligInntektVsaPensjon
+                    ) {
+                      draft.heltUttak.aarligInntektVsaPensjon = {
+                        beloep:
+                          draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
+                          null,
+                        sluttAlder: {
+                          aar: null,
+                          maaneder: null,
+                        },
                       }
-                    }, 'heltUttakSluttAlderAar')
-                  }}
-                  error={errorFields.heltUttakSluttAlderAar}
-                >
-                  <option value={''}>----</option>
-                  <option value={'livsvarig'}>Livsvarig</option>
-                  {yearOptions}
-                </Select>
-                {state.heltUttak.aarligInntektVsaPensjon?.sluttAlder && (
-                  <Select
-                    value={
-                      state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                        ?.maaneder ?? ''
+                    } else if (it.target.value === 'livsvarig') {
+                      draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
+                        undefined
+                    } else {
+                      draft.heltUttak.aarligInntektVsaPensjon = {
+                        beloep:
+                          draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
+                          null,
+                        sluttAlder: {
+                          aar: parseInt(it.target.value),
+                          maaneder: 0,
+                        },
+                      }
                     }
-                    className="selectMaaneder"
-                    data-testid="heltUttakSluttAlderMaaneder"
-                    label={'Velg måned'}
-                    onChange={(it) => {
-                      const value = it.target.value
-                      handleFieldChange((draft) => {
-                        draft.heltUttak.aarligInntektVsaPensjon = {
-                          beloep:
-                            draft.heltUttak.aarligInntektVsaPensjon?.beloep ??
-                            null,
-                          sluttAlder: {
-                            aar:
-                              draft.heltUttak.aarligInntektVsaPensjon
-                                ?.sluttAlder?.aar ?? null,
-                            maaneder: value === '' ? null : parseInt(value),
-                          },
-                        }
-                      }, 'heltUttakSluttAlderMaaneder')
-                    }}
-                    error={errorFields.heltUttakSluttAlderMaaneder}
-                  >
-                    <option value={''}>----</option>
-                    {monthOptions}
-                  </Select>
-                )}
-              </fieldset>
+                  }, 'heltUttakSluttAlderAar')
+                }}
+                error={errorFields.heltUttakSluttAlderAar}
+              >
+                <option value={''}>----</option>
+                {yearOptions}
+                <option value={'livsvarig'}>Livsvarig</option>
+              </Select>
             </Substep>
           </>
         )}
