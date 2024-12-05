@@ -30,7 +30,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
             <Button
               size="medium"
               variant="secondary-neutral"
-              onClick={() => formPageProps.onStepChange(0)}
+              onClick={() => formPageProps.goTo(0)}
             >
               Endre
             </Button>

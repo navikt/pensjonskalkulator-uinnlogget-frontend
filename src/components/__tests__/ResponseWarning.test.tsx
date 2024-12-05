@@ -53,12 +53,12 @@ describe('ResponseWarning Component', () => {
   })
 
   describe('Gitt at brukeren trykker på "Endre" knappen', () => {
-    test('Skal funksjonen onStepChange kalles', () => {
+    test('Skal funksjonen goTo kalles', () => {
       const error = { ...errorObject, status: 'PEK100' }
       renderMockedComponent(() => <ResponseWarning error={error} />, context)
       const button = screen.getByRole('button')
       button.click()
-      expect(context.formPageProps.onStepChange).toHaveBeenCalled()
+      expect(context.formPageProps.goTo).toHaveBeenCalled()
     })
   })
 })

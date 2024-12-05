@@ -6,7 +6,7 @@ const defaultFormPageProps = {
   curStep: 0,
   length: 0,
   goBack: () => {},
-  onStepChange: () => {},
+  goTo: () => {},
   handleSubmit: () => {},
   goToNext: () => {},
 }

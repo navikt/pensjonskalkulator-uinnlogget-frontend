@@ -52,7 +52,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
           length,
           goBack,
           goToNext,
-          onStepChange: goTo,
+          goTo: goTo,
         },
       }}
     >
