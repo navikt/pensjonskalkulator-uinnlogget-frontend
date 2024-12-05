@@ -10,7 +10,7 @@ const steps = {
   AlderStep: <div>Alder</div>,
   UtlandsStep: <div>Utland</div>,
   InntektStep: <div>Inntekt og alderspensjon</div>,
-  EktefelleStep: <div>Ektefelle</div>,
+  SivilstandStep: <div>Sivilstand</div>,
   AFPStep: <div>AFP</div>,
 }
 

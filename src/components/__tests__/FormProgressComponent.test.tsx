@@ -11,7 +11,7 @@ describe('FormProgressComponent', () => {
       AlderStep: 'Alder',
       UtlandsStep: 'Utland',
       InntektStep: 'Inntekt og alderspensjon',
-      EktefelleStep: 'Ektefelle',
+      SivilstandStep: 'Sivilstand',
       AFPStep: 'AFP',
     }
 

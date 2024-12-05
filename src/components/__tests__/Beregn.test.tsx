@@ -92,4 +92,50 @@ describe('Beregn Component', () => {
     expect(seriesNames).toContain('AFP Privat')
     expect(seriesNames).toContain('Alderspensjon')
   })
+
+  describe('Når simuleringsresultat er oppgitt og parameterene til getChartOptions parses', () => {
+    it('Burde grafen bli rendret med riktig data', () => {
+      mockContextValue.state = {
+        ...initialState,
+        aarligInntektFoerUttakBeloep: '50000',
+        heltUttak: {
+          uttaksalder: { aar: 67, maaneder: 0 },
+          aarligInntektVsaPensjon: {
+            sluttAlder: { aar: 70, maaneder: 0 },
+            beloep: '30000',
+          },
+        },
+        gradertUttak: {
+          grad: 50,
+          uttaksalder: { aar: 62, maaneder: 0 },
+          aarligInntektVsaPensjonBeloep: '20000',
+        },
+      }
+
+      const { container } = render(
+        <FormContext.Provider value={mockContextValue}>
+          <Beregn simuleringsresultat={mockSimuleringsresultat} />
+        </FormContext.Provider>
+      )
+
+      expect(screen.getByText('Resultat')).toBeVisible()
+      expect(screen.getByTestId('result-table')).toBeVisible()
+      const highchartsReact = screen.getByTestId('highcharts-react')
+      expect(highchartsReact).toBeInTheDocument()
+
+      // Sjekk etter relevante DOM-elementer som Highcharts rendrer
+      const chartContainer = container.querySelector('.highcharts-container')
+      expect(chartContainer).toBeInTheDocument()
+
+      const legendItems = container.querySelectorAll('.highcharts-legend-item')
+      expect(legendItems).toHaveLength(2)
+
+      const seriesNames = Array.from(legendItems).map(
+        (item) => item.textContent
+      )
+      expect(seriesNames).toContain('AFP Privat')
+      expect(seriesNames).toContain('Alderspensjon')
+      //expect(seriesNames).toContain('Pensjonsgivende inntekt')
+    })
+  })
 })

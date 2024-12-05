@@ -1,5 +1,5 @@
 import { screen, fireEvent } from '@testing-library/react'
-import EktefelleStep from '../EktefelleStep'
+import SivilstandStep from '../SivilstandStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
 import { initialState } from '@/defaults/initialState'
@@ -49,34 +49,34 @@ beforeEach(() => {
   })
 })
 
-describe('EktefelleStep Component', () => {
+describe('SivilstandStep Component', () => {
   test('Burde rendre komponenten', () => {
-    renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, context)
+    renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
     expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
     mockValidateFields.mockReturnValue(false)
-    renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, context)
+    renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
     const form = screen.getByTestId('form')
     fireEvent.submit(form)
-    expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
+    expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
     mockValidateFields.mockReturnValue(true)
-    renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, context)
+    renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
     const form = screen.getByTestId('form')
     fireEvent.submit(form)
-    expect(mockValidateFields).toHaveBeenCalledWith('EktefelleStep')
+    expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
   })
 
   describe('Gitt at brukeren har valgt sivilstand', () => {
     test('Burde handleFieldChange bli kalt når sivilstand endres', () => {
       renderMockedComponent(
-        () => <EktefelleStep grunnbelop={100000} />,
+        () => <SivilstandStep grunnbelop={100000} />,
         context
       )
       const select = screen.getByLabelText('Hva er din sivilstand?')
@@ -92,7 +92,7 @@ describe('EktefelleStep Component', () => {
 
     describe('Når sivilstand ikke er valgt', () => {
       test('Burde ikke radioknapper bli vist', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -113,7 +113,7 @@ describe('EktefelleStep Component', () => {
 
     describe('Når sivilstand er satt til UGIFT', () => {
       test('Burde ikke radioknapper bli vist', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -125,7 +125,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde epsHarInntektOver2G og epsHarPensjon bli nullstilt', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -151,7 +151,7 @@ describe('EktefelleStep Component', () => {
 
     describe('Når sivilstand er satt til GIFT/SAMBOER', () => {
       test('Burde 2 radioknapper vises', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -163,7 +163,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde begge radioknapper være unchecked som default', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -175,7 +175,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde epsHarInntektOver2G være true når "Ja" er klikket', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -188,7 +188,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde epsHarPensjon være false når "Nei" er klikket', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -201,7 +201,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde epsHarInntektOver2G bli rendret riktig med en definert grunnbelop verdi', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={100000} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, {
           ...context,
           state: {
             ...initialState,
@@ -216,7 +216,7 @@ describe('EktefelleStep Component', () => {
       })
 
       test('Burde epsHarInntektOver2G bli rendret riktig med udefinert grunnbelop verdi', () => {
-        renderMockedComponent(() => <EktefelleStep grunnbelop={undefined} />, {
+        renderMockedComponent(() => <SivilstandStep grunnbelop={undefined} />, {
           ...context,
           state: {
             ...initialState,

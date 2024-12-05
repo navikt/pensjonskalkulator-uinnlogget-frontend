@@ -22,7 +22,7 @@ const FormContainerComponent: React.FC<FormContainerComponentProps> = ({
     borderRadius={'large'}
   >
     <Heading level="1" size="large" spacing>
-      Pensjonskalkulator
+      Uinnlogget pensjonskalkulator
     </Heading>
     <FormProgressComponent totalSteps={totalSteps} activeStep={activeStep} />
     {step}

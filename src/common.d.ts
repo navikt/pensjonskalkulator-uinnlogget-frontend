@@ -75,7 +75,7 @@ export type StepName =
   | 'AlderStep'
   | 'UtlandsStep'
   | 'InntektStep'
-  | 'EktefelleStep'
+  | 'SivilstandStep'
   | 'AFPStep'
 export type ErrorFields = {
   foedselAar?: string

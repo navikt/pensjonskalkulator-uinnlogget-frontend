@@ -1,6 +1,6 @@
 import LandingPage from '@/components/LandingPage'
 
-export default function QuestionPage() {
+const Page = () => {
   return (
     <>
       <main>
@@ -9,3 +9,5 @@ export default function QuestionPage() {
     </>
   )
 }
+
+export default Page

@@ -9,7 +9,7 @@ import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
 import React, { useState } from 'react'
-import EktefelleStep from './pages/EktefelleStep'
+import SivilstandStep from './pages/SivilstandStep'
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import { initialState } from '@/defaults/initialState'
@@ -29,7 +29,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
     alder: <AlderStep key="alder" />,
     utland: <UtlandsStep key="utland" />,
     inntekt: <InntektStep key="inntekt" />,
-    ektefelle: <EktefelleStep grunnbelop={grunnbelop} key="ektefelle" />,
+    sivilstand: <SivilstandStep grunnbelop={grunnbelop} key="sivilstand" />,
     afp: <AFPStep key="afp" />,
   }
   const pagesNames = Object.keys(pagesDict)
