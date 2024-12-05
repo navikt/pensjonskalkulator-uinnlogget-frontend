@@ -14,6 +14,7 @@ interface Props {
 }
 
 const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
+  console.log('simuleringsresultat', simuleringsresultat)
   const { state } = useContext(FormContext)
 
   if (
