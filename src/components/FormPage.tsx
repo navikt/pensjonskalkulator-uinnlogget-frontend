@@ -4,15 +4,15 @@ import { State } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
-import UtlandsStep from './pages/UtlandsStep'
 import { FormContext } from '@/contexts/context'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
+import UtlandsStep from './pages/UtlandsStep'
 
-import React, { useState } from 'react'
-import SivilstandStep from './pages/SivilstandStep'
+import { initialState } from '@/defaults/initialState'
+import { useState } from 'react'
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
-import { initialState } from '@/defaults/initialState'
+import SivilstandStep from './pages/SivilstandStep'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -52,7 +52,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
           length,
           goBack,
           goToNext,
-          goTo: goTo,
+          goTo,
         },
       }}
     >
