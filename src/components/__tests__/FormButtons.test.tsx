@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react'
-import FormButtons from '../FormButtons'
 import { FormContext } from '@/contexts/context'
-import { FormEvent } from 'react'
 import { initialState } from '@/defaults/initialState'
+import { render, screen } from '@testing-library/react'
+import { FormEvent } from 'react'
+import FormButtons from '../FormButtons'
 
 const mockedContextValues = {
   setState: jest.fn(),
@@ -11,7 +11,7 @@ const mockedContextValues = {
     curStep: 0,
     length: 5,
     goBack: jest.fn(),
-    onStepChange: jest.fn(),
+    goTo: jest.fn(),
     handleSubmit: jest.fn(),
     goToNext: jest.fn(),
   },
@@ -85,7 +85,7 @@ describe('Når brukeren er på siste steg,', () => {
 })
 
 describe('Når brukeren trykker på', () => {
-  const mockOnStepChange = jest.fn()
+  const mockGoTo = jest.fn()
   const mockBack = jest.fn()
   const mockNext = jest.fn()
   const mockHandleSubmit = jest.fn()
@@ -99,7 +99,7 @@ describe('Når brukeren trykker på', () => {
     curStep: 1,
     length: 5,
     goBack: mockBack,
-    onStepChange: mockOnStepChange,
+    goTo: mockGoTo,
     handleSubmit: mockHandleSubmit,
     goToNext: mockNext,
   }

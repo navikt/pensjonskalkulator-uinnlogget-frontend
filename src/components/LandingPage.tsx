@@ -27,14 +27,9 @@ export default function QuestionBox() {
               kommer.
             </p>
             <HStack gap={'2'}>
-              <Button variant="primary">
-                <Link
-                  href="./kalkulator-uinnlogget/form"
-                  className="text-white"
-                >
-                  <p className=" text-white">Kom i Gang</p>
-                </Link>
-              </Button>
+              <Link href="./kalkulator-uinnlogget/form" className="text-white">
+                <Button variant="primary">Kom i gang</Button>
+              </Link>
               <Button variant="tertiary">Avbryt</Button>
             </HStack>
           </VStack>

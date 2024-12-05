@@ -10,7 +10,7 @@ export const generateDefaultFormPageProps = (
   curStep: 1,
   length: 5,
   goBack: jest.fn(),
-  onStepChange: jest.fn(),
+  goTo: jest.fn(),
   handleSubmit: jest.fn(),
   goToNext: goToNextMock,
 })

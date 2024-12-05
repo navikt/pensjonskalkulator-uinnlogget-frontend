@@ -36,7 +36,7 @@ describe('useErrorHandling', () => {
             curStep: 0,
             length: 5,
             goBack: jest.fn(),
-            onStepChange: jest.fn(),
+            goTo: jest.fn(),
             handleSubmit: jest.fn(),
             goToNext: jest.fn(),
           },

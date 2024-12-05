@@ -110,7 +110,7 @@ export interface NavigationProps {
   curStep: number
   length: number
   goBack: () => void
-  onStepChange: (step: number) => void
+  goTo: (step: number) => void
   handleSubmit?: () => void
   goToNext: () => void
 }

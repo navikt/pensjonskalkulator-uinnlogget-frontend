@@ -13,7 +13,7 @@ describe('FormContainer component', () => {
     totalSteps: 5,
     activeStep: 1,
     goBack: jest.fn(),
-    onStepChange: jest.fn(),
+    goTo: jest.fn(),
     handleSubmit: jest.fn(),
     step: <div>Mocked Step</div>,
     curStep: 1,
