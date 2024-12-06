@@ -8,6 +8,7 @@ import ResultTable from './ResultTable'
 import { SimuleringError, Simuleringsresultat } from '@/common'
 import { isSimuleringError } from '@/helpers/typeguards'
 import ResponseWarning from './ResponseWarning'
+import { formatInntektToNumber } from './pages/utils/inntekt'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError
@@ -27,18 +28,20 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
     return getChartOptions({
       simuleringsresultat,
       aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep
-        ? parseInt(state.aarligInntektFoerUttakBeloep)
+        ? formatInntektToNumber(state.aarligInntektFoerUttakBeloep)
         : undefined,
       heltUttakAar: state.heltUttak.uttaksalder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
       inntektVsaHelPensjonBeloep: state.heltUttak.aarligInntektVsaPensjon
         ?.beloep
-        ? parseInt(state.heltUttak.aarligInntektVsaPensjon.beloep)
+        ? formatInntektToNumber(state.heltUttak.aarligInntektVsaPensjon.beloep)
         : undefined,
       gradertUttakAlder: state.gradertUttak?.uttaksalder?.aar,
       gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep
-        ? parseInt(state.gradertUttak.aarligInntektVsaPensjonBeloep)
+        ? formatInntektToNumber(
+            state.gradertUttak.aarligInntektVsaPensjonBeloep
+          )
         : undefined,
     })
   }, [state, simuleringsresultat])
