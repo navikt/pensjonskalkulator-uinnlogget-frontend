@@ -58,6 +58,8 @@ jobs:
       github.ref_name == 'dev-*' &&
       github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
@@ -66,19 +68,21 @@ jobs:
           RESOURCE: .nais/dev.yml
           VAR: image=${{ steps.docker-build-push.outputs.image }}
   deploy-magicbox:
-      name: deploy to magicbox
-      needs: [ build ]
-      if: |
-        github.ref_name == 'magicbox' &&
-        github.event_name == 'push'
-      runs-on: ubuntu-latest
-      steps:
-        - name: Deploy
-          uses: nais/deploy/actions/deploy@v2
-          env:
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/magicbox.yml
-            VAR: image=${{ steps.docker-build-push.outputs.image }}
+    name: deploy to magicbox
+    needs: [ build ]
+    if: |
+      github.ref_name == 'magicbox' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/magicbox.yml
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
 
   codeql-analyse:
     if: startsWith(github.ref_name, 'dev-')
