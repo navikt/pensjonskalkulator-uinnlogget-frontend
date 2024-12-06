@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { StepName, ErrorFields, State } from '@/common'
+import { formatInntektToNumber } from '@/components/pages/utils/inntekt';
 
 const useErrorHandling = (state: State) => {
   const validateInntektOver1GAntallAar = (): string => {
@@ -32,13 +33,14 @@ const useErrorHandling = (state: State) => {
 
   const validateAarligInntektFoerUttakBeloep = (): string => {
     const aarligInntekt = state.aarligInntektFoerUttakBeloep;
+    const parsedInntekt = formatInntektToNumber(aarligInntekt);
     if (aarligInntekt === null) {
       return 'Du må fylle ut inntekt';
     }
-    if (isNaN(+aarligInntekt)) {
+    if (isNaN(parsedInntekt)) {
       return 'Du må fylle ut et gyldig tall';
     }
-    if (+aarligInntekt < 0) {
+    if (parsedInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
     }
     return '';
@@ -56,13 +58,14 @@ const useErrorHandling = (state: State) => {
 
   const validateGradertInntekt = (): string => {
     if (state.gradertUttak?.grad) {
+      const parsedInntekt = formatInntektToNumber(state.gradertUttak.aarligInntektVsaPensjonBeloep);
       if(!state.gradertUttak.aarligInntektVsaPensjonBeloep) {
         return 'Du må fylle ut inntekt';
       }
-      if(isNaN(+state.gradertUttak.aarligInntektVsaPensjonBeloep)) {
+      if(isNaN(parsedInntekt)) {
         return 'Du må fylle ut et gyldig tall';
       }
-      if (state.gradertUttak.aarligInntektVsaPensjonBeloep && +state.gradertUttak.aarligInntektVsaPensjonBeloep < 0) {
+      if (state.gradertUttak.aarligInntektVsaPensjonBeloep && parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
       }
     }
@@ -71,14 +74,15 @@ const useErrorHandling = (state: State) => {
 
   const validateHelPensjonInntekt = (): string => {
     const heltUttak = state.heltUttak;
+    const parsedInntekt = formatInntektToNumber(heltUttak.aarligInntektVsaPensjon?.beloep);
     if (state.harInntektVsaHelPensjon === true) {
       if (!heltUttak.aarligInntektVsaPensjon?.beloep || heltUttak.aarligInntektVsaPensjon?.beloep === '0') {
         return 'Du må fylle ut inntekt';
       }
-      if (isNaN(+heltUttak.aarligInntektVsaPensjon.beloep)) {
+      if (isNaN(parsedInntekt)) {
         return 'Du må fylle ut et gyldig tall';
       }
-      if (+heltUttak.aarligInntektVsaPensjon.beloep < 0) {
+      if (parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
       }
     }

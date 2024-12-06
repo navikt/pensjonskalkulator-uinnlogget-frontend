@@ -95,7 +95,11 @@ describe('InntektStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.aarligInntektFoerUttakBeloep).toBe('500000')
+      const receivedValue = draft.aarligInntektFoerUttakBeloep.replace(
+        /\u00A0/g,
+        ' '
+      )
+      expect(receivedValue).toBe('500 000')
     })
 
     test('Burde vise tom input når aarligInntektFoerUttakBeloep er undefined', () => {
@@ -280,7 +284,12 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe('500000')
+        const receivedValue =
+          draft.gradertUttak.aarligInntektVsaPensjonBeloep.replace(
+            /\u00A0/g,
+            ' '
+          )
+        expect(receivedValue).toBe('500 000')
       })
 
       test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til undefined når input er tom', () => {
@@ -581,7 +590,9 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe('500000')
+        const receivedValue =
+          draft.heltUttak.aarligInntektVsaPensjon.beloep.replace(/\u00A0/g, ' ')
+        expect(receivedValue).toBe('500 000')
       })
 
       test('Burde vise tom input når heltUttak.aarligInntektVsaPensjon.beloep er null', () => {

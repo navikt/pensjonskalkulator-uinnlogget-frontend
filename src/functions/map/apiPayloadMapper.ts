@@ -1,4 +1,5 @@
 import { Alder, APIPayload, PropType, State } from '@/common'
+import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 
 export const mapStateToApiPayload = (s: State): APIPayload => {
   const {
@@ -9,7 +10,7 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
 
   const aarligInntektVsaPensjonBeloepNumber = state.heltUttak
     .aarligInntektVsaPensjon?.beloep
-    ? parseInt(state.heltUttak.aarligInntektVsaPensjon?.beloep)
+    ? formatInntektToNumber(state.heltUttak.aarligInntektVsaPensjon?.beloep)
     : 0
 
   const mappedGradertUttak: PropType<APIPayload, 'gradertUttak'> =
@@ -20,7 +21,9 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
           uttaksalder: state.gradertUttak.uttaksalder as Alder,
           aarligInntektVsaPensjonBeloep: state.gradertUttak
             .aarligInntektVsaPensjonBeloep
-            ? parseInt(state.gradertUttak.aarligInntektVsaPensjonBeloep)
+            ? formatInntektToNumber(
+                state.gradertUttak.aarligInntektVsaPensjonBeloep
+              )
             : 0,
         }
       : undefined
@@ -54,7 +57,7 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
       ? parseInt(state.inntektOver1GAntallAar)
       : 0,
     aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep
-      ? parseInt(state.aarligInntektFoerUttakBeloep)
+      ? formatInntektToNumber(state.aarligInntektFoerUttakBeloep)
       : 0,
     gradertUttak: mappedGradertUttak,
     heltUttak: mappedHeltUttak,
