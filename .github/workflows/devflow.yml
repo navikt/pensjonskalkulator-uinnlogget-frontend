@@ -15,7 +15,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+      image: ${{ steps.image-creation.outputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,10 +41,9 @@ jobs:
         run: npm run test
       - name: Build application
         run: npm run build
-      - name: docker-build-push
-        if: startsWith(github.ref_name, 'dev-')
+      - name: Docker create image
         uses: nais/docker-build-push@v0
-        id: docker-build-push
+        id: image-creation
         with:
           team: pensjonskalkulator
           dockerfile: .docker/Dockerfile
@@ -63,12 +62,14 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/dev.yml
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          VAR: image=${{ needs.build.outputs.image }}
   deploy-magicbox:
     name: deploy to magicbox
     needs: [ build ]
@@ -81,12 +82,14 @@ jobs:
       contents: read
       id-token: write
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/magicbox.yml
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          VAR: image=${{ needs.build.outputs.image }}
 
   codeql-analyse:
     if: startsWith(github.ref_name, 'dev-')
