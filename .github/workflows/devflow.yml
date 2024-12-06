@@ -51,27 +51,29 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
-    deploy-sandbox:
-        name: deploy to dev-gcp
-        needs: [ build ]
-        if: |
-          github.ref_name == 'dev-*' &&
-          github.event_name == 'push'
-        steps:
-          - name: Deploy
-          uses: nais/deploy/actions/deploy@v2
-          env:
-            CLUSTER: dev-gcp
-            RESOURCE: .nais/dev.yml
-            VAR: image=${{ steps.docker-build-push.outputs.image }}
-    deploy-magicbox:
-        name: deploy to magicbox
-        needs: [ build ]
-        if: |
-          github.ref_name == 'magicbox' &&
-          github.event_name == 'push'
-        steps:
-          - name: Deploy
+  deploy-sandbox:
+    name: deploy to dev-gcp
+    needs: [ build ]
+    if: |
+      github.ref_name == 'dev-*' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dev.yml
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
+  deploy-magicbox:
+      name: deploy to magicbox
+      needs: [ build ]
+      if: |
+        github.ref_name == 'magicbox' &&
+        github.event_name == 'push'
+      runs-on: ubuntu-latest
+      steps:
+        - name: Deploy
           uses: nais/deploy/actions/deploy@v2
           env:
             CLUSTER: dev-gcp
