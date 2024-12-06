@@ -1,11 +1,8 @@
 'use client'
 
-import React from 'react'
-import { BugIcon } from '@navikt/aksel-icons'
 import {
   BodyShort,
   Box,
-  Button,
   Heading,
   Link,
   List,
@@ -29,33 +26,23 @@ const NotFoundPage = () => {
                   feil i lenken.
                 </BodyShort>
                 <List>
-                  <List.Item>Bruk gjerne søket eller menyen</List.Item>
                   <List.Item>
-                    <Link href="#">Gå til forsiden</Link>
+                    Hvis du skrev inn adressen direkte i nettleseren kan du
+                    sjekke om den er stavet riktig.
+                  </List.Item>
+
+                  <List.Item>
+                    Hvis du klikket på en lenke er den feil eller utdatert.
                   </List.Item>
                 </List>
+                <VStack gap="4">
+                  <Link href="/pensjon/kalkulator-uinnlogget">
+                    Gå til uinnlogget pensjonskalkulator
+                  </Link>
+                  <Link href="https://www.nav.no/pensjon">Les om pensjon</Link>
+                </VStack>
               </div>
-              <Button as="a" href="#">
-                Gå til Min side
-              </Button>
-              <Link href="#">
-                <BugIcon aria-hidden />
-                Meld gjerne fra om at lenken ikke virker
-              </Link>
             </VStack>
-
-            <div>
-              <Heading level="2" size="large" spacing>
-                Page not found
-              </Heading>
-              <BodyShort spacing>
-                The page you requested cannot be found.
-              </BodyShort>
-              <BodyShort>
-                Go to the <Link href="#">front page</Link>, or use one of the
-                links in the menu.
-              </BodyShort>
-            </div>
           </VStack>
         </Box>
       </Page.Block>
