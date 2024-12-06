@@ -36,9 +36,9 @@ export const mapStateToApiPayload = (s: State): APIPayload => {
           sluttAlder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
             ? {
                 aar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                  ?.aar as number,
+                  .aar as number,
                 maaneder: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder
-                  ?.maaneder as number,
+                  .maaneder as number,
               }
             : undefined,
         }

@@ -428,7 +428,7 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('gradertAar', () => {
+    describe('gradertUttaksalder', () => {
       test('Skal gi feilmelding når gradert uttak har gyldig grad', () => {
         const state = {
           ...initialState,
@@ -444,7 +444,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertAar).toBe('Du må velge alder')
+        expect(errorFields.gradertUttaksalder).toBe('Du må velge alder')
       })
 
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og alder er valgt', () => {
@@ -462,7 +462,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertAar).toBe('')
+        expect(errorFields.gradertUttaksalder).toBe('')
       })
 
       test('Skal ikke gi feilmelding når grad er 100 og uttaksår ikke er valgt', () => {
@@ -480,12 +480,12 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.gradertAar).toBe('')
+        expect(errorFields.gradertUttaksalder).toBe('')
       })
     })
 
-    describe('heltUttakAar', () => {
-      test('Skal gi feilmelding når heltUttakAar er null', () => {
+    describe('heltUttaksalder', () => {
+      test('Skal gi feilmelding når heltUttaksalder er null', () => {
         const state = {
           ...initialState,
           heltUttak: {
@@ -499,10 +499,10 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakAar).toBe('Du må velge alder')
+        expect(errorFields.heltUttaksalder).toBe('Du må velge alder')
       })
 
-      test('Skal ikke gi feilmelding når heltUttakAar er gyldig', () => {
+      test('Skal ikke gi feilmelding når heltUttaksalder er gyldig', () => {
         const state = {
           ...initialState,
           heltUttak: {
@@ -516,7 +516,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakAar).toBe('')
+        expect(errorFields.heltUttaksalder).toBe('')
       })
     })
 

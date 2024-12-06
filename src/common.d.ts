@@ -84,14 +84,11 @@ export type ErrorFields = {
   utenlandsAntallAar?: string
   aarligInntektFoerUttakBeloep?: string
   uttaksgrad?: string
+  gradertUttaksalder?: string
   gradertInntekt?: string
-  gradertAar?: string
-  //gradertMaaneder?: string
-  heltUttakAar?: string
-  //heltUttakMaaneder?: string
+  heltUttaksalder?: string
   helPensjonInntekt?: string
   heltUttakSluttAlderAar?: string
-  //heltUttakSluttAlderMaaneder?: string
   harInntektVsaHelPensjon?: string
   sivilstand?: string
   epsHarInntektOver2G?: string

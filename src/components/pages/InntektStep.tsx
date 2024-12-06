@@ -147,15 +147,15 @@ const InntektStep = () => {
                 value={state.gradertUttak.uttaksalder.aar ?? ''}
                 className="selectAar"
                 label={`Hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
-                data-testid="gradertAar"
+                data-testid="gradertUttaksalder"
                 onChange={(it) => {
                   handleFieldChange((draft) => {
                     draft.gradertUttak!.uttaksalder.aar =
                       it.target.value === '' ? null : parseInt(it.target.value)
                     draft.gradertUttak!.uttaksalder.maaneder = 0
-                  }, 'gradertAar')
+                  }, 'gradertUttaksalder')
                 }}
-                error={errorFields.gradertAar}
+                error={errorFields.gradertUttaksalder}
               >
                 <option value={''}>----</option>
                 {yearOptions}
@@ -185,16 +185,16 @@ const InntektStep = () => {
           <Select
             value={state.heltUttak.uttaksalder?.aar ?? ''}
             className="selectAar"
-            data-testid="heltUttakAar"
+            data-testid="heltUttaksalder"
             label="Hvilken alder planlegger du å ta ut 100% pensjon?"
             onChange={(it) => {
               handleFieldChange((draft) => {
                 draft.heltUttak.uttaksalder.aar =
                   it.target.value === '' ? null : parseInt(it.target.value)
                 draft.heltUttak.uttaksalder.maaneder = 0
-              }, 'heltUttakAar')
+              }, 'heltUttaksalder')
             }}
-            error={errorFields.heltUttakAar}
+            error={errorFields.heltUttaksalder}
           >
             <option value={''}>----</option>
             {yearOptions}

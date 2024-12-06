@@ -202,11 +202,13 @@ describe('InntektStep Component', () => {
             },
           },
         })
-        const input = screen.getByTestId('gradertAar') as HTMLSelectElement
+        const input = screen.getByTestId(
+          'gradertUttaksalder'
+        ) as HTMLSelectElement
         fireEvent.change(input, { target: { value: '66' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
-          'gradertAar'
+          'gradertUttaksalder'
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
@@ -224,11 +226,13 @@ describe('InntektStep Component', () => {
             },
           },
         })
-        const input = screen.getByTestId('gradertAar') as HTMLSelectElement
+        const input = screen.getByTestId(
+          'gradertUttaksalder'
+        ) as HTMLSelectElement
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
-          'gradertAar'
+          'gradertUttaksalder'
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
@@ -247,7 +251,9 @@ describe('InntektStep Component', () => {
           },
         })
 
-        const input = screen.getByTestId('gradertAar') as HTMLInputElement
+        const input = screen.getByTestId(
+          'gradertUttaksalder'
+        ) as HTMLInputElement
 
         expect(input.value).toBe('')
       })
@@ -432,12 +438,12 @@ describe('InntektStep Component', () => {
           },
         },
       })
-      const input = screen.getByTestId('heltUttakAar') as HTMLSelectElement
+      const input = screen.getByTestId('heltUttaksalder') as HTMLSelectElement
 
       fireEvent.change(input, { target: { value: '67' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
-        'heltUttakAar'
+        'heltUttaksalder'
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
@@ -458,11 +464,11 @@ describe('InntektStep Component', () => {
           },
         },
       })
-      const input = screen.getByTestId('heltUttakAar') as HTMLSelectElement
+      const input = screen.getByTestId('heltUttaksalder') as HTMLSelectElement
       fireEvent.change(input, { target: { value: '' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
-        'heltUttakAar'
+        'heltUttaksalder'
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
