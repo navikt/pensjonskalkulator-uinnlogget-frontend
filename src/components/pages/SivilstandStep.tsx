@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
-import { Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
+import { Radio, RadioGroup, Select } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { PropType, State } from '@/common'
 import Substep from '../Substep'
