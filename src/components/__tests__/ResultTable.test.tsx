@@ -96,10 +96,10 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
     const headers = screen.getAllByRole('columnheader')
     expect(headers).toHaveLength(5)
-    expect(headers[0]).toHaveTextContent('Alder og uttaksgrad')
-    expect(headers[1]).toHaveTextContent('Fra folketrygden')
+    expect(headers[0]).toHaveTextContent('Alder')
+    expect(headers[1]).toHaveTextContent('Alderspensjon (nav)')
     expect(headers[2]).toHaveTextContent('AFP privat')
-    expect(headers[3]).toHaveTextContent('Arbeidsinntekt')
+    expect(headers[3]).toHaveTextContent('Pensjonsgivende inntekt')
     expect(headers[4]).toHaveTextContent('Sum')
   })
 

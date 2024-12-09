@@ -64,10 +64,12 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
       <Table data-testid="result-table">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell scope="col">Alder og uttaksgrad</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Fra folketrygden</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Alder</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Alderspensjon (nav)</Table.HeaderCell>
             <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Arbeidsinntekt</Table.HeaderCell>
+            <Table.HeaderCell scope="col">
+              Pensjonsgivende inntekt
+            </Table.HeaderCell>
             <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
