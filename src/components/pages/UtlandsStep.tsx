@@ -48,8 +48,11 @@ const UtlandsStep = () => {
             <Radio value={true}>Ja</Radio>
             <Radio value={false}>Nei</Radio>
           </RadioGroup>
-          <ReadMore header="Om opphold utenfor Norge">
-            Hvis du har bodd eller arbeidet utenfor Norge, kan det påvirke
+          <ReadMore
+            className={stepStyles.componentSpacing}
+            header="Om opphold utenfor Norge"
+          >
+            Hvis du har bodd eller jobbet utenfor Norge, kan det påvirke
             pensjonen din. Hvis du har bodd i utlandet, kan du ha rett til
             pensjon fra det landet du har bodd i.
           </ReadMore>
@@ -66,6 +69,7 @@ const UtlandsStep = () => {
                 }
                 inputMode="numeric"
                 label="Hvor mange år har du bodd i utlandet?"
+                description="Fra du fylte 16 år til du tar ut pensjon"
                 value={state.utenlandsAntallAar ?? ''}
                 error={errorFields.utenlandsAntallAar}
               ></TextField>

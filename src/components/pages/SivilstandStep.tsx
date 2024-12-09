@@ -8,6 +8,7 @@ import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 import { formatInntekt } from './utils/inntekt'
+import stepStyles from '../styles/stepStyles.module.css'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -33,11 +34,10 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <Heading level="2" size="medium">
-        Sivilstand
-      </Heading>
+      <h2 className={stepStyles.underOverskrift}>Sivilstand</h2>
       <Select
         value={state.sivilstand}
+        className={stepStyles.componentSpacing}
         style={{ width: '5rem' }}
         label={'Hva er din sivilstand?'}
         onChange={(it) =>
@@ -63,7 +63,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
         <>
           <Substep>
             <RadioGroup
-              legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
+              legend={`Har din ektefelle, partner eller samboer som har inntekt større enn ${
                 grunnbelop ? `${formatInntekt(grunnbelop)} kr` : '2G'
               } når du starter å ta ut pensjon?`}
               defaultValue={state.epsHarInntektOver2G}
@@ -81,7 +81,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
           <Substep>
             <RadioGroup
               legend={
-                'Har du ektefelle, partner eller samboer som mottar pensjon eller uføretrygd fra folketrygden eller AFP når du starter å ta ut pensjon?'
+                'Har din ektefelle, partner eller samboer pensjon eller uføretrygd fra folketrygden (nav) eller AFP når du starter å ta ut pensjon?'
               }
               defaultValue={state.epsHarPensjon}
               onChange={(it: boolean) =>
