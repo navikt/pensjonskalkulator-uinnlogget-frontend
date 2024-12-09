@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Box, TextField } from '@navikt/ds-react'
+import { TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
@@ -29,22 +29,20 @@ const AlderStep = () => {
     <>
       <FormWrapper onSubmit={onSubmit}>
         <h2 className={stepStyles.underOverskrift}>Alder og yrkesaktivitet</h2>
-        <Box maxWidth={{ md: '30%', sm: '8rem' }}>
-          <TextField
-            className={stepStyles.textfieldAar}
-            style={{ width: '6rem' }}
-            onChange={(it) =>
-              handleFieldChange((draft) => {
-                const value = it.target.value
-                draft.foedselAar = value.length > 0 ? value : null
-              }, 'foedselAar')
-            }
-            inputMode="numeric"
-            label="I hvilket år er du født?"
-            value={state.foedselAar ?? ''}
-            error={errorFields.foedselAar}
-          ></TextField>
-        </Box>
+        <TextField
+          className={stepStyles.textfieldAar}
+          style={{ width: '6rem' }}
+          onChange={(it) =>
+            handleFieldChange((draft) => {
+              const value = it.target.value
+              draft.foedselAar = value.length > 0 ? value : null
+            }, 'foedselAar')
+          }
+          inputMode="numeric"
+          label="I hvilket år er du født?"
+          value={state.foedselAar ?? ''}
+          error={errorFields.foedselAar}
+        ></TextField>
         <Substep>
           <TextField
             className={stepStyles.textfieldAar}
@@ -55,7 +53,8 @@ const AlderStep = () => {
               }, 'inntektOver1GAntallAar')
             }
             inputMode="numeric"
-            label="Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?"
+            label="Hvor mange år har du jobbet i Norge?"
+            description="Totalt antall år fra du startet i jobb til du tar ut pensjon"
             value={state.inntektOver1GAntallAar ?? ''}
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
