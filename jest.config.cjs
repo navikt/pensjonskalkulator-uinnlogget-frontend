@@ -21,6 +21,7 @@ const customJestConfig = {
     '!src/types/**',
     '!src/app/page.tsx',
     '!src/common.d.ts',
+    '!src/text/errors.ts',
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
@@ -34,6 +35,7 @@ const customJestConfig = {
     'prettify.js',
     'sorter.js',
     'src/types/',
+    'src/texts/',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
