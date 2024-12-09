@@ -15,6 +15,7 @@ import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
 import stepStyles from '../styles/stepStyles.module.css'
 import '../styles/selectStyle.css'
+import { updateAndFormatInntektFromInputField } from './utils/inntekt'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -56,8 +57,10 @@ const InntektStep = () => {
           onChange={(it) =>
             handleFieldChange((draft) => {
               const value = it.target.value
-              draft.aarligInntektFoerUttakBeloep =
-                value.length === 0 ? null : value
+              updateAndFormatInntektFromInputField(value, (formattedValue) => {
+                draft.aarligInntektFoerUttakBeloep =
+                  formattedValue.length === 0 ? null : formattedValue
+              })
             }, 'aarligInntektFoerUttakBeloep')
           }
           type="text"
@@ -167,8 +170,15 @@ const InntektStep = () => {
                 onChange={(it) => {
                   handleFieldChange((draft) => {
                     const value = it.target.value
-                    draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
-                      value.length === 0 ? undefined : value
+                    updateAndFormatInntektFromInputField(
+                      value,
+                      (formattedValue) => {
+                        draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
+                          formattedValue.length === 0
+                            ? undefined
+                            : formattedValue
+                      }
+                    )
                   }, 'gradertInntekt')
                 }}
                 type="text"
@@ -230,10 +240,16 @@ const InntektStep = () => {
                 onChange={(it) => {
                   handleFieldChange((draft) => {
                     const value = it.target.value
-                    draft.heltUttak.aarligInntektVsaPensjon = {
-                      ...draft.heltUttak.aarligInntektVsaPensjon,
-                      beloep: value.length === 0 ? null : value,
-                    }
+                    updateAndFormatInntektFromInputField(
+                      value,
+                      (formattedValue) => {
+                        draft.heltUttak.aarligInntektVsaPensjon = {
+                          ...draft.heltUttak.aarligInntektVsaPensjon,
+                          beloep:
+                            formattedValue.length === 0 ? null : formattedValue,
+                        }
+                      }
+                    )
                   }, 'helPensjonInntekt')
                 }}
                 error={errorFields.helPensjonInntekt}
