@@ -1,6 +1,7 @@
 import { Alder, APIPayload, PropType, State } from '@/common'
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 
+//formatInntektToNumber vil ikke her returnere NaN da det er ivaretatt og testet i valideringen
 export const mapStateToApiPayload = (s: State): APIPayload => {
   const {
     harBoddIUtland: _harBoddIUtland,

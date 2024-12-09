@@ -8,7 +8,6 @@ import ResultTable from './ResultTable'
 import { SimuleringError, Simuleringsresultat } from '@/common'
 import { isSimuleringError } from '@/helpers/typeguards'
 import ResponseWarning from './ResponseWarning'
-import { formatInntektToNumber } from './pages/utils/inntekt'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError
@@ -27,21 +26,15 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const chartOptions = useMemo(() => {
     return getChartOptions({
       simuleringsresultat,
-      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep
-        ? formatInntektToNumber(state.aarligInntektFoerUttakBeloep)
-        : undefined,
+      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep!,
       heltUttakAar: state.heltUttak.uttaksalder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
-      inntektVsaHelPensjonBeloep: state.heltUttak.aarligInntektVsaPensjon
-        ?.beloep
-        ? formatInntektToNumber(state.heltUttak.aarligInntektVsaPensjon.beloep)
-        : undefined,
+      inntektVsaHelPensjonBeloep:
+        state.heltUttak.aarligInntektVsaPensjon?.beloep,
       gradertUttakAlder: state.gradertUttak?.uttaksalder?.aar,
       gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep
-        ? formatInntektToNumber(
-            state.gradertUttak.aarligInntektVsaPensjonBeloep
-          )
+        ? state.gradertUttak?.aarligInntektVsaPensjonBeloep
         : undefined,
     })
   }, [state, simuleringsresultat])

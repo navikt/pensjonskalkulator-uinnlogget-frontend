@@ -1,13 +1,13 @@
 import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
-import { Radio, RadioGroup, Select } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { PropType, State } from '@/common'
 import Substep from '../Substep'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import { useFieldChange } from '@/helpers/useFormState'
-import stepStyles from '../styles/stepStyles.module.css'
+import { formatInntekt } from './utils/inntekt'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -33,8 +33,9 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Sivilstand</h2>
-      {/* <Substep> */}
+      <Heading level="2" size="medium">
+        Sivilstand
+      </Heading>
       <Select
         value={state.sivilstand}
         style={{ width: '5rem' }}
@@ -58,13 +59,12 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
         <option value={'GIFT'}>Gift</option>
         <option value={'SAMBOER'}>Samboer</option>
       </Select>
-      {/* </Substep> */}
       {state.sivilstand && state.sivilstand !== 'UGIFT' && (
         <>
           <Substep>
             <RadioGroup
               legend={`Har du ektefelle, partner eller samboer som har inntekt større enn ${
-                grunnbelop ? `${grunnbelop} kr` : '2G'
+                grunnbelop ? `${formatInntekt(grunnbelop)} kr` : '2G'
               } når du starter å ta ut pensjon?`}
               defaultValue={state.epsHarInntektOver2G}
               onChange={(it: boolean) =>

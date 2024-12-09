@@ -1,12 +1,13 @@
+import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 import { alignData, getChartOptions } from '../chartUtils'
 
 describe('getChartOptions', () => {
   const heltUttakAar = 67
-  const inntektVsaHelPensjonBeloep = 100000
+  const inntektVsaHelPensjonBeloep = '100000'
   const inntektVsaHelPensjonSluttalder = 68
-  const aarligInntektFoerUttakBeloep = 500000
+  const aarligInntektFoerUttakBeloep = '500000'
   const gradertUttakAlder = 65
-  const gradertUttakInntekt = 200000
+  const gradertUttakInntekt = '200000'
 
   const mockSimuleringsresultat = {
     alderspensjon: [
@@ -100,6 +101,25 @@ describe('getChartOptions', () => {
           data: expect.any(Array),
         })
       })
+      describe('Når inntektVsaHelPensjonBeloep, aarligInntektFoerUttakBeloep og gradertUttakInntekt ikke kan parses til number', () => {
+        it('Burde seriene for "Pensjonsgivende inntekt" inneholde', () => {
+          const chartOptions = getChartOptions({
+            simuleringsresultat: mockSimuleringsresultat,
+            heltUttakAar,
+            inntektVsaHelPensjonSluttalder,
+            inntektVsaHelPensjonBeloep: 'NaN',
+            aarligInntektFoerUttakBeloep: 'NaN',
+            gradertUttakAlder,
+            gradertUttakInntekt: 'NaN',
+          })
+
+          expect(chartOptions.series).toContainEqual({
+            name: 'Pensjonsgivende inntekt',
+            data: [0, null, null, null, null],
+            color: 'var(--a-gray-500)',
+          })
+        })
+      })
     })
 
     describe('Når gradert uttak er definert', () => {
@@ -121,10 +141,16 @@ describe('getChartOptions', () => {
           gradertUttakInterval.push(i)
         }
 
+        const parsedGradertUttakInntekt = isNaN(
+          formatInntektToNumber(gradertUttakInntekt)
+        )
+          ? 0
+          : formatInntektToNumber(gradertUttakInntekt)
+
         const alignedGradertUttakData = alignData(
           [64, 65, 66, 67, 68],
           gradertUttakInterval,
-          gradertUttakInntekt
+          parsedGradertUttakInntekt
         )
 
         chartOptions.series[1].data = chartOptions.series[1].data.map(
@@ -208,7 +234,7 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder: 0,
-          gradertUttakInntekt: 0,
+          gradertUttakInntekt,
         })
 
         expect(chartOptions.xAxis.categories).toEqual([])
