@@ -31,7 +31,6 @@ const AlderStep = () => {
         <h2 className={stepStyles.underOverskrift}>Alder og yrkesaktivitet</h2>
         <TextField
           className={stepStyles.textfieldAar}
-          style={{ width: '6rem' }}
           onChange={(it) =>
             handleFieldChange((draft) => {
               const value = it.target.value

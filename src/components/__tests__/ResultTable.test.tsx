@@ -97,7 +97,7 @@ describe('ResultTable Component', () => {
     const headers = screen.getAllByRole('columnheader')
     expect(headers).toHaveLength(5)
     expect(headers[0]).toHaveTextContent('Alder')
-    expect(headers[1]).toHaveTextContent('Alderspensjon (nav)')
+    expect(headers[1]).toHaveTextContent('Alderspensjon (Nav)')
     expect(headers[2]).toHaveTextContent('AFP privat')
     expect(headers[3]).toHaveTextContent('Pensjonsgivende inntekt')
     expect(headers[4]).toHaveTextContent('Sum')

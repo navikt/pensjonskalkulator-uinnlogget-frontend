@@ -65,7 +65,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
         <Table.Header>
           <Table.Row>
             <Table.HeaderCell scope="col">Alder</Table.HeaderCell>
-            <Table.HeaderCell scope="col">Alderspensjon (nav)</Table.HeaderCell>
+            <Table.HeaderCell scope="col">Alderspensjon (Nav)</Table.HeaderCell>
             <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
             <Table.HeaderCell scope="col">
               Pensjonsgivende inntekt

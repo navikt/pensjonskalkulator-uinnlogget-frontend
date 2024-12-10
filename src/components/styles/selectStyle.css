@@ -3,7 +3,12 @@
 }
 
 .selectAar .navds-select__container {
-  width: 6rem;
+  min-width: 6rem;
+  width: auto;
+}
+
+.selectSivilstand .navds-select__container {
+  width: auto;
 }
 
 .selectGrad select {
