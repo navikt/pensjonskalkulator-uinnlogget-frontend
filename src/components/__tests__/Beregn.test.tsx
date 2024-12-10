@@ -147,7 +147,7 @@ describe('Beregn Component', () => {
         </FormContext.Provider>
       )
 
-      const endreOpplysningerButton = screen.getByText('Endre opplysninger')
+      const endreOpplysningerButton = screen.getByText('Tilbake til start')
       expect(endreOpplysningerButton).toBeVisible()
     })
     test('Burde navigere tilbake til første steg når knappen for å endre opplysninger blir klikket', () => {
@@ -157,7 +157,7 @@ describe('Beregn Component', () => {
         </FormContext.Provider>
       )
 
-      const endreOpplysningerButton = screen.getByText('Endre opplysninger')
+      const endreOpplysningerButton = screen.getByText('Tilbake til start')
       endreOpplysningerButton.click()
 
       expect(mockGoTo).toHaveBeenCalledWith(0)

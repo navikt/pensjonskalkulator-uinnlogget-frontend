@@ -61,7 +61,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         </>
         <HStack marginInline="auto" width="100%">
           <Button onClick={() => formPageProps.goTo(0)} variant="secondary">
-            Endre opplysninger
+            Tilbake til start
           </Button>
         </HStack>
       </VStack>
