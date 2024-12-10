@@ -81,7 +81,7 @@ const useErrorHandling = (state: State) => {
     }
     if(state.gradertUttak?.uttaksalder.aar && state.heltUttak.uttaksalder.aar){
       if(state.heltUttak.uttaksalder.aar <= state.gradertUttak.uttaksalder.aar){
-        return 'Du må oppgi en høyere alder for 100% uttak enn den du har oppgitt for gradert uttak';
+        return 'Du må oppgi en senere alder for 100 % uttak enn den du har oppgitt for gradert uttak';
       }
     }
     if(state.heltUttak.uttaksalder?.aar && state.heltUttak.uttaksalder?.aar < new Date().getFullYear() - +state.foedselAar!) {

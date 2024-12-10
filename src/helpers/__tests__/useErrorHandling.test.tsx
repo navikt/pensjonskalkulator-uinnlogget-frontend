@@ -583,7 +583,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.heltUttaksalder).toBe(
-          'Du må oppgi en høyere alder for 100% uttak enn den du har oppgitt for gradert uttak'
+          'Du må oppgi en senere alder for 100 % uttak enn den du har oppgitt for gradert uttak'
         )
       })
 
