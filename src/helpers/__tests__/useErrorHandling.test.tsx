@@ -308,6 +308,22 @@ describe('useErrorHandling', () => {
         )
       })
 
+      test('Skal gi feilmelding når inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          aarligInntektFoerUttakBeloep: '100000001',
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
+        )
+      })
+
       test('Skal ikke gi feilmelding når inntekt er gyldig', () => {
         const state = {
           ...initialState,
@@ -426,6 +442,26 @@ describe('useErrorHandling', () => {
 
         expect(errorFields.gradertInntekt).toBe(
           'Du må fylle ut en gyldig inntekt'
+        )
+      })
+
+      test('Skal gi feilmelding når gradert uttak har gyldig grad og inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '100000001',
+            uttaksalder: { aar: null, maaneder: null },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.gradertInntekt).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
         )
       })
 
@@ -606,7 +642,7 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('helPensjonInntekt', () => {
+    describe('inntektVsaHelPensjon', () => {
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er ikke utfylt', () => {
         const state = {
           ...initialState,
@@ -662,6 +698,29 @@ describe('useErrorHandling', () => {
 
         expect(errorFields.helPensjonInntekt).toBe(
           'Du må fylle ut en gyldig inntekt'
+        )
+      })
+
+      test('Skal gi feilmelding når hel pensjon er valgt og inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          harInntektVsaHelPensjon: true,
+          heltUttak: {
+            uttaksalder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: {
+              beloep: '100000001',
+              sluttAlder: undefined,
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.helPensjonInntekt).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
         )
       })
 

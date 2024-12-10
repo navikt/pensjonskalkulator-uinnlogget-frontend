@@ -43,6 +43,9 @@ const useErrorHandling = (state: State) => {
     if (parsedInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
     }
+    if(parsedInntekt > 100000000){
+      return 'Inntekten kan ikke overskride 100 000 000 kroner';
+    }
     return '';
   }
 
@@ -70,6 +73,9 @@ const useErrorHandling = (state: State) => {
       }
       if (state.gradertUttak.aarligInntektVsaPensjonBeloep && parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
+      }
+      if(parsedInntekt > 100000000){
+        return 'Inntekten kan ikke overskride 100 000 000 kroner';
       }
     }
     return '';
@@ -102,6 +108,9 @@ const useErrorHandling = (state: State) => {
       }
       if (parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
+      }
+      if(parsedInntekt > 100000000){
+        return 'Inntekten kan ikke overskride 100 000 000 kroner';
       }
     }
     return '';
