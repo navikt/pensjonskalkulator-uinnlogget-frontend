@@ -72,8 +72,6 @@ export function handleCaretPosition(
     let end = caretPosition
 
     if (valueLengthDifference === -2 || hasAddedSpace) {
-      console.log('Case 1')
-
       start = Math.max(caretPosition - 1, 0)
       end = start
     } else if (valueLengthDifference === 0 || valueLengthDifference === -1) {
