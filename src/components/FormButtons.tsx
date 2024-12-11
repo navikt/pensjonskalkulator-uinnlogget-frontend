@@ -10,7 +10,7 @@ function FormButtons() {
   return (
     <HStack gap={'2'} marginBlock="2">
       <Button type="submit" variant="primary">
-        {curStep === length - 1 ? 'Send' : 'Neste'}
+        {curStep === length - 1 ? 'Beregn' : 'Neste'}
       </Button>
 
       {curStep !== 0 && (

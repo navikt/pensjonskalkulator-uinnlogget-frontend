@@ -210,7 +210,7 @@ describe('SivilstandStep Component', () => {
         })
         expect(
           screen.getByText(
-            /Har du ektefelle, partner eller samboer som har inntekt større enn 100 000 kr/
+            /Har din ektefelle, partner eller samboer inntekt større enn 100 000 kr/
           )
         ).toBeInTheDocument()
       })
@@ -225,7 +225,7 @@ describe('SivilstandStep Component', () => {
         })
         expect(
           screen.getByText(
-            /Har du ektefelle, partner eller samboer som har inntekt større enn 2G/
+            /Har din ektefelle, partner eller samboer inntekt større enn 2G/
           )
         ).toBeInTheDocument()
       })

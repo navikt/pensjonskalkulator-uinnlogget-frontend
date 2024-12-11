@@ -49,8 +49,8 @@ describe('useErrorHandling', () => {
 
   describe('Validering for AlderStep', () => {
     describe('foedselAar', () => {
-      test('Skal validere at foedselAar ikke er mindre enn 1900', () => {
-        const state = { ...initialState, foedselAar: '1800' }
+      test('Skal validere at foedselAar ikke er mindre enn 1945', () => {
+        const state = { ...initialState, foedselAar: '1940' }
         renderWithState(state)
 
         act(() => {
@@ -159,7 +159,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.inntektOver1GAntallAar).toBe(
-          'Du må fylle ut et gyldig tall'
+          'Du må fylle ut en gyldig inntekt'
         )
       })
     })
@@ -308,6 +308,22 @@ describe('useErrorHandling', () => {
         )
       })
 
+      test('Skal gi feilmelding når inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          aarligInntektFoerUttakBeloep: '100000001',
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
+        )
+      })
+
       test('Skal ikke gi feilmelding når inntekt er gyldig', () => {
         const state = {
           ...initialState,
@@ -334,7 +350,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
-          'Du må fylle ut et gyldig tall'
+          'Du må fylle ut en gyldig inntekt'
         )
       })
     })
@@ -409,6 +425,46 @@ describe('useErrorHandling', () => {
         expect(errorFields.gradertInntekt).toBe('Inntekt kan ikke være negativ')
       })
 
+      test('Skal gi feilmelding når gradert uttak har gyldig grad og inntekt inneholder tekst', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '1000o',
+            uttaksalder: { aar: null, maaneder: null },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.gradertInntekt).toBe(
+          'Du må fylle ut en gyldig inntekt'
+        )
+      })
+
+      test('Skal gi feilmelding når gradert uttak har gyldig grad og inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '100000001',
+            uttaksalder: { aar: null, maaneder: null },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.gradertInntekt).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
+        )
+      })
+
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og inntekt er utfylt', () => {
         const state = {
           ...initialState,
@@ -447,9 +503,30 @@ describe('useErrorHandling', () => {
         expect(errorFields.gradertUttaksalder).toBe('Du må velge alder')
       })
 
+      test('Skal gi feilmelding når gradert uttak har gyldig grad og alder er lavere enn fødselsår', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '0',
+            uttaksalder: { aar: 62, maaneder: null },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.gradertUttaksalder).toBe(
+          'Din uttaksalder kan ikke være lavere enn ditt fødselsår'
+        )
+      })
+
       test('Skal ikke gi feilmelding når gradert uttak har gyldig grad og alder er valgt', () => {
         const state = {
           ...initialState,
+          foedselAar: '1960',
           gradertUttak: {
             grad: 50,
             aarligInntektVsaPensjonBeloep: '0',
@@ -468,10 +545,11 @@ describe('useErrorHandling', () => {
       test('Skal ikke gi feilmelding når grad er 100 og uttaksår ikke er valgt', () => {
         const state = {
           ...initialState,
+          foedselAar: '1960',
           gradertUttak: {
             grad: 100,
             aarligInntektVsaPensjonBeloep: '0',
-            uttaksalder: { aar: 62, maaneder: null },
+            uttaksalder: { aar: 67, maaneder: null },
           },
         }
         renderWithState(state)
@@ -502,7 +580,7 @@ describe('useErrorHandling', () => {
         expect(errorFields.heltUttaksalder).toBe('Du må velge alder')
       })
 
-      test('Skal ikke gi feilmelding når heltUttaksalder er gyldig', () => {
+      test('Skal gi feilmelding når heltUttaksalder er lavere enn fødselsår', () => {
         const state = {
           ...initialState,
           heltUttak: {
@@ -516,11 +594,55 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
+        expect(errorFields.heltUttaksalder).toBe(
+          'Din uttaksalder kan ikke være lavere enn ditt fødselsår'
+        )
+      })
+
+      test('Skal gi feilmelding når heltUttaksalder er lavere enn gradert uttaksalder', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '0',
+            uttaksalder: { aar: 67, maaneder: null },
+          },
+          heltUttak: {
+            uttaksalder: { aar: 65, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttaksalder).toBe(
+          'Du må oppgi en senere alder for 100 % uttak enn den du har oppgitt for gradert uttak'
+        )
+      })
+
+      test('Skal ikke gi feilmelding når heltUttaksalder er gyldig', () => {
+        const state = {
+          ...initialState,
+          foedselAar: '1960',
+          heltUttak: {
+            uttaksalder: { aar: 70, maaneder: null },
+            aarligInntektVsaPensjon: { beloep: '0', sluttAlder: undefined },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
         expect(errorFields.heltUttaksalder).toBe('')
       })
     })
 
-    describe('helPensjonInntekt', () => {
+    describe('inntektVsaHelPensjon', () => {
       test('Skal gi feilmelding når hel pensjon er valgt, men inntekt er ikke utfylt', () => {
         const state = {
           ...initialState,
@@ -575,7 +697,30 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.helPensjonInntekt).toBe(
-          'Du må fylle ut et gyldig tall'
+          'Du må fylle ut en gyldig inntekt'
+        )
+      })
+
+      test('Skal gi feilmelding når hel pensjon er valgt og inntekt er over 100 000 000', () => {
+        const state = {
+          ...initialState,
+          harInntektVsaHelPensjon: true,
+          heltUttak: {
+            uttaksalder: { aar: 0, maaneder: null },
+            aarligInntektVsaPensjon: {
+              beloep: '100000001',
+              sluttAlder: undefined,
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.helPensjonInntekt).toBe(
+          'Inntekten kan ikke overskride 100 000 000 kroner'
         )
       })
 

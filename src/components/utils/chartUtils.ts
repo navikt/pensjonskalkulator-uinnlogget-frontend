@@ -65,8 +65,6 @@ export const getChartOptions = (input: {
     ? 0
     : formatInntektToNumber(gradertUttakInntekt)
 
-  console.log(parsedAarligInntektFoerUttakBeloep)
-
   const alderspensjonData = simuleringsresultat
     ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
     : []
