@@ -92,7 +92,7 @@ describe('handleCaretPosition', () => {
     const event = createEvent('12345', 3)
     handleCaretPosition(event, '12 345', '12 345')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(3)
+    expect(event.target.selectionStart).toBe(2)
   })
 
   test('Burde ikke flytte caret posisjon tilbake når lengden reduseres med 2', () => {
@@ -106,7 +106,7 @@ describe('handleCaretPosition', () => {
     const event = createEvent('12345', 3)
     handleCaretPosition(event, '12 345', '1 235')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(3)
+    expect(event.target.selectionStart).toBe(2)
     jest.runAllTimers()
   })
 
@@ -114,6 +114,6 @@ describe('handleCaretPosition', () => {
     const event = createEvent('12345', 3)
     handleCaretPosition(event, '12 345', '123 045')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(3)
+    expect(event.target.selectionStart).toBe(2)
   })
 })
