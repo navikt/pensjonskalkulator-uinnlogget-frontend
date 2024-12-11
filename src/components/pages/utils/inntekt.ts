@@ -39,9 +39,42 @@ export const formatInntektToNumber = (s?: string | null | undefined) => {
 }
 
 export const updateAndFormatInntektFromInputField = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  oldFormattedInntekt: string,
   inntekt: string,
   updateInntekt: (s: string) => void
 ) => {
   const formattedInntekt = formatInntekt(inntekt)
+  handleCaretPosition(e, oldFormattedInntekt, formattedInntekt)
   updateInntekt(formattedInntekt)
+}
+
+export function handleCaretPosition(
+  e: React.ChangeEvent<HTMLInputElement>,
+  oldFormattedValue: string,
+  newFormattedValue: string
+) {
+  const input = e.target
+  const caretPosition = input.selectionStart ?? 0
+
+  const valueLengthDifference =
+    newFormattedValue.length - oldFormattedValue.length
+
+  setTimeout(() => {
+    let start = caretPosition
+    let end = caretPosition
+
+    if (valueLengthDifference === 0 || valueLengthDifference === -1) {
+      start = caretPosition
+      end = start
+    } else if (valueLengthDifference === -2) {
+      start = Math.max(caretPosition - 1, 0)
+      end = start
+    } else if (valueLengthDifference === 2) {
+      start = caretPosition + 1
+      end = caretPosition + 1
+    }
+
+    input.setSelectionRange(start, end)
+  }, 0)
 }

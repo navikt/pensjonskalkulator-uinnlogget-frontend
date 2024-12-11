@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react'
-import FormWrapper from '../FormWrapper'
+import { State } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
 import {
   Radio,
   RadioGroup,
@@ -7,14 +8,13 @@ import {
   Select,
   TextField,
 } from '@navikt/ds-react'
-import { FormContext } from '@/contexts/context'
-import { State } from '@/common'
+import { useContext, useMemo } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
-import Substep from '../Substep'
 import FormButtons from '../FormButtons'
-import { useFieldChange } from '@/helpers/useFormState'
-import stepStyles from '../styles/stepStyles.module.css'
+import FormWrapper from '../FormWrapper'
 import '../styles/selectStyle.css'
+import stepStyles from '../styles/stepStyles.module.css'
+import Substep from '../Substep'
 import { updateAndFormatInntektFromInputField } from './utils/inntekt'
 
 const InntektStep = () => {
@@ -54,15 +54,20 @@ const InntektStep = () => {
         <TextField
           value={state.aarligInntektFoerUttakBeloep ?? ''}
           className={stepStyles.textfieldInntekt}
-          onChange={(it) =>
+          onChange={(it) => {
             handleFieldChange((draft) => {
               const value = it.target.value
-              updateAndFormatInntektFromInputField(value, (formattedValue) => {
-                draft.aarligInntektFoerUttakBeloep =
-                  formattedValue.length === 0 ? null : formattedValue
-              })
+              updateAndFormatInntektFromInputField(
+                it,
+                draft.aarligInntektFoerUttakBeloep ?? '',
+                value,
+                (formattedValue) => {
+                  draft.aarligInntektFoerUttakBeloep =
+                    formattedValue.length === 0 ? null : formattedValue
+                }
+              )
             }, 'aarligInntektFoerUttakBeloep')
-          }
+          }}
           type="text"
           inputMode="numeric"
           label="Hva er din forventede årlige inntekt?"
@@ -171,6 +176,8 @@ const InntektStep = () => {
                   handleFieldChange((draft) => {
                     const value = it.target.value
                     updateAndFormatInntektFromInputField(
+                      it,
+                      draft.gradertUttak!.aarligInntektVsaPensjonBeloep ?? '',
                       value,
                       (formattedValue) => {
                         draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
@@ -241,6 +248,8 @@ const InntektStep = () => {
                   handleFieldChange((draft) => {
                     const value = it.target.value
                     updateAndFormatInntektFromInputField(
+                      it,
+                      draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? '',
                       value,
                       (formattedValue) => {
                         draft.heltUttak.aarligInntektVsaPensjon = {
