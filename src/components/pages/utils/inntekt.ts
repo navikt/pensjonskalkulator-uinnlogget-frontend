@@ -49,6 +49,11 @@ export const updateAndFormatInntektFromInputField = (
   updateInntekt(formattedInntekt)
 }
 
+const spaceDifference = (str1: string, str2: string): number => {
+  const countSpaces = (str: string): number => (str.match(/ /g) || []).length
+  return Math.abs(countSpaces(str1) - countSpaces(str2))
+}
+
 export function handleCaretPosition(
   e: React.ChangeEvent<HTMLInputElement>,
   oldFormattedValue: string,
@@ -57,6 +62,8 @@ export function handleCaretPosition(
   const input = e.target
   const caretPosition = input.selectionStart ?? 0
 
+  const hasAddedSpace = spaceDifference(oldFormattedValue, input.value) === 1
+
   const valueLengthDifference =
     newFormattedValue.length - oldFormattedValue.length
 
@@ -64,11 +71,13 @@ export function handleCaretPosition(
     let start = caretPosition
     let end = caretPosition
 
-    if (valueLengthDifference === 0 || valueLengthDifference === -1) {
-      start = caretPosition
-      end = start
-    } else if (valueLengthDifference === -2) {
+    if (valueLengthDifference === -2 || hasAddedSpace) {
+      console.log('Case 1')
+
       start = Math.max(caretPosition - 1, 0)
+      end = start
+    } else if (valueLengthDifference === 0 || valueLengthDifference === -1) {
+      start = caretPosition
       end = start
     } else if (valueLengthDifference === 2) {
       start = caretPosition + 1
