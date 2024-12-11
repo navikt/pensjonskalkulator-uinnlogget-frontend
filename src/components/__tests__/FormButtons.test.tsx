@@ -71,7 +71,7 @@ describe('Når brukeren er på siste steg,', () => {
     expect(formButtonsElement).toHaveLength(2)
   })
 
-  test('Endrer teksten på knappen til "Send"', () => {
+  test('Endrer teksten på knappen til "Beregn"', () => {
     const modifiedContextValues = { ...mockedContextValues }
     modifiedContextValues.formPageProps.curStep = 4
     render(
@@ -80,7 +80,7 @@ describe('Når brukeren er på siste steg,', () => {
       </FormContext.Provider>
     )
     const formButtonsElement = screen.getAllByRole('button')
-    expect(formButtonsElement[0]).toHaveTextContent('Send')
+    expect(formButtonsElement[0]).toHaveTextContent('Beregn')
   })
 })
 

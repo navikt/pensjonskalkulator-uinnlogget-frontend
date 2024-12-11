@@ -162,7 +162,7 @@ describe('AlderStep Component', () => {
     test('Burde endre inntektOver1GAntallAar når handleFieldChange kalles på', () => {
       renderMockedComponent(AlderStep, context)
       const input = screen.getByLabelText(
-        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+        'Hvor mange år har du jobbet i Norge?'
       )
       fireEvent.change(input, { target: { value: '10' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -177,7 +177,7 @@ describe('AlderStep Component', () => {
       const state = { ...initialState, inntektOver1GAntallAar: null }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
-        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+        'Hvor mange år har du jobbet i Norge?'
       ) as HTMLInputElement
       expect(input.value).toBe('')
     })
@@ -186,7 +186,7 @@ describe('AlderStep Component', () => {
       const state = { ...initialState, inntektOver1GAntallAar: '30' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
-        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+        'Hvor mange år har du jobbet i Norge?'
       )
       fireEvent.change(input, { target: { value: '' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -201,7 +201,7 @@ describe('AlderStep Component', () => {
       const state = { ...initialState, inntektOver1GAntallAar: '30' }
       renderMockedComponent(AlderStep, { ...context, state })
       const input = screen.getByLabelText(
-        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+        'Hvor mange år har du jobbet i Norge?'
       )
       expect(input).toHaveValue('30')
     })
@@ -209,7 +209,7 @@ describe('AlderStep Component', () => {
     test('Burde godta bokstaver', () => {
       renderMockedComponent(AlderStep, context)
       const input = screen.getByLabelText(
-        'Hvor mange år vil du være yrkesaktiv fram til du tar ut pensjon?'
+        'Hvor mange år har du jobbet i Norge?'
       )
       fireEvent.change(input, { target: { value: 'abc' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(

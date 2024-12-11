@@ -9,7 +9,7 @@ const useErrorHandling = (state: State) => {
       return 'Du må fylle ut antall år';
     }
     if (isNaN(+state.inntektOver1GAntallAar)) {
-      return 'Du må fylle ut et gyldig tall';
+      return 'Du må fylle ut en gyldig inntekt';
     }
     if (+state.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
@@ -38,10 +38,13 @@ const useErrorHandling = (state: State) => {
       return 'Du må fylle ut inntekt';
     }
     if (isNaN(parsedInntekt)) {
-      return 'Du må fylle ut et gyldig tall';
+      return 'Du må fylle ut en gyldig inntekt';
     }
     if (parsedInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
+    }
+    if(parsedInntekt > 100000000){
+      return 'Inntekten kan ikke overskride 100 000 000 kroner';
     }
     return '';
   }
@@ -50,6 +53,9 @@ const useErrorHandling = (state: State) => {
     if (state.gradertUttak?.grad) {
       if (state.gradertUttak.uttaksalder?.aar === null) {
         return 'Du må velge alder';
+      }
+      if(state.gradertUttak.uttaksalder?.aar && state.gradertUttak.uttaksalder?.aar < new Date().getFullYear() - +state.foedselAar!) {
+        return 'Din uttaksalder kan ikke være lavere enn ditt fødselsår';
       }
     }
   
@@ -63,11 +69,29 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if(isNaN(parsedInntekt)) {
-        return 'Du må fylle ut et gyldig tall';
+        return 'Du må fylle ut en gyldig inntekt';
       }
       if (state.gradertUttak.aarligInntektVsaPensjonBeloep && parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
       }
+      if(parsedInntekt > 100000000){
+        return 'Inntekten kan ikke overskride 100 000 000 kroner';
+      }
+    }
+    return '';
+  }
+
+  const validateHelUttaksalder = (): string => {
+    if(state.heltUttak.uttaksalder?.aar === null) {
+      return 'Du må velge alder';
+    }
+    if(state.gradertUttak?.uttaksalder.aar && state.heltUttak.uttaksalder.aar){
+      if(state.heltUttak.uttaksalder.aar <= state.gradertUttak.uttaksalder.aar){
+        return 'Du må oppgi en senere alder for 100 % uttak enn den du har oppgitt for gradert uttak';
+      }
+    }
+    if(state.heltUttak.uttaksalder?.aar && state.heltUttak.uttaksalder?.aar < new Date().getFullYear() - +state.foedselAar!) {
+      return 'Din uttaksalder kan ikke være lavere enn ditt fødselsår';
     }
     return '';
   }
@@ -80,10 +104,13 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if (isNaN(parsedInntekt)) {
-        return 'Du må fylle ut et gyldig tall';
+        return 'Du må fylle ut en gyldig inntekt';
       }
       if (parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
+      }
+      if(parsedInntekt > 100000000){
+        return 'Inntekten kan ikke overskride 100 000 000 kroner';
       }
     }
     return '';
@@ -103,7 +130,7 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) || +state.foedselAar < 1900 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) || +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
@@ -117,7 +144,7 @@ const useErrorHandling = (state: State) => {
       errors.uttaksgrad = state.gradertUttak && state.gradertUttak.grad === null ? 'Du må velge uttaksgrad' : ''
       errors.gradertUttaksalder = validateGradertUttak()
       errors.gradertInntekt = validateGradertInntekt()
-      errors.heltUttaksalder = state.heltUttak.uttaksalder?.aar === null ? 'Du må velge alder' : ''
+      errors.heltUttaksalder = validateHelUttaksalder() 
       errors.helPensjonInntekt = validateHelPensjonInntekt()
       errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder()
       errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Velg alternativ' : ''

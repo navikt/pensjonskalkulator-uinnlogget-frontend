@@ -20,7 +20,7 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
 
   return (
     <FormProgress
-      className={stepStyles.formProgress}
+      className={stepStyles.componentSpacing}
       totalSteps={totalSteps}
       activeStep={activeStep + 1}
       data-testid="form-progress"
