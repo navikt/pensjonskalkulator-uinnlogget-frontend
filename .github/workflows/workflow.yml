@@ -1,4 +1,4 @@
-name: workflow-uinnlogget-catbox
+name: workflow-uinnlogget-deploy
 on:
   push:
     branches:
