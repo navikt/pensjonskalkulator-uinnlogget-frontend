@@ -1,5 +1,5 @@
+import { Box, HStack, Loader } from '@navikt/ds-react'
 import React from 'react'
-import { Box, Loader } from '@navikt/ds-react'
 
 const LoadingComponent: React.FC = () => (
   <Box
@@ -7,9 +7,10 @@ const LoadingComponent: React.FC = () => (
     height={'50vh'}
     maxWidth={'fit-content'}
     marginInline={'auto'}
-    style={{ alignItems: 'center' }}
   >
-    <Loader data-testid="loader" size="3xlarge" title="Laster..." />
+    <HStack height="80%" align={'center'}>
+      <Loader data-testid="loader" size="3xlarge" title="Laster..." />
+    </HStack>
   </Box>
 )
 
