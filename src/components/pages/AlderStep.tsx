@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { TextField } from '@navikt/ds-react'
+import { Heading, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
@@ -28,7 +28,9 @@ const AlderStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
-        <h2 className={stepStyles.underOverskrift}>Alder og yrkesaktivitet</h2>
+        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+          Alder og yrkesaktivitet
+        </Heading>
         <TextField
           className={stepStyles.textfieldAar}
           onChange={(it) =>

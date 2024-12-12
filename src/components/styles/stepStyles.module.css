@@ -10,10 +10,10 @@
 }
 
 .overskrift {
-  font-size: var(--a-font-size-heading-xlarge);
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
 }
 .underOverskrift {
-  font-size: var(--a-font-size-heading-medium);
   margin-bottom: 1.5rem;
 }
 

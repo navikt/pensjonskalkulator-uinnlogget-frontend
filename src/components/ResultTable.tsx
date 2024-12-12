@@ -55,6 +55,32 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     ? formatInntektToNumber(state.heltUttak?.aarligInntektVsaPensjon?.beloep)
     : 0
 
+  const afpPrivatValue = (index: number) =>
+    afpPrivatData && afpPrivatData.length > 0
+      ? formatInntektToNumber(
+          formatInntekt(afpPrivatData[index]) ||
+            formatInntekt(afpPrivatData[afpPrivatData.length - 1])
+        )
+      : 0
+
+  const inntektVsaPensjonValue = (alder: number) =>
+    inntektVsaGradertUttakInterval.includes(alder)
+      ? formatInntekt(aarligbelopVsaGradertuttak)
+      : inntektVsaHelPensjonInterval.includes(alder)
+        ? formatInntekt(aarligbelopVsaHeltuttak)
+        : 0
+
+  const sum = (index: number, alder: number) =>
+    formatInntekt(
+      alderspensjonData[index] +
+        afpPrivatValue(index) +
+        (inntektVsaGradertUttakInterval.includes(alder)
+          ? aarligbelopVsaGradertuttak
+          : inntektVsaHelPensjonInterval.includes(alder)
+            ? aarligbelopVsaHeltuttak
+            : 0)
+    )
+
   return (
     <ReadMore
       data-testid="show-result-table"
@@ -102,30 +128,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 <Table.DataCell>
                   {formatInntekt(alderspensjonData[index])}
                 </Table.DataCell>
-                <Table.DataCell>
-                  {afpPrivatData && afpPrivatData.length > 0
-                    ? formatInntekt(afpPrivatData[index]) ||
-                      formatInntekt(afpPrivatData[afpPrivatData.length - 1])
-                    : 0}
-                </Table.DataCell>
-                <Table.DataCell>
-                  {inntektVsaGradertUttakInterval.includes(alder)
-                    ? formatInntekt(aarligbelopVsaGradertuttak)
-                    : inntektVsaHelPensjonInterval.includes(alder)
-                      ? formatInntekt(aarligbelopVsaHeltuttak)
-                      : 0}
-                </Table.DataCell>
-                <Table.DataCell>
-                  {formatInntekt(
-                    alderspensjonData[index] +
-                      ((afpPrivatData ? afpPrivatData[index] : 0) || 0) +
-                      (inntektVsaGradertUttakInterval.includes(alder)
-                        ? aarligbelopVsaGradertuttak
-                        : inntektVsaHelPensjonInterval.includes(alder)
-                          ? aarligbelopVsaHeltuttak
-                          : 0)
-                  )}
-                </Table.DataCell>
+                <Table.DataCell>{afpPrivatValue(index)}</Table.DataCell>
+                <Table.DataCell>{inntektVsaPensjonValue(alder)}</Table.DataCell>
+                <Table.DataCell>{sum(index, alder)}</Table.DataCell>
               </Table.Row>
             ))}
           </Table.Body>

@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
+  Heading,
   Radio,
   RadioGroup,
   ReadMore,
@@ -49,7 +50,9 @@ const InntektStep = () => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Inntekt og alderspensjon</h2>
+      <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        Inntekt og alderspensjon
+      </Heading>
       <TextField
         value={state.aarligInntektFoerUttakBeloep ?? ''}
         className={stepStyles.textfieldInntekt}

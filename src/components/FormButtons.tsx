@@ -1,6 +1,7 @@
 import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext } from 'react'
+import stepStyles from './styles/stepStyles.module.css'
 
 function FormButtons() {
   const context = useContext(FormContext)
@@ -8,7 +9,7 @@ function FormButtons() {
   const { curStep, length, goBack } = context.formPageProps
 
   return (
-    <HStack gap={'2'} marginBlock="2">
+    <HStack gap={'2'} className={stepStyles.footerSpacing}>
       <Button type="submit" variant="primary">
         {curStep === length - 1 ? 'Beregn' : 'Neste'}
       </Button>
