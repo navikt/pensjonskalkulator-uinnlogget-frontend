@@ -1,11 +1,16 @@
-name: workflow-uinnlogget-catbox
+name: workflow-uinnlogget-dev
 on:
   push:
     branches:
-      - 'dev-*'
+      - '**'
+      - '!main'
+      - '!magicbox'
+      - '!dreambox'
+      - '!catbox'
+      
 
 jobs:
-  build-and-publish:
+  build:
     name: Bygg, test og publiser docker image
     timeout-minutes: 15
     runs-on: ubuntu-latest
@@ -14,7 +19,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+      image: ${{ steps.image-creation.outputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,55 +45,3 @@ jobs:
         run: npm run test
       - name: Build application
         run: npm run build
-      - name: docker-build-push
-        if: startsWith(github.ref_name, 'dev-')
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: pensjonskalkulator
-          dockerfile: .docker/Dockerfile
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      - name: deploy-dev
-        uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/dev.yml
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
-
-  codeql-analyse:
-    if: startsWith(github.ref_name, 'dev-')
-    name: codeql-analyse
-    timeout-minutes: 15
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      actions: read
-      security-events: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          queries: security-and-quality
-          languages: 'javascript'
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: '/language:javascript'
-
-  # nais-deploy:
-  #   needs: build-and-publish
-  #   runs-on: ubuntu-latest
-  #   permissions: write-all
-  # uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
-  # with:
-  #   image: ${{ needs.build-and-publish.outputs.image }}
-  #   app: ${{ inputs.app }}
-  #   dev-only: ${{ inputs.dev-only }}
-  #   nais-template: .nais/app.yaml
-  #   dev-vars: image=.nais/app.yaml
-  # secrets: inherit
