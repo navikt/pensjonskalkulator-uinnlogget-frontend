@@ -1,11 +1,12 @@
 import { ErrorMessages } from '@/common'
 
 export const errors = {
-  PKU222BeregningstjenesteFeiletException: 'Beregning',
+  PKU222BeregningstjenesteFeiletException:
+    'Det har oppstått en feil. Vennligst prøv igjen senere.',
   PKU225AvslagVilkarsprovingForLavtTidligUttakException:
-    'Avslag på vilkårsprøving grunnet for lavt tidlig uttak.',
+    'Opptjeningen din er ikke høy nok til ønsket uttak.',
   PKU224AvslagVilkarsprovingForKortTrygdetidException:
-    'Beregningen viser at du ikke kan ta ut pensjon fra tidspunktet du ønsker fordi du har for lav pensjonsopptjening. Du kan prøve igjen med en lavere uttaksgrad eller et senere tidspunkt for uttak av pensjon.',
+    'Opptjeningen din er ikke høy nok til ønsket uttak.',
   default: 'Det har oppstått en feil. Vennligst prøv igjen senere.',
 } as ErrorMessages
 
