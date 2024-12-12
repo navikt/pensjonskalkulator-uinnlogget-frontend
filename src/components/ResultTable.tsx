@@ -103,9 +103,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                   {formatInntekt(alderspensjonData[index])}
                 </Table.DataCell>
                 <Table.DataCell>
-                  {afpPrivatData!.length > 0
-                    ? formatInntekt(afpPrivatData![index]) ||
-                      formatInntekt(afpPrivatData![afpPrivatData!.length - 1])
+                  {afpPrivatData && afpPrivatData.length > 0
+                    ? formatInntekt(afpPrivatData[index]) ||
+                      formatInntekt(afpPrivatData[afpPrivatData.length - 1])
                     : 0}
                 </Table.DataCell>
                 <Table.DataCell>
