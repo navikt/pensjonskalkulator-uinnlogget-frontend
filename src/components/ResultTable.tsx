@@ -57,11 +57,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
   const afpPrivatValue = (index: number) =>
     afpPrivatData && afpPrivatData.length > 0
-      ? formatInntektToNumber(
-          formatInntekt(afpPrivatData[index]) ||
-            formatInntekt(afpPrivatData[afpPrivatData.length - 1])
-        )
-      : 0
+      ? formatInntekt(afpPrivatData[index]) ||
+        formatInntekt(afpPrivatData[afpPrivatData.length - 1])
+      : '0'
 
   const inntektVsaPensjonValue = (alder: number) =>
     inntektVsaGradertUttakInterval.includes(alder)
@@ -73,7 +71,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
   const sum = (index: number, alder: number) =>
     formatInntekt(
       alderspensjonData[index] +
-        afpPrivatValue(index) +
+        formatInntektToNumber(afpPrivatValue(index)) +
         (inntektVsaGradertUttakInterval.includes(alder)
           ? aarligbelopVsaGradertuttak
           : inntektVsaHelPensjonInterval.includes(alder)
