@@ -26,6 +26,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
         width={'100%'}
         marginInline={'auto'}
         borderColor="border-default"
+        padding="4"
       >
         <Alert variant="warning">
           <VStack gap="3">
