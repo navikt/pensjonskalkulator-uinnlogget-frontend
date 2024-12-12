@@ -1,14 +1,6 @@
 'use client'
 
-import {
-  BodyShort,
-  Box,
-  Heading,
-  Link,
-  List,
-  Page,
-  VStack,
-} from '@navikt/ds-react'
+import { Box, Heading, Link, List, Page, VStack } from '@navikt/ds-react'
 
 const NotFoundPage = () => {
   return (
@@ -19,12 +11,8 @@ const NotFoundPage = () => {
             <VStack gap="12" align="start">
               <div>
                 <Heading level="1" size="large" spacing>
-                  Beklager, vi fant ikke siden
+                  Oops! Siden du leter etter finnes ikke.
                 </Heading>
-                <BodyShort>
-                  Denne siden kan være slettet eller flyttet, eller det er en
-                  feil i lenken.
-                </BodyShort>
                 <List>
                   <List.Item>
                     Hvis du skrev inn adressen direkte i nettleseren kan du
