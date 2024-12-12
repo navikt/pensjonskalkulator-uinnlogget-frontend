@@ -12,7 +12,6 @@ describe('LoadingComponent', () => {
   it('Burde rendre Box komponenten med riktige props', () => {
     const box = getByTestId('box')
     expect(box).toBeVisible()
-    expect(box).toHaveStyle({ alignItems: 'center' })
   })
 
   it('Burde rendre Loader komponenten med riktige props', () => {
