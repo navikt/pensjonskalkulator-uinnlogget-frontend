@@ -67,7 +67,7 @@ describe('Beregn Component', () => {
     )
 
     expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
-    expect(screen.queryByText('Resultat')).not.toBeInTheDocument()
+    expect(screen.queryByText('Beregning')).not.toBeInTheDocument()
   })
 
   test('Når simuleringsresultat er oppgitt, burde vise tittel, resultat-table og graf', () => {
@@ -77,7 +77,7 @@ describe('Beregn Component', () => {
       </FormContext.Provider>
     )
 
-    expect(screen.getByText('Resultat')).toBeVisible()
+    expect(screen.getByText('Beregning')).toBeVisible()
     expect(screen.getByTestId('result-table')).toBeVisible()
     const highchartsReact = screen.getByTestId('highcharts-react')
     expect(highchartsReact).toBeInTheDocument()
@@ -119,7 +119,7 @@ describe('Beregn Component', () => {
         </FormContext.Provider>
       )
 
-      expect(screen.getByText('Resultat')).toBeVisible()
+      expect(screen.getByText('Beregning')).toBeVisible()
       expect(screen.getByTestId('result-table')).toBeVisible()
       const highchartsReact = screen.getByTestId('highcharts-react')
       expect(highchartsReact).toBeInTheDocument()

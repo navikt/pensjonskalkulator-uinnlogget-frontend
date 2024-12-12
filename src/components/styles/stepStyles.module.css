@@ -16,3 +16,11 @@
   font-size: var(--a-font-size-heading-medium);
   margin-bottom: 1.5rem;
 }
+
+.tabellScrollbarhet {
+  overflow: auto;
+}
+
+.footerSpacing {
+  margin-bottom: 2.5rem;
+}
