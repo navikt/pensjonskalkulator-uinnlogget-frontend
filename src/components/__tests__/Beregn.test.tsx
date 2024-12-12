@@ -1,7 +1,7 @@
-import { render, screen } from '@testing-library/react'
-import { FormContext } from '@/contexts/context'
 import Beregn from '@/components/Beregn'
+import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
+import { render, screen } from '@testing-library/react'
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({
@@ -37,12 +37,13 @@ const mockSimuleringsresultat = {
 
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
+const mockGoTo = jest.fn()
 
 const defaultFormPageProps = {
   curStep: 1,
   length: 5,
   goBack: jest.fn(),
-  goTo: jest.fn(),
+  goTo: mockGoTo,
   handleSubmit: jest.fn(),
   goToNext: mockGoToNext,
 }
@@ -136,6 +137,30 @@ describe('Beregn Component', () => {
       expect(seriesNames).toContain('AFP Privat')
       expect(seriesNames).toContain('Alderspensjon')
       //expect(seriesNames).toContain('Pensjonsgivende inntekt')
+    })
+  })
+  describe('Gitt at brukeren har lyst til å endre opplysninger', () => {
+    test('Burde knappen for å endre opplysninger være klikkbar', () => {
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <Beregn simuleringsresultat={mockSimuleringsresultat} />
+        </FormContext.Provider>
+      )
+
+      const endreOpplysningerButton = screen.getByText('Tilbake til start')
+      expect(endreOpplysningerButton).toBeVisible()
+    })
+    test('Burde navigere tilbake til første steg når knappen for å endre opplysninger blir klikket', () => {
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <Beregn simuleringsresultat={mockSimuleringsresultat} />
+        </FormContext.Provider>
+      )
+
+      const endreOpplysningerButton = screen.getByText('Tilbake til start')
+      endreOpplysningerButton.click()
+
+      expect(mockGoTo).toHaveBeenCalledWith(0)
     })
   })
 })

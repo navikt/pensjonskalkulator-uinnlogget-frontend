@@ -33,6 +33,7 @@ const AFPStep = () => {
       <h2 className={stepStyles.underOverskrift}>Avtalefestet pensjon (AFP)</h2>
       <RadioGroup
         legend={'Har du rett til AFP i privat sektor?'}
+        className={stepStyles.componentSpacing}
         defaultValue={state.simuleringstype}
         onChange={(it: PropType<State, 'simuleringstype'>) =>
           handleFieldChange((draft) => {

@@ -60,7 +60,9 @@ describe('InntektStep Component', () => {
     renderMockedComponent(InntektStep, context)
     expect(screen.getByText('Inntekt og alderspensjon')).toBeInTheDocument()
     expect(
-      screen.getByLabelText('Hva er din forventede årlige inntekt?')
+      screen.getByLabelText(
+        'Hva er din årlige pensjonsgivende inntekt frem til du tar ut pensjon?'
+      )
     ).toBeInTheDocument()
   })
 
@@ -86,7 +88,7 @@ describe('InntektStep Component', () => {
     test('Burde aarligInntektFoerUttakBeloep endres når bruker skriver inn inntekt', () => {
       renderMockedComponent(InntektStep, context)
       const input = screen.getByLabelText(
-        'Hva er din forventede årlige inntekt?'
+        'Hva er din årlige pensjonsgivende inntekt frem til du tar ut pensjon?'
       )
       fireEvent.change(input, { target: { value: '500000' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -95,7 +97,11 @@ describe('InntektStep Component', () => {
       )
 
       const draft = mockHandleFieldChange.mock.results[0].value
-      expect(draft.aarligInntektFoerUttakBeloep).toBe('500000')
+      const receivedValue = draft.aarligInntektFoerUttakBeloep.replace(
+        /\u00A0/g,
+        ' '
+      )
+      expect(receivedValue).toBe('500 000')
     })
 
     test('Burde vise tom input når aarligInntektFoerUttakBeloep er undefined', () => {
@@ -107,7 +113,7 @@ describe('InntektStep Component', () => {
         },
       })
       const input = screen.getByLabelText(
-        'Hva er din forventede årlige inntekt?'
+        'Hva er din årlige pensjonsgivende inntekt frem til du tar ut pensjon?'
       ) as HTMLInputElement
       expect(input.value).toBe('')
     })
@@ -121,7 +127,7 @@ describe('InntektStep Component', () => {
         },
       })
       const input = screen.getByLabelText(
-        'Hva er din forventede årlige inntekt?'
+        'Hva er din årlige pensjonsgivende inntekt frem til du tar ut pensjon?'
       ) as HTMLInputElement
       expect(input.value).toBe('500000')
     })
@@ -280,7 +286,12 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.gradertUttak.aarligInntektVsaPensjonBeloep).toBe('500000')
+        const receivedValue =
+          draft.gradertUttak.aarligInntektVsaPensjonBeloep.replace(
+            /\u00A0/g,
+            ' '
+          )
+        expect(receivedValue).toBe('500 000')
       })
 
       test('Burde sette gradertUttak.aarligInntektVsaPensjonBeloep til undefined når input er tom', () => {
@@ -581,7 +592,9 @@ describe('InntektStep Component', () => {
         )
 
         const draft = mockHandleFieldChange.mock.results[0].value
-        expect(draft.heltUttak.aarligInntektVsaPensjon.beloep).toBe('500000')
+        const receivedValue =
+          draft.heltUttak.aarligInntektVsaPensjon.beloep.replace(/\u00A0/g, ' ')
+        expect(receivedValue).toBe('500 000')
       })
 
       test('Burde vise tom input når heltUttak.aarligInntektVsaPensjon.beloep er null', () => {

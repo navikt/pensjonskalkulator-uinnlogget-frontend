@@ -1,4 +1,5 @@
 import { Simuleringsresultat } from '@/common'
+import { formatInntektToNumber } from '../pages/utils/inntekt'
 
 export const alignData = (
   categories: number[],
@@ -31,22 +32,38 @@ export const alignData = (
 
 export const getChartOptions = (input: {
   simuleringsresultat?: Simuleringsresultat
-  aarligInntektFoerUttakBeloep?: number
+  aarligInntektFoerUttakBeloep?: string
   heltUttakAar: number
   inntektVsaHelPensjonSluttalder?: number | null
-  inntektVsaHelPensjonBeloep?: number | null
+  inntektVsaHelPensjonBeloep?: string | null
   gradertUttakAlder?: number | null
-  gradertUttakInntekt?: number | null
+  gradertUttakInntekt?: string | null
 }) => {
   const {
     simuleringsresultat,
-    aarligInntektFoerUttakBeloep = 0,
+    aarligInntektFoerUttakBeloep,
     heltUttakAar,
     inntektVsaHelPensjonSluttalder = 0,
-    inntektVsaHelPensjonBeloep = 0,
+    inntektVsaHelPensjonBeloep,
     gradertUttakAlder = 0,
-    gradertUttakInntekt = 0,
+    gradertUttakInntekt,
   } = input
+
+  const parsedAarligInntektFoerUttakBeloep = isNaN(
+    formatInntektToNumber(aarligInntektFoerUttakBeloep)
+  )
+    ? 0
+    : formatInntektToNumber(aarligInntektFoerUttakBeloep)
+  const parsedInntektVsaHelPensjonBeloep = isNaN(
+    formatInntektToNumber(inntektVsaHelPensjonBeloep)
+  )
+    ? 0
+    : formatInntektToNumber(inntektVsaHelPensjonBeloep)
+  const parsedGradertUttakInntekt = isNaN(
+    formatInntektToNumber(gradertUttakInntekt)
+  )
+    ? 0
+    : formatInntektToNumber(gradertUttakInntekt)
 
   const alderspensjonData = simuleringsresultat
     ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
@@ -95,7 +112,7 @@ export const getChartOptions = (input: {
       {
         name: 'Pensjonsgivende inntekt',
         data: [
-          aarligInntektFoerUttakBeloep,
+          parsedAarligInntektFoerUttakBeloep,
           new Array(categories.length).fill(null),
         ].flat(),
         color: 'var(--a-gray-500)',
@@ -118,7 +135,10 @@ export const getChartOptions = (input: {
 
   const inntektPlacement = afpPrivatData.length !== 0 ? 1 : 0
 
-  if (inntektVsaHelPensjonBeloep !== 0 || inntektVsaHelPensjonBeloep) {
+  if (
+    parsedInntektVsaHelPensjonBeloep !== 0 ||
+    parsedInntektVsaHelPensjonBeloep
+  ) {
     const maxAar = inntektVsaHelPensjonSluttalder
       ? inntektVsaHelPensjonSluttalder
       : categories[categories.length - 1]
@@ -131,7 +151,7 @@ export const getChartOptions = (input: {
     const alignedInntektVsaHelPensjonData = alignData(
       extendedCategories,
       inntektVsaHelPensjonInterval,
-      inntektVsaHelPensjonBeloep
+      parsedInntektVsaHelPensjonBeloep
     )
 
     chartOptions.series[inntektPlacement].data = chartOptions.series[
@@ -141,7 +161,7 @@ export const getChartOptions = (input: {
     )
   }
 
-  if (gradertUttakInntekt !== 0 || gradertUttakInntekt) {
+  if (parsedGradertUttakInntekt !== 0 || parsedGradertUttakInntekt) {
     const gradertUttakInterval = []
     for (let i = gradertUttakAlder!; i < heltUttakAar; i++) {
       gradertUttakInterval.push(i)
@@ -150,7 +170,7 @@ export const getChartOptions = (input: {
     const alignedGradertUttakData = alignData(
       extendedCategories,
       gradertUttakInterval,
-      gradertUttakInntekt
+      parsedGradertUttakInntekt
     )
 
     chartOptions.series[inntektPlacement].data = chartOptions.series[

@@ -1,20 +1,20 @@
-import { useContext, useMemo } from 'react'
+import { SimuleringError, Simuleringsresultat } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { isSimuleringError } from '@/helpers/typeguards'
+import { Box, Button, HStack, VStack } from '@navikt/ds-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { FormContext } from '@/contexts/context'
-import { getChartOptions } from './utils/chartUtils'
-import { Box } from '@navikt/ds-react'
-import ResultTable from './ResultTable'
-import { SimuleringError, Simuleringsresultat } from '@/common'
-import { isSimuleringError } from '@/helpers/typeguards'
+import { useContext, useMemo } from 'react'
 import ResponseWarning from './ResponseWarning'
+import ResultTable from './ResultTable'
+import { getChartOptions } from './utils/chartUtils'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError
 }
 
 const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
-  const { state } = useContext(FormContext)
+  const { state, formPageProps } = useContext(FormContext)
 
   if (
     isSimuleringError(simuleringsresultat) ||
@@ -26,34 +26,30 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const chartOptions = useMemo(() => {
     return getChartOptions({
       simuleringsresultat,
-      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep
-        ? parseInt(state.aarligInntektFoerUttakBeloep)
-        : undefined,
+      aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep!,
       heltUttakAar: state.heltUttak.uttaksalder.aar!,
       inntektVsaHelPensjonSluttalder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
-      inntektVsaHelPensjonBeloep: state.heltUttak.aarligInntektVsaPensjon
-        ?.beloep
-        ? parseInt(state.heltUttak.aarligInntektVsaPensjon.beloep)
-        : undefined,
+      inntektVsaHelPensjonBeloep:
+        state.heltUttak.aarligInntektVsaPensjon?.beloep,
       gradertUttakAlder: state.gradertUttak?.uttaksalder?.aar,
       gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep
-        ? parseInt(state.gradertUttak.aarligInntektVsaPensjonBeloep)
+        ? state.gradertUttak?.aarligInntektVsaPensjonBeloep
         : undefined,
     })
   }, [state, simuleringsresultat])
 
   return (
-    <div>
-      <Box
-        maxWidth={'70rem'}
-        width={'100%'}
-        marginInline={'auto'}
-        borderColor="border-default"
-        padding={'4'}
-        borderRadius={'large'}
-        role="region"
-      >
+    <Box
+      maxWidth={'70rem'}
+      width={'100%'}
+      marginInline={'auto'}
+      borderColor="border-default"
+      padding={'4'}
+      borderRadius={'large'}
+      role="region"
+    >
+      <VStack gap="4" width="100%">
         <h1>Resultat</h1>
         <>
           <HighchartsReact
@@ -63,8 +59,13 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
           />
           <ResultTable simuleringsresultat={simuleringsresultat} />
         </>
-      </Box>
-    </div>
+        <HStack marginInline="auto" width="100%">
+          <Button onClick={() => formPageProps.goTo(0)} variant="secondary">
+            Tilbake til start
+          </Button>
+        </HStack>
+      </VStack>
+    </Box>
   )
 }
 
