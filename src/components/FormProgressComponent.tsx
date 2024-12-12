@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormProgress } from '@navikt/ds-react'
 import stepStyles from './styles/stepStyles.module.css'
 
@@ -28,8 +27,8 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
     >
       {steps.map((step, index) => (
         <FormProgress.Step
-          completed={activeStep > index + 1}
-          interactive={activeStep >= index + 1}
+          completed={activeStep > index}
+          interactive={activeStep >= index}
           key={index}
         >
           {step}

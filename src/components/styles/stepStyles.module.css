@@ -20,3 +20,7 @@
 .tabellScrollbarhet {
   overflow: auto;
 }
+
+.footerSpacing {
+  margin-bottom: 2.5rem;
+}

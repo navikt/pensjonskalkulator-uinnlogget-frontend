@@ -1,7 +1,7 @@
-import type { Metadata } from 'next'
-import './globals.css'
 import '@navikt/ds-css'
 import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
+import type { Metadata } from 'next'
+import './globals.css'
 
 const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
 
@@ -45,7 +45,9 @@ export default async function RootLayout({
           }}
           suppressHydrationWarning
         />
-        {children}
+        <main id="maincontent" tabIndex={-1}>
+          {children}
+        </main>
         <div
           dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }}
           suppressHydrationWarning
