@@ -78,15 +78,24 @@ export const getChartOptions = (input: {
   const extendedCategories =
     categories.length > 0 ? [categories[0] - 1, ...categories] : []
 
+  const xaxisCategories =
+    categories.length > 0
+      ? [
+          categories[0] - 1,
+          ...categories.slice(0, -1),
+          `${categories[categories.length - 1]}+`,
+        ]
+      : []
+
   const chartOptions = {
     chart: {
       type: 'column',
     },
     title: {
-      text: 'Beregnet framtidig alderspensjon (kroner per år):',
+      text: '',
     },
     xAxis: {
-      categories: extendedCategories,
+      categories: xaxisCategories,
       title: {
         text: 'Alder',
       },
@@ -126,9 +135,19 @@ export const getChartOptions = (input: {
   }
 
   if (afpPrivatData.length !== 0) {
+    const extendedAfpPrivatData =
+      afpPrivatData.length < alderspensjonData.length
+        ? [
+            ...afpPrivatData,
+            ...new Array(alderspensjonData.length - afpPrivatData.length).fill(
+              afpPrivatData[afpPrivatData.length - 1]
+            ),
+          ]
+        : afpPrivatData
+
     chartOptions.series.unshift({
       name: 'AFP Privat',
-      data: [null, ...afpPrivatData],
+      data: [null, ...extendedAfpPrivatData],
       color: 'var(--a-purple-400)',
     })
   }

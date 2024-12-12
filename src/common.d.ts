@@ -88,7 +88,7 @@ export type ErrorFields = {
   gradertInntekt?: string
   heltUttaksalder?: string
   helPensjonInntekt?: string
-  heltUttakSluttAlderAar?: string
+  heltUttakSluttAlder?: string
   harInntektVsaHelPensjon?: string
   sivilstand?: string
   epsHarInntektOver2G?: string

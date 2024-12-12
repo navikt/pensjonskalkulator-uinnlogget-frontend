@@ -115,22 +115,22 @@ const InntektStep = () => {
             ----
           </option>
           <option value={'20'} key="20">
-            20%
+            20&nbsp;%
           </option>
           <option value={'40'} key="40">
-            40%
+            40&nbsp;%
           </option>
           <option value={'50'} key="50">
-            50%
+            50&nbsp;%
           </option>
           <option value={'60'} key="60">
-            60%
+            60&nbsp;%
           </option>
           <option value={'80'} key="80">
             80%
           </option>
           <option value={'100'} key="100">
-            100%
+            100&nbsp;%
           </option>
         </Select>
         <ReadMore header="Om uttaksgrad">
@@ -145,7 +145,7 @@ const InntektStep = () => {
             <Select
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
-              label={`Hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
+              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -190,7 +190,7 @@ const InntektStep = () => {
           value={state.heltUttak.uttaksalder?.aar ?? ''}
           className="selectAar"
           data-testid="heltUttaksalder"
-          label="Hvilken alder planlegger du å ta ut 100% pensjon?"
+          label="Fra hvilken alder planlegger du å ta ut 100% pensjon?"
           onChange={(it) => {
             handleFieldChange((draft) => {
               draft.heltUttak.uttaksalder.aar =
@@ -263,7 +263,7 @@ const InntektStep = () => {
                     : ''
               }
               className="selectAar"
-              data-testid="heltUttakSluttAlderAar"
+              data-testid="heltUttakSluttAlder"
               label="Til hvilken alder forventer du å ha inntekten?"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -292,9 +292,9 @@ const InntektStep = () => {
                       },
                     }
                   }
-                }, 'heltUttakSluttAlderAar')
+                }, 'heltUttakSluttAlder')
               }}
-              error={errorFields.heltUttakSluttAlderAar}
+              error={errorFields.heltUttakSluttAlder}
             >
               <option value={''}>----</option>
               {yearOptions}

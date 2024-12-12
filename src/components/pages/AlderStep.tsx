@@ -52,8 +52,7 @@ const AlderStep = () => {
               }, 'inntektOver1GAntallAar')
             }
             inputMode="numeric"
-            label="Hvor mange år har du jobbet i Norge?"
-            description="Totalt antall år fra du startet i jobb til du tar ut pensjon"
+            label="Hvor mange år har du jobbet i Norge når du tar ut pensjon?"
             value={state.inntektOver1GAntallAar ?? ''}
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
