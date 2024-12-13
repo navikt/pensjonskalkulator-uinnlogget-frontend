@@ -188,13 +188,13 @@ describe('InntektStep Component', () => {
 
         expect(
           screen.getByText(
-            `Fra hvilken alder planlegger du å ta ut 50% pensjon?`
+            `Fra hvilken alder planlegger du å ta ut 50 % pensjon?`
           )
         ).toBeInTheDocument()
 
         expect(
           screen.getByText(
-            `Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?`
+            `Hva forventer du å ha i årlig inntekt samtidig som du tar 50 % pensjon?`
           )
         ).toBeInTheDocument()
       })
@@ -279,7 +279,7 @@ describe('InntektStep Component', () => {
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50 % pensjon?'
         )
         fireEvent.change(input, { target: { value: '500000' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -310,7 +310,7 @@ describe('InntektStep Component', () => {
         })
 
         const input = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50 % pensjon?'
         )
         fireEvent.change(input, { target: { value: '' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -338,7 +338,7 @@ describe('InntektStep Component', () => {
         })
 
         const inputAarlinginntektVsaGradert = screen.getByLabelText(
-          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50% pensjon?'
+          'Hva forventer du å ha i årlig inntekt samtidig som du tar 50 % pensjon?'
         ) as HTMLInputElement
 
         expect(inputAarlinginntektVsaGradert.value).toBe('')

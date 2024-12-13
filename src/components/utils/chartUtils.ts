@@ -79,11 +79,10 @@ export const getChartOptions = (input: {
     categories.length > 0 ? [categories[0] - 1, ...categories] : []
 
   const xaxisCategories =
-    categories.length > 0
+    extendedCategories.length > 0
       ? [
-          categories[0] - 1,
-          ...categories.slice(0, -1),
-          `${categories[categories.length - 1]}+`,
+          ...extendedCategories.slice(0, -1),
+          `${extendedCategories[extendedCategories.length - 1]}+`,
         ]
       : []
 

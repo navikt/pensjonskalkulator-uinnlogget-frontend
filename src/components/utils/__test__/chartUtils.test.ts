@@ -40,10 +40,7 @@ describe('getChartOptions', () => {
         gradertUttakInntekt,
       })
 
-      expect(chartOptions.chart.type).toBe('column') /* 
-      expect(chartOptions.title.text).toBe(
-        'Beregnet framtidig alderspensjon (kroner per år):'
-      ) */
+      expect(chartOptions.chart.type).toBe('column')
       expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
       expect(chartOptions.series).toEqual([
         {

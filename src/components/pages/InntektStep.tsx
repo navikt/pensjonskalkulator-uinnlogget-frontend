@@ -130,7 +130,7 @@ const InntektStep = () => {
             60&nbsp;%
           </option>
           <option value={'80'} key="80">
-            80%
+            80&nbsp;%
           </option>
           <option value={'100'} key="100">
             100&nbsp;%
@@ -148,7 +148,7 @@ const InntektStep = () => {
             <Select
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
-              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
+              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -181,7 +181,7 @@ const InntektStep = () => {
               type="text"
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
-              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon?`}
+              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
             />
@@ -193,7 +193,7 @@ const InntektStep = () => {
           value={state.heltUttak.uttaksalder?.aar ?? ''}
           className="selectAar"
           data-testid="heltUttaksalder"
-          label="Fra hvilken alder planlegger du å ta ut 100% pensjon?"
+          label="Fra hvilken alder planlegger du å ta ut 100 % pensjon?"
           onChange={(it) => {
             handleFieldChange((draft) => {
               draft.heltUttak.uttaksalder.aar =
