@@ -1,11 +1,11 @@
-import React, { Suspense, useContext, useRef } from 'react'
+import { Suspense, useContext, useRef } from 'react'
 import Beregn from '../Beregn'
 
+import { SimuleringError, Simuleringsresultat, State } from '@/common'
 import { FormContext } from '@/contexts/context'
-import { Simuleringsresultat, State, SimuleringError } from '@/common'
-import LoadingComponent from '../LoadingComponent'
 import { submitForm } from '@/functions/submitForm'
 import { isSimuleringError } from '@/helpers/typeguards'
+import LoadingComponent from '../LoadingComponent'
 
 const useAsyncLoader = (
   asyncMethod: (state: State) => Promise<Simuleringsresultat | undefined>,
@@ -44,6 +44,8 @@ const useAsyncLoader = (
         .catch((err) => {
           storage.current.promise = undefined
           storage.current.rejected = true
+          console.log('Error in async loader:', err)
+
           if (isSimuleringError(err)) {
             storage.current.error = err
           }

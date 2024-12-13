@@ -1,12 +1,12 @@
-import { render, screen } from '@testing-library/react'
-import ResponseWarning from '../ResponseWarning'
 import { SimuleringError } from '@/common'
-import { getErrors } from '@/texts/errors'
 import { initialState } from '@/defaults/initialState'
+import { getErrors } from '@/texts/errors'
+import { render, screen } from '@testing-library/react'
 import {
   generateDefaultFormPageProps,
   renderMockedComponent,
 } from '../pages/test-utils/testSetup'
+import ResponseWarning from '../ResponseWarning'
 
 jest.mock('@/texts/errors', () => ({
   getErrors: jest.fn(),
@@ -45,11 +45,10 @@ describe('ResponseWarning Component', () => {
     expect(warningMessage).toBeInTheDocument()
   })
 
-  test('Should render the default warning message if no error is provided', () => {
+  test('Should throw "Error is undefined" if no error is provided', () => {
     const error = undefined
-    render(<ResponseWarning error={error} />)
-    const warningMessage = screen.getByText(errorMessageMock.default)
-    expect(warningMessage).toBeInTheDocument()
+    const container = () => render(<ResponseWarning error={error} />)
+    expect(container).toThrow('Error is undefined')
   })
 
   describe('Gitt at brukeren trykker på "Endre" knappen', () => {
