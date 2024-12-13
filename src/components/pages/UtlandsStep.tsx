@@ -31,7 +31,9 @@ const UtlandsStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
-        <h2 className={stepStyles.underOverskrift}>Utland</h2>
+        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+          Utland
+        </Heading>
         <div>
           <RadioGroup
             ref={utlandRadio}

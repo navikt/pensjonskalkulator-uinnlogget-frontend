@@ -121,6 +121,16 @@ const useErrorHandling = (state: State) => {
       if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar === null) {
         return 'Du må velge alder';
       }
+      if(state.heltUttak.uttaksalder.aar){
+        if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar <= state.heltUttak.uttaksalder.aar){
+          return 'Du må oppgi en senere alder for inntekt enn den du har oppgitt for helt uttak';
+        }
+      }
+      if(state.gradertUttak?.uttaksalder.aar){
+        if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar <= state.gradertUttak.uttaksalder.aar){
+          return 'Du må oppgi en senere alder for inntekt enn den du har oppgitt for gradert uttak';
+        }
+      }
     }
 
     return '';
@@ -146,7 +156,7 @@ const useErrorHandling = (state: State) => {
       errors.gradertInntekt = validateGradertInntekt()
       errors.heltUttaksalder = validateHelUttaksalder() 
       errors.helPensjonInntekt = validateHelPensjonInntekt()
-      errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder()
+      errors.heltUttakSluttAlder = validateHeltUttakSluttAlder()
       errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Du må velge et alternativ' : ''
     }
 

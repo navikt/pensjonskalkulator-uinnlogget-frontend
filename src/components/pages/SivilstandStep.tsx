@@ -1,7 +1,7 @@
 import { PropType, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
-import { Box, Radio, RadioGroup, Select } from '@navikt/ds-react'
+import { Box, Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
 import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -35,7 +35,9 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Sivilstand</h2>
+      <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        Sivilstand
+      </Heading>
       <Box className={stepStyles.componentSpacing}>
         <Select
           value={state.sivilstand}

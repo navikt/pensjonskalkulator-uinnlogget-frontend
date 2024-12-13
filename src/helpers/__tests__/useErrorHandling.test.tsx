@@ -745,7 +745,7 @@ describe('useErrorHandling', () => {
       })
     })
 
-    describe('heltUttakSluttAlderAar', () => {
+    describe('heltUttakSluttAlder', () => {
       test('Skal gi feilmelding når sluttalder.aar ikke er satt', () => {
         const state = {
           ...initialState,
@@ -764,7 +764,58 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlderAar).toBe('Du må velge alder')
+        expect(errorFields.heltUttakSluttAlder).toBe('Du må velge alder')
+      })
+
+      test('Skal gi feilmelding når sluttalder.aar er lavere enn heltUttak.uttaksalder.aar', () => {
+        const state = {
+          ...initialState,
+          harInntektVsaHelPensjon: true,
+          heltUttak: {
+            uttaksalder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: '0',
+              sluttAlder: { aar: 65, maaneder: 0 },
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlder).toBe(
+          'Du må oppgi en senere alder for inntekt enn den du har oppgitt for helt uttak'
+        )
+      })
+
+      test('Skal gi feilmelding når sluttalder.aar er lavere enn gradertUttak.uttaksalder.aar', () => {
+        const state = {
+          ...initialState,
+          gradertUttak: {
+            grad: 50,
+            aarligInntektVsaPensjonBeloep: '0',
+            uttaksalder: { aar: 68, maaneder: 0 },
+          },
+          harInntektVsaHelPensjon: true,
+          heltUttak: {
+            uttaksalder: { aar: 67, maaneder: 0 },
+            aarligInntektVsaPensjon: {
+              beloep: '0',
+              sluttAlder: { aar: 68, maaneder: 0 },
+            },
+          },
+        }
+        renderWithState(state)
+
+        act(() => {
+          handlers.validateFields('InntektStep')
+        })
+
+        expect(errorFields.heltUttakSluttAlder).toBe(
+          'Du må oppgi en senere alder for inntekt enn den du har oppgitt for gradert uttak'
+        )
       })
 
       test('Skal ikke gi feilmelding dersom sluttalder er undefined (livsvarig inntekt ved siden av pensjon)', () => {
@@ -784,7 +835,7 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.heltUttakSluttAlderAar).toBe('')
+        expect(errorFields.heltUttakSluttAlder).toBe('')
       })
     })
 

@@ -1,11 +1,12 @@
 import { SimuleringError, Simuleringsresultat } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { isSimuleringError } from '@/helpers/typeguards'
-import { Box, Button, HStack, VStack } from '@navikt/ds-react'
+import { Box, Button, Heading, HStack, VStack } from '@navikt/ds-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useContext, useMemo } from 'react'
 import ResponseWarning from './ResponseWarning'
+import stepStyles from './styles/stepStyles.module.css'
 import ResultTable from './ResultTable'
 import { getChartOptions } from './utils/chartUtils'
 
@@ -50,16 +51,32 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
       role="region"
     >
       <VStack gap="4" width="100%">
-        <h1>Resultat</h1>
+        <Heading level="1" size="large" className={stepStyles.overskrift}>
+          Uinnlogget pensjonskalkulator
+        </Heading>
+        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+          Beregning
+        </Heading>
         <>
-          <HighchartsReact
-            highcharts={Highcharts}
-            options={chartOptions}
-            containerProps={{ 'data-testid': 'highcharts-react' }}
-          />
+          <div role="img" aria-labelledby="alt-chart-title">
+            <div id="alt-chart-title" hidden>
+              Grafisk fremstilling av pensjonssimulering
+            </div>
+            <div data-testid="highcharts-aria-wrapper" aria-hidden={true}>
+              <HighchartsReact
+                highcharts={Highcharts}
+                options={chartOptions}
+                containerProps={{ 'data-testid': 'highcharts-react' }}
+              />
+            </div>
+          </div>
           <ResultTable simuleringsresultat={simuleringsresultat} />
         </>
-        <HStack marginInline="auto" width="100%">
+        <HStack
+          marginInline="auto"
+          width="100%"
+          className={stepStyles.footerSpacing}
+        >
           <Button onClick={() => formPageProps.goTo(0)} variant="secondary">
             Tilbake til start
           </Button>

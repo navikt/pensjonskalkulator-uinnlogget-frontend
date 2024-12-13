@@ -109,7 +109,7 @@ describe('BeregnPage Component', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
       })
 
-      expect(screen.getByText('Resultat')).toBeVisible()
+      expect(screen.getByText('Beregning')).toBeVisible()
     })
 
     test('Skal ikke være noen a11y violations når det er et resultat', async () => {
