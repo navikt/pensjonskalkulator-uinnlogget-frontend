@@ -65,7 +65,12 @@ export default function LandingPage() {
             <Link href="./kalkulator-uinnlogget/form" className="text-white">
               <Button variant="primary">Kom i gang</Button>
             </Link>
-            <Button variant="tertiary">Avbryt</Button>
+            <Link
+              href="https://www.nav.no/pensjon/kalkulator/login"
+              className="text-white"
+            >
+              <Button variant="tertiary">Avbryt</Button>
+            </Link>
           </HStack>
         </VStack>
         <Substep>
