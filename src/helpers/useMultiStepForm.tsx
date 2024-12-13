@@ -10,6 +10,10 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
   const [curStep, setCurStep] = useState(0)
   const pages = Object.keys(steps)
 
+  const scrollToTop = () => {
+    window.scrollTo(0, 0)
+  }
+
   const goToNext = () => {
     setCurStep((prev) => {
       if (prev < pages.length) {
@@ -17,6 +21,7 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
       }
       return prev
     })
+    scrollToTop()
   }
 
   const goBack = () => {
@@ -26,12 +31,14 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
       }
       return prev
     })
+    scrollToTop()
   }
 
   const goTo = (step: number) => {
     if (step >= 0 && step <= pages.length) {
       setCurStep(step)
     }
+    scrollToTop()
   }
 
   return {

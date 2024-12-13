@@ -1,9 +1,8 @@
-import React from 'react'
-import { render, act } from '@testing-library/react'
+import { Simuleringstype, Sivilstand, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
-import { Simuleringstype, Sivilstand, State } from '@/common'
+import { act, render } from '@testing-library/react'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }
@@ -849,7 +848,9 @@ describe('useErrorHandling', () => {
           handlers.validateFields('InntektStep')
         })
 
-        expect(errorFields.harInntektVsaHelPensjon).toBe('Velg alternativ')
+        expect(errorFields.harInntektVsaHelPensjon).toBe(
+          'Du må velge et alternativ'
+        )
       })
 
       test('Skal ikke gi feilmelding når brukeren har valgt om de har inntekt ved hel pensjon', () => {

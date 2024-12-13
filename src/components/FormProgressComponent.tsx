@@ -1,4 +1,6 @@
+import { FormContext } from '@/contexts/context'
 import { FormProgress } from '@navikt/ds-react'
+import { useContext } from 'react'
 import stepStyles from './styles/stepStyles.module.css'
 
 interface FormProgressComponentProps {
@@ -18,12 +20,15 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
     'Avtalefestet pensjon (AFP)',
   ]
 
+  const { formPageProps } = useContext(FormContext)
+
   return (
     <FormProgress
       className={stepStyles.componentSpacing}
       totalSteps={totalSteps}
       activeStep={activeStep + 1}
       data-testid="form-progress"
+      onStepChange={(step) => formPageProps.goTo(step - 1)}
     >
       {steps.map((step, index) => (
         <FormProgress.Step
