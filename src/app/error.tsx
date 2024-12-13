@@ -24,7 +24,7 @@ export default function Error() {
               <BodyShort spacing>
                 Vi jobber med å rette feilen. Prøv igjen senere.
               </BodyShort>
-              <Link href="/pensjon/kalkulator-uinnlogget">
+              <Link href="./pensjon/kalkulator-uinnlogget">
                 <Button variant="primary">Avbryt</Button>
               </Link>
             </VStack>
