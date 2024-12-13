@@ -10,7 +10,7 @@ describe('LoadingComponent', () => {
   })
 
   it('Burde rendre Box komponenten med riktige props', () => {
-    const box = getByTestId('box')
+    const box = getByTestId('loader-hstack')
     expect(box).toBeVisible()
   })
 
