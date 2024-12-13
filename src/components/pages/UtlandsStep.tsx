@@ -1,7 +1,13 @@
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
-import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
+import {
+  Heading,
+  Radio,
+  RadioGroup,
+  ReadMore,
+  TextField,
+} from '@navikt/ds-react'
 import React, { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
