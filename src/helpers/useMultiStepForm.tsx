@@ -11,9 +11,7 @@ function useMultiStepForm(steps: Pages, lastPage: JSX.Element) {
   const pages = Object.keys(steps)
 
   const scrollToTop = () => {
-    setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, 50)
+    window.scrollTo(0, 0)
   }
 
   const goToNext = () => {

@@ -1,17 +1,18 @@
-import React, { useContext } from 'react'
-import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
-import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
-import Substep from '../Substep'
+import { useFieldChange } from '@/helpers/useFormState'
+import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
+import React, { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
-import { useFieldChange } from '@/helpers/useFormState'
+import FormWrapper from '../FormWrapper'
 import stepStyles from '../styles/stepStyles.module.css'
+import Substep from '../Substep'
 
 const UtlandsStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
+  const utlandRadio = React.useRef<HTMLFieldSetElement>(null)
 
   const { handleFieldChange } = useFieldChange<State>({
     setState,
@@ -33,6 +34,7 @@ const UtlandsStep = () => {
         <h2 className={stepStyles.underOverskrift}>Utland</h2>
         <div>
           <RadioGroup
+            ref={utlandRadio}
             legend="Har du bodd eller arbeidet utenfor Norge?"
             value={state.harBoddIUtland}
             onChange={(it: boolean) =>
@@ -45,7 +47,12 @@ const UtlandsStep = () => {
             }
             error={errorFields.harBoddIUtland}
           >
-            <Radio value={true}>Ja</Radio>
+            <Radio
+              data-has-error={errorFields.harBoddIUtland ? true : false}
+              value={true}
+            >
+              Ja
+            </Radio>
             <Radio value={false}>Nei</Radio>
           </RadioGroup>
           <ReadMore

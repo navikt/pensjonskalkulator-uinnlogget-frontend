@@ -147,7 +147,7 @@ const useErrorHandling = (state: State) => {
       errors.heltUttaksalder = validateHelUttaksalder() 
       errors.helPensjonInntekt = validateHelPensjonInntekt()
       errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder()
-      errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Velg alternativ' : ''
+      errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Du må velge et alternativ' : ''
     }
 
     if (step === 'SivilstandStep') {
@@ -179,7 +179,7 @@ const useErrorHandling = (state: State) => {
 
   useEffect(() => {
     const ariaInvalidElements = document.querySelectorAll(
-      'input[aria-invalid]:not([aria-invalid="false"]), select[aria-invalid]:not([aria-invalid="false"])'
+      'input[aria-invalid]:not([aria-invalid="false"]), select[aria-invalid]:not([aria-invalid="false"]), [data-has-error="true"]'
     )
 
     if (

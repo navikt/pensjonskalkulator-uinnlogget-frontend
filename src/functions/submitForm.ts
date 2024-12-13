@@ -1,4 +1,4 @@
-import { State, Simuleringsresultat, SimuleringError } from '@/common'
+import { SimuleringError, Simuleringsresultat, State } from '@/common'
 import { mapStateToApiPayload } from './map/apiPayloadMapper'
 
 export const submitForm = async (
@@ -17,7 +17,9 @@ export const submitForm = async (
       if (response.status === 409) {
         return response.json().then((data) => {
           console.log('Threw 409 conflict error:', data)
-          return Promise.reject(JSON.parse(data) as SimuleringError)
+          return Promise.reject(
+            JSON.parse(JSON.stringify(data)) as SimuleringError
+          )
         })
       } else if (response.ok) {
         return response

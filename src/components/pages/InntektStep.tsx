@@ -1,5 +1,6 @@
-import React, { useContext, useMemo } from 'react'
-import FormWrapper from '../FormWrapper'
+import { State } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
 import {
   Radio,
   RadioGroup,
@@ -7,14 +8,13 @@ import {
   Select,
   TextField,
 } from '@navikt/ds-react'
-import { FormContext } from '@/contexts/context'
-import { State } from '@/common'
+import { useContext, useMemo } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
-import Substep from '../Substep'
 import FormButtons from '../FormButtons'
-import { useFieldChange } from '@/helpers/useFormState'
-import stepStyles from '../styles/stepStyles.module.css'
+import FormWrapper from '../FormWrapper'
 import '../styles/selectStyle.css'
+import stepStyles from '../styles/stepStyles.module.css'
+import Substep from '../Substep'
 import { updateAndFormatInntektFromInputField } from './utils/inntekt'
 
 const InntektStep = () => {
@@ -219,7 +219,12 @@ const InntektStep = () => {
           }
           error={errorFields.harInntektVsaHelPensjon}
         >
-          <Radio value={true}>Ja</Radio>
+          <Radio
+            data-has-error={errorFields.harInntektVsaHelPensjon ? true : false}
+            value={true}
+          >
+            Ja
+          </Radio>
           <Radio value={false}>Nei</Radio>
         </RadioGroup>
       </Substep>

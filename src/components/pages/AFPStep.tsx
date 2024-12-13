@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import FormWrapper from '../FormWrapper'
-import { Radio, RadioGroup } from '@navikt/ds-react'
-import { FormContext } from '@/contexts/context'
 import { PropType, State } from '@/common'
-import stepStyles from '../styles/stepStyles.module.css'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
+import { Radio, RadioGroup } from '@navikt/ds-react'
+import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
-import { useFieldChange } from '@/helpers/useFormState'
+import FormWrapper from '../FormWrapper'
+import stepStyles from '../styles/stepStyles.module.css'
 
 const AFPStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -42,7 +42,12 @@ const AFPStep = () => {
         }
         error={errorFields.simuleringstype}
       >
-        <Radio value="ALDERSPENSJON_MED_AFP_PRIVAT">Ja</Radio>
+        <Radio
+          data-has-error={errorFields.simuleringstype ? true : false}
+          value="ALDERSPENSJON_MED_AFP_PRIVAT"
+        >
+          Ja
+        </Radio>
         <Radio value="ALDERSPENSJON">Nei</Radio>
       </RadioGroup>
       <FormButtons />
