@@ -11,7 +11,7 @@ describe('LandingPage', () => {
   test('Rendrer velkomstmeldingen', () => {
     render(<LandingPage />)
     const welcomeMessage = screen.getByText(
-      /Velkommen til pensjonskalkulatoren som kan vise deg:/i
+      /Velkommen til forenklet pensjonskalkulator som kan gi deg et estimat på:/i
     )
     expect(welcomeMessage).toBeTruthy()
   })
@@ -19,9 +19,8 @@ describe('LandingPage', () => {
   test('Rendrer listen over pensjonstyper', () => {
     render(<LandingPage />)
     const pensionTypes = [
-      'Alderspensjon (NAV)',
-      'AFP (avtalefestet pensjon)',
-      'Pensjonsavtaler',
+      'alderspensjon (Nav)',
+      'AFP i privat sektor (avtalefestet pensjon)',
     ]
     pensionTypes.forEach((type) => {
       expect(screen.getByText(type)).toBeTruthy()
