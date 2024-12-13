@@ -21,7 +21,6 @@ export default function Error() {
               <Heading level="1" size="large" spacing>
                 Oops! Det har oppstått en uventet feil.
               </Heading>
-              {/* Tekster bør tilpasses den aktuelle 500-feilen. Teksten under er for en generisk 500-feil. */}
               <BodyShort spacing>
                 Vi jobber med å rette feilen. Prøv igjen senere.
               </BodyShort>
