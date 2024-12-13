@@ -4,6 +4,12 @@
 .textfieldInntekt input {
   width: 16rem;
 }
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .componentSpacing {
   margin-bottom: 2rem;
