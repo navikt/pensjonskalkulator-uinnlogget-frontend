@@ -1,6 +1,7 @@
 import React, { useContext, useMemo } from 'react'
 import FormWrapper from '../FormWrapper'
 import {
+  Heading,
   Radio,
   RadioGroup,
   ReadMore,
@@ -49,7 +50,9 @@ const InntektStep = () => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Inntekt og alderspensjon</h2>
+      <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        Inntekt og alderspensjon
+      </Heading>
       <TextField
         value={state.aarligInntektFoerUttakBeloep ?? ''}
         className={stepStyles.textfieldInntekt}
@@ -115,28 +118,28 @@ const InntektStep = () => {
             ----
           </option>
           <option value={'20'} key="20">
-            20%
+            20&nbsp;%
           </option>
           <option value={'40'} key="40">
-            40%
+            40&nbsp;%
           </option>
           <option value={'50'} key="50">
-            50%
+            50&nbsp;%
           </option>
           <option value={'60'} key="60">
-            60%
+            60&nbsp;%
           </option>
           <option value={'80'} key="80">
-            80%
+            80&nbsp;%
           </option>
           <option value={'100'} key="100">
-            100%
+            100&nbsp;%
           </option>
         </Select>
         <ReadMore header="Om uttaksgrad">
           Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å
           ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller 80 %), eller
-          hel alderspensjon (100 %).
+          hel alderspensjon (100&nbsp;%).
         </ReadMore>
       </Substep>
       {state.gradertUttak && state.gradertUttak?.grad && (
@@ -145,7 +148,7 @@ const InntektStep = () => {
             <Select
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
-              label={`Hvilken alder planlegger du å ta ut ${state.gradertUttak.grad}% pensjon?`}
+              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -178,7 +181,7 @@ const InntektStep = () => {
               type="text"
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
-              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad}% pensjon?`}
+              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
             />
@@ -190,7 +193,7 @@ const InntektStep = () => {
           value={state.heltUttak.uttaksalder?.aar ?? ''}
           className="selectAar"
           data-testid="heltUttaksalder"
-          label="Hvilken alder planlegger du å ta ut 100% pensjon?"
+          label="Fra hvilken alder planlegger du å ta ut 100&nbsp;% pensjon?"
           onChange={(it) => {
             handleFieldChange((draft) => {
               draft.heltUttak.uttaksalder.aar =
@@ -263,7 +266,7 @@ const InntektStep = () => {
                     : ''
               }
               className="selectAar"
-              data-testid="heltUttakSluttAlderAar"
+              data-testid="heltUttakSluttAlder"
               label="Til hvilken alder forventer du å ha inntekten?"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -292,9 +295,9 @@ const InntektStep = () => {
                       },
                     }
                   }
-                }, 'heltUttakSluttAlderAar')
+                }, 'heltUttakSluttAlder')
               }}
-              error={errorFields.heltUttakSluttAlderAar}
+              error={errorFields.heltUttakSluttAlder}
             >
               <option value={''}>----</option>
               {yearOptions}

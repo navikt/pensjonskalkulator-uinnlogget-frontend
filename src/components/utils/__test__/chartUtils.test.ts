@@ -41,10 +41,7 @@ describe('getChartOptions', () => {
       })
 
       expect(chartOptions.chart.type).toBe('column')
-      expect(chartOptions.title.text).toBe(
-        'Beregnet framtidig alderspensjon (kroner per år):'
-      )
-      expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, 68])
+      expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
       expect(chartOptions.series).toEqual([
         {
           name: 'AFP Privat',
@@ -187,7 +184,6 @@ describe('getChartOptions', () => {
         })
       })
     })
-
     describe('Når afpPrivat er tom', () => {
       it('Burde data for serien "AFP Privat" være tom', () => {
         const emptySimuleringsresultat = {
@@ -205,8 +201,48 @@ describe('getChartOptions', () => {
           gradertUttakInntekt,
         })
 
-        expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, 68])
+        expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
         expect(chartOptions.series).toEqual([
+          {
+            name: 'Pensjonsgivende inntekt',
+            data: [500000, 200000, 200000, 100000, 100000],
+            color: 'var(--a-gray-500)',
+          },
+          {
+            name: 'Alderspensjon',
+            data: [null, 180000, 190000, 200000, 210000],
+            color: 'var(--a-deepblue-500)',
+          },
+        ])
+      })
+    })
+    describe('Når det mangles data for afpPrivat ', () => {
+      it('Burde manglende data for serien "AFP Privat" fylles med siste verdi', () => {
+        const missingDataSimuleringsresultat = {
+          ...mockSimuleringsresultat,
+          afpPrivat: [
+            { alder: 65, beloep: 40000 },
+            { alder: 66, beloep: 45000 },
+          ],
+        }
+
+        const chartOptions = getChartOptions({
+          simuleringsresultat: missingDataSimuleringsresultat,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
+          inntektVsaHelPensjonBeloep,
+          aarligInntektFoerUttakBeloep,
+          gradertUttakAlder,
+          gradertUttakInntekt,
+        })
+
+        expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
+        expect(chartOptions.series).toEqual([
+          {
+            name: 'AFP Privat',
+            data: [null, 40000, 45000, 45000, 45000],
+            color: 'var(--a-purple-400)',
+          },
           {
             name: 'Pensjonsgivende inntekt',
             data: [500000, 200000, 200000, 100000, 100000],

@@ -1,5 +1,11 @@
 import React, { useContext } from 'react'
-import { Radio, RadioGroup, ReadMore, TextField } from '@navikt/ds-react'
+import {
+  Heading,
+  Radio,
+  RadioGroup,
+  ReadMore,
+  TextField,
+} from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
@@ -30,7 +36,9 @@ const UtlandsStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
-        <h2 className={stepStyles.underOverskrift}>Utland</h2>
+        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+          Utland
+        </Heading>
         <div>
           <RadioGroup
             legend="Har du bodd eller arbeidet utenfor Norge?"

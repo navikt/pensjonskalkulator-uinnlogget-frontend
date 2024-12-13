@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import FormWrapper from '../FormWrapper'
-import { Radio, RadioGroup } from '@navikt/ds-react'
+import { Heading, Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import { FormContext } from '@/contexts/context'
 import { PropType, State } from '@/common'
 import stepStyles from '../styles/stepStyles.module.css'
@@ -30,10 +30,11 @@ const AFPStep = () => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Avtalefestet pensjon (AFP)</h2>
+      <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        Avtalefestet pensjon (AFP)
+      </Heading>
       <RadioGroup
         legend={'Har du rett til AFP i privat sektor?'}
-        className={stepStyles.componentSpacing}
         defaultValue={state.simuleringstype}
         onChange={(it: PropType<State, 'simuleringstype'>) =>
           handleFieldChange((draft) => {
@@ -45,6 +46,14 @@ const AFPStep = () => {
         <Radio value="ALDERSPENSJON_MED_AFP_PRIVAT">Ja</Radio>
         <Radio value="ALDERSPENSJON">Nei</Radio>
       </RadioGroup>
+      <ReadMore
+        header="Om AFP i privat sektor"
+        className={stepStyles.componentSpacing}
+      >
+        AFP i privat sektor er et tillegg til alderspensjonen. Er du usikker på
+        om du har rett til AFP i privat sektor, bør du sjekke det med
+        arbeidsgiveren din.
+      </ReadMore>
       <FormButtons />
     </FormWrapper>
   )

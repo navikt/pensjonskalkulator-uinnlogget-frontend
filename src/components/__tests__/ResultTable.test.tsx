@@ -114,11 +114,11 @@ describe('ResultTable Component', () => {
     const rows = screen.getAllByRole('row')
 
     const heltRow = rows[3]
-    expect(heltRow).toHaveTextContent('68')
-    expect(heltRow).toHaveTextContent('210000')
-    expect(heltRow).toHaveTextContent('55000')
-    expect(heltRow).toHaveTextContent('100000')
-    expect(heltRow).toHaveTextContent('365000')
+    expect(heltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(heltRow).toHaveTextContent('210 000')
+    expect(heltRow).toHaveTextContent('55 000')
+    expect(heltRow).toHaveTextContent('100 000')
+    expect(heltRow).toHaveTextContent('365 000')
   })
 
   test('Burde vise riktig alderspensjon data for gradert uttak', () => {
@@ -132,11 +132,11 @@ describe('ResultTable Component', () => {
     const rows = screen.getAllByRole('row')
 
     const gradertRow = rows[2]
-    expect(gradertRow).toHaveTextContent('67')
-    expect(gradertRow).toHaveTextContent('200000')
-    expect(gradertRow).toHaveTextContent('50000')
-    expect(gradertRow).toHaveTextContent('50000')
-    expect(gradertRow).toHaveTextContent('300000')
+    expect(gradertRow).toHaveTextContent('67 år')
+    expect(gradertRow).toHaveTextContent('200 000')
+    expect(gradertRow).toHaveTextContent('50 000')
+    expect(gradertRow).toHaveTextContent('50 000')
+    expect(gradertRow).toHaveTextContent('300 000')
   })
 
   test('Burde sette rendre tabellen med riktige verdier dersom gradert uttak er undefined', () => {
@@ -160,18 +160,18 @@ describe('ResultTable Component', () => {
     expect(rows).toHaveLength(4)
 
     const gradertRow = rows[2]
-    expect(gradertRow).toHaveTextContent('67')
-    expect(gradertRow).toHaveTextContent('200000')
-    expect(gradertRow).toHaveTextContent('50000')
+    expect(gradertRow).toHaveTextContent('67 år')
+    expect(gradertRow).toHaveTextContent('200 000')
+    expect(gradertRow).toHaveTextContent('50 000')
     expect(gradertRow).toHaveTextContent('0')
-    expect(gradertRow).toHaveTextContent('250000')
+    expect(gradertRow).toHaveTextContent('250 000')
 
     const heltRow = rows[3]
-    expect(heltRow).toHaveTextContent('68')
-    expect(heltRow).toHaveTextContent('210000')
-    expect(heltRow).toHaveTextContent('55000')
-    expect(heltRow).toHaveTextContent('100000')
-    expect(heltRow).toHaveTextContent('365000')
+    expect(heltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(heltRow).toHaveTextContent('210 000')
+    expect(heltRow).toHaveTextContent('55 000')
+    expect(heltRow).toHaveTextContent('100 000')
+    expect(heltRow).toHaveTextContent('365 000')
   })
 
   test('Burde sette riktig sluttalder for inntekt vsa. hel pensjon som ikke er livsvarig', () => {
@@ -241,11 +241,11 @@ describe('ResultTable Component', () => {
     const rows = screen.getAllByRole('row')
 
     const heltRow = rows[3]
-    expect(heltRow).toHaveTextContent('68')
-    expect(heltRow).toHaveTextContent('210000')
-    expect(heltRow).toHaveTextContent('55000')
+    expect(heltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(heltRow).toHaveTextContent('210 000')
+    expect(heltRow).toHaveTextContent('55 000')
     expect(heltRow).toHaveTextContent('0')
-    expect(heltRow).toHaveTextContent('265000')
+    expect(heltRow).toHaveTextContent('265 000')
   })
 
   test('Burde visningen for AFP Privat settes til 0 hvis vi ikke har data for afpPrivat', () => {
@@ -266,24 +266,24 @@ describe('ResultTable Component', () => {
     const rows = screen.getAllByRole('row')
 
     const inntektRow = rows[1]
-    expect(inntektRow).toHaveTextContent('66')
+    expect(inntektRow).toHaveTextContent('66 år')
     expect(inntektRow).toHaveTextContent('0')
     expect(inntektRow).toHaveTextContent('0')
     expect(inntektRow).toHaveTextContent('500000')
     expect(inntektRow).toHaveTextContent('500000')
 
     const gradertRow = rows[2]
-    expect(gradertRow).toHaveTextContent('67')
-    expect(gradertRow).toHaveTextContent('200000')
+    expect(gradertRow).toHaveTextContent('67 år')
+    expect(gradertRow).toHaveTextContent('200 000')
     expect(gradertRow).toHaveTextContent('0')
-    expect(gradertRow).toHaveTextContent('50000')
-    expect(gradertRow).toHaveTextContent('250000')
+    expect(gradertRow).toHaveTextContent('50 000')
+    expect(gradertRow).toHaveTextContent('250 000')
 
     const heltRow = rows[3]
-    expect(heltRow).toHaveTextContent('68')
-    expect(heltRow).toHaveTextContent('210000')
+    expect(heltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(heltRow).toHaveTextContent('210 000')
     expect(heltRow).toHaveTextContent('0')
-    expect(heltRow).toHaveTextContent('100000')
-    expect(heltRow).toHaveTextContent('310000')
+    expect(heltRow).toHaveTextContent('100 000')
+    expect(heltRow).toHaveTextContent('310 000')
   })
 })
