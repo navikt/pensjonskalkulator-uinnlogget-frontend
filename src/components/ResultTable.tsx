@@ -89,14 +89,18 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell scope="col">Alder</Table.HeaderCell>
-              <Table.HeaderCell scope="col">
+              <Table.HeaderCell scope="col" align="right">
                 Alderspensjon (Nav)
               </Table.HeaderCell>
-              <Table.HeaderCell scope="col">AFP privat</Table.HeaderCell>
-              <Table.HeaderCell scope="col">
+              <Table.HeaderCell scope="col" align="right">
+                AFP privat
+              </Table.HeaderCell>
+              <Table.HeaderCell scope="col" align="right">
                 Pensjonsgivende inntekt
               </Table.HeaderCell>
-              <Table.HeaderCell scope="col">Sum</Table.HeaderCell>
+              <Table.HeaderCell scope="col" align="right">
+                Sum
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -104,12 +108,12 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               <Table.HeaderCell scope="row">
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
               </Table.HeaderCell>
-              <Table.DataCell>0</Table.DataCell>
-              <Table.DataCell>0</Table.DataCell>
-              <Table.DataCell>
+              <Table.DataCell align="right">0</Table.DataCell>
+              <Table.DataCell align="right">0</Table.DataCell>
+              <Table.DataCell align="right">
                 {state.aarligInntektFoerUttakBeloep}
               </Table.DataCell>
-              <Table.DataCell>
+              <Table.DataCell align="right">
                 {state.aarligInntektFoerUttakBeloep}
               </Table.DataCell>
             </Table.Row>
@@ -120,16 +124,16 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                     ? `${alder}+ år (livsvarig)`
                     : `${alder} år`}
                 </Table.HeaderCell>
-                <Table.DataCell>
+                <Table.DataCell align="right">
                   {formatInntekt(alderspensjonData[index])}
                 </Table.DataCell>
-                <Table.DataCell>
+                <Table.DataCell align="right">
                   {formatInntekt(afpPrivatValue(index))}
                 </Table.DataCell>
-                <Table.DataCell>
+                <Table.DataCell align="right">
                   {formatInntekt(inntektVsaPensjonValue(alder))}
                 </Table.DataCell>
-                <Table.DataCell>
+                <Table.DataCell align="right">
                   {formatInntekt(sum(index, alder))}
                 </Table.DataCell>
               </Table.Row>
