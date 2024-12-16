@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { StepName, ErrorFields, State } from '@/common'
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt';
 
@@ -121,6 +121,16 @@ const useErrorHandling = (state: State) => {
       if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar === null) {
         return 'Du må velge alder';
       }
+      if(state.heltUttak.uttaksalder.aar){
+        if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar <= state.heltUttak.uttaksalder.aar){
+          return 'Du må oppgi en senere alder for inntekt enn den du har oppgitt for helt uttak';
+        }
+      }
+      if(state.gradertUttak?.uttaksalder.aar){
+        if(state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar <= state.gradertUttak.uttaksalder.aar){
+          return 'Du må oppgi en senere alder for inntekt enn den du har oppgitt for gradert uttak';
+        }
+      }
     }
 
     return '';
@@ -146,8 +156,8 @@ const useErrorHandling = (state: State) => {
       errors.gradertInntekt = validateGradertInntekt()
       errors.heltUttaksalder = validateHelUttaksalder() 
       errors.helPensjonInntekt = validateHelPensjonInntekt()
-      errors.heltUttakSluttAlderAar = validateHeltUttakSluttAlder()
-      errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Velg alternativ' : ''
+      errors.heltUttakSluttAlder = validateHeltUttakSluttAlder()
+      errors.harInntektVsaHelPensjon = state.harInntektVsaHelPensjon === null ? 'Du må velge et alternativ' : ''
     }
 
     if (step === 'SivilstandStep') {
@@ -176,6 +186,23 @@ const useErrorHandling = (state: State) => {
     }),
     [state]
   )
+
+  useEffect(() => {
+    const ariaInvalidElements = document.querySelectorAll(
+      'input[aria-invalid]:not([aria-invalid="false"]), select[aria-invalid]:not([aria-invalid="false"]), [data-has-error="true"]'
+    )
+
+    if (
+      document.activeElement?.tagName === 'BUTTON' &&
+      ariaInvalidElements.length > 0
+    ) {
+      ;(ariaInvalidElements[0] as HTMLElement).focus()
+      ;(ariaInvalidElements[0] as HTMLElement).scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+      })
+    }
+  }, [errorFields])
 
   return [errorFields, handlers] as const
 }

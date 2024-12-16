@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
-import FormWrapper from '../FormWrapper'
-import { Box, Radio, RadioGroup, Select } from '@navikt/ds-react'
-import { FormContext } from '@/contexts/context'
 import { PropType, State } from '@/common'
-import Substep from '../Substep'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
+import { Box, Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
+import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
-import { useFieldChange } from '@/helpers/useFormState'
-import { formatInntekt } from './utils/inntekt'
-import stepStyles from '../styles/stepStyles.module.css'
+import FormWrapper from '../FormWrapper'
 import '../styles/selectStyle.css'
+import stepStyles from '../styles/stepStyles.module.css'
+import Substep from '../Substep'
+import { formatInntekt } from './utils/inntekt'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -35,7 +35,9 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
 
   return (
     <FormWrapper onSubmit={onSubmit}>
-      <h2 className={stepStyles.underOverskrift}>Sivilstand</h2>
+      <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        Sivilstand
+      </Heading>
       <Box className={stepStyles.componentSpacing}>
         <Select
           value={state.sivilstand}
@@ -76,7 +78,12 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
               }
               error={errorFields.epsHarInntektOver2G}
             >
-              <Radio value={true}>Ja</Radio>
+              <Radio
+                data-has-error={errorFields.epsHarInntektOver2G ? true : false}
+                value={true}
+              >
+                Ja
+              </Radio>
               <Radio value={false}>Nei</Radio>
             </RadioGroup>
           </Substep>
@@ -93,7 +100,12 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
               }
               error={errorFields.epsHarPensjon}
             >
-              <Radio value={true}>Ja</Radio>
+              <Radio
+                data-has-error={errorFields.epsHarPensjon ? true : false}
+                value={true}
+              >
+                Ja
+              </Radio>
               <Radio value={false}>Nei</Radio>
             </RadioGroup>
           </Substep>

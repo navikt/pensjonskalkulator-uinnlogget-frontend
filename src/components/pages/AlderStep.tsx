@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { TextField } from '@navikt/ds-react'
+import { Heading, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
@@ -28,7 +28,9 @@ const AlderStep = () => {
   return (
     <>
       <FormWrapper onSubmit={onSubmit}>
-        <h2 className={stepStyles.underOverskrift}>Alder og yrkesaktivitet</h2>
+        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+          Alder og yrkesaktivitet
+        </Heading>
         <TextField
           className={stepStyles.textfieldAar}
           onChange={(it) =>
@@ -52,8 +54,7 @@ const AlderStep = () => {
               }, 'inntektOver1GAntallAar')
             }
             inputMode="numeric"
-            label="Hvor mange år har du jobbet i Norge?"
-            description="Totalt antall år fra du startet i jobb til du tar ut pensjon"
+            label="Hvor mange år har du jobbet i Norge når du tar ut pensjon?"
             value={state.inntektOver1GAntallAar ?? ''}
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
