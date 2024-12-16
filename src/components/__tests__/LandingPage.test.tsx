@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import LandingPage from '../LandingPage'
 
 describe('LandingPage', () => {
@@ -11,7 +11,7 @@ describe('LandingPage', () => {
   test('Rendrer velkomstmeldingen', () => {
     render(<LandingPage />)
     const welcomeMessage = screen.getByText(
-      /Velkommen til pensjonskalkulatoren som kan vise deg:/i
+      /Velkommen til forenklet pensjonskalkulator som kan gi deg et estimat på:/i
     )
     expect(welcomeMessage).toBeTruthy()
   })
@@ -19,16 +19,15 @@ describe('LandingPage', () => {
   test('Rendrer listen over pensjonstyper', () => {
     render(<LandingPage />)
     const pensionTypes = [
-      'Alderspensjon (NAV)',
-      'AFP (avtalefestet pensjon)',
-      'Pensjonsavtaler',
+      'alderspensjon (Nav)',
+      'AFP i privat sektor (avtalefestet pensjon)',
     ]
     pensionTypes.forEach((type) => {
       expect(screen.getByText(type)).toBeTruthy()
     })
   })
 
-  test('Rendrer startknappen med riktig lenke', () => {
+  test('Rendrer startknappen med riktig lenke og klikker på den', () => {
     render(<LandingPage />)
     const startButton = screen.getByRole('button', { name: /Kom i Gang/i })
     expect(startButton).toBeTruthy()
@@ -40,5 +39,15 @@ describe('LandingPage', () => {
     render(<LandingPage />)
     const cancelButton = screen.getByRole('button', { name: /Avbryt/i })
     expect(cancelButton).toBeTruthy()
+  })
+
+  test('Rendrer anbefaling om innlogging og klikker på den', () => {
+    render(<LandingPage />)
+    const link = screen.getByRole('link', { name: /innlogget kalkulator/i })
+    expect(link).toBeTruthy()
+    expect(link.getAttribute('href')).toBe(
+      'https://www.nav.no/pensjon/kalkulator/login'
+    )
+    fireEvent.click(link)
   })
 })
