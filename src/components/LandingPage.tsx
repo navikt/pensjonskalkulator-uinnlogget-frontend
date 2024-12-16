@@ -57,7 +57,7 @@ export default function LandingPage() {
           </Box>
           <BodyLong size="large">
             For å beregne pensjonen din, må du svare på alle spørsmålene som
-            kommer
+            kommer.
           </BodyLong>
           <BodyLong size="small">
             Du oppgir alle opplysninger selv. Vi ber ikke om personopplysninger

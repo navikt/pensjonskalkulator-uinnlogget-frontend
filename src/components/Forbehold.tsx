@@ -51,8 +51,9 @@ const Forbehold = () => {
         </Link>{' '}
         eller{' '}
         <Link href="https://www.nav.no/planlegger-pensjon#noe-du-ikke-finner-svaret-p-her">
-          kontakte Nav.
+          kontakte Nav
         </Link>
+        .
       </BodyLong>
       <BodyLong size="medium" className={stepStyles.underOverskrift}>
         Beregningen er gjort med gjeldende regelverk og vises i dagens
@@ -64,6 +65,7 @@ const Forbehold = () => {
         <Link href="https://www.nav.no/pensjon/kalkulator/login">
           innlogget kalkulator
         </Link>
+        .
       </BodyLong>
     </div>
   )
