@@ -45,43 +45,32 @@ export const updateAndFormatInntektFromInputField = (
   updateInntekt: (s: string) => void
 ) => {
   const formattedInntekt = formatInntekt(inntekt)
-  handleCaretPosition(e, oldFormattedInntekt, formattedInntekt)
+  handleCaretPosition(e, formattedInntekt)
   updateInntekt(formattedInntekt)
-}
-
-const spaceDifference = (str1: string, str2: string): number => {
-  const countSpaces = (str: string): number => (str.match(/ /g) || []).length
-  return Math.abs(countSpaces(str1) - countSpaces(str2))
 }
 
 export function handleCaretPosition(
   e: React.ChangeEvent<HTMLInputElement>,
-  oldFormattedValue: string,
   newFormattedValue: string
 ) {
+  const antallTegnAfter = newFormattedValue.length
   const input = e.target
+  const antallTegnBefore = input.value.length
+
   const caretPosition = input.selectionStart ?? 0
-
-  const hasAddedSpace = spaceDifference(oldFormattedValue, input.value) === 1
-
-  const valueLengthDifference =
-    newFormattedValue.length - oldFormattedValue.length
+  const charAtCaret = newFormattedValue[Math.max(caretPosition, 0)]
 
   setTimeout(() => {
-    let start = caretPosition
-    let end = caretPosition
+    let updatedCaretPosition = caretPosition
 
-    if (valueLengthDifference === -2 || hasAddedSpace) {
-      start = Math.max(caretPosition - 1, 0)
-      end = start
-    } else if (valueLengthDifference === 0 || valueLengthDifference === -1) {
-      start = caretPosition
-      end = start
-    } else if (valueLengthDifference === 2) {
-      start = caretPosition + 1
-      end = caretPosition + 1
+    if (antallTegnAfter > antallTegnBefore && charAtCaret === '\u00A0') {
+      updatedCaretPosition = caretPosition
+    } else if (antallTegnAfter > antallTegnBefore) {
+      updatedCaretPosition = caretPosition + 1
+    } else if (antallTegnAfter < antallTegnBefore) {
+      updatedCaretPosition = Math.max(caretPosition - 1, 0)
     }
 
-    input.setSelectionRange(start, end)
+    input?.setSelectionRange(updatedCaretPosition, updatedCaretPosition)
   }, 0)
 }
