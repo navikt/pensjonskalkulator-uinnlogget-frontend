@@ -14,7 +14,7 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
 }) => {
   const steps = [
     'Alder og yrkesaktivitet',
-    'Utland',
+    'Opphold utenfor Norge',
     'Inntekt og alderspensjon',
     'Sivilstand',
     'Avtalefestet pensjon (AFP)',

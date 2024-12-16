@@ -9,7 +9,7 @@ describe('FormProgressComponent', () => {
 
     const stepHeadings: Record<StepName, string> = {
       AlderStep: 'Alder',
-      UtlandsStep: 'Utland',
+      UtlandsStep: 'Opphold utenfor Norge',
       InntektStep: 'Inntekt og alderspensjon',
       SivilstandStep: 'Sivilstand',
       AFPStep: 'AFP',
