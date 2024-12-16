@@ -19,7 +19,7 @@ export default function LandingPage() {
     <Box
       width="1rem"
       height="1rem"
-      style={{ background: color }}
+      className={`${stepStyles[color]}`}
       borderRadius="full"
       aria-hidden
     ></Box>
@@ -47,10 +47,10 @@ export default function LandingPage() {
               estimat på:
             </BodyLong>
             <List as="ul">
-              <List.Item icon={<Icon color="var(--a-deepblue-500)" />}>
+              <List.Item icon={<Icon color="blueIcon" />}>
                 alderspensjon (Nav)
               </List.Item>
-              <List.Item icon={<Icon color="var(--a-purple-400)" />}>
+              <List.Item icon={<Icon color="purpleIcon" />}>
                 AFP i privat sektor (avtalefestet pensjon)
               </List.Item>
             </List>
@@ -85,6 +85,7 @@ export default function LandingPage() {
             <Link href="https://www.nav.no/pensjon/kalkulator/login">
               innlogget kalkulator
             </Link>
+            .
           </BodyLong>
         </Substep>
       </Box>

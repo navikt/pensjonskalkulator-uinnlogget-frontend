@@ -27,6 +27,14 @@
   overflow: auto;
 }
 
+.blueIcon {
+  background-color: var(--a-deepblue-500);
+}
+
+.purpleIcon {
+  background-color: var(--a-purple-400);
+}
+
 .footerSpacing {
   margin-bottom: 2.5rem;
 }

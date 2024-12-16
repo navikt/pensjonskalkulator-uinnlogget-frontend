@@ -114,7 +114,7 @@ const InntektStep = () => {
           }}
           error={errorFields.uttaksgrad}
         >
-          <option value={''} key="empty">
+          <option aria-label="Velg uttaksgrad" value={''} key="empty">
             ----
           </option>
           <option value={'20'} key="20">
@@ -159,7 +159,9 @@ const InntektStep = () => {
               }}
               error={errorFields.gradertUttaksalder}
             >
-              <option value={''}>----</option>
+              <option aria-label="Velg alder" value={''}>
+                ----
+              </option>
               {yearOptions}
             </Select>
           </Substep>
@@ -203,7 +205,9 @@ const InntektStep = () => {
           }}
           error={errorFields.heltUttaksalder}
         >
-          <option value={''}>----</option>
+          <option aria-label="Velg alder" value={''}>
+            ----
+          </option>
           {yearOptions}
         </Select>
       </Substep>
@@ -304,7 +308,9 @@ const InntektStep = () => {
               }}
               error={errorFields.heltUttakSluttAlder}
             >
-              <option value={''}>----</option>
+              <option aria-label="Velg alder" value={''}>
+                ----
+              </option>
               {yearOptions}
               <option value={'livsvarig'}>Livsvarig</option>
             </Select>

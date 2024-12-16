@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import LandingPage from '../LandingPage'
 
 describe('LandingPage', () => {
@@ -27,7 +27,7 @@ describe('LandingPage', () => {
     })
   })
 
-  test('Rendrer startknappen med riktig lenke', () => {
+  test('Rendrer startknappen med riktig lenke og klikker på den', () => {
     render(<LandingPage />)
     const startButton = screen.getByRole('button', { name: /Kom i Gang/i })
     expect(startButton).toBeTruthy()
@@ -39,5 +39,15 @@ describe('LandingPage', () => {
     render(<LandingPage />)
     const cancelButton = screen.getByRole('button', { name: /Avbryt/i })
     expect(cancelButton).toBeTruthy()
+  })
+
+  test('Rendrer anbefaling om innlogging og klikker på den', () => {
+    render(<LandingPage />)
+    const link = screen.getByRole('link', { name: /innlogget kalkulator/i })
+    expect(link).toBeTruthy()
+    expect(link.getAttribute('href')).toBe(
+      'https://www.nav.no/pensjon/kalkulator/login'
+    )
+    fireEvent.click(link)
   })
 })
