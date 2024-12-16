@@ -88,32 +88,25 @@ describe('handleCaretPosition', () => {
     jest.useRealTimers()
   })
 
-  test('Burde beholde caret posisjon når lengden er uendret', () => {
-    const event = createEvent('12345', 3)
-    handleCaretPosition(event, '12 345', '12 345')
+  test('Burde flytte caret posisjon tilbake når bruker trykker "space"', () => {
+    const event = createEvent('12 34 5', 6)
+    handleCaretPosition(event, '12 345')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(2)
-  })
-
-  test('Burde ikke flytte caret posisjon tilbake når lengden reduseres med 2', () => {
-    const event = createEvent('12345', 3)
-    handleCaretPosition(event, '12345', '1245')
-    jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(3)
+    expect(event.target.selectionStart).toBe(5)
   })
 
   test('Burde beholde caret posisjon når lengden reduseres med 1', () => {
-    const event = createEvent('12345', 3)
-    handleCaretPosition(event, '12 345', '1 235')
+    const event = createEvent('235', 2)
+    handleCaretPosition(event, '25')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(2)
+    expect(event.target.selectionStart).toBe(1)
     jest.runAllTimers()
   })
 
-  test('Burde ikke flytte caret posisjon fremover når lengden øker med 2', () => {
+  test('Burde flytte caret posisjon fremover når lengden øker med 2', () => {
     const event = createEvent('12345', 3)
-    handleCaretPosition(event, '12 345', '123 045')
+    handleCaretPosition(event, '12 345')
     jest.runAllTimers()
-    expect(event.target.selectionStart).toBe(2)
+    expect(event.target.selectionStart).toBe(4)
   })
 })
