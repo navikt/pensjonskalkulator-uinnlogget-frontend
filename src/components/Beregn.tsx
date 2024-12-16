@@ -9,6 +9,7 @@ import ResponseWarning from './ResponseWarning'
 import stepStyles from './styles/stepStyles.module.css'
 import ResultTable from './ResultTable'
 import { getChartOptions } from './utils/chartUtils'
+import Forbehold from './Forbehold'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError
@@ -72,12 +73,20 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
           </div>
           <ResultTable simuleringsresultat={simuleringsresultat} />
         </>
+        <Box maxWidth={{ md: '50%', xs: '100%' }}>
+          <Forbehold />
+        </Box>
+
         <HStack
           marginInline="auto"
           width="100%"
           className={stepStyles.footerSpacing}
         >
-          <Button onClick={() => formPageProps.goTo(0)} variant="secondary">
+          <Button
+            onClick={() => formPageProps.goTo(0)}
+            variant="secondary"
+            className={stepStyles.footerSpacing}
+          >
             Tilbake til start
           </Button>
         </HStack>

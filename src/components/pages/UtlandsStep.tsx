@@ -43,7 +43,7 @@ const UtlandsStep = () => {
         <div>
           <RadioGroup
             ref={utlandRadio}
-            legend="Har du bodd eller arbeidet utenfor Norge?"
+            legend="Har du bodd eller jobbet utenfor Norge?"
             value={state.harBoddIUtland}
             onChange={(it: boolean) =>
               handleFieldChange((draft) => {
@@ -83,7 +83,7 @@ const UtlandsStep = () => {
                   }, 'utenlandsAntallAar')
                 }
                 inputMode="numeric"
-                label="Hvor mange år har du bodd i utlandet?"
+                label="Hvor mange år har du bodd eller jobbet utenfor Norge?"
                 description="Fra du fylte 16 år til du tar ut pensjon"
                 value={state.utenlandsAntallAar ?? ''}
                 error={errorFields.utenlandsAntallAar}

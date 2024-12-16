@@ -4,6 +4,12 @@
 .textfieldInntekt input {
   width: 16rem;
 }
+.centerBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .componentSpacing {
   margin-bottom: 2rem;
@@ -19,6 +25,14 @@
 
 .tabellScrollbarhet {
   overflow: auto;
+}
+
+.blueIcon {
+  background-color: var(--a-deepblue-500);
+}
+
+.purpleIcon {
+  background-color: var(--a-purple-400);
 }
 
 .footerSpacing {

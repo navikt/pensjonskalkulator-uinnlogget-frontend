@@ -59,7 +59,7 @@ describe('UtlandsStep Component', () => {
   test('Burde rendre komponenten', () => {
     renderMockedComponent(UtlandsStep, context)
     expect(
-      screen.getByText('Har du bodd eller arbeidet utenfor Norge?')
+      screen.getByText('Har du bodd eller jobbet utenfor Norge?')
     ).toBeInTheDocument()
 
     const radioButtonJa = screen.getByLabelText('Ja')
@@ -111,7 +111,9 @@ describe('UtlandsStep Component', () => {
           },
         })
         expect(
-          screen.queryByLabelText('Hvor mange år har du bodd i utlandet?')
+          screen.queryByLabelText(
+            'Hvor mange år har du bodd eller jobbet utenfor Norge?'
+          )
         ).not.toBeInTheDocument()
       })
       test('Burde utenlandsAntallAar bli satt til undefined', async () => {
@@ -150,7 +152,9 @@ describe('UtlandsStep Component', () => {
           },
         })
         expect(
-          screen.getByLabelText('Hvor mange år har du bodd i utlandet?')
+          screen.getByLabelText(
+            'Hvor mange år har du bodd eller jobbet utenfor Norge?'
+          )
         ).toBeInTheDocument()
       })
 
@@ -163,7 +167,7 @@ describe('UtlandsStep Component', () => {
           },
         })
         const input = screen.getByLabelText(
-          'Hvor mange år har du bodd i utlandet?'
+          'Hvor mange år har du bodd eller jobbet utenfor Norge?'
         )
         fireEvent.change(input, { target: { value: '5' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
@@ -185,7 +189,7 @@ describe('UtlandsStep Component', () => {
           },
         })
         const input = screen.getByLabelText(
-          'Hvor mange år har du bodd i utlandet?'
+          'Hvor mange år har du bodd eller jobbet utenfor Norge?'
         )
         fireEvent.change(input, { target: { value: '' } })
 
@@ -208,7 +212,7 @@ describe('UtlandsStep Component', () => {
           },
         })
         const input = screen.getByLabelText(
-          'Hvor mange år har du bodd i utlandet?'
+          'Hvor mange år har du bodd eller jobbet utenfor Norge?'
         ) as HTMLInputElement
         expect(input.value).toBe('')
       })
@@ -223,7 +227,7 @@ describe('UtlandsStep Component', () => {
           },
         })
         const input = screen.getByLabelText(
-          'Hvor mange år har du bodd i utlandet?'
+          'Hvor mange år har du bodd eller jobbet utenfor Norge?'
         ) as HTMLInputElement
         expect(input.value).toBe('5')
       })

@@ -1,5 +1,6 @@
 import { Simuleringsresultat } from '@/common'
 import { formatInntektToNumber } from '../pages/utils/inntekt'
+import Highcharts from 'highcharts'
 
 export const alignData = (
   categories: number[],
@@ -85,6 +86,12 @@ export const getChartOptions = (input: {
           `${extendedCategories[extendedCategories.length - 1]}+`,
         ]
       : []
+
+  Highcharts.setOptions({
+    lang: {
+      numericSymbols: [],
+    },
+  })
 
   const chartOptions = {
     chart: {
