@@ -38,10 +38,38 @@ export const formatInntektToNumber = (s?: string | null | undefined) => {
   return !isNaN(inntekt) ? inntekt : NaN
 }
 
-export const updateAndFormatInntektFromInputField = (
-  inntekt: string,
-  updateInntekt: (s: string) => void
+export const formatAndUpdateBeloep = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  inputValue: string,
+  updateBeloep: (s: string) => void
 ) => {
-  const formattedInntekt = formatInntekt(inntekt)
-  updateInntekt(formattedInntekt)
+  const formattedInntekt = formatInntekt(inputValue)
+  handleCaretPosition(e, formattedInntekt)
+  updateBeloep(formattedInntekt)
+}
+
+export function handleCaretPosition(
+  e: React.ChangeEvent<HTMLInputElement>,
+  newFormattedValue: string
+) {
+  const antallTegnAfter = newFormattedValue.length
+  const input = e.target
+  const antallTegnBefore = input.value.length
+
+  const caretPosition = input.selectionStart ?? 0
+  const charAtCaret = newFormattedValue[Math.max(caretPosition, 0)]
+
+  setTimeout(() => {
+    let updatedCaretPosition = caretPosition
+
+    if (antallTegnAfter > antallTegnBefore && charAtCaret === '\u00A0') {
+      updatedCaretPosition = caretPosition
+    } else if (antallTegnAfter > antallTegnBefore) {
+      updatedCaretPosition = caretPosition + 1
+    } else if (antallTegnAfter < antallTegnBefore) {
+      updatedCaretPosition = Math.max(caretPosition - 1, 0)
+    }
+
+    input?.setSelectionRange(updatedCaretPosition, updatedCaretPosition)
+  }, 0)
 }

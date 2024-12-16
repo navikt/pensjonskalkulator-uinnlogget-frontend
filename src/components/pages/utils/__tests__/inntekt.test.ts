@@ -1,8 +1,17 @@
 import {
   formatInntekt,
   formatInntektToNumber,
-  updateAndFormatInntektFromInputField,
+  handleCaretPosition,
+  formatAndUpdateBeloep,
 } from '../inntekt'
+
+const createEvent = (value: string, selectionStart: number) => {
+  const input = document.createElement('input')
+  input.value = value
+  input.selectionStart = selectionStart
+  input.selectionEnd = selectionStart
+  return { target: input } as React.ChangeEvent<HTMLInputElement>
+}
 
 describe('formatInntekt', () => {
   test('Burde returnere tom streng for null, undefined eller tom streng', () => {
@@ -48,10 +57,51 @@ describe('formatInntektToNumber', () => {
   })
 })
 
-describe('updateAndFormatInntektFromInputField', () => {
+describe('formatAndUpdateBeloep', () => {
+  const createEvent = (value: string, selectionStart: number) => {
+    const input = document.createElement('input')
+    input.value = value
+    input.selectionStart = selectionStart
+    input.selectionEnd = selectionStart
+    return { target: input } as React.ChangeEvent<HTMLInputElement>
+  }
+
   test('Burde oppdatere og formatere inntekt riktig', () => {
     const mockUpdateInntekt = jest.fn()
-    updateAndFormatInntektFromInputField('12345', mockUpdateInntekt)
+    const event = createEvent('12345', 3)
+    formatAndUpdateBeloep(event, '12345', mockUpdateInntekt)
     expect(mockUpdateInntekt).toHaveBeenCalledWith('12 345')
+  })
+})
+
+describe('handleCaretPosition', () => {
+  beforeEach(() => {
+    jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    jest.useRealTimers()
+  })
+
+  test('Burde flytte caret posisjon tilbake når bruker trykker "space"', () => {
+    const event = createEvent('12 34 5', 6)
+    handleCaretPosition(event, '12 345')
+    jest.runAllTimers()
+    expect(event.target.selectionStart).toBe(5)
+  })
+
+  test('Burde beholde caret posisjon når lengden reduseres med 1', () => {
+    const event = createEvent('235', 2)
+    handleCaretPosition(event, '25')
+    jest.runAllTimers()
+    expect(event.target.selectionStart).toBe(1)
+    jest.runAllTimers()
+  })
+
+  test('Burde flytte caret posisjon fremover når lengden øker med 2', () => {
+    const event = createEvent('12345', 3)
+    handleCaretPosition(event, '12 345')
+    jest.runAllTimers()
+    expect(event.target.selectionStart).toBe(4)
   })
 })
