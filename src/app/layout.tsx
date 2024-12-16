@@ -1,58 +1,38 @@
 import '@navikt/ds-css'
-import { fetchDecoratorHtml } from '@navikt/nav-dekoratoren-moduler/ssr'
-import type { Metadata } from 'next'
+import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+import Script from 'next/script'
+
 import './globals.css'
 
 const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
-
-export const metadata: Metadata = {
-  title: 'Forenklet Pensjonskalkulator',
-  description: 'Her kan du regne ut pensjon din',
-}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const fragments = await fetchDecoratorHtml({
+  const Decorator = await fetchDecoratorReact({
     env: decoratorEnv,
     params: { context: 'privatperson' },
   })
 
-  const {
-    DECORATOR_STYLES,
-    DECORATOR_SCRIPTS,
-    DECORATOR_HEADER,
-    DECORATOR_FOOTER,
-  } = fragments
-
   return (
-    <html lang="nb">
-      <head
-        dangerouslySetInnerHTML={{ __html: DECORATOR_STYLES }}
-        suppressHydrationWarning
-      />
+    <html lang="no">
+      <head>
+        <Decorator.HeadAssets />
+      </head>
       <link
         rel="preload"
         href="https://cdn.nav.no/aksel/@navikt/ds-css/2.9.0/index.min.css"
         as="style"
       ></link>
       <body>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DECORATOR_HEADER,
-          }}
-          suppressHydrationWarning
-        />
+        <Decorator.Header />
         <main id="maincontent" tabIndex={-1}>
           {children}
         </main>
-        <div
-          dangerouslySetInnerHTML={{ __html: DECORATOR_FOOTER }}
-          suppressHydrationWarning
-        />
-        <div dangerouslySetInnerHTML={{ __html: DECORATOR_SCRIPTS }} />
+        <Decorator.Footer />
+        <Decorator.Scripts loader={Script} />
       </body>
     </html>
   )

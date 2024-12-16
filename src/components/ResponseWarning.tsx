@@ -1,8 +1,18 @@
 import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { getErrors } from '@/texts/errors'
-import { Alert, BodyLong, Box, Button, Heading, VStack } from '@navikt/ds-react'
+import {
+  Alert,
+  BodyLong,
+  Box,
+  Button,
+  Heading,
+  HStack,
+  VStack,
+} from '@navikt/ds-react'
 import { useContext } from 'react'
+import stepStyles from '/src/components/styles/stepStyles.module.css'
+import Link from 'next/link'
 
 interface SimuleringErrorProps {
   error?: SimuleringError
@@ -26,23 +36,29 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
         width={'100%'}
         marginInline={'auto'}
         padding="4"
+        marginBlock={'0 9'}
       >
-        <VStack gap="3">
-          <Heading level="1" size="large">
+        <VStack gap="4">
+          <Heading level="1" size="large" className={stepStyles.overskrift}>
             Uinnlogget Pensjonskalkulator
           </Heading>
           <Alert variant="warning">
             <VStack gap="6">
               <BodyLong>{mapErrorToMessage(error)}</BodyLong>
-              <Box>
+              <HStack gap={'4'}>
                 <Button
                   size="medium"
                   variant="secondary-neutral"
-                  onClick={() => formPageProps.goTo(0)}
+                  onClick={() => formPageProps.goTo(2)}
                 >
-                  Endre
+                  Endre uttak
                 </Button>
-              </Box>
+                <Link href="/">
+                  <Button size="medium" variant="secondary-neutral">
+                    Avbryt
+                  </Button>
+                </Link>
+              </HStack>
             </VStack>
           </Alert>
         </VStack>
