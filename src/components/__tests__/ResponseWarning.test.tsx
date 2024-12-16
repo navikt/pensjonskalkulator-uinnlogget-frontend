@@ -51,11 +51,11 @@ describe('ResponseWarning Component', () => {
     expect(container).toThrow('Error is undefined')
   })
 
-  describe('Gitt at brukeren trykker på "Endre" knappen', () => {
+  describe('Gitt at brukeren trykker på "Endre uttak" knappen', () => {
     test('Skal funksjonen goTo kalles', () => {
       const error = { ...errorObject, status: 'PEK100' }
       renderMockedComponent(() => <ResponseWarning error={error} />, context)
-      const button = screen.getByRole('button')
+      const button = screen.getByText('Endre uttak')
       button.click()
       expect(context.formPageProps.goTo).toHaveBeenCalled()
     })
