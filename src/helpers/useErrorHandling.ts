@@ -9,7 +9,7 @@ const useErrorHandling = (state: State) => {
       return 'Du må fylle ut antall år';
     }
     if (isNaN(+state.inntektOver1GAntallAar)) {
-      return 'Du må fylle ut en gyldig inntekt';
+      return 'Du må skrive hele tall for å oppgi inntekt';
     }
     if (+state.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
@@ -38,7 +38,7 @@ const useErrorHandling = (state: State) => {
       return 'Du må fylle ut inntekt';
     }
     if (isNaN(parsedInntekt)) {
-      return 'Du må fylle ut en gyldig inntekt';
+      return 'Du må skrive hele tall for å oppgi inntekt';
     }
     if (parsedInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
@@ -69,7 +69,7 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if(isNaN(parsedInntekt)) {
-        return 'Du må fylle ut en gyldig inntekt';
+        return 'Du må skrive hele tall for å oppgi inntekt';
       }
       if (state.gradertUttak.aarligInntektVsaPensjonBeloep && parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
@@ -104,7 +104,7 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if (isNaN(parsedInntekt)) {
-        return 'Du må fylle ut en gyldig inntekt';
+        return 'Du må skrive hele tall for å oppgi inntekt';
       }
       if (parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
@@ -140,7 +140,7 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) || +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) ? "Du må oppgi årstall som ÅÅÅÅ, f.eks. 1960" : +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
