@@ -41,18 +41,20 @@ export default function LandingPage() {
           <Heading level="2" size="medium">
             Hei!
           </Heading>
-          <BodyLong size="large">
-            Velkommen til forenklet pensjonskalkulator som kan gi deg et estimat
-            på:
-          </BodyLong>
-          <List as="ul">
-            <List.Item icon={<Icon color="var(--a-deepblue-500)" />}>
-              alderspensjon (Nav)
-            </List.Item>
-            <List.Item icon={<Icon color="var(--a-purple-400)" />}>
-              AFP i privat sektor (avtalefestet pensjon)
-            </List.Item>
-          </List>
+          <Box padding={'0'}>
+            <BodyLong size="large">
+              Velkommen til forenklet pensjonskalkulator som kan gi deg et
+              estimat på:
+            </BodyLong>
+            <List as="ul">
+              <List.Item icon={<Icon color="var(--a-deepblue-500)" />}>
+                alderspensjon (Nav)
+              </List.Item>
+              <List.Item icon={<Icon color="var(--a-purple-400)" />}>
+                AFP i privat sektor (avtalefestet pensjon)
+              </List.Item>
+            </List>
+          </Box>
           <BodyLong size="large">
             For å beregne pensjonen din, må du svare på alle spørsmålene som
             kommer
@@ -62,7 +64,11 @@ export default function LandingPage() {
             som kan identifisere deg. Ingen opplysninger lagres.
           </BodyLong>
           <HStack gap={'2'}>
-            <Link href="./kalkulator-uinnlogget/form" className="text-white">
+            <Link
+              href="./kalkulator-uinnlogget/form"
+              className="text-white"
+              underline={false}
+            >
               <Button variant="primary">Kom i gang</Button>
             </Link>
             <Link
