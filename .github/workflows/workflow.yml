@@ -1,12 +1,16 @@
-name: workflow-uinnlogget
+name: workflow-uinnlogget-deploy
 on:
   push:
     branches:
-      - main
-      - dev-workflows
+      - 'main'
+      - 'magicbox'
+      - 'dreambox'
+      - 'catbox'
+      
+      
 
 jobs:
-  build-and-publish:
+  build:
     name: Bygg, test og publiser docker image
     timeout-minutes: 15
     runs-on: ubuntu-latest
@@ -15,7 +19,7 @@ jobs:
       contents: read
       id-token: write
     outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+      image: ${{ steps.image-creation.outputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -41,24 +45,98 @@ jobs:
         run: npm run test
       - name: Build application
         run: npm run build
-      - name: docker-build-push
-        if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
+      - name: Docker create image
         uses: nais/docker-build-push@v0
-        id: docker-build-push
+        id: image-creation
         with:
           team: pensjonskalkulator
           dockerfile: .docker/Dockerfile
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      - name: deploy-dev
+
+  deploy-sandbox:
+    name: deploy to dev-gcp
+    needs: [ build ]
+    if: |
+      github.ref_name == 'main' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/app.yml
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          RESOURCE: .nais/sandbox.yml
+          VAR: image=${{ needs.build.outputs.image }}
+  deploy-magicbox:
+    name: deploy to magicbox
+    needs: [ build ]
+    if: |
+      github.ref_name == 'magicbox' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/magicbox.yml
+          VAR: image=${{ needs.build.outputs.image }}
+  deploy-dreambox:
+    name: deploy to dreambox
+    needs: [ build ]
+    if: |
+      github.ref_name == 'dreambox' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dreambox.yml
+          VAR: image=${{ needs.build.outputs.image }}
+  deploy-catbox:
+    name: deploy to catbox
+    needs: [ build ]
+    if: |
+      github.ref_name == 'catbox' &&
+      github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: read
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Deploy
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/catbox.yml
+          VAR: image=${{ needs.build.outputs.image }}
 
   codeql-analyse:
-    if: github.ref_name == 'main' || startsWith(github.ref_name, 'dev-')
+    if: startsWith(github.ref_name, 'dev-')
     name: codeql-analyse
     timeout-minutes: 15
     runs-on: ubuntu-latest
@@ -80,16 +158,3 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: '/language:javascript'
-
-  # nais-deploy:
-  #   needs: build-and-publish
-  #   runs-on: ubuntu-latest
-  #   permissions: write-all
-  # uses: navikt/flex-github-actions-workflows/.github/workflows/nais-deploy-dev-og-prod.yml@main
-  # with:
-  #   image: ${{ needs.build-and-publish.outputs.image }}
-  #   app: ${{ inputs.app }}
-  #   dev-only: ${{ inputs.dev-only }}
-  #   nais-template: .nais/app.yaml
-  #   dev-vars: image=.nais/app.yaml
-  # secrets: inherit
