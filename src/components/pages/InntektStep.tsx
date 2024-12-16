@@ -16,7 +16,7 @@ import FormWrapper from '../FormWrapper'
 import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 import Substep from '../Substep'
-import { updateAndFormatInntektFromInputField } from './utils/inntekt'
+import { formatAndUpdateBeloep } from './utils/inntekt'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -59,15 +59,10 @@ const InntektStep = () => {
         onChange={(it) =>
           handleFieldChange((draft) => {
             const value = it.target.value
-            updateAndFormatInntektFromInputField(
-              it,
-              state.aarligInntektFoerUttakBeloep ?? '',
-              value,
-              (formattedValue) => {
-                draft.aarligInntektFoerUttakBeloep =
-                  formattedValue.length === 0 ? null : formattedValue
-              }
-            )
+            formatAndUpdateBeloep(it, value, (formattedValue) => {
+              draft.aarligInntektFoerUttakBeloep =
+                formattedValue.length === 0 ? null : formattedValue
+            })
           }, 'aarligInntektFoerUttakBeloep')
         }
         type="text"
@@ -174,15 +169,10 @@ const InntektStep = () => {
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   const value = it.target.value
-                  updateAndFormatInntektFromInputField(
-                    it,
-                    state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? '',
-                    value,
-                    (formattedValue) => {
-                      draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
-                        formattedValue.length === 0 ? undefined : formattedValue
-                    }
-                  )
+                  formatAndUpdateBeloep(it, value, (formattedValue) => {
+                    draft.gradertUttak!.aarligInntektVsaPensjonBeloep =
+                      formattedValue.length === 0 ? undefined : formattedValue
+                  })
                 }, 'gradertInntekt')
               }}
               type="text"
@@ -250,18 +240,13 @@ const InntektStep = () => {
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   const value = it.target.value
-                  updateAndFormatInntektFromInputField(
-                    it,
-                    state.heltUttak.aarligInntektVsaPensjon?.beloep ?? '',
-                    value,
-                    (formattedValue) => {
-                      draft.heltUttak.aarligInntektVsaPensjon = {
-                        ...draft.heltUttak.aarligInntektVsaPensjon,
-                        beloep:
-                          formattedValue.length === 0 ? null : formattedValue,
-                      }
+                  formatAndUpdateBeloep(it, value, (formattedValue) => {
+                    draft.heltUttak.aarligInntektVsaPensjon = {
+                      ...draft.heltUttak.aarligInntektVsaPensjon,
+                      beloep:
+                        formattedValue.length === 0 ? null : formattedValue,
                     }
-                  )
+                  })
                 }, 'helPensjonInntekt')
               }}
               error={errorFields.helPensjonInntekt}

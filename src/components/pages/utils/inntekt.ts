@@ -38,15 +38,14 @@ export const formatInntektToNumber = (s?: string | null | undefined) => {
   return !isNaN(inntekt) ? inntekt : NaN
 }
 
-export const updateAndFormatInntektFromInputField = (
+export const formatAndUpdateBeloep = (
   e: React.ChangeEvent<HTMLInputElement>,
-  oldFormattedInntekt: string,
-  inntekt: string,
-  updateInntekt: (s: string) => void
+  inputValue: string,
+  updateBeloep: (s: string) => void
 ) => {
-  const formattedInntekt = formatInntekt(inntekt)
+  const formattedInntekt = formatInntekt(inputValue)
   handleCaretPosition(e, formattedInntekt)
-  updateInntekt(formattedInntekt)
+  updateBeloep(formattedInntekt)
 }
 
 export function handleCaretPosition(

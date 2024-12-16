@@ -2,7 +2,7 @@ import {
   formatInntekt,
   formatInntektToNumber,
   handleCaretPosition,
-  updateAndFormatInntektFromInputField,
+  formatAndUpdateBeloep,
 } from '../inntekt'
 
 const createEvent = (value: string, selectionStart: number) => {
@@ -57,7 +57,7 @@ describe('formatInntektToNumber', () => {
   })
 })
 
-describe('updateAndFormatInntektFromInputField', () => {
+describe('formatAndUpdateBeloep', () => {
   const createEvent = (value: string, selectionStart: number) => {
     const input = document.createElement('input')
     input.value = value
@@ -69,12 +69,7 @@ describe('updateAndFormatInntektFromInputField', () => {
   test('Burde oppdatere og formatere inntekt riktig', () => {
     const mockUpdateInntekt = jest.fn()
     const event = createEvent('12345', 3)
-    updateAndFormatInntektFromInputField(
-      event,
-      '12345',
-      '12345',
-      mockUpdateInntekt
-    )
+    formatAndUpdateBeloep(event, '12345', mockUpdateInntekt)
     expect(mockUpdateInntekt).toHaveBeenCalledWith('12 345')
   })
 })
