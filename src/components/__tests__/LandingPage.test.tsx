@@ -32,7 +32,7 @@ describe('LandingPage', () => {
     const startButton = screen.getByRole('button', { name: /Kom i Gang/i })
     expect(startButton).toBeTruthy()
     const startLink = screen.getByRole('link', { name: /Kom i Gang/i })
-    expect(startLink.getAttribute('href')).toBe('./kalkulator-uinnlogget/form')
+    expect(startLink.getAttribute('href')).toBe('./uinnlogget-kalkulator/form')
   })
 
   test('Rendrer avbrytknappen', () => {

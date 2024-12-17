@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
+    "format:types": "prettier --write ./src/types/schema.d.ts && eslint ./src/types/schema.d.ts --fix",
     "testc": "jest --c",
     "test": "jest",
     "build": "next build",

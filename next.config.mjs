@@ -1,12 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: true,
-  basePath: '/pensjon/kalkulator-uinnlogget',
+  basePath: '/pensjon/uinnlogget-kalkulator',
   experimental: {
-    optimizePackageImports: ["@navikt/ds-react", "@navikt/aksel-icons"],
+    optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
+  },
+}
 
-  }
-
-};
-
-export default nextConfig;
+export default nextConfig
