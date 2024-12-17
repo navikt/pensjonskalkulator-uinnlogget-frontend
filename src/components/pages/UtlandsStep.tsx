@@ -38,7 +38,7 @@ const UtlandsStep = () => {
     <>
       <FormWrapper onSubmit={onSubmit}>
         <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
-          Utland
+          Opphold utenfor Norge
         </Heading>
         <div>
           <RadioGroup

@@ -9,7 +9,7 @@ import {
   Select,
   TextField,
 } from '@navikt/ds-react'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
@@ -21,6 +21,10 @@ import { formatAndUpdateBeloep } from './utils/inntekt'
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
+
+  useEffect(() => {
+    document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
+  }, [])
 
   const { handleFieldChange } = useFieldChange<State>({
     setState,

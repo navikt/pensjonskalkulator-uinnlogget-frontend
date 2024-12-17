@@ -11,10 +11,14 @@ import {
   List,
 } from '@navikt/ds-react'
 import stepStyles from './styles/stepStyles.module.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Substep from './Substep'
 
 export default function LandingPage() {
+  useEffect(() => {
+    document.title = 'Start - Uinnlogget pensjonskalkulator'
+  }, [])
+
   const Icon = ({ color }: { color: string }) => (
     <Box
       width="1rem"

@@ -158,7 +158,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.inntektOver1GAntallAar).toBe(
-          'Du må fylle ut en gyldig inntekt'
+          'Du må skrive hele tall for å oppgi inntekt'
         )
       })
     })
@@ -349,7 +349,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
-          'Du må fylle ut en gyldig inntekt'
+          'Du må skrive hele tall for å oppgi inntekt'
         )
       })
     })
@@ -440,7 +440,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.gradertInntekt).toBe(
-          'Du må fylle ut en gyldig inntekt'
+          'Du må skrive hele tall for å oppgi inntekt'
         )
       })
 
@@ -696,7 +696,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.helPensjonInntekt).toBe(
-          'Du må fylle ut en gyldig inntekt'
+          'Du må skrive hele tall for å oppgi inntekt'
         )
       })
 
