@@ -9,7 +9,7 @@ import useMultiStepForm from '@/helpers/useMultiStepForm'
 import UtlandsStep from './pages/UtlandsStep'
 
 import { initialState } from '@/defaults/initialState'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import SivilstandStep from './pages/SivilstandStep'
@@ -32,6 +32,15 @@ function FormPage({ grunnbelop }: FormPageProps) {
     sivilstand: <SivilstandStep grunnbelop={grunnbelop} key="sivilstand" />,
     afp: <AFPStep key="afp" />,
   }
+
+  const pageTitles = [
+    'Alder og yrkesaktivitet – Uinnlogget pensjonskalkulator',
+    'Opphold utenfor Norge – Uinnlogget pensjonskalkulator',
+    'Inntekt og alderspensjon – Uinnlogget pensjonskalkulator',
+    'Sivilstand – Uinnlogget pensjonskalkulator',
+    'Avtalefestet pensjon (AFP) – Uinnlogget pensjonskalkulator',
+    'Beregning - Uinnlogget pensjonskalkulator',
+  ]
   const pagesNames = Object.keys(pagesDict)
 
   const lastPage = <BeregnPage key="beregn" />
@@ -41,6 +50,10 @@ function FormPage({ grunnbelop }: FormPageProps) {
     lastPage
   )
   const length = pagesNames.length
+
+  useEffect(() => {
+    document.title = pageTitles[curStep]
+  }, [curStep])
 
   return (
     <FormContext.Provider

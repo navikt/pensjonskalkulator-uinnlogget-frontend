@@ -19,6 +19,7 @@ export default async function RootLayout({
   return (
     <html lang="no">
       <head>
+        <title>Start - Uinnlogget pensjonskalkulator</title>
         <Decorator.HeadAssets />
       </head>
       <link
