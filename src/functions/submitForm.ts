@@ -16,7 +16,6 @@ export const submitForm = async (
     .then(async (response) => {
       if (response.status === 409) {
         return response.json().then((data) => {
-          console.log('Threw 409 conflict error:', data)
           return Promise.reject(JSON.parse(data) as SimuleringError)
         })
       } else if (response.ok) {
