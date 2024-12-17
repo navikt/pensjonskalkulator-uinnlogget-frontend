@@ -69,7 +69,7 @@ export default function LandingPage() {
           </BodyLong>
           <HStack gap={'2'}>
             <Link
-              href="./kalkulator-uinnlogget/form"
+              href="./uinnlogget-kalkulator/form"
               className="text-white"
               underline={false}
             >

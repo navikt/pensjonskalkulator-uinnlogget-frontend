@@ -24,7 +24,7 @@ const NotFoundPage = () => {
                   </List.Item>
                 </List>
                 <VStack gap="4">
-                  <Link href="/pensjon/kalkulator-uinnlogget">
+                  <Link href="/pensjon/uinnlogget-kalkulator">
                     Gå til uinnlogget pensjonskalkulator
                   </Link>
                   <Link href="https://www.nav.no/pensjon">Les om pensjon</Link>
