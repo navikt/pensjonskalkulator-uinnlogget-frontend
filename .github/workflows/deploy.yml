@@ -66,11 +66,11 @@ jobs:
 
       - name: Build staging application
         if: github.event.inputs.prod != 'true'
-        run: npm run build:staging
+        run: npm run build
 
       - name: Build production application
         if: github.event.inputs.prod == 'true'
-        run: npm run build
+        run: npm run build:prod
 
       - name: Docker create image
         uses: nais/docker-build-push@v0
