@@ -4,7 +4,9 @@ import Script from 'next/script'
 
 import './globals.css'
 
-const decoratorEnv = (process.env.DECORATOR_ENV ?? 'prod') as 'dev' | 'prod'
+const decoratorEnv = (
+  process.env.NEXT_PUBLIC_ENV === 'production' ? 'prod' : 'dev'
+) as 'dev' | 'prod'
 
 export default async function RootLayout({
   children,

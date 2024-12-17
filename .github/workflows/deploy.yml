@@ -63,6 +63,15 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+
+      - name: Build staging application
+        if: github.event.inputs.prod != 'true'
+        run: npm run build:staging
+
+      - name: Build production application
+        if: github.event.inputs.prod == 'true'
+        run: npm run build
+
       - name: Build application
         run: npm run build
 
