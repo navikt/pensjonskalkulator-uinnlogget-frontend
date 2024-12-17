@@ -6,7 +6,7 @@ export const submitForm = async (
 ): Promise<Simuleringsresultat> => {
   const apiPayload = mapStateToApiPayload(formState)
 
-  return fetch('/pensjon/kalkulator-uinnlogget/api/simuler', {
+  return fetch('/pensjon/uinnlogget-kalkulator/api/simuler', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
