@@ -4,8 +4,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 
 export const generateBearerToken = async (): Promise<string> => {
+  const env = process.env.NEXT_PUBLIC_ENV === 'production' ? 'prod' : 'dev'
+
   const clientCredentials = await requestAzureClientCredentialsToken(
-    'api://prod-gcp.pensjonskalkulator.pensjonskalkulator-backend/.default'
+    `api://${env}-gcp.pensjonskalkulator.pensjonskalkulator-backend/.default`
   )
 
   if (clientCredentials.ok) {

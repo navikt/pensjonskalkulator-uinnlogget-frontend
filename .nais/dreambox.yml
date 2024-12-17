@@ -8,7 +8,7 @@ metadata:
 spec:
   image: {{image}}
   ingresses:
-    - https://pensjonskalkulator-uinnlogget-dreambox.ekstern.dev.nav.no/pensjon/kalkulator-uinnlogget
+    - https://pensjonskalkulator-uinnlogget-dreambox.ekstern.dev.nav.no/pensjon/uinnlogget-kalkulator
   port: 8080
   replicas:
     max: 1
