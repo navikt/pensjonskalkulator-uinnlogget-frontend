@@ -7,10 +7,20 @@ import {
   renderMockedComponent,
 } from '../pages/test-utils/testSetup'
 import ResponseWarning from '../ResponseWarning'
+import { useRouter } from 'next/navigation'
 
 jest.mock('@/texts/errors', () => ({
   getErrors: jest.fn(),
 }))
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}))
+
+const mockRouter = {
+  prefetch: jest.fn(),
+  push: jest.fn(),
+}
 
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
@@ -34,6 +44,7 @@ describe('ResponseWarning Component', () => {
 
   beforeEach(() => {
     ;(getErrors as jest.Mock).mockReturnValue(errorMessageMock)
+    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
   })
 
   test('Should render the warning message', () => {
