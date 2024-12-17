@@ -5,7 +5,7 @@ import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 
 export const generateBearerToken = async (): Promise<string> => {
   const clientCredentials = await requestAzureClientCredentialsToken(
-    'api://dev-gcp.pensjonskalkulator.pensjonskalkulator-backend/.default'
+    'api://prod-gcp.pensjonskalkulator.pensjonskalkulator-backend/.default'
   )
 
   if (clientCredentials.ok) {
