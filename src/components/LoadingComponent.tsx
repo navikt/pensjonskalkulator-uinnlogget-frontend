@@ -8,7 +8,12 @@ const LoadingComponent: React.FC = () => (
     align={'center'}
     justify={'center'}
   >
-    <Loader data-testid="loader" size="3xlarge" title="Laster..." />
+    <Loader
+      data-testid="loader"
+      aria-label="Laster..."
+      size="3xlarge"
+      title="Laster..."
+    />
   </HStack>
 )
 
