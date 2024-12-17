@@ -44,7 +44,6 @@ const useAsyncLoader = (
         .catch((err) => {
           storage.current.promise = undefined
           storage.current.rejected = true
-          console.log('Error in async loader:', err)
 
           if (isSimuleringError(err)) {
             storage.current.error = err
