@@ -1,12 +1,18 @@
 import { FormContext } from '@/contexts/context'
 import { Button, HStack } from '@navikt/ds-react'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import stepStyles from './styles/stepStyles.module.css'
+import { useRouter } from 'next/navigation'
 
 function FormButtons() {
   const context = useContext(FormContext)
+  const router = useRouter()
 
   const { curStep, length, goBack } = context.formPageProps
+
+  useEffect(() => {
+    router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
+  }, [router])
 
   return (
     <HStack gap={'2'} className={stepStyles.footerSpacing}>
@@ -19,6 +25,16 @@ function FormButtons() {
           Tilbake
         </Button>
       )}
+
+      <Button
+        size="medium"
+        variant="tertiary"
+        onClick={() =>
+          router.push('https://www.nav.no/pensjon/kalkulator/login')
+        }
+      >
+        Avbryt
+      </Button>
     </HStack>
   )
 }

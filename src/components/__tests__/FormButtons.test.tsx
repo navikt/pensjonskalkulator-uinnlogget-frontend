@@ -3,6 +3,7 @@ import { initialState } from '@/defaults/initialState'
 import { render, screen } from '@testing-library/react'
 import { FormEvent } from 'react'
 import FormButtons from '../FormButtons'
+import { useRouter } from 'next/navigation'
 
 const mockedContextValues = {
   setState: jest.fn(),
@@ -16,16 +17,30 @@ const mockedContextValues = {
     goToNext: jest.fn(),
   },
 }
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}))
+
+const mockRouter = {
+  prefetch: jest.fn(),
+  push: jest.fn(),
+}
+
 describe('FormButtons', () => {
+  beforeEach(() => {
+    ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
+  })
+
   describe('Når brukeren er på første steg,', () => {
-    test('Renderer 1 knapp', () => {
+    test('Renderer 2 knapper', () => {
       render(
         <FormContext.Provider value={mockedContextValues}>
           <FormButtons />
         </FormContext.Provider>
       )
       const formButtonsElement = screen.getAllByRole('button')
-      expect(formButtonsElement).toHaveLength(1)
+      expect(formButtonsElement).toHaveLength(2)
     })
 
     test('Tilbake-knappen er ikke synlig', () => {
@@ -43,7 +58,7 @@ describe('FormButtons', () => {
   })
 })
 describe('Når brukeren er mellom første og siste steg,,', () => {
-  test('Renderer 2 knapper', () => {
+  test('Renderer 3 knapper', () => {
     const modifiedContextValues = { ...mockedContextValues }
     modifiedContextValues.formPageProps.curStep = 1
 
@@ -53,7 +68,7 @@ describe('Når brukeren er mellom første og siste steg,,', () => {
       </FormContext.Provider>
     )
     const formButtonsElement = screen.getAllByRole('button')
-    expect(formButtonsElement).toHaveLength(2)
+    expect(formButtonsElement).toHaveLength(3)
   })
 })
 
@@ -68,7 +83,7 @@ describe('Når brukeren er på siste steg,', () => {
       </FormContext.Provider>
     )
     const formButtonsElement = screen.getAllByRole('button')
-    expect(formButtonsElement).toHaveLength(2)
+    expect(formButtonsElement).toHaveLength(3)
   })
 
   test('Endrer teksten på knappen til "Beregn"', () => {

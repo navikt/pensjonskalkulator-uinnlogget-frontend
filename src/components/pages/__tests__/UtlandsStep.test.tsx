@@ -9,6 +9,7 @@ import {
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
 import { axe } from 'jest-axe'
+import { useRouter } from 'next/navigation'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -21,6 +22,15 @@ jest.mock('@/helpers/useFormState', () => ({
   __esModule: true,
   useFieldChange: jest.fn(),
 }))
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}))
+
+const mockRouter = {
+  prefetch: jest.fn(),
+  push: jest.fn(),
+}
 
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
@@ -48,6 +58,7 @@ beforeEach(() => {
   ;(useFieldChange as jest.Mock).mockReturnValue({
     handleFieldChange: mockHandleFieldChange,
   })
+  ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
 })
 
 describe('UtlandsStep Component', () => {
