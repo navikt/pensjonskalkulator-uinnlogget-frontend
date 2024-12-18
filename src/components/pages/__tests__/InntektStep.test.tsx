@@ -4,6 +4,7 @@ import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
 import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
+import { useRouter } from 'next/navigation'
 import {
   renderMockedComponent,
   generateDefaultFormPageProps,
@@ -21,6 +22,15 @@ jest.mock('@/helpers/useFormState', () => ({
   __esModule: true,
   useFieldChange: jest.fn(),
 }))
+
+jest.mock('next/navigation', () => ({
+  useRouter: jest.fn(),
+}))
+
+const mockRouter = {
+  prefetch: jest.fn(),
+  push: jest.fn(),
+}
 
 const mockGoToNext = jest.fn()
 const mockSetState = jest.fn()
@@ -48,6 +58,7 @@ beforeEach(() => {
   ;(useFieldChange as jest.Mock).mockReturnValue({
     handleFieldChange: mockHandleFieldChange,
   })
+  ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
 })
 
 describe('InntektStep Component', () => {

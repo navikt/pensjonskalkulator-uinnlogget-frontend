@@ -10,9 +10,9 @@ import {
   HStack,
   VStack,
 } from '@navikt/ds-react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import stepStyles from '/src/components/styles/stepStyles.module.css'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface SimuleringErrorProps {
   error?: SimuleringError
@@ -20,6 +20,7 @@ interface SimuleringErrorProps {
 
 function ResponseWarning({ error }: SimuleringErrorProps) {
   const { formPageProps } = useContext(FormContext)
+  const router = useRouter()
 
   const mapErrorToMessage = (error: SimuleringError | undefined) => {
     const errorMessages = getErrors() as ErrorMessages
@@ -28,6 +29,10 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
     const errorCode = error.status as ErrorStatus
     return errorMessages[errorCode]
   }
+
+  useEffect(() => {
+    router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
+  }, [router])
 
   return (
     <>
@@ -53,11 +58,15 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
                 >
                   Endre uttak
                 </Button>
-                <Link href="/">
-                  <Button size="medium" variant="secondary-neutral">
-                    Avbryt
-                  </Button>
-                </Link>
+                <Button
+                  size="medium"
+                  variant="secondary-neutral"
+                  onClick={() =>
+                    router.push('https://www.nav.no/pensjon/kalkulator/login')
+                  }
+                >
+                  Avbryt
+                </Button>
               </HStack>
             </VStack>
           </Alert>

@@ -4,7 +4,7 @@ import { isSimuleringError } from '@/helpers/typeguards'
 import { Box, Button, Heading, HStack, VStack } from '@navikt/ds-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo, useRef } from 'react'
 import ResponseWarning from './ResponseWarning'
 import stepStyles from './styles/stepStyles.module.css'
 import ResultTable from './ResultTable'
@@ -17,6 +17,7 @@ interface Props {
 
 const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state, formPageProps } = useContext(FormContext)
+  const headingRef = useRef<HTMLHeadingElement>(null)
 
   if (
     isSimuleringError(simuleringsresultat) ||
@@ -24,6 +25,12 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   ) {
     return <ResponseWarning error={simuleringsresultat} />
   }
+
+  useEffect(() => {
+    if (headingRef.current) {
+      headingRef.current.focus()
+    }
+  }, [])
 
   const chartOptions = useMemo(() => {
     return getChartOptions({
@@ -55,7 +62,13 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         <Heading level="1" size="large" className={stepStyles.overskrift}>
           Uinnlogget pensjonskalkulator
         </Heading>
-        <Heading level="2" size="medium" className={stepStyles.underOverskrift}>
+        <Heading
+          ref={headingRef}
+          level="2"
+          size="medium"
+          className={stepStyles.underOverskrift}
+          tabIndex={-1}
+        >
           Beregning
         </Heading>
         <>

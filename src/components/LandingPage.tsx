@@ -13,11 +13,19 @@ import {
 import stepStyles from './styles/stepStyles.module.css'
 import React, { useEffect } from 'react'
 import Substep from './Substep'
+import { useRouter } from 'next/navigation'
 
 export default function LandingPage() {
+  const router = useRouter()
+
   useEffect(() => {
     document.title = 'Start - Uinnlogget pensjonskalkulator'
   }, [])
+
+  useEffect(() => {
+    router.prefetch('./uinnlogget-kalkulator/form')
+    router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
+  }, [router])
 
   const Icon = ({ color }: { color: string }) => (
     <Box
@@ -68,19 +76,21 @@ export default function LandingPage() {
             som kan identifisere deg. Ingen opplysninger lagres.
           </BodyLong>
           <HStack gap={'2'}>
-            <Link
-              href="./uinnlogget-kalkulator/form"
-              className="text-white"
-              underline={false}
+            <Button
+              onClick={() => router.push('./uinnlogget-kalkulator/form')}
+              variant="primary"
             >
-              <Button variant="primary">Kom i gang</Button>
-            </Link>
-            <Link
-              href="https://www.nav.no/pensjon/kalkulator/login"
-              className="text-white"
+              Kom i gang
+            </Button>
+
+            <Button
+              onClick={() =>
+                router.push('https://www.nav.no/pensjon/kalkulator/login')
+              }
+              variant="tertiary"
             >
-              <Button variant="tertiary">Avbryt</Button>
-            </Link>
+              Avbryt
+            </Button>
           </HStack>
         </VStack>
         <Substep>

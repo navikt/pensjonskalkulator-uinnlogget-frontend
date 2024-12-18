@@ -1,6 +1,19 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import LandingPage from '../LandingPage'
 
+export const useRouterMock = {
+  useRouter: jest.fn(),
+}
+
+const push = jest.fn()
+
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    prefetch: jest.fn(),
+    push,
+  }),
+}))
+
 describe('LandingPage', () => {
   test('Rendrer overskriften', () => {
     render(<LandingPage />)
@@ -31,8 +44,8 @@ describe('LandingPage', () => {
     render(<LandingPage />)
     const startButton = screen.getByRole('button', { name: /Kom i Gang/i })
     expect(startButton).toBeTruthy()
-    const startLink = screen.getByRole('link', { name: /Kom i Gang/i })
-    expect(startLink.getAttribute('href')).toBe('./uinnlogget-kalkulator/form')
+    startButton.click()
+    expect(push).toHaveBeenCalledWith('./uinnlogget-kalkulator/form')
   })
 
   test('Rendrer avbrytknappen', () => {
