@@ -6,10 +6,10 @@ const useErrorHandling = (state: State) => {
   const validateInntektOver1GAntallAar = (): string => {
     
     if (!state.inntektOver1GAntallAar) {
-      return 'Du må fylle ut antall år';
+      return 'Du må oppgi antall år som du har jobbet i Norge';
     }
     if (isNaN(+state.inntektOver1GAntallAar)) {
-      return 'Du må skrive hele tall for å oppgi inntekt';
+      return 'Du må oppgi antall år med siffer';
     }
     if (+state.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
@@ -22,8 +22,11 @@ const useErrorHandling = (state: State) => {
 
   const validateUtenlandsAntallAar = (): string => {
   
-      if ((!state.utenlandsAntallAar || isNaN(+state.utenlandsAntallAar) || +state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
+      if ((!state.utenlandsAntallAar || +state.utenlandsAntallAar === 0) && state.harBoddIUtland === true) {
         return 'Du må fylle ut antall år';
+      }
+      if (state.utenlandsAntallAar && isNaN(+state.utenlandsAntallAar)) {
+        return 'Du må oppgi antall år med siffer';
       }
       if (state.utenlandsAntallAar && +state.utenlandsAntallAar < 0) {
         return 'Antall år må være positiv';
@@ -38,7 +41,7 @@ const useErrorHandling = (state: State) => {
       return 'Du må fylle ut inntekt';
     }
     if (isNaN(parsedInntekt)) {
-      return 'Du må skrive hele tall for å oppgi inntekt';
+      return 'Du må skrive hele tall med siffer for å oppgi inntekt';
     }
     if (parsedInntekt < 0) {
       return 'Inntekt kan ikke være negativ';
@@ -69,7 +72,7 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if(isNaN(parsedInntekt)) {
-        return 'Du må skrive hele tall for å oppgi inntekt';
+        return 'Du må skrive hele tall med siffer for å oppgi inntekt';
       }
       if (state.gradertUttak.aarligInntektVsaPensjonBeloep && parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
@@ -104,7 +107,7 @@ const useErrorHandling = (state: State) => {
         return 'Du må fylle ut inntekt';
       }
       if (isNaN(parsedInntekt)) {
-        return 'Du må skrive hele tall for å oppgi inntekt';
+        return 'Du må skrive hele tall med siffer for å oppgi inntekt';
       }
       if (parsedInntekt < 0) {
         return 'Inntekt kan ikke være negativ';
@@ -140,7 +143,7 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar || isNaN(+state.foedselAar) ? "Du må oppgi årstall som ÅÅÅÅ, f.eks. 1960" : +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar ? "Du må oppgi årstall" : isNaN(+state.foedselAar) ? "Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)" : +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 

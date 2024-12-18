@@ -95,7 +95,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.inntektOver1GAntallAar).toBe(
-          'Du må fylle ut antall år'
+          'Du må oppgi antall år som du har jobbet i Norge'
         )
       })
 
@@ -108,7 +108,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.inntektOver1GAntallAar).toBe(
-          'Du må fylle ut antall år'
+          'Du må oppgi antall år som du har jobbet i Norge'
         )
       })
 
@@ -158,7 +158,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.inntektOver1GAntallAar).toBe(
-          'Du må skrive hele tall for å oppgi inntekt'
+          'Du må oppgi antall år med siffer'
         )
       })
     })
@@ -349,7 +349,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.aarligInntektFoerUttakBeloep).toBe(
-          'Du må skrive hele tall for å oppgi inntekt'
+          'Du må skrive hele tall med siffer for å oppgi inntekt'
         )
       })
     })
@@ -440,7 +440,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.gradertInntekt).toBe(
-          'Du må skrive hele tall for å oppgi inntekt'
+          'Du må skrive hele tall med siffer for å oppgi inntekt'
         )
       })
 
@@ -696,7 +696,7 @@ describe('useErrorHandling', () => {
         })
 
         expect(errorFields.helPensjonInntekt).toBe(
-          'Du må skrive hele tall for å oppgi inntekt'
+          'Du må skrive hele tall med siffer for å oppgi inntekt'
         )
       })
 
