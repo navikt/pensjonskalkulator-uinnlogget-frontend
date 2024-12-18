@@ -32,6 +32,7 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
     >
       {steps.map((step, index) => (
         <FormProgress.Step
+          href="#"
           completed={activeStep > index}
           interactive={activeStep >= index}
           key={index}
