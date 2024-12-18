@@ -46,7 +46,7 @@ export default function LandingPage() {
         padding={'4'}
         className={stepStyles.footerSpacing}
       >
-        <Heading level="2" size="large" className={stepStyles.overskrift}>
+        <Heading level="1" size="large" className={stepStyles.overskrift}>
           Uinnlogget pensjonskalkulator
         </Heading>
         <VStack gap={'5'}>
