@@ -143,7 +143,7 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar ? "Du må oppgi årstall" : isNaN(+state.foedselAar) ? "Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)" : +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      errors.foedselAar = !state.foedselAar ? "Du må oppgi årstall" : isNaN(+state.foedselAar) ? "Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)" : +state.foedselAar < (new Date().getFullYear() - 75) || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
