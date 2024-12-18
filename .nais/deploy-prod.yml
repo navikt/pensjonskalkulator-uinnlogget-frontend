@@ -33,6 +33,8 @@ spec:
     outbound:
       rules:
         - application: pensjonskalkulator-backend
+        - application: nav-dekoratoren
+          namespace: personbruker
       external:
         - host: www.nav.no
   azure:
