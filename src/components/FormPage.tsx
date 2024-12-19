@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import SivilstandStep from './pages/SivilstandStep'
+import { cleanStep } from './pages/utils/cleanStep'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -41,6 +42,15 @@ function FormPage({ grunnbelop }: FormPageProps) {
     'Avtalefestet pensjon (AFP) – Uinnlogget pensjonskalkulator',
     'Beregning - Uinnlogget pensjonskalkulator',
   ]
+
+  const steps = [
+    'Alder og yrkesaktivitet',
+    'Opphold utenfor Norge',
+    'Inntekt og alderspensjon',
+    'Sivilstand',
+    'Avtalefestet pensjon (AFP)',
+  ]
+
   const pagesNames = Object.keys(pagesDict)
 
   const lastPage = <BeregnPage key="beregn" />
@@ -53,6 +63,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
 
   useEffect(() => {
     document.title = pageTitles[curStep]
+    window.location.href = `#${cleanStep(steps[curStep])}`
   }, [curStep])
 
   return (

@@ -2,6 +2,7 @@ import { FormContext } from '@/contexts/context'
 import { FormProgress } from '@navikt/ds-react'
 import { useContext } from 'react'
 import stepStyles from './styles/stepStyles.module.css'
+import { cleanStep } from './pages/utils/cleanStep'
 
 interface FormProgressComponentProps {
   totalSteps: number
@@ -32,7 +33,7 @@ const FormProgressComponent: React.FC<FormProgressComponentProps> = ({
     >
       {steps.map((step, index) => (
         <FormProgress.Step
-          href="#"
+          href={`#${cleanStep(step)}`}
           completed={activeStep > index}
           interactive={activeStep >= index}
           key={index}
