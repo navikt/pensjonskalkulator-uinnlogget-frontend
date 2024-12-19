@@ -10,7 +10,7 @@ import {
   HStack,
   VStack,
 } from '@navikt/ds-react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import stepStyles from '/src/components/styles/stepStyles.module.css'
 import { useRouter } from 'next/navigation'
 import { logger } from './utils/logging'
@@ -31,15 +31,15 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
     return errorMessages[errorCode]
   }
 
-  const errorMessage = mapErrorToMessage(error)
-
-  useEffect(() => {
-    router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
-  }, [router])
+  const errorMessage = useMemo(() => mapErrorToMessage(error), [error])
 
   useEffect(() => {
     logger('alert', { tekst: errorMessage })
   }, [])
+
+  useEffect(() => {
+    router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
+  }, [router])
 
   return (
     <>
