@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react'
 import { FormEvent } from 'react'
 import FormButtons from '../FormButtons'
 import { useRouter } from 'next/navigation'
+import { logger } from '../utils/logging'
 
 const mockedContextValues = {
   setState: jest.fn(),
@@ -18,6 +19,10 @@ const mockedContextValues = {
   },
 }
 
+jest.mock('../utils/logging', () => ({
+  logger: jest.fn(),
+}))
+
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }))
@@ -29,6 +34,7 @@ const mockRouter = {
 
 describe('FormButtons', () => {
   beforeEach(() => {
+    jest.clearAllMocks()
     ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
   })
 
@@ -70,6 +76,20 @@ describe('Når brukeren er mellom første og siste steg,,', () => {
     const formButtonsElement = screen.getAllByRole('button')
     expect(formButtonsElement).toHaveLength(3)
   })
+
+  test("Skal logger kalles når brukeren trykker på 'Tilbake'", () => {
+    render(
+      <FormContext.Provider value={mockedContextValues}>
+        <FormButtons currentStepName="Test-Step" />
+      </FormContext.Provider>
+    )
+    const formButtonsElement = screen.getByRole('button', { name: 'Tilbake' })
+    formButtonsElement.click()
+    expect(logger).toHaveBeenCalledTimes(1)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Tilbake fra Test-Step',
+    })
+  })
 })
 
 describe('Når brukeren er på siste steg,', () => {
@@ -86,7 +106,7 @@ describe('Når brukeren er på siste steg,', () => {
     expect(formButtonsElement).toHaveLength(3)
   })
 
-  test('Endrer teksten på knappen til "Beregn"', () => {
+  test('Endrer teksten på knappen til "Beregn pensjon"', () => {
     const modifiedContextValues = { ...mockedContextValues }
     modifiedContextValues.formPageProps.curStep = 4
     render(

@@ -10,9 +10,10 @@ import {
   HStack,
   VStack,
 } from '@navikt/ds-react'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 import stepStyles from '/src/components/styles/stepStyles.module.css'
 import { useRouter } from 'next/navigation'
+import { logger } from './utils/logging'
 
 interface SimuleringErrorProps {
   error?: SimuleringError
@@ -29,6 +30,12 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
     const errorCode = error.status as ErrorStatus
     return errorMessages[errorCode]
   }
+
+  const errorMessage = useMemo(() => mapErrorToMessage(error), [error])
+
+  useEffect(() => {
+    logger('alert', { tekst: errorMessage })
+  }, [])
 
   useEffect(() => {
     router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
@@ -49,7 +56,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
           </Heading>
           <Alert variant="warning">
             <VStack gap="6">
-              <BodyLong>{mapErrorToMessage(error)}</BodyLong>
+              <BodyLong>{errorMessage}</BodyLong>
               <HStack gap={'4'}>
                 <Button
                   size="medium"
