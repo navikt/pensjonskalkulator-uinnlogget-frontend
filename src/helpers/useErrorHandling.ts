@@ -143,7 +143,15 @@ const useErrorHandling = (state: State) => {
     const errors: ErrorFields = {};
 
     if (step === 'AlderStep') {
-      errors.foedselAar = !state.foedselAar ? "Du må oppgi årstall" : isNaN(+state.foedselAar) ? "Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)" : +state.foedselAar < 1946 || +state.foedselAar > new Date().getFullYear()? 'Du må oppgi et gyldig årstall' : ''
+      if (!state.foedselAar) {
+        errors.foedselAar = "Du må oppgi årstall";
+      } else if (isNaN(+state.foedselAar)) {
+        errors.foedselAar = "Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)";
+      } else if (+state.foedselAar < (new Date().getFullYear() - 75) || +state.foedselAar > new Date().getFullYear()) {
+        errors.foedselAar = 'Du må oppgi et gyldig årstall';
+      } else {
+        errors.foedselAar = '';
+      }
       errors.inntektOver1GAntallAar = validateInntektOver1GAntallAar()
     }
 
