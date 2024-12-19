@@ -10,6 +10,7 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 import Substep from '../Substep'
 import { formatInntekt } from './utils/inntekt'
+import { logger } from '../utils/logging'
 
 interface FormPageProps {
   grunnbelop?: number
@@ -27,6 +28,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
   const onSubmit = () => {
     const hasErrors = validateFields('SivilstandStep')
     if (!hasErrors) {
+      logger('button klikk', { tekst: 'Neste fra Sivilstand' })
       formPageProps.goToNext()
       return true
     }

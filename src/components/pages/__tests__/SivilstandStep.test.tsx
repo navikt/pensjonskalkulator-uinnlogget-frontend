@@ -9,6 +9,11 @@ import {
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -73,6 +78,16 @@ describe('SivilstandStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når skjemaet valideres uten feil', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Sivilstand',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {

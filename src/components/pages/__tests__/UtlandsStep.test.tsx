@@ -10,6 +10,11 @@ import {
 } from '../test-utils/testSetup'
 import { axe } from 'jest-axe'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -87,6 +92,16 @@ describe('UtlandsStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når brukeren trykker på neste', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(UtlandsStep, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Utland',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {

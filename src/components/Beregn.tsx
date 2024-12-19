@@ -10,6 +10,7 @@ import stepStyles from './styles/stepStyles.module.css'
 import ResultTable from './ResultTable'
 import { getChartOptions } from './utils/chartUtils'
 import Forbehold from './Forbehold'
+import { logger } from './utils/logging'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError
@@ -30,6 +31,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
     if (headingRef.current) {
       headingRef.current.focus()
     }
+    logger('resultat vist', { tekst: 'Beregning' })
   }, [])
 
   const chartOptions = useMemo(() => {
