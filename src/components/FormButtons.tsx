@@ -3,12 +3,20 @@ import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext, useEffect } from 'react'
 import stepStyles from './styles/stepStyles.module.css'
 import { useRouter } from 'next/navigation'
+import { logger } from './utils/logging'
 
-function FormButtons() {
+function FormButtons({ currentStepName }: { currentStepName?: string }) {
   const context = useContext(FormContext)
   const router = useRouter()
 
   const { curStep, length, goBack } = context.formPageProps
+
+  const onGoBack = () => {
+    goBack()
+    if (currentStepName) {
+      logger('button klikk', { tekst: 'Tilbake fra ' + currentStepName })
+    }
+  }
 
   useEffect(() => {
     router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
@@ -21,7 +29,7 @@ function FormButtons() {
       </Button>
 
       {curStep !== 0 && (
-        <Button type="button" variant="secondary" onClick={goBack}>
+        <Button type="button" variant="secondary" onClick={onGoBack}>
           Tilbake
         </Button>
       )}

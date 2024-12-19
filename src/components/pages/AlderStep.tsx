@@ -8,6 +8,7 @@ import FormButtons from '../FormButtons'
 import Substep from '../Substep'
 import { useFieldChange } from '@/helpers/useFormState'
 import stepStyles from '../styles/stepStyles.module.css'
+import { logger } from '../utils/logging'
 
 const AlderStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -21,6 +22,7 @@ const AlderStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
     if (hasErrors) return false
+    logger('button klikk', { tekst: 'Neste fra Alder' })
     formPageProps.goToNext()
     return true
   }
