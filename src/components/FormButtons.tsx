@@ -17,7 +17,7 @@ function FormButtons() {
   return (
     <HStack gap={'2'} className={stepStyles.footerSpacing}>
       <Button type="submit" variant="primary">
-        {curStep === length - 1 ? 'Beregn' : 'Neste'}
+        {curStep === length - 1 ? 'Beregn pensjon' : 'Neste'}
       </Button>
 
       {curStep !== 0 && (
@@ -27,6 +27,7 @@ function FormButtons() {
       )}
 
       <Button
+        type="button"
         size="medium"
         variant="tertiary"
         onClick={() =>
