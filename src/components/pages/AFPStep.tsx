@@ -7,6 +7,7 @@ import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
 import stepStyles from '../styles/stepStyles.module.css'
+import { logger } from '../utils/logging'
 
 const AFPStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -21,6 +22,7 @@ const AFPStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('AFPStep')
     if (!hasErrors) {
+      logger('button klikk', { tekst: 'Beregn pensjon i siste steg' })
       formPageProps.goToNext()
       return true
     }
@@ -59,7 +61,7 @@ const AFPStep = () => {
         om du har rett til AFP i privat sektor, bør du sjekke det med
         arbeidsgiveren din.
       </ReadMore>
-      <FormButtons />
+      <FormButtons currentStepName={'AFP'} />
     </FormWrapper>
   )
 }
