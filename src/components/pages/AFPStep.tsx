@@ -61,7 +61,7 @@ const AFPStep = () => {
         om du har rett til AFP i privat sektor, bør du sjekke det med
         arbeidsgiveren din.
       </ReadMore>
-      <FormButtons currentStepName={'AFP'} />
+      <FormButtons currentStepName={'Avtalefestet pensjon (AFP)'} />
     </FormWrapper>
   )
 }

@@ -36,7 +36,7 @@ const InntektStep = () => {
     const hasErrors = validateFields('InntektStep')
 
     if (!hasErrors) {
-      logger('button klikk', { tekst: 'Neste fra Inntekt' })
+      logger('button klikk', { tekst: 'Neste fra Inntekt og alderspensjon' })
       formPageProps.goToNext()
       return true
     }
@@ -317,7 +317,7 @@ const InntektStep = () => {
           </Substep>
         </>
       )}
-      <FormButtons currentStepName="Inntekt" />
+      <FormButtons currentStepName="Inntekt og alderspensjon" />
     </FormWrapper>
   )
 }
