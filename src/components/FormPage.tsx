@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react'
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import SivilstandStep from './pages/SivilstandStep'
-import { cleanStep } from './pages/utils/cleanStep'
+import { cleanStep } from './utils/cleanStep'
 
 interface FormPageProps {
   grunnbelop?: number
