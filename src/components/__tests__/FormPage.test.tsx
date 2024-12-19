@@ -7,6 +7,11 @@ jest.mock('@/helpers/useMultiStepForm')
 jest.mock('@/components/pages/BeregnPage', () =>
   jest.fn(() => <div>Mocked BeregnPage</div>)
 )
+// Mock useEffect to avoid calling it
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useEffect: jest.fn(),
+}))
 
 const mockPagesDict = {
   alder: <div key="alder">Mocked AlderStep</div>,
