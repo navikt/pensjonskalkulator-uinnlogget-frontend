@@ -53,7 +53,7 @@ describe('ResponseWarning Component', () => {
     const error = { ...errorObject, status: status }
     render(<ResponseWarning error={error} />)
     const warningMessage = screen.getByText(errorMessageMock[status])
-    expect(warningMessage).toBeInTheDocument()
+    expect(warningMessage).toBeVisible()
   })
 
   test('Should throw "Error is undefined" if no error is provided', () => {

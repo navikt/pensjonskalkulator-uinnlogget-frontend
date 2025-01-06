@@ -60,7 +60,7 @@ describe('ResultTable Component', () => {
       </FormContext.Provider>
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
-    expect(screen.getByTestId('result-table')).toBeInTheDocument()
+    expect(screen.getByTestId('result-table')).toBeVisible()
   })
 
   test('Burde rendre tabell dersom vi ikke har et simuleringsresultat', () => {
@@ -73,7 +73,7 @@ describe('ResultTable Component', () => {
     )
 
     fireEvent.click(screen.getByTestId('show-result-table'))
-    expect(screen.getByTestId('result-table')).toBeInTheDocument()
+    expect(screen.getByTestId('result-table')).toBeVisible()
   })
 
   test('Burde vise riktig antall rows', () => {

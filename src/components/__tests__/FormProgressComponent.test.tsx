@@ -20,7 +20,7 @@ describe('FormProgressComponent', () => {
     )
 
     const formProgress = getByTestId('form-progress')
-    expect(formProgress).toBeInTheDocument()
+    expect(formProgress).toBeVisible()
 
     const steps = container.querySelectorAll('li')
     expect(steps).toHaveLength(totalSteps)

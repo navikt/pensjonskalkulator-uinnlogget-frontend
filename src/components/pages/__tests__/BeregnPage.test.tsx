@@ -92,7 +92,7 @@ describe('BeregnPage Component', () => {
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
       })
 
-      expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
+      expect(screen.getByText('Mocked ResponseWarning')).toBeVisible()
     })
 
     test('Når henting av data er vellykket, returneres det child-component med resultat', async () => {

@@ -71,13 +71,13 @@ describe('UtlandsStep Component', () => {
     renderMockedComponent(UtlandsStep, context)
     expect(
       screen.getByText('Har du bodd eller jobbet utenfor Norge?')
-    ).toBeInTheDocument()
+    ).toBeVisible()
 
     const radioButtonJa = screen.getByLabelText('Ja')
-    expect(radioButtonJa).toBeInTheDocument()
+    expect(radioButtonJa).toBeVisible()
 
     const radioButtonNei = screen.getByLabelText('Nei')
-    expect(radioButtonNei).toBeInTheDocument()
+    expect(radioButtonNei).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -166,7 +166,7 @@ describe('UtlandsStep Component', () => {
           screen.getByLabelText(
             'Hvor mange år har du bodd eller jobbet utenfor Norge?'
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde utenlandsAntallAar endres når handleFieldChange kalles på', () => {
