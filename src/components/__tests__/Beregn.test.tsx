@@ -2,6 +2,11 @@ import Beregn from '@/components/Beregn'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import { render, screen } from '@testing-library/react'
+import { logger } from '../utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({
@@ -137,6 +142,18 @@ describe('Beregn Component', () => {
       expect(seriesNames).toContain('AFP Privat')
       expect(seriesNames).toContain('Alderspensjon')
       //expect(seriesNames).toContain('Pensjonsgivende inntekt')
+    })
+
+    test('Burde logge at resultatet vises', () => {
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <Beregn simuleringsresultat={mockSimuleringsresultat} />
+        </FormContext.Provider>
+      )
+
+      expect(logger).toHaveBeenCalledWith('resultat vist', {
+        tekst: 'Beregning',
+      })
     })
   })
   describe('Gitt at brukeren har lyst til å endre opplysninger', () => {

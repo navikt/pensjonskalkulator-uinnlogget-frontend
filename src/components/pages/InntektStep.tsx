@@ -187,6 +187,7 @@ const InntektStep = () => {
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
               label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
+              description="Du kan tjene så mye du vil samtidig som du tar ut pensjon."
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
             />
