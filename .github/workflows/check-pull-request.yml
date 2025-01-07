@@ -11,8 +11,6 @@ jobs:
       packages: read
       contents: read
       id-token: write
-    outputs:
-      image: ${{ steps.image-creation.outputs.image }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -55,15 +53,6 @@ jobs:
       - name: Build production application
         if: github.event.inputs.prod == 'true'
         run: npm run build:prod
-
-      - name: Docker create image
-        uses: nais/docker-build-push@v0
-        id: image-creation
-        with:
-          team: pensjonskalkulator
-          dockerfile: .docker/Dockerfile
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   run-unit-tests:
     name: Run unit tests

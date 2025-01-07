@@ -71,7 +71,7 @@ describe('Beregn Component', () => {
       </FormContext.Provider>
     )
 
-    expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
+    expect(screen.getByText('Mocked ResponseWarning')).toBeVisible()
     expect(screen.queryByText('Beregning')).not.toBeInTheDocument()
   })
 
@@ -85,11 +85,11 @@ describe('Beregn Component', () => {
     expect(screen.getByText('Beregning')).toBeVisible()
     expect(screen.getByTestId('result-table')).toBeVisible()
     const highchartsReact = screen.getByTestId('highcharts-react')
-    expect(highchartsReact).toBeInTheDocument()
+    expect(highchartsReact).toBeVisible()
 
     // Sjekk etter relevante DOM-elementer som Highcharts rendrer
     const chartContainer = container.querySelector('.highcharts-container')
-    expect(chartContainer).toBeInTheDocument()
+    expect(chartContainer).toBeVisible()
 
     const legendItems = container.querySelectorAll('.highcharts-legend-item')
     expect(legendItems).toHaveLength(2)
@@ -127,11 +127,11 @@ describe('Beregn Component', () => {
       expect(screen.getByText('Beregning')).toBeVisible()
       expect(screen.getByTestId('result-table')).toBeVisible()
       const highchartsReact = screen.getByTestId('highcharts-react')
-      expect(highchartsReact).toBeInTheDocument()
+      expect(highchartsReact).toBeVisible()
 
       // Sjekk etter relevante DOM-elementer som Highcharts rendrer
       const chartContainer = container.querySelector('.highcharts-container')
-      expect(chartContainer).toBeInTheDocument()
+      expect(chartContainer).toBeVisible()
 
       const legendItems = container.querySelectorAll('.highcharts-legend-item')
       expect(legendItems).toHaveLength(2)

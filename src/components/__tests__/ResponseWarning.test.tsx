@@ -58,7 +58,7 @@ describe('ResponseWarning Component', () => {
     const error = { ...errorObject, status: status }
     render(<ResponseWarning error={error} />)
     const warningMessage = screen.getByText(errorMessageMock[status])
-    expect(warningMessage).toBeInTheDocument()
+    expect(warningMessage).toBeVisible()
   })
 
   test('Burde logge feilmeldingen', () => {

@@ -68,7 +68,7 @@ beforeEach(() => {
 describe('SivilstandStep Component', () => {
   test('Burde rendre komponenten', () => {
     renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
-    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
+    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -184,8 +184,8 @@ describe('SivilstandStep Component', () => {
             sivilstand: 'GIFT',
           },
         })
-        expect(screen.getAllByLabelText('Ja')[0]).toBeInTheDocument()
-        expect(screen.getAllByLabelText('Nei')[0]).toBeInTheDocument()
+        expect(screen.getAllByLabelText('Ja')[0]).toBeVisible()
+        expect(screen.getAllByLabelText('Nei')[0]).toBeVisible()
       })
 
       test('Burde begge radioknapper være unchecked som default', () => {
@@ -238,7 +238,7 @@ describe('SivilstandStep Component', () => {
           screen.getByText(
             /Har din ektefelle, partner eller samboer inntekt større enn 100 000 kr/
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde epsHarInntektOver2G bli rendret riktig med udefinert grunnbelop verdi', () => {
@@ -253,7 +253,7 @@ describe('SivilstandStep Component', () => {
           screen.getByText(
             /Har din ektefelle, partner eller samboer inntekt større enn 2G/
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
     })
   })

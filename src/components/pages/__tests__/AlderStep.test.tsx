@@ -113,7 +113,7 @@ describe('AlderStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
-    expect(screen.getByText('Dette feltet er påkrevd')).toBeInTheDocument()
+    expect(screen.getByText('Dette feltet er påkrevd')).toBeVisible()
   })
 
   test('Burde ikke ha a11y violations dersom errorFields inneholder noe', async () => {

@@ -83,7 +83,7 @@ describe('AFPStep Component', () => {
     renderMockedComponent(() => <AFPStep />, context)
     expect(
       screen.getByText('Har du rett til AFP i privat sektor?')
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {

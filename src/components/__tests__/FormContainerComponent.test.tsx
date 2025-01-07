@@ -26,14 +26,12 @@ describe('FormContainer component', () => {
 
   test('Skal rendre komponenten', () => {
     renderComponent()
-    expect(
-      screen.getByText('Uinnlogget pensjonskalkulator')
-    ).toBeInTheDocument()
+    expect(screen.getByText('Uinnlogget pensjonskalkulator')).toBeVisible()
   })
 
   test('Skal rendre FormProgressComponent med riktige props', () => {
     renderComponent()
-    expect(screen.getByText('Mocked FormProgressComponent')).toBeInTheDocument()
+    expect(screen.getByText('Mocked FormProgressComponent')).toBeVisible()
     expect(FormProgressComponent).toHaveBeenCalledWith(
       {
         totalSteps: defaultProps.totalSteps,
@@ -45,6 +43,6 @@ describe('FormContainer component', () => {
 
   test('Skal rendre det nåværende steget', () => {
     renderComponent()
-    expect(screen.getByText('Mocked Step')).toBeInTheDocument()
+    expect(screen.getByText('Mocked Step')).toBeVisible()
   })
 })

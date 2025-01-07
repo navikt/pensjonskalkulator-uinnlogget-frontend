@@ -9,6 +9,6 @@ describe('Substep', () => {
       </Substep>
     )
 
-    expect(getByText('Child Component')).toBeInTheDocument()
+    expect(getByText('Child Component')).toBeVisible()
   })
 })

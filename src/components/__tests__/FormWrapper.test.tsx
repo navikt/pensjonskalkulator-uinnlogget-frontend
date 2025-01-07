@@ -16,7 +16,7 @@ describe('FormWrapper', () => {
   })
 
   test('Burde rendre children korrekt', () => {
-    expect(screen.getByText('Child Element')).toBeInTheDocument()
+    expect(screen.getByText('Child Element')).toBeVisible()
   })
 
   test('Burde kalle onSubmit når formen er sendt inn', () => {
