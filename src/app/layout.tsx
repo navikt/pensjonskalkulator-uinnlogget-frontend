@@ -2,8 +2,6 @@ import '@navikt/ds-css'
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
 import Script from 'next/script'
 
-import './globals.css'
-
 const decoratorEnv = (
   process.env.NEXT_PUBLIC_ENV === 'production' ? 'prod' : 'dev'
 ) as 'dev' | 'prod'
