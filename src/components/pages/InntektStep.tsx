@@ -17,6 +17,7 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 import Substep from '../Substep'
 import { formatAndUpdateBeloep } from './utils/inntekt'
+import { logger } from '../utils/logging'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -35,6 +36,7 @@ const InntektStep = () => {
     const hasErrors = validateFields('InntektStep')
 
     if (!hasErrors) {
+      logger('button klikk', { tekst: 'Neste fra Inntekt og alderspensjon' })
       formPageProps.goToNext()
       return true
     }
@@ -185,6 +187,7 @@ const InntektStep = () => {
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
               label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
+              description="Du kan tjene så mye du vil samtidig som du tar ut pensjon."
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
             />
@@ -315,7 +318,7 @@ const InntektStep = () => {
           </Substep>
         </>
       )}
-      <FormButtons />
+      <FormButtons currentStepName="Inntekt og alderspensjon" />
     </FormWrapper>
   )
 }

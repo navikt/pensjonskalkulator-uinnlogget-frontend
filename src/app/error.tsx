@@ -1,5 +1,6 @@
 'use client'
 
+import { logger } from '@/components/utils/logging'
 import {
   BodyShort,
   Box,
@@ -10,8 +11,13 @@ import {
   VStack,
 } from '@navikt/ds-react'
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 export default function Error() {
+  useEffect(() => {
+    logger('feilside', { feil: 'Uventet feil' })
+  }, [])
+
   return (
     <Page.Block as="main" width="xl" gutters>
       <Box paddingBlock="20 8">

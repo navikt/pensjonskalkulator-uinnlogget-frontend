@@ -10,6 +10,11 @@ import {
 } from '../test-utils/testSetup'
 import { axe } from 'jest-axe'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -71,13 +76,13 @@ describe('UtlandsStep Component', () => {
     renderMockedComponent(UtlandsStep, context)
     expect(
       screen.getByText('Har du bodd eller jobbet utenfor Norge?')
-    ).toBeInTheDocument()
+    ).toBeVisible()
 
     const radioButtonJa = screen.getByLabelText('Ja')
-    expect(radioButtonJa).toBeInTheDocument()
+    expect(radioButtonJa).toBeVisible()
 
     const radioButtonNei = screen.getByLabelText('Nei')
-    expect(radioButtonNei).toBeInTheDocument()
+    expect(radioButtonNei).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -87,6 +92,16 @@ describe('UtlandsStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('UtlandsStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når brukeren trykker på neste', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(UtlandsStep, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Utland',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
@@ -166,7 +181,7 @@ describe('UtlandsStep Component', () => {
           screen.getByLabelText(
             'Hvor mange år har du bodd eller jobbet utenfor Norge?'
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde utenlandsAntallAar endres når handleFieldChange kalles på', () => {

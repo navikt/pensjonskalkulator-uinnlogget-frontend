@@ -7,6 +7,7 @@ import { Simuleringstype, State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'
 import { axe } from 'jest-axe'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -22,6 +23,10 @@ jest.mock('@/helpers/useFormState', () => ({
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
+}))
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
 }))
 
 const mockRouter = {
@@ -78,7 +83,7 @@ describe('AFPStep Component', () => {
     renderMockedComponent(() => <AFPStep />, context)
     expect(
       screen.getByText('Har du rett til AFP i privat sektor?')
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -88,6 +93,16 @@ describe('AFPStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AFPStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når skjemaet valideres uten feil', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(() => <AFPStep />, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Beregn pensjon i siste steg',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {

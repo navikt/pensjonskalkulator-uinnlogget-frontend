@@ -10,6 +10,11 @@ import {
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
 import { axe } from 'jest-axe'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -69,12 +74,12 @@ describe('InntektStep Component', () => {
 
   test('Burde rendre komponenten', () => {
     renderMockedComponent(InntektStep, context)
-    expect(screen.getByText('Inntekt og alderspensjon')).toBeInTheDocument()
+    expect(screen.getByText('Inntekt og alderspensjon')).toBeVisible()
     expect(
       screen.getByLabelText(
         'Hva er din årlige pensjonsgivende inntekt frem til du tar ut pensjon?'
       )
-    ).toBeInTheDocument()
+    ).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -84,6 +89,16 @@ describe('InntektStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('InntektStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når brukeren trykker på neste', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(InntektStep, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Inntekt og alderspensjon',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
@@ -201,13 +216,13 @@ describe('InntektStep Component', () => {
           screen.getByText(
             `Fra hvilken alder planlegger du å ta ut 50 % pensjon?`
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
 
         expect(
           screen.getByText(
             `Hva forventer du å ha i årlig inntekt samtidig som du tar 50 % pensjon?`
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde gradertUttak.uttaksalder.aar endres når bruker velger uttaksalder', () => {
@@ -583,7 +598,7 @@ describe('InntektStep Component', () => {
           screen.getByLabelText(
             'Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?'
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde heltUttak.aarligInntektVsaPensjonBeloep endres når bruker angir inntekt ved siden av hel pensjon som er større enn 0', () => {
@@ -684,20 +699,41 @@ describe('InntektStep Component', () => {
 
       describe('Gitt at dropdown for sluttAlder finnes', () => {
         describe('Når sluttAlder er livsvarig', () => {
-          test('Burde ikke input felt for heltUttak.sluttAlder.maaneder vises', () => {
+          test('Burde sluttAlder være undefined', () => {
             renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialState,
                 harInntektVsaHelPensjon: true,
+                heltUttak: {
+                  uttaksalder: {
+                    aar: 0,
+                    maaneder: null,
+                  },
+                  aarligInntektVsaPensjon: {
+                    beloep: '500000',
+                    sluttAlder: {
+                      aar: 65,
+                      maaneder: 0,
+                    },
+                  },
+                },
               },
             })
 
-            expect(
-              document.getElementById(
-                'heltUttakSluttAlder'
-              ) as HTMLSelectElement
-            ).not.toBeInTheDocument()
+            const ageSelect = screen.getByTestId(
+              'heltUttakSluttAlder'
+            ) as HTMLSelectElement
+            fireEvent.change(ageSelect, { target: { value: 'livsvarig' } })
+            expect(mockHandleFieldChange).toHaveBeenCalledWith(
+              expect.any(Function),
+              'heltUttakSluttAlder'
+            )
+
+            const draft = mockHandleFieldChange.mock.results[0].value
+            expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder).toBe(
+              undefined
+            )
           })
         })
 

@@ -14,6 +14,7 @@ import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
 import stepStyles from '../styles/stepStyles.module.css'
 import Substep from '../Substep'
+import { logger } from '../utils/logging'
 
 const UtlandsStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -28,6 +29,7 @@ const UtlandsStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('UtlandsStep')
     if (!hasErrors) {
+      logger('button klikk', { tekst: 'Neste fra Utland' })
       formPageProps.goToNext()
       return true
     }
@@ -91,7 +93,7 @@ const UtlandsStep = () => {
             </Substep>
           )}
         </div>
-        <FormButtons />
+        <FormButtons currentStepName="Opphold utenfor norge" />
       </FormWrapper>
     </>
   )
