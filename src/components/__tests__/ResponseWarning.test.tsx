@@ -8,6 +8,11 @@ import {
 } from '../pages/test-utils/testSetup'
 import ResponseWarning from '../ResponseWarning'
 import { useRouter } from 'next/navigation'
+import { logger } from '../utils/logging'
+
+jest.mock('../utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 jest.mock('@/texts/errors', () => ({
   getErrors: jest.fn(),
@@ -47,16 +52,27 @@ describe('ResponseWarning Component', () => {
     ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
   })
 
-  test('Should render the warning message', () => {
+  test('Burde rendre feilmeldingen', () => {
     const status = 'PEK100'
 
     const error = { ...errorObject, status: status }
     render(<ResponseWarning error={error} />)
     const warningMessage = screen.getByText(errorMessageMock[status])
-    expect(warningMessage).toBeInTheDocument()
+    expect(warningMessage).toBeVisible()
   })
 
-  test('Should throw "Error is undefined" if no error is provided', () => {
+  test('Burde logge feilmeldingen', () => {
+    const status = 'PEK100'
+
+    const error = { ...errorObject, status: status }
+    render(<ResponseWarning error={error} />)
+    expect(logger).toHaveBeenCalled()
+    expect(logger).toHaveBeenCalledWith('alert', {
+      tekst: errorMessageMock[status],
+    })
+  })
+
+  test('Skal kaste "Error is undefined" hvis ingen feil er angitt', () => {
     const error = undefined
     const container = () => render(<ResponseWarning error={error} />)
     expect(container).toThrow('Error is undefined')

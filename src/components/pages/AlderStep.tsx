@@ -22,7 +22,7 @@ const AlderStep = () => {
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
     if (hasErrors) return false
-    logger('button klikk', { tekst: 'Neste fra Alder' })
+    logger('button klikk', { tekst: 'Neste fra Alder og yrkesaktivitet' })
     formPageProps.goToNext()
     return true
   }

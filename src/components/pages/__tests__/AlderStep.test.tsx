@@ -11,6 +11,11 @@ import {
 import { useFieldChange } from '@/helpers/useFormState'
 import { axe } from 'jest-axe'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 jest.mock('../../../helpers/useErrorHandling', () => ({
   __esModule: true,
@@ -76,6 +81,16 @@ describe('AlderStep Component', () => {
     expect(mockGoToNext).toHaveBeenCalled()
   })
 
+  test('Burde logge når brukeren trykker på neste', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(AlderStep, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Alder og yrkesaktivitet',
+    })
+  })
+
   test('Burde ikke gå videre dersom det er feil i input', () => {
     mockValidateFields.mockReturnValue(true)
     renderMockedComponent(AlderStep, context)
@@ -98,7 +113,7 @@ describe('AlderStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('AlderStep')
     expect(mockGoToNext).not.toHaveBeenCalled()
-    expect(screen.getByText('Dette feltet er påkrevd')).toBeInTheDocument()
+    expect(screen.getByText('Dette feltet er påkrevd')).toBeVisible()
   })
 
   test('Burde ikke ha a11y violations dersom errorFields inneholder noe', async () => {

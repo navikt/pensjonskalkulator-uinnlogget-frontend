@@ -14,6 +14,7 @@ import stepStyles from './styles/stepStyles.module.css'
 import React, { useEffect } from 'react'
 import Substep from './Substep'
 import { useRouter } from 'next/navigation'
+import { logger } from './utils/logging'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -77,7 +78,10 @@ export default function LandingPage() {
           </BodyLong>
           <HStack gap={'2'}>
             <Button
-              onClick={() => router.push('./uinnlogget-kalkulator/form')}
+              onClick={() => {
+                logger('button klikk', { tekst: 'Kom i gang' })
+                router.push('./uinnlogget-kalkulator/form')
+              }}
               variant="primary"
             >
               Kom i gang

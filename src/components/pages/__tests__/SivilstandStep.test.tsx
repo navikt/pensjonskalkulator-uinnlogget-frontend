@@ -9,6 +9,11 @@ import {
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
 import { useRouter } from 'next/navigation'
+import { logger } from '@/components/utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
@@ -63,7 +68,7 @@ beforeEach(() => {
 describe('SivilstandStep Component', () => {
   test('Burde rendre komponenten', () => {
     renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
-    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeInTheDocument()
+    expect(screen.getByLabelText('Hva er din sivilstand?')).toBeVisible()
   })
 
   test('Burde gå videre til neste step når skjemaet valideres uten feil', () => {
@@ -73,6 +78,16 @@ describe('SivilstandStep Component', () => {
     fireEvent.submit(form)
     expect(mockValidateFields).toHaveBeenCalledWith('SivilstandStep')
     expect(mockGoToNext).toHaveBeenCalled()
+  })
+
+  test('Burde logge når skjemaet valideres uten feil', () => {
+    mockValidateFields.mockReturnValue(false)
+    renderMockedComponent(() => <SivilstandStep grunnbelop={100000} />, context)
+    const form = screen.getByTestId('form')
+    fireEvent.submit(form)
+    expect(logger).toHaveBeenCalledWith('button klikk', {
+      tekst: 'Neste fra Sivilstand',
+    })
   })
 
   test('Burde ikke gå videre til neste step når skjemaet valideres med feil', () => {
@@ -169,8 +184,8 @@ describe('SivilstandStep Component', () => {
             sivilstand: 'GIFT',
           },
         })
-        expect(screen.getAllByLabelText('Ja')[0]).toBeInTheDocument()
-        expect(screen.getAllByLabelText('Nei')[0]).toBeInTheDocument()
+        expect(screen.getAllByLabelText('Ja')[0]).toBeVisible()
+        expect(screen.getAllByLabelText('Nei')[0]).toBeVisible()
       })
 
       test('Burde begge radioknapper være unchecked som default', () => {
@@ -223,7 +238,7 @@ describe('SivilstandStep Component', () => {
           screen.getByText(
             /Har din ektefelle, partner eller samboer inntekt større enn 100 000 kr/
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
 
       test('Burde epsHarInntektOver2G bli rendret riktig med udefinert grunnbelop verdi', () => {
@@ -238,7 +253,7 @@ describe('SivilstandStep Component', () => {
           screen.getByText(
             /Har din ektefelle, partner eller samboer inntekt større enn 2G/
           )
-        ).toBeInTheDocument()
+        ).toBeVisible()
       })
     })
   })

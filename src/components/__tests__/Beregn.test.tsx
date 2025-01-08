@@ -2,6 +2,11 @@ import Beregn from '@/components/Beregn'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import { render, screen } from '@testing-library/react'
+import { logger } from '../utils/logging'
+
+jest.mock('@/components/utils/logging', () => ({
+  logger: jest.fn(),
+}))
 
 jest.mock('../utils/chartUtils', () => ({
   getChartOptions: jest.fn(() => ({
@@ -66,7 +71,7 @@ describe('Beregn Component', () => {
       </FormContext.Provider>
     )
 
-    expect(screen.getByText('Mocked ResponseWarning')).toBeInTheDocument()
+    expect(screen.getByText('Mocked ResponseWarning')).toBeVisible()
     expect(screen.queryByText('Beregning')).not.toBeInTheDocument()
   })
 
@@ -80,11 +85,11 @@ describe('Beregn Component', () => {
     expect(screen.getByText('Beregning')).toBeVisible()
     expect(screen.getByTestId('result-table')).toBeVisible()
     const highchartsReact = screen.getByTestId('highcharts-react')
-    expect(highchartsReact).toBeInTheDocument()
+    expect(highchartsReact).toBeVisible()
 
     // Sjekk etter relevante DOM-elementer som Highcharts rendrer
     const chartContainer = container.querySelector('.highcharts-container')
-    expect(chartContainer).toBeInTheDocument()
+    expect(chartContainer).toBeVisible()
 
     const legendItems = container.querySelectorAll('.highcharts-legend-item')
     expect(legendItems).toHaveLength(2)
@@ -122,11 +127,11 @@ describe('Beregn Component', () => {
       expect(screen.getByText('Beregning')).toBeVisible()
       expect(screen.getByTestId('result-table')).toBeVisible()
       const highchartsReact = screen.getByTestId('highcharts-react')
-      expect(highchartsReact).toBeInTheDocument()
+      expect(highchartsReact).toBeVisible()
 
       // Sjekk etter relevante DOM-elementer som Highcharts rendrer
       const chartContainer = container.querySelector('.highcharts-container')
-      expect(chartContainer).toBeInTheDocument()
+      expect(chartContainer).toBeVisible()
 
       const legendItems = container.querySelectorAll('.highcharts-legend-item')
       expect(legendItems).toHaveLength(2)
@@ -137,6 +142,18 @@ describe('Beregn Component', () => {
       expect(seriesNames).toContain('AFP Privat')
       expect(seriesNames).toContain('Alderspensjon')
       //expect(seriesNames).toContain('Pensjonsgivende inntekt')
+    })
+
+    test('Burde logge at resultatet vises', () => {
+      render(
+        <FormContext.Provider value={mockContextValue}>
+          <Beregn simuleringsresultat={mockSimuleringsresultat} />
+        </FormContext.Provider>
+      )
+
+      expect(logger).toHaveBeenCalledWith('resultat vist', {
+        tekst: 'Beregning',
+      })
     })
   })
   describe('Gitt at brukeren har lyst til å endre opplysninger', () => {

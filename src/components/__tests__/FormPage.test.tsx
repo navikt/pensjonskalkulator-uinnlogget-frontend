@@ -7,6 +7,11 @@ jest.mock('@/helpers/useMultiStepForm')
 jest.mock('@/components/pages/BeregnPage', () =>
   jest.fn(() => <div>Mocked BeregnPage</div>)
 )
+// Mock useEffect to avoid calling it
+jest.mock('react', () => ({
+  ...jest.requireActual('react'),
+  useEffect: jest.fn(),
+}))
 
 const mockPagesDict = {
   alder: <div key="alder">Mocked AlderStep</div>,
@@ -33,7 +38,7 @@ describe('FormPage Component', () => {
     })
 
     render(<FormPage />)
-    expect(screen.getByText('Mocked AlderStep')).toBeInTheDocument()
+    expect(screen.getByText('Mocked AlderStep')).toBeVisible()
   })
 
   test('Burde rendre andre steg', () => {
@@ -48,7 +53,7 @@ describe('FormPage Component', () => {
     })
 
     render(<FormPage />)
-    expect(screen.getByText('Mocked UtlandsStep')).toBeInTheDocument()
+    expect(screen.getByText('Mocked UtlandsStep')).toBeVisible()
   })
 
   describe('BeregnPage Component', () => {
@@ -64,7 +69,7 @@ describe('FormPage Component', () => {
       })
 
       render(<FormPage />)
-      expect(screen.getByText('Mocked BeregnPage')).toBeInTheDocument()
+      expect(screen.getByText('Mocked BeregnPage')).toBeVisible()
     })
   })
 })

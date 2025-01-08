@@ -93,7 +93,7 @@ const UtlandsStep = () => {
             </Substep>
           )}
         </div>
-        <FormButtons currentStepName="Utland" />
+        <FormButtons currentStepName="Opphold utenfor norge" />
       </FormWrapper>
     </>
   )
