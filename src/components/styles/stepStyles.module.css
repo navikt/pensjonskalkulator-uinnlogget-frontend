@@ -38,3 +38,37 @@
 .footerSpacing {
   margin-bottom: 2.5rem;
 }
+
+.tableMobileOnly {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+.tableDesktopOnly {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.details {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr auto;
+  grid-gap: var(--a-spacing-3);
+  margin: 0;
+  font-size: var(--a-font-size-medium);
+}
+
+.detailsItemRight {
+  text-align: right;
+  margin-inline-start: var(--a-spacing-4);
+}
+
+.detailsItemBold {
+  font-weight: var(--a-font-weight-bold);
+}
+
+.table :global(.navds-table__expanded-row-content) {
+  padding: 0;
+}

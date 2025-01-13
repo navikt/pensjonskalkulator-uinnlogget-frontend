@@ -84,7 +84,7 @@ describe('ResultTable Component', () => {
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(4) // 1 header row + 3 data rows
+    expect(rows).toHaveLength(7) // 1 header row + 3 data rows + 3 expandable rows
   })
 
   test('Burde vise headers med riktig tittel', () => {
@@ -95,12 +95,12 @@ describe('ResultTable Component', () => {
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
     const headers = screen.getAllByRole('columnheader')
-    expect(headers).toHaveLength(5)
-    expect(headers[0]).toHaveTextContent('Alder')
-    expect(headers[1]).toHaveTextContent('Alderspensjon (Nav)')
-    expect(headers[2]).toHaveTextContent('AFP privat')
-    expect(headers[3]).toHaveTextContent('Pensjonsgivende inntekt')
-    expect(headers[4]).toHaveTextContent('Sum')
+    expect(headers).toHaveLength(6)
+    expect(headers[1]).toHaveTextContent('Alder')
+    expect(headers[2]).toHaveTextContent('Alderspensjon (Nav)')
+    expect(headers[3]).toHaveTextContent('AFP privat')
+    expect(headers[4]).toHaveTextContent('Pensjonsgivende inntekt')
+    expect(headers[5]).toHaveTextContent('Sum')
   })
 
   test('Burde vise riktig alderspensjon data for helt uttak', () => {
@@ -157,7 +157,7 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
 
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(4)
+    expect(rows).toHaveLength(7)
 
     const gradertRow = rows[2]
     expect(gradertRow).toHaveTextContent('67 år')
