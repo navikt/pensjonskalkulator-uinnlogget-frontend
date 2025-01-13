@@ -104,7 +104,6 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
           <Table.Body className={stepStyles.tableMobileOnly}>
             <Table.ExpandableRow
-              className="tabell"
               key="initial"
               content={
                 <dl className={stepStyles.details}>

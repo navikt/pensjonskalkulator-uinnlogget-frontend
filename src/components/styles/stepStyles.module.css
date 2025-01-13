@@ -45,6 +45,10 @@
   }
 }
 
+.tableMobileOnly :global(.navds-table__expanded-row-content) {
+  padding-right: var(--a-spacing-2);
+}
+
 .tableDesktopOnly {
   @media (max-width: 767px) {
     display: none !important;
@@ -67,8 +71,4 @@
 
 .detailsItemBold {
   font-weight: var(--a-font-weight-bold);
-}
-
-.table :global(.navds-table__expanded-row-content) {
-  padding: 0;
 }
