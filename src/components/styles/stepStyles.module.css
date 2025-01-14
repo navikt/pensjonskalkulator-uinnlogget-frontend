@@ -40,6 +40,5 @@
 }
 
 .listSpacing ul {
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
+  margin-block: var(--a-spacing-2);
 }
