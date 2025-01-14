@@ -72,3 +72,7 @@
 .detailsItemBold {
   font-weight: var(--a-font-weight-bold);
 }
+
+.listSpacing ul {
+  margin-block: var(--a-spacing-2);
+}
