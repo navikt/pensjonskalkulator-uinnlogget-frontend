@@ -109,17 +109,15 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 <dl className={stepStyles.details}>
                   <dt>Alderspensjon (Nav)</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">0</span>
+                    <span>0</span>
                   </dd>
                   <dt>AFP privat</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">0</span>
+                    <span>0</span>
                   </dd>
                   <dt>Pensjonsgivende inntekt</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">
-                      {state.aarligInntektFoerUttakBeloep}
-                    </span>
+                    <span>{state.aarligInntektFoerUttakBeloep}</span>
                   </dd>
                 </dl>
               }
@@ -129,9 +127,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
               </Table.DataCell>
               <Table.DataCell align="right">
-                <span className="nowrap">
-                  {state.aarligInntektFoerUttakBeloep}
-                </span>
+                <span>{state.aarligInntektFoerUttakBeloep}</span>
               </Table.DataCell>
             </Table.ExpandableRow>
             {pensjonsalder.map((alder, index) => {
@@ -139,21 +135,15 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 <dl key={index} className={stepStyles.details}>
                   <dt>Alderspensjon (Nav)</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">
-                      {formatInntekt(alderspensjonData[index])}
-                    </span>
+                    <span>{formatInntekt(alderspensjonData[index])}</span>
                   </dd>
                   <dt>AFP privat</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">
-                      {formatInntekt(afpPrivatValue(index))}
-                    </span>
+                    <span>{formatInntekt(afpPrivatValue(index))}</span>
                   </dd>
                   <dt>Pensjonsgivende inntekt</dt>
                   <dd className={stepStyles.detailsItemRight}>
-                    <span className="nowrap">
-                      {formatInntekt(inntektVsaPensjonValue(alder))}
-                    </span>
+                    <span>{formatInntekt(inntektVsaPensjonValue(alder))}</span>
                   </dd>
                 </dl>
               )
@@ -171,9 +161,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                       : `${alder} år`}
                   </Table.DataCell>
                   <Table.DataCell align="right">
-                    <span className="nowrap">
-                      {formatInntekt(sum(index, alder))}
-                    </span>
+                    <span>{formatInntekt(sum(index, alder))}</span>
                   </Table.DataCell>
                 </Table.ExpandableRow>
               )
