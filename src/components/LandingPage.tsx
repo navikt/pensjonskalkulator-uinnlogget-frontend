@@ -59,7 +59,7 @@ export default function LandingPage() {
               Velkommen til forenklet pensjonskalkulator som kan gi deg et
               estimat på:
             </BodyLong>
-            <List as="ul" size="large">
+            <List as="ul" size="large" className={stepStyles.listSpacing}>
               <List.Item icon={<Icon color="blueIcon" />}>
                 alderspensjon (Nav)
               </List.Item>
