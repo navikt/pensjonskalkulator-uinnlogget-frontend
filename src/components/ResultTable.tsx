@@ -3,7 +3,6 @@ import { Simuleringsresultat } from '@/common'
 import { ReadMore, Table } from '@navikt/ds-react'
 import { formatInntekt } from './pages/utils/inntekt'
 import stepStyles from './styles/stepStyles.module.css'
-import './styles/tabellStyle.css'
 import { useSimuleringsresultatData } from './utils/useSimuleringsresultatData'
 
 interface Props {
@@ -104,7 +103,6 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
           <Table.Body className={stepStyles.tableMobileOnly}>
             <Table.ExpandableRow
-              key="initial"
               content={
                 <dl className={stepStyles.details}>
                   <dt>Alderspensjon (Nav)</dt>
@@ -153,7 +151,6 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                   key={index}
                   content={detaljertGrid}
                   expandOnRowClick
-                  className="tabell"
                 >
                   <Table.DataCell scope="row">
                     {pensjonsalder.length - 1 === index
