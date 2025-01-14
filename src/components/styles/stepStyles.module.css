@@ -38,3 +38,7 @@
 .footerSpacing {
   margin-bottom: 2.5rem;
 }
+
+.listSpacing ul {
+  margin-block: var(--a-spacing-2);
+}
