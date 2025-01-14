@@ -2,6 +2,7 @@ import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
+  ErrorSummary,
   Heading,
   Radio,
   RadioGroup,
@@ -26,6 +27,8 @@ const UtlandsStep = () => {
     clearError,
   })
 
+  const hasErrors = Object.values(errorFields).some((error) => error !== '')
+
   const onSubmit = () => {
     const hasErrors = validateFields('UtlandsStep')
     if (!hasErrors) {
@@ -44,6 +47,7 @@ const UtlandsStep = () => {
         </Heading>
         <div>
           <RadioGroup
+            id="harBoddIUtland"
             ref={utlandRadio}
             legend="Har du bodd eller jobbet utenfor Norge?"
             value={state.harBoddIUtland}
@@ -76,6 +80,7 @@ const UtlandsStep = () => {
           {state.harBoddIUtland && (
             <Substep>
               <TextField
+                id="utenlandsAntallAar"
                 className={stepStyles.textfieldAar}
                 onChange={(it) =>
                   handleFieldChange((draft) => {
@@ -93,6 +98,19 @@ const UtlandsStep = () => {
             </Substep>
           )}
         </div>
+
+        {hasErrors && (
+          <ErrorSummary className={stepStyles.componentSpacing}>
+            {Object.entries(errorFields)
+              .filter(([, error]) => error !== '')
+              .map(([field, error]) => (
+                <ErrorSummary.Item key={field} href={`#${field}`}>
+                  {error}
+                </ErrorSummary.Item>
+              ))}
+          </ErrorSummary>
+        )}
+
         <FormButtons currentStepName="Opphold utenfor norge" />
       </FormWrapper>
     </>

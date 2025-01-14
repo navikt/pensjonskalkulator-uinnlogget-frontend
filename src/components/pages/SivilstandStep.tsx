@@ -1,7 +1,14 @@
 import { PropType, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
-import { Box, Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
+import {
+  Box,
+  ErrorSummary,
+  Heading,
+  Radio,
+  RadioGroup,
+  Select,
+} from '@navikt/ds-react'
 import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -25,6 +32,8 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
     clearError,
   })
 
+  const hasErrors = Object.values(errorFields).some((error) => error !== '')
+
   const onSubmit = () => {
     const hasErrors = validateFields('SivilstandStep')
     if (!hasErrors) {
@@ -42,6 +51,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
       </Heading>
       <Box className={stepStyles.componentSpacing}>
         <Select
+          id="sivilstand"
           value={state.sivilstand}
           className="selectSivilstand"
           label={'Hva er din sivilstand?'}
@@ -69,6 +79,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
         <>
           <Substep>
             <RadioGroup
+              id="epsHarInntektOver2G"
               legend={`Har din ektefelle, partner eller samboer inntekt større enn ${
                 grunnbelop ? `${formatInntekt(grunnbelop)} kr` : '2G'
               } når du starter å ta ut pensjon?`}
@@ -91,6 +102,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
           </Substep>
           <Substep>
             <RadioGroup
+              id="epsHarPensjon"
               legend={
                 'Har din ektefelle, partner eller samboer pensjon eller uføretrygd fra folketrygden (Nav) eller AFP når du starter å ta ut pensjon?'
               }
@@ -113,6 +125,19 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
           </Substep>
         </>
       )}
+
+      {hasErrors && (
+        <ErrorSummary className={stepStyles.componentSpacing}>
+          {Object.entries(errorFields)
+            .filter(([, error]) => error !== '')
+            .map(([field, error]) => (
+              <ErrorSummary.Item key={field} href={`#${field}`}>
+                {error}
+              </ErrorSummary.Item>
+            ))}
+        </ErrorSummary>
+      )}
+
       <FormButtons />
     </FormWrapper>
   )

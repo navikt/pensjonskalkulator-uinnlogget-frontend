@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Heading, TextField } from '@navikt/ds-react'
+import { ErrorSummary, Heading, TextField } from '@navikt/ds-react'
 import FormWrapper from '../FormWrapper'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
@@ -19,6 +19,8 @@ const AlderStep = () => {
     clearError,
   })
 
+  const hasErrors = Object.values(errorFields).some((error) => error !== '')
+
   const onSubmit = () => {
     const hasErrors = validateFields('AlderStep')
     if (hasErrors) return false
@@ -34,6 +36,7 @@ const AlderStep = () => {
           Alder og yrkesaktivitet
         </Heading>
         <TextField
+          id="foedselAar"
           className={stepStyles.textfieldAar}
           onChange={(it) =>
             handleFieldChange((draft) => {
@@ -48,6 +51,7 @@ const AlderStep = () => {
         ></TextField>
         <Substep>
           <TextField
+            id="inntektOver1GAntallAar"
             className={stepStyles.textfieldAar}
             onChange={(it) =>
               handleFieldChange((draft) => {
@@ -61,6 +65,19 @@ const AlderStep = () => {
             error={errorFields.inntektOver1GAntallAar}
           ></TextField>
         </Substep>
+
+        {hasErrors && (
+          <ErrorSummary className={stepStyles.componentSpacing}>
+            {Object.entries(errorFields)
+              .filter(([, error]) => error !== '')
+              .map(([field, error]) => (
+                <ErrorSummary.Item key={field} href={`#${field}`}>
+                  {error}
+                </ErrorSummary.Item>
+              ))}
+          </ErrorSummary>
+        )}
+
         <FormButtons />
       </FormWrapper>
     </>

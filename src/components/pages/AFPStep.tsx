@@ -1,7 +1,13 @@
 import { PropType, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
-import { Heading, Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
+import {
+  ErrorSummary,
+  Heading,
+  Radio,
+  RadioGroup,
+  ReadMore,
+} from '@navikt/ds-react'
 import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
@@ -18,6 +24,8 @@ const AFPStep = () => {
     setState,
     clearError,
   })
+
+  const hasErrors = Object.values(errorFields).some((error) => error !== '')
 
   const onSubmit = () => {
     const hasErrors = validateFields('AFPStep')
@@ -36,6 +44,7 @@ const AFPStep = () => {
         Avtalefestet pensjon (AFP)
       </Heading>
       <RadioGroup
+        id="simuleringType"
         legend={'Har du rett til AFP i privat sektor?'}
         defaultValue={state.simuleringstype}
         onChange={(it: PropType<State, 'simuleringstype'>) =>
@@ -61,6 +70,19 @@ const AFPStep = () => {
         om du har rett til AFP i privat sektor, bør du sjekke det med
         arbeidsgiveren din.
       </ReadMore>
+
+      {hasErrors && (
+        <ErrorSummary className={stepStyles.componentSpacing}>
+          {Object.entries(errorFields)
+            .filter(([, error]) => error !== '')
+            .map(([field, error]) => (
+              <ErrorSummary.Item key={field} href={`#${field}`}>
+                {error}
+              </ErrorSummary.Item>
+            ))}
+        </ErrorSummary>
+      )}
+
       <FormButtons currentStepName={'Avtalefestet pensjon (AFP)'} />
     </FormWrapper>
   )

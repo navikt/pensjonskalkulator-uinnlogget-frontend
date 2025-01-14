@@ -2,6 +2,7 @@ import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
 import {
+  ErrorSummary,
   Heading,
   Radio,
   RadioGroup,
@@ -32,6 +33,8 @@ const InntektStep = () => {
     clearError,
   })
 
+  const hasErrors = Object.values(errorFields).some((error) => error !== '')
+
   const onSubmit = () => {
     const hasErrors = validateFields('InntektStep')
 
@@ -60,6 +63,7 @@ const InntektStep = () => {
         Inntekt og alderspensjon
       </Heading>
       <TextField
+        id="aarligInntektFoerUttakBeloep"
         value={state.aarligInntektFoerUttakBeloep ?? ''}
         className={stepStyles.textfieldInntekt}
         onChange={(it) =>
@@ -85,6 +89,7 @@ const InntektStep = () => {
 
       <Substep>
         <Select
+          id="uttaksgrad"
           value={
             state.gradertUttak === undefined
               ? '100'
@@ -152,6 +157,7 @@ const InntektStep = () => {
         <div>
           <Substep>
             <Select
+              id="gradertUttaksalder"
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
               label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
@@ -174,6 +180,7 @@ const InntektStep = () => {
 
           <Substep>
             <TextField
+              id="gradertInntekt"
               onChange={(it) => {
                 handleFieldChange((draft) => {
                   const value = it.target.value
@@ -196,6 +203,7 @@ const InntektStep = () => {
       )}
       <Substep>
         <Select
+          id="heltUttaksalder"
           value={state.heltUttak.uttaksalder?.aar ?? ''}
           className="selectAar"
           data-testid="heltUttaksalder"
@@ -217,6 +225,7 @@ const InntektStep = () => {
       </Substep>
       <Substep>
         <RadioGroup
+          id="harInntektVsaHelPensjon"
           legend="Forventer du å ha inntekt etter uttak av hel pensjon?"
           description="Du kan tjene så mye du vil samtidig som du tar ut pensjon."
           value={state.harInntektVsaHelPensjon}
@@ -243,6 +252,7 @@ const InntektStep = () => {
         <>
           <Substep>
             <TextField
+              id="helPensjonInntekt"
               label="Hva forventer du å ha i årlig inntekt samtidig som du tar ut hel pensjon?"
               className={stepStyles.textfieldInntekt}
               value={state.heltUttak.aarligInntektVsaPensjon?.beloep ?? ''}
@@ -266,6 +276,7 @@ const InntektStep = () => {
 
           <Substep>
             <Select
+              id="heltUttakSluttAlder"
               value={
                 state.heltUttak.aarligInntektVsaPensjon?.sluttAlder ===
                 undefined
@@ -317,6 +328,17 @@ const InntektStep = () => {
             </Select>
           </Substep>
         </>
+      )}
+      {hasErrors && (
+        <ErrorSummary className={stepStyles.componentSpacing}>
+          {Object.entries(errorFields)
+            .filter(([, error]) => error !== '')
+            .map(([field, error]) => (
+              <ErrorSummary.Item key={field} href={`#${field}`}>
+                {error}
+              </ErrorSummary.Item>
+            ))}
+        </ErrorSummary>
       )}
       <FormButtons currentStepName="Inntekt og alderspensjon" />
     </FormWrapper>
