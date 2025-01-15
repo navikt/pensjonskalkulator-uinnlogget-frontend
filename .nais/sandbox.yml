@@ -23,6 +23,8 @@ spec:
         - application: pensjonskalkulator-backend
         - application: nav-dekoratoren
           namespace: personbruker
+      external:
+        - host: www.g.nav.no
   azure:
     application:
       enabled: true
