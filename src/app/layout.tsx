@@ -11,6 +11,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  console.log('decoratorEnv', decoratorEnv);
+  
   const Decorator = await fetchDecoratorReact({
     env: decoratorEnv,
     params: { context: 'privatperson' },
