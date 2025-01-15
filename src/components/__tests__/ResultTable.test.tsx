@@ -287,7 +287,7 @@ describe('ResultTable Component', () => {
     expect(heltRow).toHaveTextContent('310 000')
   })
 
-  test('Burde innholdet i visningen for expandable row være lik visningen for headerene Alderspensjon (Nav), AFP privat og Pensjonsgivende inntekt', () => {
+  test('Burde expandable row (mobilvisning) ha like verdier som i tabellen (desktop)', () => {
     const mockSimuleringsresultatWithoutAfpPrivat = {
       ...mockSimuleringsresultat,
       afpPrivat: undefined,
@@ -325,19 +325,20 @@ describe('ResultTable Component', () => {
     expect(heltRow).toHaveTextContent('100 000')
     expect(heltRow).toHaveTextContent('310 000')
 
+    const alderspensjonElements = screen.getAllByText('Alderspensjon (Nav)')
+    const afpPrivatElements = screen.getAllByText('AFP privat')
+    const pensjonsgivendeInntektElements = screen.getAllByText(
+      'Pensjonsgivende inntekt'
+    )
+
     const expandableInntektRow = rows[4]
     fireEvent.click(expandableInntektRow)
     expect(expandableInntektRow).toHaveTextContent('66 år')
     expect(expandableInntektRow).toHaveTextContent('500000')
-    const alderspensjonElements = screen.getAllByText('Alderspensjon (Nav)')
     expect(alderspensjonElements[1]).toBeInTheDocument()
     expect(alderspensjonElements[1].nextSibling).toHaveTextContent('0')
-    const afpPrivatElements = screen.getAllByText('AFP privat')
     expect(afpPrivatElements[1]).toBeInTheDocument()
     expect(afpPrivatElements[1].nextSibling).toHaveTextContent('0')
-    const pensjonsgivendeInntektElements = screen.getAllByText(
-      'Pensjonsgivende inntekt'
-    )
     expect(pensjonsgivendeInntektElements[1]).toBeInTheDocument()
     expect(pensjonsgivendeInntektElements[1].nextSibling).toHaveTextContent(
       '500000'
