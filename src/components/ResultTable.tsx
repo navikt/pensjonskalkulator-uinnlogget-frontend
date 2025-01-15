@@ -120,10 +120,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               <Table.DataCell scope="row">
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
               </Table.DataCell>
-              <Table.DataCell
-                align="right"
-                className={stepStyles.detailsItemBold}
-              >
+              <Table.DataCell align="right">
                 <span>{state.aarligInntektFoerUttakBeloep}</span>
               </Table.DataCell>
             </Table.ExpandableRow>
