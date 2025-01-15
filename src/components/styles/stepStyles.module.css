@@ -49,6 +49,10 @@
   padding-right: var(--a-spacing-2);
 }
 
+.tableMobileOnly :global(.navds-table__expandable-row--open) td:last-child {
+  font-weight: var(--a-font-weight-bold);
+}
+
 .tableDesktopOnly {
   @media (max-width: 767px) {
     display: none !important;
@@ -67,10 +71,6 @@
 .detailsItemRight {
   text-align: right;
   margin-inline-start: var(--a-spacing-4);
-}
-
-.detailsItemBold {
-  font-weight: var(--a-font-weight-bold);
 }
 
 .listSpacing ul {
