@@ -70,7 +70,6 @@
 
 .detailsItemRight {
   text-align: right;
-  margin-inline-start: var(--a-spacing-4);
 }
 
 .listSpacing ul {
