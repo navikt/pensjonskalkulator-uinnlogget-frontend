@@ -21,6 +21,8 @@ spec:
     outbound:
       rules:
         - application: pensjonskalkulator-backend
+        - application: nav-dekoratoren
+          namespace: personbruker
   azure:
     application:
       enabled: true
