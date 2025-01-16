@@ -76,7 +76,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         <>
           <div role="img" aria-labelledby="alt-chart-title">
             <div id="alt-chart-title" hidden>
-              Grafisk fremstilling av pensjonssimulering
+              Årlig inntekt og pensjon etter uttak i kroner
             </div>
             <div data-testid="highcharts-aria-wrapper" aria-hidden={true}>
               <HighchartsReact
