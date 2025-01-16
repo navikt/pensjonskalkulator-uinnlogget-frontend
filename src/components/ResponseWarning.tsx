@@ -1,3 +1,5 @@
+'use client'
+
 import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { getErrors } from '@/texts/errors'
@@ -19,14 +21,16 @@ interface SimuleringErrorProps {
   error?: SimuleringError
 }
 
-function ResponseWarning({ error }: SimuleringErrorProps) {
+function ResponseWarning({
+  error = { message: '', status: '' },
+}: SimuleringErrorProps) {
   const { formPageProps } = useContext(FormContext)
   const router = useRouter()
 
   const mapErrorToMessage = (error: SimuleringError | undefined) => {
     const errorMessages = getErrors() as ErrorMessages
 
-    if (!error) return
+    if (!error) throw new Error('Error is undefined')
     const errorCode = error.status as ErrorStatus
     return errorMessages[errorCode]
   }
