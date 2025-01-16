@@ -34,12 +34,12 @@ function FormPage({ grunnbelop }: FormPageProps) {
   }
 
   const pageTitles = [
-    'Alder og yrkesaktivitet – Uinnlogget pensjonskalkulator',
-    'Opphold utenfor Norge – Uinnlogget pensjonskalkulator',
-    'Inntekt og alderspensjon – Uinnlogget pensjonskalkulator',
-    'Sivilstand – Uinnlogget pensjonskalkulator',
-    'Avtalefestet pensjon (AFP) – Uinnlogget pensjonskalkulator',
-    'Beregning - Uinnlogget pensjonskalkulator',
+    'Alder og yrkesaktivitet',
+    'Opphold utenfor Norge',
+    'Inntekt og alderspensjon',
+    'Sivilstand',
+    'Avtalefestet pensjon (AFP)',
+    'Beregning',
   ]
   const pagesNames = Object.keys(pagesDict)
 
@@ -52,7 +52,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
   const length = pagesNames.length
 
   useEffect(() => {
-    document.title = pageTitles[curStep]
+    document.title = pageTitles[curStep] + ' – Uinnlogget pensjonskalkulator'
   }, [curStep])
 
   return (
