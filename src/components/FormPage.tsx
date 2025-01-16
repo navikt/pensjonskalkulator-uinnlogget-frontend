@@ -60,6 +60,7 @@ function FormPage({ grunnbelop }: FormPageProps) {
       value={{
         setState: setState,
         state: state,
+        completedSteps: [],
         formPageProps: {
           curStep,
           length,

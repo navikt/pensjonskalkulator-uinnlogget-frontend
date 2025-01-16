@@ -14,5 +14,6 @@ const defaultFormPageProps = {
 export const FormContext = createContext<ContextForm>({
   state: initialState,
   setState: () => {},
+  completedSteps: [],
   formPageProps: defaultFormPageProps,
 })

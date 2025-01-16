@@ -12,11 +12,22 @@ export function middleware(request: NextRequest) {
     request.url
   ).toString()
 
+  if (request.nextUrl.pathname.startsWith('/form')) {
+    return NextResponse.redirect(targetUrl)
+  }
   if (fetchMode === 'navigate' && request.url !== targetUrl) {
     return NextResponse.redirect(targetUrl)
   }
 }
 
 export const config = {
-  matcher: ['/alder', '/utland', '/inntekt', '/sivilstand', '/afp', '/beregn'],
+  matcher: [
+    '/alder',
+    '/utland',
+    '/inntekt',
+    '/sivilstand',
+    '/afp',
+    '/beregn',
+    '/form',
+  ],
 }

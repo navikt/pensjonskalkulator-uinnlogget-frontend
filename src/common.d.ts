@@ -98,6 +98,7 @@ export type ErrorFields = {
 export interface ContextForm {
   state: State
   setState: Dispatch<React.SetStateAction<FormValues>>
+  completedSteps: string[]
   formPageProps: NavigationProps
 }
 export interface StepRef {

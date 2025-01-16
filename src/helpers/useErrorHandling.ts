@@ -186,10 +186,20 @@ const useErrorHandling = (state: State) => {
     return Object.values(errors).some((error) => error !== '')
   }
 
+  const validateAllFields = () => {
+    return [
+    validateFields('AlderStep') ? 'alder' : null,
+    validateFields('UtlandsStep') ? 'utland' : null,
+    validateFields('InntektStep') ? 'inntekt' : null,
+    validateFields('SivilstandStep') ? 'sivilstand' : null,
+    ].filter((error) => error !== null)
+  }
+
   const [errorFields, setErrorFields] = useState<ErrorFields>({});
 
   const handlers = useMemo(
     () => ({
+      validateAllFields,
       validateFields,
       clearError: (field: string) => { 
         setErrorFields((prev) => ({ ...prev, [field]: '' }))

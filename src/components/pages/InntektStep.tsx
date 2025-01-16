@@ -20,11 +20,15 @@ import { formatAndUpdateBeloep } from './utils/inntekt'
 import { logger } from '../utils/logging'
 
 const InntektStep = () => {
-  const { state, setState, formPageProps } = useContext(FormContext)
+  const { state, setState, formPageProps, completedSteps } =
+    useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
   useEffect(() => {
     document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
+    if (completedSteps.includes('inntekt')) {
+      validateFields('InntektStep')
+    }
   }, [])
 
   const { handleFieldChange } = useFieldChange<State>({
