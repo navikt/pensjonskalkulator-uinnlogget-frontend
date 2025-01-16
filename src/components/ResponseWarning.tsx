@@ -26,7 +26,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
   const mapErrorToMessage = (error: SimuleringError | undefined) => {
     const errorMessages = getErrors() as ErrorMessages
 
-    if (!error) throw new Error('Error is undefined')
+    if (!error) return
     const errorCode = error.status as ErrorStatus
     return errorMessages[errorCode]
   }
