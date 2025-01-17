@@ -84,7 +84,7 @@ describe('ResultTable Component', () => {
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(4) // 1 header row + 3 data rows
+    expect(rows).toHaveLength(7) // 1 header row + 3 data rows + 3 expandable rows
   })
 
   test('Burde vise headers med riktig tittel', () => {
@@ -95,12 +95,12 @@ describe('ResultTable Component', () => {
     )
     fireEvent.click(screen.getByTestId('show-result-table'))
     const headers = screen.getAllByRole('columnheader')
-    expect(headers).toHaveLength(5)
-    expect(headers[0]).toHaveTextContent('Alder')
-    expect(headers[1]).toHaveTextContent('Alderspensjon (Nav)')
-    expect(headers[2]).toHaveTextContent('AFP privat')
-    expect(headers[3]).toHaveTextContent('Pensjonsgivende inntekt')
-    expect(headers[4]).toHaveTextContent('Sum')
+    expect(headers).toHaveLength(6)
+    expect(headers[1]).toHaveTextContent('Alder')
+    expect(headers[2]).toHaveTextContent('Alderspensjon (Nav)')
+    expect(headers[3]).toHaveTextContent('AFP privat')
+    expect(headers[4]).toHaveTextContent('Pensjonsgivende inntekt')
+    expect(headers[5]).toHaveTextContent('Sum')
   })
 
   test('Burde vise riktig alderspensjon data for helt uttak', () => {
@@ -157,7 +157,7 @@ describe('ResultTable Component', () => {
     fireEvent.click(screen.getByTestId('show-result-table'))
 
     const rows = screen.getAllByRole('row')
-    expect(rows).toHaveLength(4)
+    expect(rows).toHaveLength(7)
 
     const gradertRow = rows[2]
     expect(gradertRow).toHaveTextContent('67 år')
@@ -285,5 +285,89 @@ describe('ResultTable Component', () => {
     expect(heltRow).toHaveTextContent('0')
     expect(heltRow).toHaveTextContent('100 000')
     expect(heltRow).toHaveTextContent('310 000')
+  })
+
+  test('Burde expandable row (mobilvisning) ha like verdier som i tabellen (desktop)', () => {
+    const mockSimuleringsresultatWithoutAfpPrivat = {
+      ...mockSimuleringsresultat,
+      afpPrivat: undefined,
+    }
+    render(
+      <FormContext.Provider value={mockContextValue}>
+        <ResultTable
+          simuleringsresultat={mockSimuleringsresultatWithoutAfpPrivat}
+        />
+      </FormContext.Provider>
+    )
+
+    fireEvent.click(screen.getByTestId('show-result-table'))
+
+    const rows = screen.getAllByRole('row')
+
+    const inntektRow = rows[1]
+    expect(inntektRow).toHaveTextContent('66 år')
+    expect(inntektRow).toHaveTextContent('0')
+    expect(inntektRow).toHaveTextContent('0')
+    expect(inntektRow).toHaveTextContent('500000')
+    expect(inntektRow).toHaveTextContent('500000')
+
+    const gradertRow = rows[2]
+    expect(gradertRow).toHaveTextContent('67 år')
+    expect(gradertRow).toHaveTextContent('200 000')
+    expect(gradertRow).toHaveTextContent('0')
+    expect(gradertRow).toHaveTextContent('50 000')
+    expect(gradertRow).toHaveTextContent('250 000')
+
+    const heltRow = rows[3]
+    expect(heltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(heltRow).toHaveTextContent('210 000')
+    expect(heltRow).toHaveTextContent('0')
+    expect(heltRow).toHaveTextContent('100 000')
+    expect(heltRow).toHaveTextContent('310 000')
+
+    const alderspensjonElements = screen.getAllByText('Alderspensjon (Nav)')
+    const afpPrivatElements = screen.getAllByText('AFP privat')
+    const pensjonsgivendeInntektElements = screen.getAllByText(
+      'Pensjonsgivende inntekt'
+    )
+
+    const expandableInntektRow = rows[4]
+    fireEvent.click(expandableInntektRow)
+    expect(expandableInntektRow).toHaveTextContent('66 år')
+    expect(expandableInntektRow).toHaveTextContent('500000')
+    expect(alderspensjonElements[1]).toBeInTheDocument()
+    expect(alderspensjonElements[1].nextSibling).toHaveTextContent('0')
+    expect(afpPrivatElements[1]).toBeInTheDocument()
+    expect(afpPrivatElements[1].nextSibling).toHaveTextContent('0')
+    expect(pensjonsgivendeInntektElements[1]).toBeInTheDocument()
+    expect(pensjonsgivendeInntektElements[1].nextSibling).toHaveTextContent(
+      '500000'
+    )
+
+    const expandableGradertRow = rows[5]
+    fireEvent.click(expandableGradertRow)
+    expect(expandableGradertRow).toHaveTextContent('67 år')
+    expect(expandableGradertRow).toHaveTextContent('250 000')
+    expect(alderspensjonElements[2]).toBeInTheDocument()
+    expect(alderspensjonElements[2].nextSibling).toHaveTextContent('200 000')
+    expect(afpPrivatElements[2]).toBeInTheDocument()
+    expect(afpPrivatElements[2].nextSibling).toHaveTextContent('0')
+    expect(pensjonsgivendeInntektElements[2]).toBeInTheDocument()
+    expect(pensjonsgivendeInntektElements[2].nextSibling).toHaveTextContent(
+      '50 000'
+    )
+
+    const expandableHeltRow = rows[6]
+    fireEvent.click(expandableHeltRow)
+    expect(expandableHeltRow).toHaveTextContent('68+ år (livsvarig)')
+    expect(expandableHeltRow).toHaveTextContent('310 000')
+    expect(alderspensjonElements[3]).toBeInTheDocument()
+    expect(alderspensjonElements[3].nextSibling).toHaveTextContent('210 000')
+    expect(afpPrivatElements[3]).toBeInTheDocument()
+    expect(afpPrivatElements[3].nextSibling).toHaveTextContent('0')
+    expect(pensjonsgivendeInntektElements[3]).toBeInTheDocument()
+    expect(pensjonsgivendeInntektElements[3].nextSibling).toHaveTextContent(
+      '100 000'
+    )
   })
 })

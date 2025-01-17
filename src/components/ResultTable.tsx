@@ -1,83 +1,28 @@
-import { useContext, useState } from 'react'
-import { FormContext } from '@/contexts/context'
+import { useState } from 'react'
 import { Simuleringsresultat } from '@/common'
 import { ReadMore, Table } from '@navikt/ds-react'
-import { formatInntekt, formatInntektToNumber } from './pages/utils/inntekt'
+import { formatInntekt } from './pages/utils/inntekt'
 import stepStyles from './styles/stepStyles.module.css'
+import { useSimuleringsresultatData } from './utils/useSimuleringsresultatData'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat
 }
 
 const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
-  const { state } = useContext(FormContext)
+  const {
+    state,
+    pensjonsalder,
+    alderspensjonData,
+    afpPrivatValue,
+    inntektVsaPensjonValue,
+    sum,
+  } = useSimuleringsresultatData(simuleringsresultat)
   const [isOpen, setIsOpen] = useState<boolean>(false)
-
-  const pensjonsalder = simuleringsresultat
-    ? simuleringsresultat.alderspensjon.map((item) => item.alder)
-    : []
-
-  const alderspensjonData = simuleringsresultat
-    ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
-    : []
-
-  const afpPrivatData = simuleringsresultat
-    ? simuleringsresultat?.afpPrivat?.map((item) => item.beloep)
-    : []
-
-  const gradertUttaksalder = state.gradertUttak?.uttaksalder?.aar
-  const heltUttakAar = state.heltUttak.uttaksalder.aar!
-  const inntektVsaHelPensjonSluttalder =
-    state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar
-
-  const inntektVsaHelPensjonInterval: number[] = []
-  const inntektVsaGradertUttakInterval: number[] = []
-  if (gradertUttaksalder) {
-    for (let i = gradertUttaksalder; i < heltUttakAar; i++) {
-      inntektVsaGradertUttakInterval.push(i)
-    }
-  }
-
-  const maxAar = inntektVsaHelPensjonSluttalder
-    ? inntektVsaHelPensjonSluttalder
-    : pensjonsalder[pensjonsalder.length - 1]
-
-  for (let i = heltUttakAar; i <= maxAar; i++) {
-    inntektVsaHelPensjonInterval.push(i)
-  }
-
-  const aarligbelopVsaGradertuttak = state.gradertUttak
-    ?.aarligInntektVsaPensjonBeloep
-    ? formatInntektToNumber(state.gradertUttak?.aarligInntektVsaPensjonBeloep)
-    : 0
-  const aarligbelopVsaHeltuttak = state.heltUttak?.aarligInntektVsaPensjon
-    ?.beloep
-    ? formatInntektToNumber(state.heltUttak?.aarligInntektVsaPensjon?.beloep)
-    : 0
-
-  const afpPrivatValue = (index: number) =>
-    afpPrivatData && afpPrivatData.length > 0
-      ? afpPrivatData[index] || afpPrivatData[afpPrivatData.length - 1]
-      : 0
-
-  const inntektVsaPensjonValue = (alder: number) =>
-    inntektVsaGradertUttakInterval.includes(alder)
-      ? aarligbelopVsaGradertuttak
-      : inntektVsaHelPensjonInterval.includes(alder)
-        ? aarligbelopVsaHeltuttak
-        : 0
-
-  const sum = (index: number, alder: number) =>
-    alderspensjonData[index] +
-    afpPrivatValue(index) +
-    (inntektVsaGradertUttakInterval.includes(alder)
-      ? aarligbelopVsaGradertuttak
-      : inntektVsaHelPensjonInterval.includes(alder)
-        ? aarligbelopVsaHeltuttak
-        : 0)
 
   return (
     <ReadMore
+      className={stepStyles.readMoreSpacing}
       data-testid="show-result-table"
       header={
         isOpen ? 'Lukk tabell av beregningen' : 'Vis tabell av beregningen'
@@ -88,14 +33,30 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
         <Table data-testid="result-table">
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell
+                scope="col"
+                className={stepStyles.tableMobileOnly}
+              />
               <Table.HeaderCell scope="col">Alder</Table.HeaderCell>
-              <Table.HeaderCell scope="col" align="right">
+              <Table.HeaderCell
+                scope="col"
+                align="right"
+                className={stepStyles.tableDesktopOnly}
+              >
                 Alderspensjon (Nav)
               </Table.HeaderCell>
-              <Table.HeaderCell scope="col" align="right">
+              <Table.HeaderCell
+                scope="col"
+                align="right"
+                className={stepStyles.tableDesktopOnly}
+              >
                 AFP privat
               </Table.HeaderCell>
-              <Table.HeaderCell scope="col" align="right">
+              <Table.HeaderCell
+                scope="col"
+                align="right"
+                className={stepStyles.tableDesktopOnly}
+              >
                 Pensjonsgivende inntekt
               </Table.HeaderCell>
               <Table.HeaderCell scope="col" align="right">
@@ -103,7 +64,8 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-          <Table.Body>
+
+          <Table.Body className={stepStyles.tableDesktopOnly}>
             <Table.Row>
               <Table.HeaderCell scope="row">
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
@@ -138,6 +100,66 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 </Table.DataCell>
               </Table.Row>
             ))}
+          </Table.Body>
+
+          <Table.Body className={stepStyles.tableMobileOnly}>
+            <Table.ExpandableRow
+              content={
+                <dl className={stepStyles.details}>
+                  <dt>Alderspensjon (Nav)</dt>
+                  <dd className={stepStyles.detailsItemRight}>0</dd>
+                  <dt>AFP privat</dt>
+                  <dd className={stepStyles.detailsItemRight}>0</dd>
+                  <dt>Pensjonsgivende inntekt</dt>
+                  <dd className={stepStyles.detailsItemRight}>
+                    {state.aarligInntektFoerUttakBeloep}
+                  </dd>
+                </dl>
+              }
+              expandOnRowClick
+            >
+              <Table.HeaderCell scope="row">
+                {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
+              </Table.HeaderCell>
+              <Table.DataCell align="right">
+                <span>{state.aarligInntektFoerUttakBeloep}</span>
+              </Table.DataCell>
+            </Table.ExpandableRow>
+            {pensjonsalder.map((alder, index) => {
+              const detaljertGrid = (
+                <dl key={index} className={stepStyles.details}>
+                  <dt>Alderspensjon (Nav)</dt>
+                  <dd className={stepStyles.detailsItemRight}>
+                    {formatInntekt(alderspensjonData[index])}
+                  </dd>
+                  <dt>AFP privat</dt>
+                  <dd className={stepStyles.detailsItemRight}>
+                    {formatInntekt(afpPrivatValue(index))}
+                  </dd>
+                  <dt>Pensjonsgivende inntekt</dt>
+                  <dd className={stepStyles.detailsItemRight}>
+                    {formatInntekt(inntektVsaPensjonValue(alder))}
+                  </dd>
+                </dl>
+              )
+
+              return (
+                <Table.ExpandableRow
+                  key={index}
+                  content={detaljertGrid}
+                  expandOnRowClick
+                >
+                  <Table.HeaderCell scope="row">
+                    {pensjonsalder.length - 1 === index
+                      ? `${alder}+ år (livsvarig)`
+                      : `${alder} år`}
+                  </Table.HeaderCell>
+                  <Table.DataCell align="right">
+                    {formatInntekt(sum(index, alder))}
+                  </Table.DataCell>
+                </Table.ExpandableRow>
+              )
+            })}
           </Table.Body>
         </Table>
       </div>
