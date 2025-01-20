@@ -39,6 +39,11 @@
   margin-bottom: 2.5rem;
 }
 
+.readMoreSpacing :global(.navds-read-more__content) {
+  border-left: none;
+  padding-left: 0;
+}
+
 .tableMobileOnly {
   @media (min-width: 768px) {
     display: none !important;

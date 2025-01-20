@@ -22,6 +22,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
   return (
     <ReadMore
+      className={stepStyles.readMoreSpacing}
       data-testid="show-result-table"
       header={
         isOpen ? 'Lukk tabell av beregningen' : 'Vis tabell av beregningen'
@@ -118,9 +119,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               }
               expandOnRowClick
             >
-              <Table.DataCell scope="row">
+              <Table.HeaderCell scope="row">
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
-              </Table.DataCell>
+              </Table.HeaderCell>
               <Table.DataCell align="right">
                 <span>{state.aarligInntektFoerUttakBeloep}</span>
               </Table.DataCell>
@@ -150,11 +151,11 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                   content={detaljertGrid}
                   expandOnRowClick
                 >
-                  <Table.DataCell scope="row">
+                  <Table.HeaderCell scope="row">
                     {pensjonsalder.length - 1 === index
                       ? `${alder}+ år (livsvarig)`
                       : `${alder} år`}
-                  </Table.DataCell>
+                  </Table.HeaderCell>
                   <Table.DataCell align="right">
                     {formatInntekt(sum(index, alder))}
                   </Table.DataCell>
