@@ -103,6 +103,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
           <Table.Body className={stepStyles.tableMobileOnly}>
             <Table.ExpandableRow
+              colSpan={3}
               content={
                 <dl className={stepStyles.details}>
                   <dt>Alderspensjon (Nav)</dt>
@@ -144,6 +145,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
               return (
                 <Table.ExpandableRow
+                  colSpan={3}
                   key={index}
                   content={detaljertGrid}
                   expandOnRowClick
