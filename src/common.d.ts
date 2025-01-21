@@ -62,9 +62,9 @@ export type Simuleringsresultat =
 export type SimuleringError = components['schemas']['AnonymSimuleringErrorV1']
 
 export type ErrorStatus =
-  | 'PKU222BeregningstjenesteFeiletException'
-  | 'PKU225AvslagVilkarsprovingForLavtTidligUttakException'
-  | 'PKU224AvslagVilkarsprovingForKortTrygdetidException'
+  | 'RegelmotorFeilException'
+  | 'UtilstrekkeligOpptjeningException'
+  | 'UtilstrekkeligTrygdetidException'
   | 'default'
 
 export type ErrorMessages = {
