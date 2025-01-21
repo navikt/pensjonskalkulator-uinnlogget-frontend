@@ -7,11 +7,14 @@ ENV NODE_ENV=production \
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
 COPY --chown=nextjs:nodejs node_modules ./node_modules
 COPY --chown=nextjs:nodejs next.config.mjs ./
 COPY --chown=nextjs:nodejs public ./public/
 COPY --chown=nextjs:nodejs .next ./.next
+COPY --chown=nextjs:nodejs middleware.ts ./
 
 USER nextjs
 
