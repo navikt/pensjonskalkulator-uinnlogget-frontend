@@ -32,6 +32,7 @@ const customJestConfig = {
     'sorter.js',
     'src/types/',
     'src/texts/',
+    'src/app/internal/',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {

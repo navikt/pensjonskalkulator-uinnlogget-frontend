@@ -36,7 +36,7 @@ spec:
         - application: nav-dekoratoren
           namespace: personbruker
       external:
-        - host: www.nav.no
+        - host: www.g.nav.no
   azure:
     application:
       enabled: true
