@@ -5,6 +5,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@navikt/ds-react', '@navikt/aksel-icons'],
   },
+  output: 'standalone',
 }
 
 export default nextConfig

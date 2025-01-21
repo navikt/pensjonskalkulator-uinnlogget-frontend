@@ -1,19 +1,18 @@
 FROM node:20-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-RUN mkdir .next
-RUN chown nextjs:nodejs .next
 
 COPY --chown=nextjs:nodejs node_modules ./node_modules
 COPY --chown=nextjs:nodejs next.config.mjs ./
 COPY --chown=nextjs:nodejs public ./public/
-COPY --chown=nextjs:nodejs .next ./.next
+COPY --chown=nextjs:nodejs .next/standalone ./
+COPY --chown=nextjs:nodejs .next/static ./.next/static
 COPY --chown=nextjs:nodejs middleware.ts ./
 
 USER nextjs
@@ -23,7 +22,7 @@ ENV PORT=3000
 EXPOSE 3000
 
 
-CMD ["./node_modules/next/dist/bin/next", "start"]
+CMD ["node", "server.js"]
 
 # ENV NODE_ENV=production
 
