@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -7,12 +7,15 @@ ENV NODE_ENV=production \
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+RUN apk add --no-cache libc6-compat
 
+COPY package.json package-lock.json .npmrc ./
 COPY --chown=nextjs:nodejs node_modules ./node_modules
-COPY --chown=nextjs:nodejs next.config.mjs ./
-COPY --chown=nextjs:nodejs public ./public/
-COPY --chown=nextjs:nodejs .next/standalone ./
-COPY --chown=nextjs:nodejs .next/static ./.next/static
+COPY . .
+# COPY --chown=nextjs:nodejs next.config.mjs ./
+# COPY --chown=nextjs:nodejs public ./public/
+
+RUN npm run build
 
 USER nextjs
 
@@ -21,7 +24,7 @@ ENV PORT=3000
 EXPOSE 3000
 
 
-CMD ["node", "server.js"]
+CMD ["node", ".next/standalone/server.js"]
 
 # ENV NODE_ENV=production
 
