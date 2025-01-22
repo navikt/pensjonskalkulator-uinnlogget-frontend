@@ -28,3 +28,6 @@ spec:
   azure:
     application:
       enabled: true
+  annotations:
+    nais.io/read-only-file-system: "false"
+    nais.io/run-as-user: "1001"
