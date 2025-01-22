@@ -1,5 +1,6 @@
 Dockerfile
 .dockerignore
+.next/cache
 npm-debug.log
 README.md
 .git
