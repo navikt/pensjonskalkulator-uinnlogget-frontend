@@ -77,7 +77,7 @@ jobs:
         id: image-creation
         with:
           team: pensjonskalkulator
-          dockerfile: .docker/Dockerfile
+          dockerfile: Dockerfile
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
