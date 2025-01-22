@@ -13,7 +13,6 @@ COPY --chown=nextjs:nodejs next.config.mjs ./
 COPY --chown=nextjs:nodejs public ./public/
 COPY --chown=nextjs:nodejs .next/standalone ./
 COPY --chown=nextjs:nodejs .next/static ./.next/static
-COPY --chown=nextjs:nodejs middleware.ts ./
 
 USER nextjs
 
