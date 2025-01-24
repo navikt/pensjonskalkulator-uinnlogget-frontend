@@ -50,10 +50,6 @@
   }
 }
 
-.tableMobileOnly :global(.navds-table__expanded-row-content) {
-  padding-right: var(--a-spacing-2);
-}
-
 .tableMobileOnly :global(.navds-table__expandable-row--open) td:last-child {
   font-weight: var(--a-font-weight-bold);
 }
