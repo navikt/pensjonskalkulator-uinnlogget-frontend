@@ -65,6 +65,8 @@ jobs:
       - name: Run lint
         run: npm run lint
 
+      - name: List files
+        run: ls -la
 
       - name: Build staging application
         if: github.event.inputs.prod != 'true'

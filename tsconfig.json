@@ -28,6 +28,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "jest.setup.js",
+    "src/",
     "middleware.ts"
   ],
   "exclude": ["node_modules", "jest.config.js"]
