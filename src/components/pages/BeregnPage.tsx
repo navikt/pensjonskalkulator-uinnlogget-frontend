@@ -1,4 +1,4 @@
-import { Suspense, useContext, useRef } from 'react'
+import { JSX, Suspense, useContext, useRef } from 'react'
 import Beregn from '../Beregn'
 
 import { SimuleringError, Simuleringsresultat, State } from '@/common'
