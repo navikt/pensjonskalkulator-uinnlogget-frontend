@@ -40,17 +40,17 @@ jobs:
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
 
-      - name: Cache node modules
-        id: cache-node
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache node modules
+      #   id: cache-node
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: |
+      #       node_modules
+      #       ~/.npm
+      #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install dependencies
-        if: steps.cache-node.outputs.cache-hit != 'true'
+        # if: steps.cache-node.outputs.cache-hit != 'true'
         run: npm ci
         env:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
