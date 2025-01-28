@@ -1,5 +1,5 @@
-import { initialState } from '@/defaults/initialState'
 import { submitForm } from '../submitForm'
+import { initialState } from '@/defaults/initialState'
 import { SimuleringError, State } from '@/common'
 
 describe('submitForm', () => {

@@ -1,6 +1,3 @@
-import { PropType, State } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { useFieldChange } from '@/helpers/useFormState'
 import { Heading, Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import { useContext } from 'react'
 import useErrorHandling from '../../helpers/useErrorHandling'
@@ -8,6 +5,9 @@ import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
 import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
+import { useFieldChange } from '@/helpers/useFormState'
+import { FormContext } from '@/contexts/context'
+import { PropType, State } from '@/common'
 
 const AFPStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

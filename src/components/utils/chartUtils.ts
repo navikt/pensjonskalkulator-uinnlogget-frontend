@@ -1,6 +1,6 @@
-import { Simuleringsresultat } from '@/common'
-import { formatInntektToNumber } from '../pages/utils/inntekt'
 import Highcharts from 'highcharts'
+import { formatInntektToNumber } from '../pages/utils/inntekt'
+import { Simuleringsresultat } from '@/common'
 
 export const alignData = (
   categories: number[],

@@ -1,14 +1,14 @@
-import { SimuleringError } from '@/common'
-import { initialState } from '@/defaults/initialState'
-import { getErrors } from '@/texts/errors'
 import { render, screen } from '@testing-library/react'
+import { useRouter } from 'next/navigation'
 import {
   generateDefaultFormPageProps,
   renderMockedComponent,
 } from '../pages/test-utils/testSetup'
 import ResponseWarning from '../ResponseWarning'
-import { useRouter } from 'next/navigation'
 import { logger } from '../utils/logging'
+import { SimuleringError } from '@/common'
+import { initialState } from '@/defaults/initialState'
+import { getErrors } from '@/texts/errors'
 
 jest.mock('../utils/logging', () => ({
   logger: jest.fn(),

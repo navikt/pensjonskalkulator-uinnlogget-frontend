@@ -1,16 +1,16 @@
 import { screen, fireEvent } from '@testing-library/react'
+import { axe } from 'jest-axe'
+import { useRouter } from 'next/navigation'
 import AlderStep from '../AlderStep'
 
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { initialState } from '@/defaults/initialState'
-import { State } from '@/common'
 import {
   generateDefaultFormPageProps,
   renderMockedComponent,
 } from '../test-utils/testSetup'
+import { initialState } from '@/defaults/initialState'
+import { State } from '@/common'
 import { useFieldChange } from '@/helpers/useFormState'
-import { axe } from 'jest-axe'
-import { useRouter } from 'next/navigation'
 import { logger } from '@/components/utils/logging'
 
 jest.mock('@/components/utils/logging', () => ({

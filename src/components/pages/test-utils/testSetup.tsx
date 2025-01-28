@@ -1,5 +1,5 @@
-import { ContextForm } from '@/common'
 import { render } from '@testing-library/react'
+import { ContextForm } from '@/common'
 import { FormContext } from '@/contexts/context'
 
 type GoToNextFunction = () => void

@@ -1,6 +1,3 @@
-import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { getErrors } from '@/texts/errors'
 import {
   Alert,
   BodyLong,
@@ -14,6 +11,9 @@ import { useContext, useEffect, useMemo } from 'react'
 import stepStyles from '/src/components/styles/stepStyles.module.css'
 import { useRouter } from 'next/navigation'
 import { logger } from './utils/logging'
+import { getErrors } from '@/texts/errors'
+import { FormContext } from '@/contexts/context'
+import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
 
 interface SimuleringErrorProps {
   error?: SimuleringError

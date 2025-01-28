@@ -10,10 +10,10 @@ import {
   BodyLong,
   List,
 } from '@navikt/ds-react'
-import stepStyles from './styles/stepStyles.module.css'
 import React, { useEffect } from 'react'
-import Substep from './Substep'
 import { useRouter } from 'next/navigation'
+import stepStyles from './styles/stepStyles.module.css'
+import Substep from './Substep'
 import { logger } from './utils/logging'
 
 export default function LandingPage() {

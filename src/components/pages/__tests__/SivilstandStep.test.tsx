@@ -1,14 +1,14 @@
 import { screen, fireEvent } from '@testing-library/react'
+import { useRouter } from 'next/navigation'
 import SivilstandStep from '../SivilstandStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { State } from '@/common'
-import { initialState } from '@/defaults/initialState'
-import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
-import { useRouter } from 'next/navigation'
+import { State } from '@/common'
+import { initialState } from '@/defaults/initialState'
+import { useFieldChange } from '@/helpers/useFormState'
 import { logger } from '@/components/utils/logging'
 
 jest.mock('@/components/utils/logging', () => ({

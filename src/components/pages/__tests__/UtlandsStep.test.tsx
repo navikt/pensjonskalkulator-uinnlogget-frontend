@@ -1,15 +1,15 @@
 import { screen, fireEvent } from '@testing-library/react'
+import { axe } from 'jest-axe'
+import { useRouter } from 'next/navigation'
 import UtlandsStep from '../UtlandsStep'
 import useErrorHandling from '../../../helpers/useErrorHandling'
-import { State } from '@/common'
-import { initialState } from '@/defaults/initialState'
-import { useFieldChange } from '@/helpers/useFormState'
 import {
   renderMockedComponent,
   generateDefaultFormPageProps,
 } from '../test-utils/testSetup'
-import { axe } from 'jest-axe'
-import { useRouter } from 'next/navigation'
+import { State } from '@/common'
+import { initialState } from '@/defaults/initialState'
+import { useFieldChange } from '@/helpers/useFormState'
 import { logger } from '@/components/utils/logging'
 
 jest.mock('@/components/utils/logging', () => ({

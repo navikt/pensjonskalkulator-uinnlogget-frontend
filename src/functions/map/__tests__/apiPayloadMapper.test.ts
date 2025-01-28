@@ -1,7 +1,6 @@
-import { initialState } from '@/defaults/initialState'
-
 import { produce } from 'immer'
 import { mapStateToApiPayload } from '../apiPayloadMapper'
+import { initialState } from '@/defaults/initialState'
 
 describe('Gitt at noen states behøver å oppdateres, ', () => {
   describe('Når brukeren har svart "nei" til inntekt vsa. helt uttak og beløpet er større enn 0', () => {
