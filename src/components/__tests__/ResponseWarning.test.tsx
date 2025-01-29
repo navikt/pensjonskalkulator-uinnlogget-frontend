@@ -2,12 +2,13 @@ import { SimuleringError } from '@/common'
 import { initialState } from '@/defaults/initialState'
 import { getErrors } from '@/texts/errors'
 import { render, screen } from '@testing-library/react'
+import { useRouter } from 'next/navigation'
+
+import ResponseWarning from '../ResponseWarning'
 import {
   generateDefaultFormPageProps,
   renderMockedComponent,
 } from '../pages/test-utils/testSetup'
-import ResponseWarning from '../ResponseWarning'
-import { useRouter } from 'next/navigation'
 import { logger } from '../utils/logging'
 
 jest.mock('../utils/logging', () => ({

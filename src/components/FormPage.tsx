@@ -1,18 +1,19 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import { State } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
 import InntektStep from '@/components/pages/InntektStep'
 import { FormContext } from '@/contexts/context'
-import useMultiStepForm from '@/helpers/useMultiStepForm'
-import UtlandsStep from './pages/UtlandsStep'
-
 import { initialState } from '@/defaults/initialState'
-import { useEffect, useState } from 'react'
+import useMultiStepForm from '@/helpers/useMultiStepForm'
+
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
 import SivilstandStep from './pages/SivilstandStep'
+import UtlandsStep from './pages/UtlandsStep'
 
 interface FormPageProps {
   grunnbelop?: number

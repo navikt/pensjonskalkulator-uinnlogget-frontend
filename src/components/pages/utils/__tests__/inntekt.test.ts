@@ -1,8 +1,8 @@
 import {
+  formatAndUpdateBeloep,
   formatInntekt,
   formatInntektToNumber,
   handleCaretPosition,
-  formatAndUpdateBeloep,
 } from '../inntekt'
 
 const createEvent = (value: string, selectionStart: number) => {

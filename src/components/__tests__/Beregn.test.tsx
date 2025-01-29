@@ -2,6 +2,7 @@ import Beregn from '@/components/Beregn'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import { render, screen } from '@testing-library/react'
+
 import { logger } from '../utils/logging'
 
 jest.mock('@/components/utils/logging', () => ({

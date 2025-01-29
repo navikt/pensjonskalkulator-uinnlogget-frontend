@@ -1,8 +1,11 @@
-import { FormContext } from '@/contexts/context'
-import { Button, HStack } from '@navikt/ds-react'
 import React, { useContext, useEffect } from 'react'
-import stepStyles from './styles/stepStyles.module.css'
+
+import { FormContext } from '@/contexts/context'
 import { useRouter } from 'next/navigation'
+
+import { Button, HStack } from '@navikt/ds-react'
+
+import stepStyles from './styles/stepStyles.module.css'
 import { logger } from './utils/logging'
 
 function FormButtons({ currentStepName }: { currentStepName?: string }) {

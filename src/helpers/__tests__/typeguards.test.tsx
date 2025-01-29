@@ -1,4 +1,5 @@
 import { SimuleringError } from '@/common'
+
 import { isSimuleringError } from '../typeguards'
 
 describe('isSimuleringError funksjon', () => {

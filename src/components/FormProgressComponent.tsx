@@ -1,6 +1,9 @@
-import { FormContext } from '@/contexts/context'
-import { FormProgress } from '@navikt/ds-react'
 import { useContext } from 'react'
+
+import { FormContext } from '@/contexts/context'
+
+import { FormProgress } from '@navikt/ds-react'
+
 import stepStyles from './styles/stepStyles.module.css'
 
 interface FormProgressComponentProps {

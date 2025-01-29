@@ -1,5 +1,6 @@
-import { Box } from '@navikt/ds-react'
 import React, { ReactNode } from 'react'
+
+import { Box } from '@navikt/ds-react'
 
 interface SubstepProps {
   children: ReactNode

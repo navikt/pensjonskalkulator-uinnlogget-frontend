@@ -1,7 +1,8 @@
 import { useContext } from 'react'
-import { FormContext } from '@/contexts/context'
+
 import { Simuleringsresultat } from '@/common'
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
+import { FormContext } from '@/contexts/context'
 
 export const useSimuleringsresultatData = (
   simuleringsresultat: Simuleringsresultat | undefined

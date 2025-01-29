@@ -1,6 +1,9 @@
+import { useContext, useEffect, useMemo } from 'react'
+
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
+
 import {
   Heading,
   Radio,
@@ -9,15 +12,15 @@ import {
   Select,
   TextField,
 } from '@navikt/ds-react'
-import { useContext, useEffect, useMemo } from 'react'
+
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
+import Substep from '../Substep'
 import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
-import Substep from '../Substep'
-import { formatAndUpdateBeloep } from './utils/inntekt'
 import { logger } from '../utils/logging'
+import { formatAndUpdateBeloep } from './utils/inntekt'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

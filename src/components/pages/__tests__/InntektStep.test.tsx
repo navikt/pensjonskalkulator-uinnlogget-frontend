@@ -1,16 +1,17 @@
-import { screen, fireEvent } from '@testing-library/react'
-import InntektStep from '../InntektStep'
-import useErrorHandling from '../../../helpers/useErrorHandling'
 import { State } from '@/common'
+import { logger } from '@/components/utils/logging'
 import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
-import { useRouter } from 'next/navigation'
-import {
-  renderMockedComponent,
-  generateDefaultFormPageProps,
-} from '../test-utils/testSetup'
+import { fireEvent, screen } from '@testing-library/react'
 import { axe } from 'jest-axe'
-import { logger } from '@/components/utils/logging'
+import { useRouter } from 'next/navigation'
+
+import useErrorHandling from '../../../helpers/useErrorHandling'
+import InntektStep from '../InntektStep'
+import {
+  generateDefaultFormPageProps,
+  renderMockedComponent,
+} from '../test-utils/testSetup'
 
 jest.mock('@/components/utils/logging', () => ({
   logger: jest.fn(),

@@ -1,6 +1,7 @@
 'use server'
 
 import { NextRequest, NextResponse } from 'next/server'
+
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 
 export const generateBearerToken = async (): Promise<string> => {

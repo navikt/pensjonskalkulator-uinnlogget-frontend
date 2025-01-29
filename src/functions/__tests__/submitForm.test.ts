@@ -1,6 +1,7 @@
-import { initialState } from '@/defaults/initialState'
-import { submitForm } from '../submitForm'
 import { SimuleringError, State } from '@/common'
+import { initialState } from '@/defaults/initialState'
+
+import { submitForm } from '../submitForm'
 
 describe('submitForm', () => {
   const mockState: State = initialState

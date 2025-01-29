@@ -1,4 +1,5 @@
-import { render, RenderResult } from '@testing-library/react'
+import { RenderResult, render } from '@testing-library/react'
+
 import LoadingComponent from '../LoadingComponent'
 
 describe('LoadingComponent', () => {

@@ -1,4 +1,5 @@
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
+
 import { alignData, getChartOptions } from '../chartUtils'
 
 describe('getChartOptions', () => {

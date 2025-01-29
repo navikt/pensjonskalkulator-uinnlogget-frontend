@@ -1,6 +1,9 @@
+import React, { useContext } from 'react'
+
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
+
 import {
   Heading,
   Radio,
@@ -8,12 +11,12 @@ import {
   ReadMore,
   TextField,
 } from '@navikt/ds-react'
-import React, { useContext } from 'react'
+
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
-import stepStyles from '../styles/stepStyles.module.css'
 import Substep from '../Substep'
+import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 
 const UtlandsStep = () => {

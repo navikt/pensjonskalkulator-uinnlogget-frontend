@@ -1,6 +1,6 @@
 import { initialState } from '@/defaults/initialState'
-
 import { produce } from 'immer'
+
 import { mapStateToApiPayload } from '../apiPayloadMapper'
 
 describe('Gitt at noen states behøver å oppdateres, ', () => {

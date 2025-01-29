@@ -1,6 +1,10 @@
 'use client'
 
+import { useEffect } from 'react'
+
 import { logger } from '@/components/utils/logging'
+import Link from 'next/link'
+
 import {
   BodyShort,
   Box,
@@ -10,8 +14,6 @@ import {
   Page,
   VStack,
 } from '@navikt/ds-react'
-import Link from 'next/link'
-import { useEffect } from 'react'
 
 export default function Error() {
   useEffect(() => {

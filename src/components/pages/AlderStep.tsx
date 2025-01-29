@@ -1,12 +1,15 @@
 import React, { useContext } from 'react'
-import { Heading, TextField } from '@navikt/ds-react'
-import FormWrapper from '../FormWrapper'
+
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
+
+import { Heading, TextField } from '@navikt/ds-react'
+
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
+import FormWrapper from '../FormWrapper'
 import Substep from '../Substep'
-import { useFieldChange } from '@/helpers/useFormState'
 import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 
