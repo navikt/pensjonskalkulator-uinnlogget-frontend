@@ -1,6 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react'
-import FormWrapper from '../FormWrapper'
 import React from 'react'
+
+import FormWrapper from '../FormWrapper'
+import { fireEvent, render, screen } from '@testing-library/react'
 
 describe('FormWrapper', () => {
   let handleSubmit: jest.Mock

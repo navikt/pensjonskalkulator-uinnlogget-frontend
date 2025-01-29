@@ -1,7 +1,8 @@
 'use server'
 
-import { NextRequest, NextResponse } from 'next/server'
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
+
+import { NextRequest, NextResponse } from 'next/server'
 
 export const generateBearerToken = async (): Promise<string> => {
   const env = process.env.NEXT_PUBLIC_ENV === 'production' ? 'prod' : 'dev'

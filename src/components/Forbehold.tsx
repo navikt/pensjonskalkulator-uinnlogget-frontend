@@ -1,4 +1,5 @@
-import { Heading, BodyLong, Link } from '@navikt/ds-react'
+import { BodyLong, Heading, Link } from '@navikt/ds-react'
+
 import stepStyles from './styles/stepStyles.module.css'
 
 const Forbehold = () => {

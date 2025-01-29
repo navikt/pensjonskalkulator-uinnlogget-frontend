@@ -1,16 +1,18 @@
-import { SimuleringError, Simuleringsresultat } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { isSimuleringError } from '@/helpers/typeguards'
-import { Box, Button, Heading, HStack, VStack } from '@navikt/ds-react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useContext, useEffect, useMemo, useRef } from 'react'
-import ResponseWarning from './ResponseWarning'
-import stepStyles from './styles/stepStyles.module.css'
-import ResultTable from './ResultTable'
-import { getChartOptions } from './utils/chartUtils'
+
+import { Box, Button, HStack, Heading, VStack } from '@navikt/ds-react'
+
 import Forbehold from './Forbehold'
+import ResponseWarning from './ResponseWarning'
+import ResultTable from './ResultTable'
+import stepStyles from './styles/stepStyles.module.css'
+import { getChartOptions } from './utils/chartUtils'
 import { logger } from './utils/logging'
+import { SimuleringError, Simuleringsresultat } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { isSimuleringError } from '@/helpers/typeguards'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError

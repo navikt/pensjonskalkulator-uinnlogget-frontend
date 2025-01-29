@@ -1,5 +1,6 @@
 import '@navikt/ds-css'
 import { fetchDecoratorReact } from '@navikt/nav-dekoratoren-moduler/ssr'
+
 import Script from 'next/script'
 
 const decoratorEnv = (

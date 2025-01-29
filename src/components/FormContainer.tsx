@@ -1,5 +1,7 @@
 import React, { ReactElement } from 'react'
+
 import { Box, Heading } from '@navikt/ds-react'
+
 import FormProgressComponent from './FormProgressComponent'
 import stepStyles from './styles/stepStyles.module.css'
 

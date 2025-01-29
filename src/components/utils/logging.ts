@@ -1,6 +1,6 @@
 import {
-  getAmplitudeInstance,
   AmplitudeEvent,
+  getAmplitudeInstance,
 } from '@navikt/nav-dekoratoren-moduler'
 
 type IExtendedAmpltitudeEvents =

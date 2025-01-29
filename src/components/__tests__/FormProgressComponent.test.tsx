@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react'
 import FormProgressComponent from '../FormProgressComponent'
 import { StepName } from '@/common'
+import { render } from '@testing-library/react'
 
 describe('FormProgressComponent', () => {
   it('Burde rendrer korrekt med totalSteps and activeStep', () => {

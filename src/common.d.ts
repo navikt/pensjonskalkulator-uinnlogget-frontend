@@ -1,4 +1,5 @@
 import type { components } from './types/schema.d.ts'
+
 export type APIPayload = components['schemas']['AnonymSimuleringSpecV1']
 export type ApiPayloadStripped = Omit<ApiPayload, 'foedselAar'>
 

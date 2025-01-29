@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react'
 import Page from '@/app/form/page'
-import { getGrunnbelop } from '@/functions/grunnbelop'
 import FormPage from '@/components/FormPage'
+import { getGrunnbelop } from '@/functions/grunnbelop'
+import { render } from '@testing-library/react'
 
 // Explicitly cast getGrunnbelop as a jest mock
 jest.mock('@/functions/grunnbelop', () => ({

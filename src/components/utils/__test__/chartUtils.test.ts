@@ -1,5 +1,5 @@
-import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 import { alignData, getChartOptions } from '../chartUtils'
+import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 
 describe('getChartOptions', () => {
   const heltUttakAar = 67

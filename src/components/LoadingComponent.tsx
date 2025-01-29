@@ -1,5 +1,6 @@
-import { HStack, Loader } from '@navikt/ds-react'
 import React from 'react'
+
+import { HStack, Loader } from '@navikt/ds-react'
 
 const LoadingComponent: React.FC = () => (
   <HStack

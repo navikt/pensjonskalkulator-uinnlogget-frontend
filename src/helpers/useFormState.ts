@@ -1,5 +1,7 @@
+import { produce } from 'immer'
 import { useCallback } from 'react'
-import { produce } from 'immer' // Import immer for immutable state updates
+
+// Import immer for immutable state updates
 import { State } from '@/common'
 
 type UseFieldChangeProps<T> = {
