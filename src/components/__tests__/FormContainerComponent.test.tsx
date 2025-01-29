@@ -1,7 +1,6 @@
-import { render, screen } from '@testing-library/react'
-
 import FormContainerComponent from '../FormContainer'
 import FormProgressComponent from '../FormProgressComponent'
+import { render, screen } from '@testing-library/react'
 
 // Mock FormProgressComponent for å isolere testene
 jest.mock('../FormProgressComponent', () => ({

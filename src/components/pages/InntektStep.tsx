@@ -1,9 +1,5 @@
 import { useContext, useEffect, useMemo } from 'react'
 
-import { State } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { useFieldChange } from '@/helpers/useFormState'
-
 import {
   Heading,
   Radio,
@@ -21,6 +17,9 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 import { formatAndUpdateBeloep } from './utils/inntekt'
+import { State } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

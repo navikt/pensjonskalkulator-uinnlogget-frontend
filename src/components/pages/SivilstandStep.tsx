@@ -1,9 +1,5 @@
 import { useContext } from 'react'
 
-import { PropType, State } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { useFieldChange } from '@/helpers/useFormState'
-
 import { Box, Heading, Radio, RadioGroup, Select } from '@navikt/ds-react'
 
 import useErrorHandling from '../../helpers/useErrorHandling'
@@ -14,6 +10,9 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 import { formatInntekt } from './utils/inntekt'
+import { PropType, State } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
 
 interface FormPageProps {
   grunnbelop?: number

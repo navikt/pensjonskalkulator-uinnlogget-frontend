@@ -1,12 +1,11 @@
 import React, { useContext, useEffect } from 'react'
 
-import { FormContext } from '@/contexts/context'
-import { useRouter } from 'next/navigation'
-
 import { Button, HStack } from '@navikt/ds-react'
 
 import stepStyles from './styles/stepStyles.module.css'
 import { logger } from './utils/logging'
+import { FormContext } from '@/contexts/context'
+import { useRouter } from 'next/navigation'
 
 function FormButtons({ currentStepName }: { currentStepName?: string }) {
   const context = useContext(FormContext)

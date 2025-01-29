@@ -1,12 +1,11 @@
+import { axe } from 'jest-axe'
 import React from 'react'
 
+import BeregnPage from '../BeregnPage'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import { submitForm } from '@/functions/submitForm'
 import { render, screen, waitFor } from '@testing-library/react'
-import { axe } from 'jest-axe'
-
-import BeregnPage from '../BeregnPage'
 
 jest.mock('@/functions/submitForm', () => ({
   submitForm: jest.fn(),

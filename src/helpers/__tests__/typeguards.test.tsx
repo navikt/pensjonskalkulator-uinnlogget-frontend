@@ -1,6 +1,5 @@
-import { SimuleringError } from '@/common'
-
 import { isSimuleringError } from '../typeguards'
+import { SimuleringError } from '@/common'
 
 describe('isSimuleringError funksjon', () => {
   test('Burde returnere true for et gyldig SimuleringError objekt', () => {

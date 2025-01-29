@@ -1,12 +1,11 @@
 import { Suspense, useContext, useRef } from 'react'
 
+import Beregn from '../Beregn'
+import LoadingComponent from '../LoadingComponent'
 import { SimuleringError, Simuleringsresultat, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { submitForm } from '@/functions/submitForm'
 import { isSimuleringError } from '@/helpers/typeguards'
-
-import Beregn from '../Beregn'
-import LoadingComponent from '../LoadingComponent'
 
 const useAsyncLoader = (
   asyncMethod: (state: State) => Promise<Simuleringsresultat | undefined>,

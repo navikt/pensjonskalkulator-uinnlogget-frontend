@@ -7,12 +7,7 @@ module.exports = {
   trailingComma: 'es5',
   useTabs: false,
   plugins: [require.resolve('@trivago/prettier-plugin-sort-imports')],
-  importOrder: [
-    '^react(.*)$',
-    '<THIRD_PARTY_MODULES>',
-    '^@navikt/(.*)$',
-    '^[./]',
-  ],
+  importOrder: ['<THIRD_PARTY_MODULES>', '^@navikt/(.*)$', '^@/|[./]', '.css$'],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
 }

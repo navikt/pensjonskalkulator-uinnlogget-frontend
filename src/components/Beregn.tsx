@@ -1,10 +1,6 @@
-import { useContext, useEffect, useMemo, useRef } from 'react'
-
-import { SimuleringError, Simuleringsresultat } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { isSimuleringError } from '@/helpers/typeguards'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import { useContext, useEffect, useMemo, useRef } from 'react'
 
 import { Box, Button, HStack, Heading, VStack } from '@navikt/ds-react'
 
@@ -14,6 +10,9 @@ import ResultTable from './ResultTable'
 import stepStyles from './styles/stepStyles.module.css'
 import { getChartOptions } from './utils/chartUtils'
 import { logger } from './utils/logging'
+import { SimuleringError, Simuleringsresultat } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { isSimuleringError } from '@/helpers/typeguards'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError

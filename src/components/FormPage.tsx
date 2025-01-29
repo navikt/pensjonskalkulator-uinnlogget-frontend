@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from 'react'
 
+import FormContainerComponent from './FormContainer'
+import BeregnPage from './pages/BeregnPage'
+import SivilstandStep from './pages/SivilstandStep'
+import UtlandsStep from './pages/UtlandsStep'
 import { State } from '@/common'
 import AFPStep from '@/components/pages/AFPStep'
 import AlderStep from '@/components/pages/AlderStep'
@@ -9,11 +13,6 @@ import InntektStep from '@/components/pages/InntektStep'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
-
-import FormContainerComponent from './FormContainer'
-import BeregnPage from './pages/BeregnPage'
-import SivilstandStep from './pages/SivilstandStep'
-import UtlandsStep from './pages/UtlandsStep'
 
 interface FormPageProps {
   grunnbelop?: number

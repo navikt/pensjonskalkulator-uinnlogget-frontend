@@ -1,6 +1,5 @@
-import { SimuleringError, Simuleringsresultat, State } from '@/common'
-
 import { mapStateToApiPayload } from './map/apiPayloadMapper'
+import { SimuleringError, Simuleringsresultat, State } from '@/common'
 
 export const submitForm = async (
   formState: State

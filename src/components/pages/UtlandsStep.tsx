@@ -1,9 +1,5 @@
 import React, { useContext } from 'react'
 
-import { State } from '@/common'
-import { FormContext } from '@/contexts/context'
-import { useFieldChange } from '@/helpers/useFormState'
-
 import {
   Heading,
   Radio,
@@ -18,6 +14,9 @@ import FormWrapper from '../FormWrapper'
 import Substep from '../Substep'
 import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
+import { State } from '@/common'
+import { FormContext } from '@/contexts/context'
+import { useFieldChange } from '@/helpers/useFormState'
 
 const UtlandsStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

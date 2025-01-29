@@ -2,8 +2,6 @@
 
 import React, { useEffect } from 'react'
 
-import { useRouter } from 'next/navigation'
-
 import {
   BodyLong,
   Box,
@@ -18,6 +16,7 @@ import {
 import Substep from './Substep'
 import stepStyles from './styles/stepStyles.module.css'
 import { logger } from './utils/logging'
+import { useRouter } from 'next/navigation'
 
 export default function LandingPage() {
   const router = useRouter()
