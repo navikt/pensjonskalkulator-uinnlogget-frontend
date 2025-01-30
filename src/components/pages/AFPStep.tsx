@@ -5,11 +5,12 @@ import { Heading, Radio, RadioGroup, ReadMore } from '@navikt/ds-react'
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
-import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 import { PropType, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
+
+import stepStyles from '../styles/stepStyles.module.css'
 
 const AFPStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

@@ -1,8 +1,9 @@
+import { NextRequest } from 'next/server'
+
 import { requestAzureClientCredentialsToken } from '@navikt/oasis'
 
 import * as route from '../route'
 import * as routeUtils from '../routeUtils'
-import { NextRequest } from 'next/server'
 
 global.fetch = jest.fn()
 

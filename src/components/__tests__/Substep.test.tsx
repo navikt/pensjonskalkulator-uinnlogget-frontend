@@ -1,5 +1,6 @@
-import Substep from '../Substep'
 import { render } from '@testing-library/react'
+
+import Substep from '../Substep'
 
 describe('Substep', () => {
   it('Renderer som forventet', () => {

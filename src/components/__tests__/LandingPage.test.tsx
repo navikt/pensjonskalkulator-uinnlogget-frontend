@@ -1,5 +1,6 @@
-import LandingPage from '../LandingPage'
 import { fireEvent, render, screen } from '@testing-library/react'
+
+import LandingPage from '../LandingPage'
 
 export const useRouterMock = {
   useRouter: jest.fn(),

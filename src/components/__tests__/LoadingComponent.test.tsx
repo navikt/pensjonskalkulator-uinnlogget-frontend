@@ -1,5 +1,6 @@
-import LoadingComponent from '../LoadingComponent'
 import { RenderResult, render } from '@testing-library/react'
+
+import LoadingComponent from '../LoadingComponent'
 
 describe('LoadingComponent', () => {
   let getByTestId: RenderResult['getByTestId']

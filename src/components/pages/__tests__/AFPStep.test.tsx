@@ -1,4 +1,6 @@
+import { fireEvent, screen } from '@testing-library/react'
 import { axe } from 'jest-axe'
+import { useRouter } from 'next/navigation'
 
 import useErrorHandling from '../../../helpers/useErrorHandling'
 import AFPStep from '../AFPStep'
@@ -7,8 +9,6 @@ import { Simuleringstype, State } from '@/common'
 import { logger } from '@/components/utils/logging'
 import { initialState } from '@/defaults/initialState'
 import { useFieldChange } from '@/helpers/useFormState'
-import { fireEvent, screen } from '@testing-library/react'
-import { useRouter } from 'next/navigation'
 
 // Mock the useErrorHandling hook
 jest.mock('../../../helpers/useErrorHandling', () => ({
