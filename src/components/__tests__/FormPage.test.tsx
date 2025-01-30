@@ -1,6 +1,7 @@
+import { render, screen } from '@testing-library/react'
+
 import FormPage from '../FormPage'
 import useMultiStepForm from '@/helpers/useMultiStepForm'
-import { render, screen } from '@testing-library/react'
 
 // Mock the useMultiStepForm hook
 jest.mock('@/helpers/useMultiStepForm')

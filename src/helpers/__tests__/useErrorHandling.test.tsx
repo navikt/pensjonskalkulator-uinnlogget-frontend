@@ -1,8 +1,9 @@
+import { act, render } from '@testing-library/react'
+
 import { Simuleringstype, Sivilstand, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
-import { act, render } from '@testing-library/react'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }

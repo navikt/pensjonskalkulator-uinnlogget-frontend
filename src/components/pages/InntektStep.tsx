@@ -13,13 +13,14 @@ import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
 import Substep from '../Substep'
-import '../styles/selectStyle.css'
-import stepStyles from '../styles/stepStyles.module.css'
 import { logger } from '../utils/logging'
 import { formatAndUpdateBeloep } from './utils/inntekt'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { useFieldChange } from '@/helpers/useFormState'
+
+import '../styles/selectStyle.css'
+import stepStyles from '../styles/stepStyles.module.css'
 
 const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)

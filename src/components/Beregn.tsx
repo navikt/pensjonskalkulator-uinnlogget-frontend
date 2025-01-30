@@ -7,12 +7,13 @@ import { Box, Button, HStack, Heading, VStack } from '@navikt/ds-react'
 import Forbehold from './Forbehold'
 import ResponseWarning from './ResponseWarning'
 import ResultTable from './ResultTable'
-import stepStyles from './styles/stepStyles.module.css'
 import { getChartOptions } from './utils/chartUtils'
 import { logger } from './utils/logging'
 import { SimuleringError, Simuleringsresultat } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { isSimuleringError } from '@/helpers/typeguards'
+
+import stepStyles from './styles/stepStyles.module.css'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat | SimuleringError

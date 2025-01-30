@@ -3,9 +3,10 @@ import { useState } from 'react'
 import { ReadMore, Table } from '@navikt/ds-react'
 
 import { formatInntekt } from './pages/utils/inntekt'
-import stepStyles from './styles/stepStyles.module.css'
 import { useSimuleringsresultatData } from './utils/useSimuleringsresultatData'
 import { Simuleringsresultat } from '@/common'
+
+import stepStyles from './styles/stepStyles.module.css'
 
 interface Props {
   simuleringsresultat?: Simuleringsresultat

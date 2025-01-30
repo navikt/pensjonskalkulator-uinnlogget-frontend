@@ -1,7 +1,7 @@
+import { fireEvent, render } from '@testing-library/react'
 import React, { ReactElement } from 'react'
 
 import useMultiStepForm from '@/helpers/useMultiStepForm'
-import { fireEvent, render } from '@testing-library/react'
 
 interface TestComponentProps {
   lastPage: ReactElement

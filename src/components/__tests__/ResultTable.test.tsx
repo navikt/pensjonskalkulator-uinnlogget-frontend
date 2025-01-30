@@ -1,9 +1,9 @@
+import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 
 import ResultTable from '../ResultTable'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
-import { fireEvent, render, screen } from '@testing-library/react'
 
 const mockSimuleringsresultat = {
   alderspensjon: [

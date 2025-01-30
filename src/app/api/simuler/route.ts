@@ -1,7 +1,8 @@
 'use server'
 
-import { postDev, postProd } from './routeUtils'
 import { NextRequest, NextResponse } from 'next/server'
+
+import { postDev, postProd } from './routeUtils'
 
 export async function POST(req: NextRequest) {
   if (req.method !== 'POST') {

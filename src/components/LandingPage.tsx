@@ -1,5 +1,6 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 import {
@@ -14,9 +15,9 @@ import {
 } from '@navikt/ds-react'
 
 import Substep from './Substep'
-import stepStyles from './styles/stepStyles.module.css'
 import { logger } from './utils/logging'
-import { useRouter } from 'next/navigation'
+
+import stepStyles from './styles/stepStyles.module.css'
 
 export default function LandingPage() {
   const router = useRouter()

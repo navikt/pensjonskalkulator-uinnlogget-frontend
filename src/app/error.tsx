@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect } from 'react'
 
 import {
@@ -13,7 +14,6 @@ import {
 } from '@navikt/ds-react'
 
 import { logger } from '@/components/utils/logging'
-import Link from 'next/link'
 
 export default function Error() {
   useEffect(() => {
