@@ -233,6 +233,20 @@ const InntektStep = () => {
               if (it === false) {
                 draft.heltUttak.aarligInntektVsaPensjon = undefined
               }
+              if (
+                draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder ===
+                  undefined &&
+                draft.harInntektVsaHelPensjon === true
+              ) {
+                draft.heltUttak.aarligInntektVsaPensjon = {
+                  beloep:
+                    draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
+                  sluttAlder: {
+                    aar: null,
+                    maaneder: null,
+                  },
+                }
+              }
               draft.harInntektVsaHelPensjon = it
             }, 'harInntektVsaHelPensjon')
           }
