@@ -62,7 +62,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
           }
           error={errorFields.sivilstand}
         >
-          <option value={''}>----</option>
+          <option value={''} disabled selected></option>
           <option value={'UGIFT'}>Ugift</option>
           <option value={'GIFT'}>Gift</option>
           <option value={'SAMBOER'}>Samboer</option>
