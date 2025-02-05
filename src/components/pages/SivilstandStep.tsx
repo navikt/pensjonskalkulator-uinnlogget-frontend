@@ -45,7 +45,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
       </Heading>
       <Box className={stepStyles.componentSpacing}>
         <Select
-          value={state.sivilstand}
+          value={state.sivilstand ?? ''}
           className="selectSivilstand"
           label={'Hva er din sivilstand?'}
           onChange={(it) =>
@@ -62,7 +62,7 @@ const SivilstandStep = ({ grunnbelop }: FormPageProps) => {
           }
           error={errorFields.sivilstand}
         >
-          <option value={''} disabled></option>
+          <option aria-label="Velg sivilstand" value={''} disabled></option>
           <option value={'UGIFT'}>Ugift</option>
           <option value={'GIFT'}>Gift</option>
           <option value={'SAMBOER'}>Samboer</option>

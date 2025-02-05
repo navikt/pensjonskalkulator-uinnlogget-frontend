@@ -226,12 +226,7 @@ const InntektStep = () => {
             handleFieldChange((draft) => {
               if (it === false) {
                 draft.heltUttak.aarligInntektVsaPensjon = undefined
-              }
-              if (
-                draft.heltUttak?.aarligInntektVsaPensjon?.sluttAlder ===
-                  undefined &&
-                draft.harInntektVsaHelPensjon === true
-              ) {
+              } else {
                 draft.heltUttak.aarligInntektVsaPensjon = {
                   beloep:
                     draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
