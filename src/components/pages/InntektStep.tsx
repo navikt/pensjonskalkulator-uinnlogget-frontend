@@ -228,8 +228,7 @@ const InntektStep = () => {
                 draft.heltUttak.aarligInntektVsaPensjon = undefined
               } else {
                 draft.heltUttak.aarligInntektVsaPensjon = {
-                  beloep:
-                    draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
+                  beloep: null,
                   sluttAlder: {
                     aar: null,
                     maaneder: null,
