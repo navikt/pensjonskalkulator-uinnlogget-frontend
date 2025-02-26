@@ -54,7 +54,7 @@ describe('getChartOptions', () => {
           color: 'var(--a-gray-500)',
         },
         {
-          name: 'Alderspensjon',
+          name: 'Alderspensjon (Nav)',
           data: [null, 180000, 190000, 200000, 210000],
           color: 'var(--a-deepblue-500)',
         },
@@ -209,7 +209,7 @@ describe('getChartOptions', () => {
             color: 'var(--a-gray-500)',
           },
           {
-            name: 'Alderspensjon',
+            name: 'Alderspensjon (Nav)',
             data: [null, 180000, 190000, 200000, 210000],
             color: 'var(--a-deepblue-500)',
           },
@@ -249,7 +249,7 @@ describe('getChartOptions', () => {
             color: 'var(--a-gray-500)',
           },
           {
-            name: 'Alderspensjon',
+            name: 'Alderspensjon (Nav)',
             data: [null, 180000, 190000, 200000, 210000],
             color: 'var(--a-deepblue-500)',
           },
@@ -286,7 +286,7 @@ describe('getChartOptions', () => {
             color: 'var(--a-gray-500)',
           },
           {
-            name: 'Alderspensjon',
+            name: 'Alderspensjon (Nav)',
             data: [null],
             color: 'var(--a-deepblue-500)',
           },
@@ -313,7 +313,7 @@ describe('getChartOptions', () => {
             color: 'var(--a-gray-500)',
           },
           {
-            name: 'Alderspensjon',
+            name: 'Alderspensjon (Nav)',
             data: [null],
             color: 'var(--a-deepblue-500)',
           },
