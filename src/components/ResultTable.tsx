@@ -17,6 +17,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
     state,
     pensjonsalder,
     alderspensjonData,
+    afpPrivatData,
     afpPrivatValue,
     inntektVsaPensjonValue,
     sum,
@@ -48,13 +49,15 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               >
                 Alderspensjon (Nav)
               </Table.HeaderCell>
-              <Table.HeaderCell
-                scope="col"
-                align="right"
-                className={stepStyles.tableDesktopOnly}
-              >
-                AFP privat
-              </Table.HeaderCell>
+              {afpPrivatData && afpPrivatData.length > 0 && (
+                <Table.HeaderCell
+                  scope="col"
+                  align="right"
+                  className={stepStyles.tableDesktopOnly}
+                >
+                  AFP privat
+                </Table.HeaderCell>
+              )}
               <Table.HeaderCell
                 scope="col"
                 align="right"
@@ -74,7 +77,9 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 {pensjonsalder.length > 0 ? `${pensjonsalder[0] - 1} år` : 0}
               </Table.HeaderCell>
               <Table.DataCell align="right">0</Table.DataCell>
-              <Table.DataCell align="right">0</Table.DataCell>
+              {afpPrivatData && afpPrivatData.length > 0 && (
+                <Table.DataCell align="right">0</Table.DataCell>
+              )}
               <Table.DataCell align="right">
                 {state.aarligInntektFoerUttakBeloep}
               </Table.DataCell>
@@ -92,9 +97,11 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 <Table.DataCell align="right">
                   {formatInntekt(alderspensjonData[index])}
                 </Table.DataCell>
-                <Table.DataCell align="right">
-                  {formatInntekt(afpPrivatValue(index))}
-                </Table.DataCell>
+                {afpPrivatData && afpPrivatData.length > 0 && (
+                  <Table.DataCell align="right">
+                    {formatInntekt(afpPrivatValue(index))}
+                  </Table.DataCell>
+                )}
                 <Table.DataCell align="right">
                   {formatInntekt(inntektVsaPensjonValue(alder))}
                 </Table.DataCell>
@@ -112,8 +119,12 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                 <dl className={stepStyles.details}>
                   <dt>Alderspensjon (Nav)</dt>
                   <dd className={stepStyles.detailsItemRight}>0</dd>
-                  <dt>AFP privat</dt>
-                  <dd className={stepStyles.detailsItemRight}>0</dd>
+                  {afpPrivatData && afpPrivatData.length > 0 && (
+                    <>
+                      <dt>AFP privat</dt>
+                      <dd className={stepStyles.detailsItemRight}>0</dd>
+                    </>
+                  )}
                   <dt>Pensjonsgivende inntekt</dt>
                   <dd className={stepStyles.detailsItemRight}>
                     {state.aarligInntektFoerUttakBeloep}
@@ -136,10 +147,14 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
                   <dd className={stepStyles.detailsItemRight}>
                     {formatInntekt(alderspensjonData[index])}
                   </dd>
-                  <dt>AFP privat</dt>
-                  <dd className={stepStyles.detailsItemRight}>
-                    {formatInntekt(afpPrivatValue(index))}
-                  </dd>
+                  {afpPrivatData && afpPrivatData.length > 0 && (
+                    <>
+                      <dt>AFP privat</dt>
+                      <dd className={stepStyles.detailsItemRight}>
+                        {formatInntekt(afpPrivatValue(index))}
+                      </dd>
+                    </>
+                  )}
                   <dt>Pensjonsgivende inntekt</dt>
                   <dd className={stepStyles.detailsItemRight}>
                     {formatInntekt(inntektVsaPensjonValue(alder))}
