@@ -58,7 +58,7 @@ const AFPStep = () => {
       </RadioGroup>
       <ReadMore
         header="Om AFP i privat sektor"
-        className={stepStyles.componentSpacing}
+        className={`${stepStyles.componentSpacing} ${stepStyles.readMoreSpacing}`}
       >
         AFP i privat sektor er et tillegg til alderspensjonen. Er du usikker på
         om du har rett til AFP i privat sektor, bør du sjekke det med

@@ -80,7 +80,10 @@ const InntektStep = () => {
         description="Dagens kroneverdi før skatt"
         error={errorFields.aarligInntektFoerUttakBeloep}
       />
-      <ReadMore header="Om pensjonsgivende inntekt">
+      <ReadMore
+        header="Om pensjonsgivende inntekt"
+        className={stepStyles.readMoreSpacing}
+      >
         Inntekten vil bli brukt som inntekt alle år du har oppgitt å ha jobbet i
         Norge. Pensjonsgivende inntekt er arbeids- og næringsinntekt, honorarer
         og enkelte ytelser som du mottar i stedet for arbeidsinntekt.
@@ -148,7 +151,7 @@ const InntektStep = () => {
             100&nbsp;%
           </option>
         </Select>
-        <ReadMore header="Om uttaksgrad">
+        <ReadMore header="Om uttaksgrad" className={stepStyles.readMoreSpacing}>
           Uttaksgrad angir hvor stor del av månedlig alderspensjon du ønsker å
           ta ut. Du kan velge gradert uttak (20, 40, 50, 60 eller 80 %), eller
           hel alderspensjon (100&nbsp;%).

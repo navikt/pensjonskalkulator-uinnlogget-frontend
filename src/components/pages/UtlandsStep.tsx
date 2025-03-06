@@ -69,7 +69,7 @@ const UtlandsStep = () => {
             <Radio value={false}>Nei</Radio>
           </RadioGroup>
           <ReadMore
-            className={stepStyles.componentSpacing}
+            className={`${stepStyles.componentSpacing} ${stepStyles.readMoreSpacing}`}
             header="Om opphold utenfor Norge"
           >
             Hvis du har bodd eller jobbet utenfor Norge, kan det påvirke
