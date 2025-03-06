@@ -173,8 +173,8 @@ const useErrorHandling = (state: State) => {
 
     if (step === 'SivilstandStep') {
       errors.sivilstand = !state.sivilstand ? 'Du må velge et alternativ' : ''
-      errors.epsHarInntektOver2G = state.sivilstand !== 'UGIFT' && state.epsHarInntektOver2G === undefined ? 'Du må velge et alternativ' : ''
-      errors.epsHarPensjon = state.sivilstand !== 'UGIFT' && state.epsHarPensjon === undefined ? 'Du må velge et alternativ' : ''
+      errors.epsHarInntektOver2G = state.sivilstand && state.sivilstand !== 'UGIFT' && state.epsHarInntektOver2G === undefined ? 'Du må velge et alternativ' : ''
+      errors.epsHarPensjon = state.sivilstand && state.sivilstand !== 'UGIFT' && state.epsHarPensjon === undefined ? 'Du må velge et alternativ' : ''
     }
 
     if (step === 'AFPStep') {

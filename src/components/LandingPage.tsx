@@ -54,9 +54,6 @@ export default function LandingPage() {
           Uinnlogget pensjonskalkulator
         </Heading>
         <VStack gap={'5'}>
-          <Heading level="2" size="medium">
-            Hei!
-          </Heading>
           <Box padding={'0'}>
             <BodyLong size="large">
               Velkommen til forenklet pensjonskalkulator som kan gi deg et

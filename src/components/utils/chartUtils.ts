@@ -134,7 +134,7 @@ export const getChartOptions = (input: {
         color: 'var(--a-gray-500)',
       },
       {
-        name: 'Alderspensjon',
+        name: 'Alderspensjon (Nav)',
         data: [null, ...alderspensjonData],
         color: 'var(--a-deepblue-500)',
       },
