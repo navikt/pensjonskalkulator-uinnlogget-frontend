@@ -1,7 +1,10 @@
 import Highcharts from 'highcharts'
 
-import { formatInntektToNumber } from '../pages/utils/inntekt'
-import { Simuleringsresultat } from '@/common'
+import {
+  calculateProportionalYearlyIncome,
+  formatInntektToNumber,
+} from '../pages/utils/inntekt'
+import { Alder, Simuleringsresultat } from '@/common'
 
 export const alignData = (
   categories: number[],
@@ -35,19 +38,19 @@ export const alignData = (
 export const getChartOptions = (input: {
   simuleringsresultat?: Simuleringsresultat
   aarligInntektFoerUttakBeloep?: string
-  heltUttakAar: number
-  inntektVsaHelPensjonSluttalder?: number | null
+  heltUttakAlder: Alder
+  inntektVsaHelPensjonSluttAlder?: Alder | null
   inntektVsaHelPensjonBeloep?: string | null
-  gradertUttakAlder?: number | null
+  gradertUttakAlder?: Alder | null
   gradertUttakInntekt?: string | null
 }) => {
   const {
     simuleringsresultat,
     aarligInntektFoerUttakBeloep,
-    heltUttakAar,
-    inntektVsaHelPensjonSluttalder = 0,
+    heltUttakAlder,
+    inntektVsaHelPensjonSluttAlder = null,
     inntektVsaHelPensjonBeloep,
-    gradertUttakAlder = 0,
+    gradertUttakAlder = null,
     gradertUttakInntekt,
   } = input
 
@@ -79,6 +82,81 @@ export const getChartOptions = (input: {
 
   const extendedCategories =
     categories.length > 0 ? [categories[0] - 1, ...categories] : []
+
+  const pensjonsgivendeInntektData = extendedCategories.map((currentAge) => {
+    const inntektFoerUttakBeloep = parsedAarligInntektFoerUttakBeloep
+
+    const inntektUnderGradertUttakBeloep = parsedGradertUttakInntekt
+
+    const inntektVedFullPensjonBeloep = parsedInntektVsaHelPensjonBeloep
+
+    // Sjekk om gjeldende alder er innenfor en inntektsperiode
+    if (
+      gradertUttakAlder &&
+      currentAge === gradertUttakAlder.aar &&
+      gradertUttakAlder.maaneder > 0
+    ) {
+      // Overgangsår: Inntekt før uttak → Inntekt under gradert uttak
+      return calculateProportionalYearlyIncome(
+        gradertUttakAlder.maaneder,
+        inntektFoerUttakBeloep,
+        inntektUnderGradertUttakBeloep
+      )
+    } else if (
+      currentAge === heltUttakAlder.aar &&
+      heltUttakAlder.maaneder > 0
+    ) {
+      if (gradertUttakAlder) {
+        // Overgangsår: Inntekt under gradert uttak → Inntekt ved siden av full pensjon
+        return calculateProportionalYearlyIncome(
+          heltUttakAlder.maaneder,
+          inntektUnderGradertUttakBeloep,
+          inntektVedFullPensjonBeloep
+        )
+      } else {
+        // Overgangsår: Inntekt før uttak → Inntekt ved siden av full pensjon
+        return calculateProportionalYearlyIncome(
+          heltUttakAlder.maaneder,
+          inntektFoerUttakBeloep,
+          inntektVedFullPensjonBeloep
+        )
+      }
+    } else if (
+      inntektVsaHelPensjonSluttAlder &&
+      currentAge === inntektVsaHelPensjonSluttAlder.aar &&
+      inntektVsaHelPensjonSluttAlder.maaneder > 0
+    ) {
+      // Overgangsår: Inntekt ved siden av full pensjon → Ingen inntekt
+      return calculateProportionalYearlyIncome(
+        inntektVsaHelPensjonSluttAlder.maaneder,
+        inntektVedFullPensjonBeloep,
+        0
+      )
+    } else if (
+      currentAge <
+      (gradertUttakAlder ? gradertUttakAlder.aar : heltUttakAlder.aar)
+    ) {
+      // Helt år med inntekt før pensjon
+      return inntektFoerUttakBeloep
+    } else if (
+      gradertUttakAlder &&
+      currentAge >= gradertUttakAlder.aar &&
+      currentAge < heltUttakAlder.aar
+    ) {
+      // Helt år med inntekt under gradert uttak
+      return inntektUnderGradertUttakBeloep
+    } else if (
+      currentAge >= heltUttakAlder.aar &&
+      (!inntektVsaHelPensjonSluttAlder ||
+        currentAge < inntektVsaHelPensjonSluttAlder.aar)
+    ) {
+      // Helt år med inntekt ved siden av full pensjon
+      return inntektVedFullPensjonBeloep
+    } else {
+      // Ingen inntekt (etter inntektVsaHelPensjonSluttAlder)
+      return 0
+    }
+  })
 
   const xaxisCategories =
     extendedCategories.length > 0
@@ -127,10 +205,7 @@ export const getChartOptions = (input: {
     series: [
       {
         name: 'Pensjonsgivende inntekt',
-        data: [
-          parsedAarligInntektFoerUttakBeloep,
-          new Array(categories.length).fill(null),
-        ].flat(),
+        data: pensjonsgivendeInntektData,
         color: 'var(--a-gray-500)',
       },
       {
@@ -157,53 +232,6 @@ export const getChartOptions = (input: {
       data: [null, ...extendedAfpPrivatData],
       color: 'var(--a-purple-400)',
     })
-  }
-
-  const inntektPlacement = afpPrivatData.length !== 0 ? 1 : 0
-
-  if (
-    parsedInntektVsaHelPensjonBeloep !== 0 ||
-    parsedInntektVsaHelPensjonBeloep
-  ) {
-    const maxAar = inntektVsaHelPensjonSluttalder
-      ? inntektVsaHelPensjonSluttalder
-      : categories[categories.length - 1]
-
-    const inntektVsaHelPensjonInterval = []
-    for (let i = heltUttakAar; i <= maxAar; i++) {
-      inntektVsaHelPensjonInterval.push(i)
-    }
-
-    const alignedInntektVsaHelPensjonData = alignData(
-      extendedCategories,
-      inntektVsaHelPensjonInterval,
-      parsedInntektVsaHelPensjonBeloep
-    )
-
-    chartOptions.series[inntektPlacement].data = chartOptions.series[
-      inntektPlacement
-    ].data.map((value, index) =>
-      value !== null ? value : alignedInntektVsaHelPensjonData[index]
-    )
-  }
-
-  if (parsedGradertUttakInntekt !== 0 || parsedGradertUttakInntekt) {
-    const gradertUttakInterval = []
-    for (let i = gradertUttakAlder!; i < heltUttakAar; i++) {
-      gradertUttakInterval.push(i)
-    }
-
-    const alignedGradertUttakData = alignData(
-      extendedCategories,
-      gradertUttakInterval,
-      parsedGradertUttakInntekt
-    )
-
-    chartOptions.series[inntektPlacement].data = chartOptions.series[
-      inntektPlacement
-    ].data.map((value, index) =>
-      value !== null ? value : alignedGradertUttakData[index]
-    )
   }
 
   return chartOptions

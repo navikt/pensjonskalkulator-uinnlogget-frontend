@@ -17,6 +17,7 @@ import { logger } from '../utils/logging'
 import { formatAndUpdateBeloep } from './utils/inntekt'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
+import { getAldersgrense } from '@/functions/aldersgrense'
 import { useFieldChange } from '@/helpers/useFormState'
 
 import '../styles/selectStyle.css'
@@ -26,14 +27,27 @@ const InntektStep = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
-  useEffect(() => {
-    document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
-  }, [])
-
   const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
+
+  useEffect(() => {
+    document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
+  }, [])
+
+  useEffect(() => {
+    getAldersgrense(state.foedselAar ? parseInt(state.foedselAar) : 0).then(
+      (aldersgrense) => {
+        if (aldersgrense) {
+          console.log('Aldersgrense:', aldersgrense)
+          handleFieldChange((draft) => {
+            draft.aldersgrense = aldersgrense
+          }, 'aldersgrense')
+        }
+      }
+    )
+  }, [state.foedselAar])
 
   const onSubmit = () => {
     const hasErrors = validateFields('InntektStep')
@@ -47,15 +61,50 @@ const InntektStep = () => {
     return false
   }
 
-  const yearOptions = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => (
-        <option value={i + 62} key={i}>
-          {i + 62} år
-        </option>
-      )),
-    []
-  )
+  const aarArray = useMemo(() => {
+    const nedreAldersgrense = state.aldersgrense.nedreAldersgrense
+    const startAar = nedreAldersgrense?.aar
+    const startMaaneder = nedreAldersgrense?.maaneder || 0
+
+    const yearsWithMonths = [0, 5, 13]
+
+    const result = Array.from({ length: 14 }, (_, index) => {
+      if (!startAar) return { year: null, month: null }
+
+      const year = startAar + index
+      const showMonths = yearsWithMonths.includes(index) && startMaaneder > 0
+
+      return {
+        year: year,
+        month: showMonths ? startMaaneder : 0,
+      }
+    })
+
+    return result
+  }, [
+    state.aldersgrense.nedreAldersgrense?.aar,
+    state.aldersgrense.nedreAldersgrense?.maaneder,
+  ])
+
+  const yearOptions = useMemo(() => {
+    if (!state.aldersgrense.nedreAldersgrense?.aar) {
+      return []
+    }
+
+    return aarArray
+      .map(({ year, month }) => {
+        if (!year) return null
+
+        return (
+          <option value={year} key={year}>
+            {month
+              ? `${year} år og ${month === 1 ? '1 måned' : `${month} måneder`}`
+              : `${year} år`}
+          </option>
+        )
+      })
+      .filter(Boolean)
+  }, [aarArray])
 
   return (
     <FormWrapper onSubmit={onSubmit}>
@@ -167,9 +216,21 @@ const InntektStep = () => {
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.gradertUttak!.uttaksalder.aar =
-                    it.target.value === '' ? null : parseInt(it.target.value)
-                  draft.gradertUttak!.uttaksalder.maaneder = 0
+                  const selectedValue = it.target.value
+
+                  if (selectedValue === '') {
+                    draft.gradertUttak!.uttaksalder.aar = null
+                    draft.gradertUttak!.uttaksalder.maaneder = null
+                  } else {
+                    const selectedYear = parseInt(selectedValue)
+                    const selectedYearData = aarArray.find(
+                      (item) => item.year === selectedYear
+                    )
+
+                    draft.gradertUttak!.uttaksalder.aar = selectedYear
+                    draft.gradertUttak!.uttaksalder.maaneder =
+                      selectedYearData?.month ?? 0
+                  }
                 }, 'gradertUttaksalder')
               }}
               error={errorFields.gradertUttaksalder}
@@ -209,9 +270,21 @@ const InntektStep = () => {
           label="Fra hvilken alder planlegger du å ta ut 100&nbsp;% pensjon?"
           onChange={(it) => {
             handleFieldChange((draft) => {
-              draft.heltUttak.uttaksalder.aar =
-                it.target.value === '' ? null : parseInt(it.target.value)
-              draft.heltUttak.uttaksalder.maaneder = 0
+              const selectedValue = it.target.value
+
+              if (selectedValue === '') {
+                draft.heltUttak.uttaksalder.aar = null
+                draft.heltUttak.uttaksalder.maaneder = null
+              } else {
+                const selectedYear = parseInt(selectedValue)
+                const selectedYearData = aarArray.find(
+                  (item) => item.year === selectedYear
+                )
+
+                draft.heltUttak.uttaksalder.aar = selectedYear
+                draft.heltUttak.uttaksalder.maaneder =
+                  selectedYearData?.month ?? 0
+              }
             }, 'heltUttaksalder')
           }}
           error={errorFields.heltUttaksalder}
@@ -309,12 +382,23 @@ const InntektStep = () => {
                     draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
                       undefined
                   } else {
+                    const selectedYear = parseInt(it.target.value)
+                    const selectedYearData = aarArray.find(
+                      (item) => item.year === selectedYear
+                    )
+                    console.log(
+                      'Selected year data:',
+                      selectedYearData,
+                      'Selected year:',
+                      selectedYear
+                    )
+
                     draft.heltUttak.aarligInntektVsaPensjon = {
                       beloep:
                         draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
                       sluttAlder: {
-                        aar: parseInt(it.target.value),
-                        maaneder: 0,
+                        aar: selectedYear,
+                        maaneder: selectedYearData?.month ?? 0,
                       },
                     }
                   }
