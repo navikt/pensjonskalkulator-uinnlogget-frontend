@@ -68,7 +68,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const req = new NextRequest('http://localhost', { method: 'POST' })
@@ -84,7 +84,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const req = new NextRequest('http://localhost', { method: 'POST' })
@@ -104,7 +104,7 @@ describe('route.ts', () => {
     it('Burde returnere en backend response for POST request', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const response = await routeUtils.postDev()
@@ -124,7 +124,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValueOnce({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const response = await routeUtils.postProd(req)
