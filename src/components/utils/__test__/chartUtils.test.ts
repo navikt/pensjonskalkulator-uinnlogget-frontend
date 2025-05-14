@@ -6,7 +6,7 @@ describe('getChartOptions', () => {
   const inntektVsaHelPensjonBeloep = '100000'
   const inntektVsaHelPensjonSluttAlder = { aar: 68, maaneder: 0 }
   const aarligInntektFoerUttakBeloep = '500000'
-  const gradertUttakAlderObj = { aar: 65, maaneder: 0 }
+  const gradertUttakAlder = { aar: 65, maaneder: 0 }
   const gradertUttakInntekt = '200000'
 
   const mockSimuleringsresultat = {
@@ -36,7 +36,7 @@ describe('getChartOptions', () => {
         inntektVsaHelPensjonSluttAlder,
         inntektVsaHelPensjonBeloep,
         aarligInntektFoerUttakBeloep,
-        gradertUttakAlder: gradertUttakAlderObj,
+        gradertUttakAlder,
         gradertUttakInntekt,
       })
 
@@ -67,7 +67,7 @@ describe('getChartOptions', () => {
         inntektVsaHelPensjonSluttAlder,
         inntektVsaHelPensjonBeloep,
         aarligInntektFoerUttakBeloep,
-        gradertUttakAlder: gradertUttakAlderObj,
+        gradertUttakAlder,
         gradertUttakInntekt,
       })
 
@@ -106,13 +106,13 @@ describe('getChartOptions', () => {
             inntektVsaHelPensjonSluttAlder,
             inntektVsaHelPensjonBeloep: 'NaN',
             aarligInntektFoerUttakBeloep: 'NaN',
-            gradertUttakAlder: gradertUttakAlderObj,
+            gradertUttakAlder,
             gradertUttakInntekt: 'NaN',
           })
 
           expect(chartOptions.series).toContainEqual({
             name: 'Pensjonsgivende inntekt',
-            data: [0, null, null, null, null],
+            data: [0, 0, 0, 0, 0],
             color: 'var(--a-gray-500)',
           })
         })
@@ -127,14 +127,14 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonSluttAlder: undefined,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: gradertUttakAlderObj,
+          gradertUttakAlder,
           gradertUttakInntekt,
         })
 
         chartOptions.series[1].data = [null, null, null, null, null]
 
         const gradertUttakInterval = []
-        for (let i = gradertUttakAlderObj.aar; i < heltUttakAlder.aar; i++) {
+        for (let i = gradertUttakAlder.aar; i < heltUttakAlder.aar; i++) {
           gradertUttakInterval.push(i)
         }
 
@@ -173,7 +173,7 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonSluttAlder: undefined,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: gradertUttakAlderObj,
+          gradertUttakAlder,
           gradertUttakInntekt,
         })
 
@@ -197,7 +197,7 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonSluttAlder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: gradertUttakAlderObj,
+          gradertUttakAlder,
           gradertUttakInntekt,
         })
 
@@ -232,7 +232,7 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonSluttAlder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: gradertUttakAlderObj,
+          gradertUttakAlder,
           gradertUttakInntekt,
         })
 
@@ -301,7 +301,7 @@ describe('getChartOptions', () => {
           inntektVsaHelPensjonSluttAlder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: gradertUttakAlderObj,
+          gradertUttakAlder,
           gradertUttakInntekt,
         })
 

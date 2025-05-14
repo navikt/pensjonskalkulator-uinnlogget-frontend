@@ -35,6 +35,103 @@ export const alignData = (
   return alignedData
 }
 
+const getPensjonsgivendeInntektForAge = (
+  currentAge: number,
+  parsedAarligInntektFoerUttakBeloep: number,
+  parsedGradertUttakInntekt: number | null,
+  parsedInntektVsaHelPensjonBeloep: number | null,
+  gradertUttakAlder: Alder | null,
+  heltUttakAlder: Alder,
+  inntektVsaHelPensjonSluttAlder: Alder | null
+): number | null => {
+  const inntektFoerUttakBeloep = parsedAarligInntektFoerUttakBeloep
+  const inntektUnderGradertUttakBeloep = parsedGradertUttakInntekt
+  const inntektVedFullPensjonBeloep = parsedInntektVsaHelPensjonBeloep
+
+  // Overgangsår: Inntekt før uttak → Inntekt under gradert uttak
+  if (
+    gradertUttakAlder &&
+    currentAge === gradertUttakAlder.aar &&
+    gradertUttakAlder.maaneder > 0
+  ) {
+    if (inntektUnderGradertUttakBeloep === null) {
+      return null
+    }
+    return calculateProportionalYearlyIncome(
+      gradertUttakAlder.maaneder,
+      inntektFoerUttakBeloep,
+      inntektUnderGradertUttakBeloep
+    )
+  }
+  // Overgangsår: Inntekt under gradert uttak / Inntekt før uttak → Inntekt ved siden av full pensjon
+  else if (currentAge === heltUttakAlder.aar && heltUttakAlder.maaneder > 0) {
+    if (gradertUttakAlder) {
+      if (
+        inntektUnderGradertUttakBeloep === null ||
+        inntektVedFullPensjonBeloep === null
+      ) {
+        return null
+      }
+      return calculateProportionalYearlyIncome(
+        heltUttakAlder.maaneder,
+        inntektUnderGradertUttakBeloep,
+        inntektVedFullPensjonBeloep
+      )
+    } else {
+      if (inntektVedFullPensjonBeloep === null) {
+        return null
+      }
+      return calculateProportionalYearlyIncome(
+        heltUttakAlder.maaneder,
+        inntektFoerUttakBeloep,
+        inntektVedFullPensjonBeloep
+      )
+    }
+  }
+  // Overgangsår: Inntekt ved siden av full pensjon → Ingen inntekt
+  else if (
+    inntektVsaHelPensjonSluttAlder &&
+    currentAge === inntektVsaHelPensjonSluttAlder.aar &&
+    inntektVsaHelPensjonSluttAlder.maaneder > 0
+  ) {
+    if (inntektVedFullPensjonBeloep === null) {
+      return null
+    }
+    return calculateProportionalYearlyIncome(
+      inntektVsaHelPensjonSluttAlder.maaneder,
+      inntektVedFullPensjonBeloep,
+      0
+    )
+  }
+  // Helt år med inntekt før pensjon
+  else if (
+    currentAge <
+    (gradertUttakAlder ? gradertUttakAlder.aar : heltUttakAlder.aar)
+  ) {
+    return inntektFoerUttakBeloep
+  }
+  // Helt år med inntekt under gradert uttak
+  else if (
+    gradertUttakAlder &&
+    currentAge >= gradertUttakAlder.aar &&
+    currentAge < heltUttakAlder.aar
+  ) {
+    return inntektUnderGradertUttakBeloep
+  }
+  // Helt år med inntekt ved siden av full pensjon
+  else if (
+    currentAge >= heltUttakAlder.aar &&
+    (!inntektVsaHelPensjonSluttAlder ||
+      currentAge <= inntektVsaHelPensjonSluttAlder.aar)
+  ) {
+    return inntektVedFullPensjonBeloep
+  }
+  // Ingen inntekt (etter inntektVsaHelPensjonSluttAlder)
+  else {
+    return 0
+  }
+}
+
 export const getChartOptions = (input: {
   simuleringsresultat?: Simuleringsresultat
   aarligInntektFoerUttakBeloep?: string
@@ -59,16 +156,18 @@ export const getChartOptions = (input: {
   )
     ? 0
     : formatInntektToNumber(aarligInntektFoerUttakBeloep)
-  const parsedInntektVsaHelPensjonBeloep = isNaN(
-    formatInntektToNumber(inntektVsaHelPensjonBeloep)
+
+  const numInntektVsaHelPensjonBeloep = formatInntektToNumber(
+    inntektVsaHelPensjonBeloep
   )
+  const parsedInntektVsaHelPensjonBeloep = isNaN(numInntektVsaHelPensjonBeloep)
     ? 0
-    : formatInntektToNumber(inntektVsaHelPensjonBeloep)
-  const parsedGradertUttakInntekt = isNaN(
-    formatInntektToNumber(gradertUttakInntekt)
-  )
+    : numInntektVsaHelPensjonBeloep
+
+  const numGradertUttakInntekt = formatInntektToNumber(gradertUttakInntekt)
+  const parsedGradertUttakInntekt = isNaN(numGradertUttakInntekt)
     ? 0
-    : formatInntektToNumber(gradertUttakInntekt)
+    : numGradertUttakInntekt
 
   const alderspensjonData = simuleringsresultat
     ? simuleringsresultat.alderspensjon.map((item) => item.beloep)
@@ -83,80 +182,20 @@ export const getChartOptions = (input: {
   const extendedCategories =
     categories.length > 0 ? [categories[0] - 1, ...categories] : []
 
-  const pensjonsgivendeInntektData = extendedCategories.map((currentAge) => {
-    const inntektFoerUttakBeloep = parsedAarligInntektFoerUttakBeloep
-
-    const inntektUnderGradertUttakBeloep = parsedGradertUttakInntekt
-
-    const inntektVedFullPensjonBeloep = parsedInntektVsaHelPensjonBeloep
-
-    // Sjekk om gjeldende alder er innenfor en inntektsperiode
-    if (
-      gradertUttakAlder &&
-      currentAge === gradertUttakAlder.aar &&
-      gradertUttakAlder.maaneder > 0
-    ) {
-      // Overgangsår: Inntekt før uttak → Inntekt under gradert uttak
-      return calculateProportionalYearlyIncome(
-        gradertUttakAlder.maaneder,
-        inntektFoerUttakBeloep,
-        inntektUnderGradertUttakBeloep
-      )
-    } else if (
-      currentAge === heltUttakAlder.aar &&
-      heltUttakAlder.maaneder > 0
-    ) {
-      if (gradertUttakAlder) {
-        // Overgangsår: Inntekt under gradert uttak → Inntekt ved siden av full pensjon
-        return calculateProportionalYearlyIncome(
-          heltUttakAlder.maaneder,
-          inntektUnderGradertUttakBeloep,
-          inntektVedFullPensjonBeloep
+  const pensjonsgivendeInntektData =
+    extendedCategories.length > 0
+      ? extendedCategories.map((currentAge) =>
+          getPensjonsgivendeInntektForAge(
+            currentAge,
+            parsedAarligInntektFoerUttakBeloep,
+            parsedGradertUttakInntekt,
+            parsedInntektVsaHelPensjonBeloep,
+            gradertUttakAlder,
+            heltUttakAlder,
+            inntektVsaHelPensjonSluttAlder
+          )
         )
-      } else {
-        // Overgangsår: Inntekt før uttak → Inntekt ved siden av full pensjon
-        return calculateProportionalYearlyIncome(
-          heltUttakAlder.maaneder,
-          inntektFoerUttakBeloep,
-          inntektVedFullPensjonBeloep
-        )
-      }
-    } else if (
-      inntektVsaHelPensjonSluttAlder &&
-      currentAge === inntektVsaHelPensjonSluttAlder.aar &&
-      inntektVsaHelPensjonSluttAlder.maaneder > 0
-    ) {
-      // Overgangsår: Inntekt ved siden av full pensjon → Ingen inntekt
-      return calculateProportionalYearlyIncome(
-        inntektVsaHelPensjonSluttAlder.maaneder,
-        inntektVedFullPensjonBeloep,
-        0
-      )
-    } else if (
-      currentAge <
-      (gradertUttakAlder ? gradertUttakAlder.aar : heltUttakAlder.aar)
-    ) {
-      // Helt år med inntekt før pensjon
-      return inntektFoerUttakBeloep
-    } else if (
-      gradertUttakAlder &&
-      currentAge >= gradertUttakAlder.aar &&
-      currentAge < heltUttakAlder.aar
-    ) {
-      // Helt år med inntekt under gradert uttak
-      return inntektUnderGradertUttakBeloep
-    } else if (
-      currentAge >= heltUttakAlder.aar &&
-      (!inntektVsaHelPensjonSluttAlder ||
-        currentAge < inntektVsaHelPensjonSluttAlder.aar)
-    ) {
-      // Helt år med inntekt ved siden av full pensjon
-      return inntektVedFullPensjonBeloep
-    } else {
-      // Ingen inntekt (etter inntektVsaHelPensjonSluttAlder)
-      return 0
-    }
-  })
+      : [parsedAarligInntektFoerUttakBeloep]
 
   const xaxisCategories =
     extendedCategories.length > 0

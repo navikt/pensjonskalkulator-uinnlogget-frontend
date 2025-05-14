@@ -218,9 +218,16 @@ const InntektStep = () => {
                 handleFieldChange((draft) => {
                   const selectedValue = it.target.value
 
+                  if (!draft.gradertUttak) {
+                    draft.gradertUttak = {
+                      grad: null, // Or some default grad if appropriate
+                      uttaksalder: { aar: null, maaneder: null },
+                    }
+                  }
+
                   if (selectedValue === '') {
-                    draft.gradertUttak!.uttaksalder.aar = null
-                    draft.gradertUttak!.uttaksalder.maaneder = null
+                    draft.gradertUttak.uttaksalder.aar = null
+                    draft.gradertUttak.uttaksalder.maaneder = null
                   } else {
                     const selectedYear = parseInt(selectedValue)
                     const selectedYearData = aarArray.find(
@@ -358,7 +365,9 @@ const InntektStep = () => {
                   ? 'livsvarig'
                   : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
                       state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                    ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                    ? String(
+                        state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                      )
                     : ''
               }
               className="selectAar"

@@ -118,17 +118,17 @@ export const useSimuleringsresultatData = (
       )
     }
     // Vanlige inntektsperioder (ikke-overgang)
-    else if (alder < (gradertUttaksalder || heltUttakAar)) {
-      return inntektFoerUttakBeloep
-    } else if (
+    else if (
       gradertUttaksalder &&
       alder >= gradertUttaksalder &&
       alder < heltUttakAar
     ) {
       return aarligbelopVsaGradertuttak
-    } else if (
+    }
+    // helt uttak period
+    else if (
       alder >= heltUttakAar &&
-      (!inntektVsaHelPensjonSluttAar || alder < inntektVsaHelPensjonSluttAar)
+      (!inntektVsaHelPensjonSluttAar || alder <= inntektVsaHelPensjonSluttAar)
     ) {
       return aarligbelopVsaHeltuttak
     } else {
