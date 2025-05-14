@@ -14,9 +14,6 @@ const useErrorHandling = (state: State) => {
     if (+state.inntektOver1GAntallAar < 0) {
       return 'Antall år kan ikke være negativt';
     }
-    if (+state.inntektOver1GAntallAar > 50) {
-      return 'Du kan ikke være yrkesaktiv i mer enn 50 år';
-    }
     return '';
   }
 
