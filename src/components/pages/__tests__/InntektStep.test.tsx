@@ -104,7 +104,7 @@ beforeEach(() => {
           error: 'Mocked fetch: Not Found for URL: ' + urlString,
         }),
     })
-  }) as jest.Mock
+  })
 })
 
 afterEach(() => {
