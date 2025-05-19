@@ -62,7 +62,7 @@ const mockAldersgrenseResponse = {
       maaneder: 1,
     },
     nedreAldersgrense: {
-      aar: 66,
+      aar: 62,
       maaneder: 1,
     },
   },
@@ -70,8 +70,8 @@ const mockAldersgrenseResponse = {
 
 const baseTestStateWithFoedselAar: Partial<State> = {
   aldersgrense: {
-    nedreAldersgrense: { aar: null, maaneder: null },
-    normertPensjoneringsalder: { aar: null, maaneder: null },
+    nedreAldersgrense: { aar: 62, maaneder: 1 },
+    normertPensjoneringsalder: { aar: 67, maaneder: 1 },
   },
 }
 

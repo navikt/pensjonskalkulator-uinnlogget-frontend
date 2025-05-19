@@ -40,7 +40,6 @@ const InntektStep = () => {
     getAldersgrense(state.foedselAar ? parseInt(state.foedselAar) : 0).then(
       (aldersgrense) => {
         if (aldersgrense) {
-          console.log('Aldersgrense:', aldersgrense)
           handleFieldChange((draft) => {
             draft.aldersgrense = aldersgrense
           }, 'aldersgrense')
