@@ -68,13 +68,6 @@ const mockAldersgrenseResponse = {
   },
 }
 
-const baseTestStateWithFoedselAar: Partial<State> = {
-  aldersgrense: {
-    nedreAldersgrense: { aar: 62, maaneder: 1 },
-    normertPensjoneringsalder: { aar: 67, maaneder: 1 },
-  },
-}
-
 beforeEach(() => {
   jest.clearAllMocks()
   ;(useErrorHandling as jest.Mock).mockReturnValue([
@@ -210,7 +203,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          ...baseTestStateWithFoedselAar,
+          ...mockAldersgrenseResponse,
         },
       })
       const input = screen.getByLabelText(
@@ -236,7 +229,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 2 },
@@ -252,7 +245,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 2 },
@@ -278,7 +271,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 62, maaneder: 0 },
@@ -303,7 +296,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: null },
@@ -328,7 +321,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: null, maaneder: null },
@@ -348,7 +341,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 0 },
@@ -379,7 +372,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 0 },
@@ -406,7 +399,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: {
@@ -431,7 +424,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: undefined,
           },
         })
@@ -453,7 +446,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: null,
               uttaksalder: { aar: null, maaneder: null },
@@ -492,7 +485,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: null,
               uttaksalder: { aar: null, maaneder: null },
@@ -525,7 +518,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          ...baseTestStateWithFoedselAar,
+          ...mockAldersgrenseResponse,
           heltUttak: {
             uttaksalder: { aar: 62, maaneder: null },
             aarligInntektVsaPensjon: {
@@ -552,7 +545,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
-          ...baseTestStateWithFoedselAar,
+          ...mockAldersgrenseResponse,
           heltUttak: {
             uttaksalder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: {
@@ -638,7 +631,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -651,7 +644,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -667,7 +660,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -692,7 +685,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: {
@@ -717,7 +710,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: { aar: 0, maaneder: null },
@@ -739,7 +732,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
-            ...baseTestStateWithFoedselAar,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: { aar: 63, maaneder: 0 },
@@ -769,7 +762,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -809,7 +802,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -846,7 +839,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -884,7 +877,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -922,7 +915,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -958,7 +951,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -987,7 +980,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -1013,7 +1006,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
-                ...baseTestStateWithFoedselAar,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
