@@ -37,6 +37,9 @@ spec:
           namespace: personbruker
       external:
         - host: www.g.nav.no
+        - host: pensjonskalkulator-unleash-api.nav.cloud.nais.io
   azure:
     application:
       enabled: true
+  envFrom:
+    - secret: uinnlogget-kalkulator-unleash-api-token
