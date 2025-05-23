@@ -5,7 +5,7 @@ on:
       - 'main'
       - 'magicbox'
       - 'dreambox'
-      - 'catbox'      
+      - 'catbox'
     paths-ignore:
       - '.gitignore'
       - 'CODEOWNERS'
@@ -53,7 +53,7 @@ jobs:
         env:
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      
+
       - name: Fetch openapi backend types
         run: npx openapi-typescript ${{ github.event.inputs.prod == 'true' && 'https://www.nav.no/pensjon/kalkulator/v3/api-docs/current' || 'https://staging.ekstern.dev.nav.no/pensjon/kalkulator/v3/api-docs/current' }} -o ./src/types/schema.d.ts
 
@@ -161,7 +161,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/magicbox.yml
+          RESOURCE: .nais/magicbox.yml,.nais/unleash-dev.yml
           VAR: image=${{ needs.build.outputs.image }}
   deploy-dreambox:
     name: deploy to dreambox
@@ -181,7 +181,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/dreambox.yml
+          RESOURCE: .nais/dreambox.yml,.nais/unleash-dev.yml
           VAR: image=${{ needs.build.outputs.image }}
   deploy-catbox:
     name: deploy to catbox
@@ -201,7 +201,7 @@ jobs:
         uses: nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
-          RESOURCE: .nais/catbox.yml
+          RESOURCE: .nais/catbox.yml,.nais/unleash-dev.yml
           VAR: image=${{ needs.build.outputs.image }}
 
   codeql-analyse:
@@ -247,4 +247,4 @@ jobs:
         env:
           CLUSTER: prod-gcp
           IMAGE: ${{ needs.build.outputs.image }}
-          RESOURCE: .nais/deploy-prod.yml
+          RESOURCE: .nais/deploy-prod.yml,.nais/unleash-prod.yml
