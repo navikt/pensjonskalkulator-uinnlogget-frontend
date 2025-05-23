@@ -13,7 +13,7 @@ app
   .prepare()
   .then(() => {
     server.use(stengForReguleringMiddleware({ env: isDev ? 'dev' : 'prod' }))
-    server.get(/(.*)/, (req, res) => {
+    server.all(/(.*)/, (req, res) => {
       return handle(req, res)
     })
 
