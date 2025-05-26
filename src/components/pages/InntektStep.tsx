@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { Suspense, useContext, useEffect, useMemo, useState } from 'react'
 
 import {
   Heading,
@@ -12,6 +12,7 @@ import {
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
+import LoadingComponent from '../LoadingComponent'
 import Substep from '../Substep'
 import { logger } from '../utils/logging'
 import { formatAndUpdateBeloep } from './utils/inntekt'
@@ -23,9 +24,10 @@ import { useFieldChange } from '@/helpers/useFormState'
 import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 
-const InntektStep = () => {
+const InntektStepContent = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
+  const [isLoading, setIsLoading] = useState(false)
 
   const { handleFieldChange } = useFieldChange<State>({
     setState,
@@ -37,15 +39,21 @@ const InntektStep = () => {
   }, [])
 
   useEffect(() => {
-    getAldersgrense(state.foedselAar ? parseInt(state.foedselAar) : 0).then(
-      (aldersgrense) => {
-        if (aldersgrense) {
-          handleFieldChange((draft) => {
-            draft.aldersgrense = aldersgrense
-          }, 'aldersgrense')
-        }
-      }
-    )
+    const foedselAarNumber = state.foedselAar ? parseInt(state.foedselAar) : 0
+    if (foedselAarNumber > 0) {
+      setIsLoading(true)
+      getAldersgrense(foedselAarNumber)
+        .then((aldersgrense) => {
+          if (aldersgrense) {
+            handleFieldChange((draft) => {
+              draft.aldersgrense = aldersgrense
+            }, 'aldersgrense')
+          }
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
   }, [state.foedselAar])
 
   const onSubmit = () => {
@@ -104,6 +112,11 @@ const InntektStep = () => {
       })
       .filter(Boolean)
   }, [aarArray])
+
+  // Show loading component while fetching aldersgrense data
+  if (isLoading) {
+    return <LoadingComponent />
+  }
 
   return (
     <FormWrapper onSubmit={onSubmit}>
@@ -211,7 +224,7 @@ const InntektStep = () => {
             <Select
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
-              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
+              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
@@ -260,7 +273,7 @@ const InntektStep = () => {
               type="text"
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
-              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
+              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
               description="Du kan tjene så mye du vil samtidig som du tar ut pensjon."
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
@@ -423,6 +436,14 @@ const InntektStep = () => {
       )}
       <FormButtons currentStepName="Inntekt og alderspensjon" />
     </FormWrapper>
+  )
+}
+
+const InntektStep = () => {
+  return (
+    <Suspense fallback={<LoadingComponent />}>
+      <InntektStepContent />
+    </Suspense>
   )
 }
 
