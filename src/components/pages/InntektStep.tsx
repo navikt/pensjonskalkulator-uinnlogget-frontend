@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import {
   Heading,
@@ -440,11 +440,7 @@ const InntektStepContent = () => {
 }
 
 const InntektStep = () => {
-  return (
-    <Suspense fallback={<LoadingComponent />}>
-      <InntektStepContent />
-    </Suspense>
-  )
+  return <InntektStepContent />
 }
 
 export default InntektStep
