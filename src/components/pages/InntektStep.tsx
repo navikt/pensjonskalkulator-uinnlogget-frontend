@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 
 import {
   Heading,
@@ -12,28 +12,49 @@ import {
 import useErrorHandling from '../../helpers/useErrorHandling'
 import FormButtons from '../FormButtons'
 import FormWrapper from '../FormWrapper'
+import LoadingComponent from '../LoadingComponent'
 import Substep from '../Substep'
 import { logger } from '../utils/logging'
 import { formatAndUpdateBeloep } from './utils/inntekt'
 import { State } from '@/common'
 import { FormContext } from '@/contexts/context'
+import { getAldersgrense } from '@/functions/aldersgrense'
 import { useFieldChange } from '@/helpers/useFormState'
 
 import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 
-const InntektStep = () => {
+const InntektStepContent = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
-
-  useEffect(() => {
-    document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
-  }, [])
+  const [isLoading, setIsLoading] = useState(false)
 
   const { handleFieldChange } = useFieldChange<State>({
     setState,
     clearError,
   })
+
+  useEffect(() => {
+    document.title = 'Inntekt og alderspensjon - Uinnlogget pensjonskalkulator'
+  }, [])
+
+  useEffect(() => {
+    const foedselAarNumber = state.foedselAar ? parseInt(state.foedselAar) : 0
+    if (foedselAarNumber > 0) {
+      setIsLoading(true)
+      getAldersgrense(foedselAarNumber)
+        .then((aldersgrense) => {
+          if (aldersgrense) {
+            handleFieldChange((draft) => {
+              draft.aldersgrense = aldersgrense
+            }, 'aldersgrense')
+          }
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
+    }
+  }, [state.foedselAar])
 
   const onSubmit = () => {
     const hasErrors = validateFields('InntektStep')
@@ -47,15 +68,55 @@ const InntektStep = () => {
     return false
   }
 
-  const yearOptions = useMemo(
-    () =>
-      Array.from({ length: 14 }, (_, i) => (
-        <option value={i + 62} key={i}>
-          {i + 62} år
-        </option>
-      )),
-    []
-  )
+  const aarArray = useMemo(() => {
+    const nedreAldersgrense = state.aldersgrense.nedreAldersgrense
+    const startAar = nedreAldersgrense?.aar
+    const startMaaneder = nedreAldersgrense?.maaneder || 0
+
+    const yearsWithMonths = [0, 5, 13]
+
+    const result = Array.from({ length: 14 }, (_, index) => {
+      if (!startAar) return { year: null, month: null }
+
+      const year = startAar + index
+      const showMonths = yearsWithMonths.includes(index) && startMaaneder > 0
+
+      return {
+        year: year,
+        month: showMonths ? startMaaneder : 0,
+      }
+    })
+
+    return result
+  }, [
+    state.aldersgrense.nedreAldersgrense?.aar,
+    state.aldersgrense.nedreAldersgrense?.maaneder,
+  ])
+
+  const yearOptions = useMemo(() => {
+    if (!state.aldersgrense.nedreAldersgrense?.aar) {
+      return []
+    }
+
+    return aarArray
+      .map(({ year, month }) => {
+        if (!year) return null
+
+        return (
+          <option value={year} key={year}>
+            {month
+              ? `${year} år og ${month === 1 ? '1 måned' : `${month} måneder`}`
+              : `${year} år`}
+          </option>
+        )
+      })
+      .filter(Boolean)
+  }, [aarArray])
+
+  // Show loading component while fetching aldersgrense data
+  if (isLoading) {
+    return <LoadingComponent />
+  }
 
   return (
     <FormWrapper onSubmit={onSubmit}>
@@ -163,13 +224,32 @@ const InntektStep = () => {
             <Select
               value={state.gradertUttak.uttaksalder.aar ?? ''}
               className="selectAar"
-              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
+              label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
               data-testid="gradertUttaksalder"
               onChange={(it) => {
                 handleFieldChange((draft) => {
-                  draft.gradertUttak!.uttaksalder.aar =
-                    it.target.value === '' ? null : parseInt(it.target.value)
-                  draft.gradertUttak!.uttaksalder.maaneder = 0
+                  const selectedValue = it.target.value
+
+                  if (!draft.gradertUttak) {
+                    draft.gradertUttak = {
+                      grad: null, // Or some default grad if appropriate
+                      uttaksalder: { aar: null, maaneder: null },
+                    }
+                  }
+
+                  if (selectedValue === '') {
+                    draft.gradertUttak.uttaksalder.aar = null
+                    draft.gradertUttak.uttaksalder.maaneder = null
+                  } else {
+                    const selectedYear = parseInt(selectedValue)
+                    const selectedYearData = aarArray.find(
+                      (item) => item.year === selectedYear
+                    )
+
+                    draft.gradertUttak!.uttaksalder.aar = selectedYear
+                    draft.gradertUttak!.uttaksalder.maaneder =
+                      selectedYearData?.month ?? 0
+                  }
                 }, 'gradertUttaksalder')
               }}
               error={errorFields.gradertUttaksalder}
@@ -193,7 +273,7 @@ const InntektStep = () => {
               type="text"
               inputMode="numeric"
               className={stepStyles.textfieldInntekt}
-              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
+              label={`Hva forventer du å ha i årlig inntekt samtidig som du tar ${state.gradertUttak?.grad} % pensjon?`}
               description="Du kan tjene så mye du vil samtidig som du tar ut pensjon."
               error={errorFields.gradertInntekt}
               value={state.gradertUttak?.aarligInntektVsaPensjonBeloep ?? ''}
@@ -209,9 +289,21 @@ const InntektStep = () => {
           label="Fra hvilken alder planlegger du å ta ut 100&nbsp;% pensjon?"
           onChange={(it) => {
             handleFieldChange((draft) => {
-              draft.heltUttak.uttaksalder.aar =
-                it.target.value === '' ? null : parseInt(it.target.value)
-              draft.heltUttak.uttaksalder.maaneder = 0
+              const selectedValue = it.target.value
+
+              if (selectedValue === '') {
+                draft.heltUttak.uttaksalder.aar = null
+                draft.heltUttak.uttaksalder.maaneder = null
+              } else {
+                const selectedYear = parseInt(selectedValue)
+                const selectedYearData = aarArray.find(
+                  (item) => item.year === selectedYear
+                )
+
+                draft.heltUttak.uttaksalder.aar = selectedYear
+                draft.heltUttak.uttaksalder.maaneder =
+                  selectedYearData?.month ?? 0
+              }
             }, 'heltUttaksalder')
           }}
           error={errorFields.heltUttaksalder}
@@ -285,7 +377,9 @@ const InntektStep = () => {
                   ? 'livsvarig'
                   : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
                       state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                    ? state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                    ? String(
+                        state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
+                      )
                     : ''
               }
               className="selectAar"
@@ -309,12 +403,23 @@ const InntektStep = () => {
                     draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
                       undefined
                   } else {
+                    const selectedYear = parseInt(it.target.value)
+                    const selectedYearData = aarArray.find(
+                      (item) => item.year === selectedYear
+                    )
+                    console.log(
+                      'Selected year data:',
+                      selectedYearData,
+                      'Selected year:',
+                      selectedYear
+                    )
+
                     draft.heltUttak.aarligInntektVsaPensjon = {
                       beloep:
                         draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
                       sluttAlder: {
-                        aar: parseInt(it.target.value),
-                        maaneder: 0,
+                        aar: selectedYear,
+                        maaneder: selectedYearData?.month ?? 0,
                       },
                     }
                   }
@@ -332,6 +437,10 @@ const InntektStep = () => {
       <FormButtons currentStepName="Inntekt og alderspensjon" />
     </FormWrapper>
   )
+}
+
+const InntektStep = () => {
+  return <InntektStepContent />
 }
 
 export default InntektStep
