@@ -31,14 +31,4 @@ export const initialState: State = {
       },
     },
   },
-  aldersgrense: {
-    normertPensjoneringsalder: {
-      aar: null,
-      maaneder: null,
-    },
-    nedreAldersgrense: {
-      aar: null,
-      maaneder: null,
-    },
-  },
 }

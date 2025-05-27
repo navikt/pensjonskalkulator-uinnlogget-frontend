@@ -41,26 +41,12 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
     return getChartOptions({
       simuleringsresultat,
       aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep!,
-      heltUttakAlder: {
-        aar: state.heltUttak.uttaksalder.aar ?? 0,
-        maaneder: state.heltUttak.uttaksalder.maaneder ?? 0,
-      },
-      inntektVsaHelPensjonSluttAlder: state.heltUttak.aarligInntektVsaPensjon
-        ?.sluttAlder
-        ? {
-            aar: state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar ?? 0,
-            maaneder:
-              state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder ?? 0,
-          }
-        : null,
+      heltUttakAar: state.heltUttak.uttaksalder.aar!,
+      inntektVsaHelPensjonSluttalder:
+        state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
       inntektVsaHelPensjonBeloep:
         state.heltUttak.aarligInntektVsaPensjon?.beloep,
-      gradertUttakAlder: state.gradertUttak?.uttaksalder
-        ? {
-            aar: state.gradertUttak.uttaksalder.aar ?? 0,
-            maaneder: state.gradertUttak.uttaksalder.maaneder ?? 0,
-          }
-        : null,
+      gradertUttakAlder: state.gradertUttak?.uttaksalder?.aar,
       gradertUttakInntekt: state.gradertUttak?.aarligInntektVsaPensjonBeloep
         ? state.gradertUttak?.aarligInntektVsaPensjonBeloep
         : undefined,

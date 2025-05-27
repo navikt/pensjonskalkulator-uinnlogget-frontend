@@ -73,13 +73,3 @@ export function handleCaretPosition(
     input?.setSelectionRange(updatedCaretPosition, updatedCaretPosition)
   }, 0)
 }
-
-export const calculateProportionalYearlyIncome = (
-  monthsWithFirstIncome: number,
-  firstIncomeAmount: number,
-  secondIncomeAmount: number
-): number => {
-  const firstPortion = (monthsWithFirstIncome / 12) * firstIncomeAmount
-  const secondPortion = ((12 - monthsWithFirstIncome) / 12) * secondIncomeAmount
-  return Math.round(firstPortion + secondPortion)
-}

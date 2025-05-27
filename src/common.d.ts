@@ -19,7 +19,6 @@ export interface State
   heltUttak: OptionalHeltUttak
   harBoddIUtland: boolean | null
   harInntektVsaHelPensjon: boolean | null
-  aldersgrense: Aldersgrense
 }
 
 export type OptionalGradertUttak = Omit<
@@ -119,21 +118,3 @@ export type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
 export type Sivilstand = PropType<State, 'sivilstand'>
 
 export type Simuleringstype = PropType<State, 'simuleringstype'>
-
-export type PersonAlder = Omit<
-  components['schemas']['PersonAlder'],
-  'aar' | 'maaneder'
-> & {
-  aar: number | null
-  maaneder: number | null
-}
-
-export type Aldersgrense = Omit<
-  components['schemas']['AldersgrenseResultV1'],
-  'normertPensjoneringsalder' | 'nedreAldersgrense'
-> & {
-  normertPensjoneringsalder: PersonAlder
-  nedreAldersgrense: PersonAlder
-}
-
-export type AldersgrenseResultV1 = components['schemas']['AldersgrenseResultV1']

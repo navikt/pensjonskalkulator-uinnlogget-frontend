@@ -2,11 +2,11 @@ import { alignData, getChartOptions } from '../chartUtils'
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
 
 describe('getChartOptions', () => {
-  const heltUttakAlder = { aar: 67, maaneder: 0 }
+  const heltUttakAar = 67
   const inntektVsaHelPensjonBeloep = '100000'
-  const inntektVsaHelPensjonSluttAlder = { aar: 68, maaneder: 0 }
+  const inntektVsaHelPensjonSluttalder = 68
   const aarligInntektFoerUttakBeloep = '500000'
-  const gradertUttakAlder = { aar: 65, maaneder: 0 }
+  const gradertUttakAlder = 65
   const gradertUttakInntekt = '200000'
 
   const mockSimuleringsresultat = {
@@ -32,8 +32,8 @@ describe('getChartOptions', () => {
     it('Burde alle chartOptions.series returneres', () => {
       const chartOptions = getChartOptions({
         simuleringsresultat: mockSimuleringsresultat,
-        heltUttakAlder,
-        inntektVsaHelPensjonSluttAlder,
+        heltUttakAar,
+        inntektVsaHelPensjonSluttalder,
         inntektVsaHelPensjonBeloep,
         aarligInntektFoerUttakBeloep,
         gradertUttakAlder,
@@ -63,8 +63,8 @@ describe('getChartOptions', () => {
     it('Burde filtrere kategorier med riktig belop i riktig intervall', () => {
       const chartOptions = getChartOptions({
         simuleringsresultat: mockSimuleringsresultat,
-        heltUttakAlder,
-        inntektVsaHelPensjonSluttAlder,
+        heltUttakAar,
+        inntektVsaHelPensjonSluttalder,
         inntektVsaHelPensjonBeloep,
         aarligInntektFoerUttakBeloep,
         gradertUttakAlder,
@@ -88,8 +88,8 @@ describe('getChartOptions', () => {
       it('Burde ikke serien "Inntekt ved siden av hel pensjon" vises', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: mockSimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
           inntektVsaHelPensjonBeloep: undefined,
         })
 
@@ -102,8 +102,8 @@ describe('getChartOptions', () => {
         it('Burde seriene for "Pensjonsgivende inntekt" inneholde', () => {
           const chartOptions = getChartOptions({
             simuleringsresultat: mockSimuleringsresultat,
-            heltUttakAlder,
-            inntektVsaHelPensjonSluttAlder,
+            heltUttakAar,
+            inntektVsaHelPensjonSluttalder,
             inntektVsaHelPensjonBeloep: 'NaN',
             aarligInntektFoerUttakBeloep: 'NaN',
             gradertUttakAlder,
@@ -112,7 +112,7 @@ describe('getChartOptions', () => {
 
           expect(chartOptions.series).toContainEqual({
             name: 'Pensjonsgivende inntekt',
-            data: [0, 0, 0, 0, 0],
+            data: [0, null, null, null, null],
             color: 'var(--a-gray-500)',
           })
         })
@@ -123,8 +123,8 @@ describe('getChartOptions', () => {
       it('Burde serien for "Pensjonsgivende" inntekt oppdateres', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: mockSimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder: undefined,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder: undefined,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder,
@@ -134,7 +134,7 @@ describe('getChartOptions', () => {
         chartOptions.series[1].data = [null, null, null, null, null]
 
         const gradertUttakInterval = []
-        for (let i = gradertUttakAlder.aar; i < heltUttakAlder.aar; i++) {
+        for (let i = gradertUttakAlder; i < heltUttakAar; i++) {
           gradertUttakInterval.push(i)
         }
 
@@ -169,8 +169,8 @@ describe('getChartOptions', () => {
       it('Burde intervallet til beløpet være like langt som uttaksalderen (livsvarig inntekt)', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: mockSimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder: undefined,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder: undefined,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder,
@@ -193,8 +193,8 @@ describe('getChartOptions', () => {
 
         const chartOptions = getChartOptions({
           simuleringsresultat: emptySimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder,
@@ -228,8 +228,8 @@ describe('getChartOptions', () => {
 
         const chartOptions = getChartOptions({
           simuleringsresultat: missingDataSimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder,
@@ -265,11 +265,11 @@ describe('getChartOptions', () => {
 
         const chartOptions = getChartOptions({
           simuleringsresultat: emptySimuleringsresultat,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
-          gradertUttakAlder: { aar: 0, maaneder: 0 },
+          gradertUttakAlder: 0,
           gradertUttakInntekt,
         })
 
@@ -297,8 +297,8 @@ describe('getChartOptions', () => {
       it('Burde seriene inneholde riktig data', () => {
         const chartOptions = getChartOptions({
           simuleringsresultat: undefined,
-          heltUttakAlder,
-          inntektVsaHelPensjonSluttAlder,
+          heltUttakAar,
+          inntektVsaHelPensjonSluttalder,
           inntektVsaHelPensjonBeloep,
           aarligInntektFoerUttakBeloep,
           gradertUttakAlder,

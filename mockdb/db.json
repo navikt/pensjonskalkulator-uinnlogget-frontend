@@ -97,15 +97,5 @@
       "vilkaarErOppfylt": true,
       "alternativ": null
     }
-  },
-  "aldersgrense": {
-    "normertPensjoneringsalder": {
-      "aar": 67,
-      "maaneder": 1
-    },
-    "nedreAldersgrense": {
-      "aar": 66,
-      "maaneder": 1
-    }
   }
 }
