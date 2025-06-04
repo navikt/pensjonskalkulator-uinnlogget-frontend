@@ -75,17 +75,21 @@ const InntektStepContent = () => {
 
     const yearsWithMonths = [0, 5, 13]
 
-    const result = Array.from({ length: 14 }, (_, index) => {
-      if (!startAar) return { year: null, month: null }
+    if (!startAar) return []
 
+    const result: { year: number; month: number }[] = []
+
+    for (let index = 0; index < 14; index++) {
       const year = startAar + index
       const showMonths = yearsWithMonths.includes(index) && startMaaneder > 0
 
-      return {
-        year: year,
-        month: showMonths ? startMaaneder : 0,
+      if (showMonths) {
+        result.push({ year, month: 0 })
+        result.push({ year, month: startMaaneder })
+      } else {
+        result.push({ year, month: 0 })
       }
-    })
+    }
 
     return result
   }, [
@@ -102,8 +106,11 @@ const InntektStepContent = () => {
       .map(({ year, month }) => {
         if (!year) return null
 
+        const value = `${year}-${month}`
+        const key = `${year}-${month}`
+
         return (
-          <option value={year} key={year}>
+          <option value={value} key={key}>
             {month
               ? `${year} år og ${month === 1 ? '1 måned' : `${month} måneder`}`
               : `${year} år`}
@@ -222,7 +229,11 @@ const InntektStepContent = () => {
         <div>
           <Substep>
             <Select
-              value={state.gradertUttak.uttaksalder.aar ?? ''}
+              value={
+                state.gradertUttak.uttaksalder.aar !== null
+                  ? `${state.gradertUttak.uttaksalder.aar}-${state.gradertUttak.uttaksalder.maaneder ?? 0}`
+                  : ''
+              }
               className="selectAar"
               label={`Fra hvilken alder planlegger du å ta ut ${state.gradertUttak.grad} % pensjon?`}
               data-testid="gradertUttaksalder"
@@ -241,14 +252,12 @@ const InntektStepContent = () => {
                     draft.gradertUttak.uttaksalder.aar = null
                     draft.gradertUttak.uttaksalder.maaneder = null
                   } else {
-                    const selectedYear = parseInt(selectedValue)
-                    const selectedYearData = aarArray.find(
-                      (item) => item.year === selectedYear
-                    )
+                    const [yearStr, monthStr] = selectedValue.split('-')
+                    const selectedYear = parseInt(yearStr)
+                    const selectedMonth = parseInt(monthStr)
 
                     draft.gradertUttak!.uttaksalder.aar = selectedYear
-                    draft.gradertUttak!.uttaksalder.maaneder =
-                      selectedYearData?.month ?? 0
+                    draft.gradertUttak!.uttaksalder.maaneder = selectedMonth
                   }
                 }, 'gradertUttaksalder')
               }}
@@ -283,7 +292,11 @@ const InntektStepContent = () => {
       )}
       <Substep>
         <Select
-          value={state.heltUttak.uttaksalder?.aar ?? ''}
+          value={
+            state.heltUttak.uttaksalder?.aar !== null
+              ? `${state.heltUttak.uttaksalder.aar}-${state.heltUttak.uttaksalder.maaneder ?? 0}`
+              : ''
+          }
           className="selectAar"
           data-testid="heltUttaksalder"
           label="Fra hvilken alder planlegger du å ta ut 100&nbsp;% pensjon?"
@@ -295,14 +308,12 @@ const InntektStepContent = () => {
                 draft.heltUttak.uttaksalder.aar = null
                 draft.heltUttak.uttaksalder.maaneder = null
               } else {
-                const selectedYear = parseInt(selectedValue)
-                const selectedYearData = aarArray.find(
-                  (item) => item.year === selectedYear
-                )
+                const [yearStr, monthStr] = selectedValue.split('-')
+                const selectedYear = parseInt(yearStr)
+                const selectedMonth = parseInt(monthStr)
 
                 draft.heltUttak.uttaksalder.aar = selectedYear
-                draft.heltUttak.uttaksalder.maaneder =
-                  selectedYearData?.month ?? 0
+                draft.heltUttak.uttaksalder.maaneder = selectedMonth
               }
             }, 'heltUttaksalder')
           }}
@@ -376,10 +387,9 @@ const InntektStepContent = () => {
                 undefined
                   ? 'livsvarig'
                   : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
-                      state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                    ? String(
-                        state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar
-                      )
+                      state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar !==
+                        null
+                    ? `${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar}-${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder ?? 0}`
                     : ''
               }
               className="selectAar"
@@ -403,23 +413,16 @@ const InntektStepContent = () => {
                     draft.heltUttak.aarligInntektVsaPensjon.sluttAlder =
                       undefined
                   } else {
-                    const selectedYear = parseInt(it.target.value)
-                    const selectedYearData = aarArray.find(
-                      (item) => item.year === selectedYear
-                    )
-                    console.log(
-                      'Selected year data:',
-                      selectedYearData,
-                      'Selected year:',
-                      selectedYear
-                    )
+                    const [yearStr, monthStr] = it.target.value.split('-')
+                    const selectedYear = parseInt(yearStr)
+                    const selectedMonth = parseInt(monthStr)
 
                     draft.heltUttak.aarligInntektVsaPensjon = {
                       beloep:
                         draft.heltUttak.aarligInntektVsaPensjon?.beloep ?? null,
                       sluttAlder: {
                         aar: selectedYear,
-                        maaneder: selectedYearData?.month ?? 0,
+                        maaneder: selectedMonth,
                       },
                     }
                   }

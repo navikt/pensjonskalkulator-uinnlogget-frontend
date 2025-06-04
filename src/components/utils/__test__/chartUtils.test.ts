@@ -44,14 +44,14 @@ describe('getChartOptions', () => {
       expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
       expect(chartOptions.series).toEqual([
         {
-          name: 'AFP Privat',
-          data: [null, 40000, 45000, 50000, 55000],
-          color: 'var(--a-purple-400)',
-        },
-        {
           name: 'Pensjonsgivende inntekt',
           data: [500000, 200000, 200000, 100000, 100000],
           color: 'var(--a-gray-500)',
+        },
+        {
+          name: 'AFP Privat',
+          data: [null, 40000, 45000, 50000, 55000],
+          color: 'var(--a-purple-400)',
         },
         {
           name: 'Alderspensjon (Nav)',
@@ -239,14 +239,14 @@ describe('getChartOptions', () => {
         expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
         expect(chartOptions.series).toEqual([
           {
-            name: 'AFP Privat',
-            data: [null, 40000, 45000, 45000, 45000],
-            color: 'var(--a-purple-400)',
-          },
-          {
             name: 'Pensjonsgivende inntekt',
             data: [500000, 200000, 200000, 100000, 100000],
             color: 'var(--a-gray-500)',
+          },
+          {
+            name: 'AFP Privat',
+            data: [null, 40000, 45000, 45000, 45000],
+            color: 'var(--a-purple-400)',
           },
           {
             name: 'Alderspensjon (Nav)',
@@ -276,14 +276,14 @@ describe('getChartOptions', () => {
         expect(chartOptions.xAxis.categories).toEqual([])
         expect(chartOptions.series).toEqual([
           {
-            name: 'AFP Privat',
-            data: [null, 40000, 45000, 50000, 55000],
-            color: 'var(--a-purple-400)',
-          },
-          {
             name: 'Pensjonsgivende inntekt',
             data: [500000],
             color: 'var(--a-gray-500)',
+          },
+          {
+            name: 'AFP Privat',
+            data: [null, 40000, 45000, 50000, 55000],
+            color: 'var(--a-purple-400)',
           },
           {
             name: 'Alderspensjon (Nav)',
