@@ -1,11 +1,6 @@
-module.exports = {
+export default {
   assumptions: {
     constantReexports: true,
   },
-  presets: [
-    'next/babel',
-    '@babel/preset-env',
-    '@babel/preset-react',
-    '@babel/preset-typescript',
-  ],
+  presets: ['next/babel'],
 }

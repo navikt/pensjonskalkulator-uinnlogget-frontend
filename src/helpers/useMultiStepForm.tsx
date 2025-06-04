@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { type JSX, useState } from 'react'
 
 interface Pages {
   [key: string]: JSX.Element

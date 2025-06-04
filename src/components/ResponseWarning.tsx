@@ -16,7 +16,7 @@ import { ErrorMessages, ErrorStatus, SimuleringError } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { getErrors } from '@/texts/errors'
 
-import stepStyles from '/src/components/styles/stepStyles.module.css'
+import stepStyles from '@/components/styles/stepStyles.module.css'
 
 interface SimuleringErrorProps {
   error?: SimuleringError
@@ -38,7 +38,7 @@ function ResponseWarning({ error }: SimuleringErrorProps) {
 
   useEffect(() => {
     logger('alert', { tekst: errorMessage })
-  }, [])
+  }, [errorMessage])
 
   useEffect(() => {
     router.prefetch('https://www.nav.no/pensjon/kalkulator/login')
