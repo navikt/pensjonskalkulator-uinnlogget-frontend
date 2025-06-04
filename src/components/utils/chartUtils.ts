@@ -247,11 +247,6 @@ export const getChartOptions = (input: {
         data: pensjonsgivendeInntektData,
         color: 'var(--a-gray-500)',
       },
-      {
-        name: 'Alderspensjon (Nav)',
-        data: [null, ...alderspensjonData],
-        color: 'var(--a-deepblue-500)',
-      },
     ],
   }
 
@@ -266,12 +261,18 @@ export const getChartOptions = (input: {
           ]
         : afpPrivatData
 
-    chartOptions.series.unshift({
+    chartOptions.series.push({
       name: 'AFP Privat',
       data: [null, ...extendedAfpPrivatData],
       color: 'var(--a-purple-400)',
     })
   }
+
+  chartOptions.series.push({
+    name: 'Alderspensjon (Nav)',
+    data: [null, ...alderspensjonData],
+    color: 'var(--a-deepblue-500)',
+  })
 
   return chartOptions
 }
