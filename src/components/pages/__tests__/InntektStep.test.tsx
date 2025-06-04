@@ -281,7 +281,7 @@ describe('InntektStep Component', () => {
         const input = screen.getByTestId(
           'gradertUttaksalder'
         ) as HTMLSelectElement
-        fireEvent.change(input, { target: { value: '66' } })
+        fireEvent.change(input, { target: { value: '66-0' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
           'gradertUttaksalder'
@@ -289,6 +289,7 @@ describe('InntektStep Component', () => {
 
         const draft = mockHandleFieldChange.mock.results[0].value
         expect(draft.gradertUttak.uttaksalder.aar).toBe(66)
+        expect(draft.gradertUttak.uttaksalder.maaneder).toBe(0)
       })
 
       test('Burde gradertUttak.uttaksalder.aar settes til null når bruker velger tom uttaksalder', () => {
@@ -530,7 +531,7 @@ describe('InntektStep Component', () => {
       })
       const input = screen.getByTestId('heltUttaksalder') as HTMLSelectElement
 
-      fireEvent.change(input, { target: { value: '67' } })
+      fireEvent.change(input, { target: { value: '67-0' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
         'heltUttaksalder'
@@ -538,6 +539,7 @@ describe('InntektStep Component', () => {
 
       const draft = mockHandleFieldChange.mock.results[0].value
       expect(draft.heltUttak.uttaksalder.aar).toBe(67)
+      expect(draft.heltUttak.uttaksalder.maaneder).toBe(0)
     })
 
     test('Burde heltUttak.uttaksalder.aar settes til null når bruker velger tom uttaksalder', () => {
@@ -823,7 +825,7 @@ describe('InntektStep Component', () => {
             const ageSelect = screen.getByTestId(
               'heltUttakSluttAlder'
             ) as HTMLSelectElement
-            fireEvent.change(ageSelect, { target: { value: '70' } })
+            fireEvent.change(ageSelect, { target: { value: '70-0' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
               'heltUttakSluttAlder'
@@ -833,6 +835,9 @@ describe('InntektStep Component', () => {
             expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar).toBe(
               70
             )
+            expect(
+              draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder
+            ).toBe(0)
           })
           test('Burde sette heltUttak.aarligInntektVsaPensjon.sluttAlder.aar til null når sluttAlder.aar ikke er definert', () => {
             renderMockedComponent(InntektStep, {
@@ -972,7 +977,7 @@ describe('InntektStep Component', () => {
             const ageSelect = screen.getByTestId(
               'heltUttakSluttAlder'
             ) as HTMLSelectElement
-            expect(ageSelect.value).toBe('65')
+            expect(ageSelect.value).toBe('65-0')
           })
 
           test('Burde sette riktig verdi når sluttAlder er udefinert', () => {

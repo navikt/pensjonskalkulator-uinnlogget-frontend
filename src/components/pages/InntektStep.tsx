@@ -230,9 +230,8 @@ const InntektStepContent = () => {
           <Substep>
             <Select
               value={
-                state.gradertUttak.uttaksalder.aar !== null &&
-                state.gradertUttak.uttaksalder.maaneder !== null
-                  ? `${state.gradertUttak.uttaksalder.aar}-${state.gradertUttak.uttaksalder.maaneder}`
+                state.gradertUttak.uttaksalder.aar !== null
+                  ? `${state.gradertUttak.uttaksalder.aar}-${state.gradertUttak.uttaksalder.maaneder ?? 0}`
                   : ''
               }
               className="selectAar"
@@ -294,9 +293,8 @@ const InntektStepContent = () => {
       <Substep>
         <Select
           value={
-            state.heltUttak.uttaksalder?.aar !== null &&
-            state.heltUttak.uttaksalder?.maaneder !== null
-              ? `${state.heltUttak.uttaksalder.aar}-${state.heltUttak.uttaksalder.maaneder}`
+            state.heltUttak.uttaksalder?.aar !== null
+              ? `${state.heltUttak.uttaksalder.aar}-${state.heltUttak.uttaksalder.maaneder ?? 0}`
               : ''
           }
           className="selectAar"
@@ -390,10 +388,8 @@ const InntektStepContent = () => {
                   ? 'livsvarig'
                   : state.heltUttak.aarligInntektVsaPensjon.sluttAlder &&
                       state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar !==
-                        null &&
-                      state.heltUttak.aarligInntektVsaPensjon.sluttAlder
-                        .maaneder !== null
-                    ? `${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar}-${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder}`
+                        null
+                    ? `${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar}-${state.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder ?? 0}`
                     : ''
               }
               className="selectAar"
