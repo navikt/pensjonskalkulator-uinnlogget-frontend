@@ -25,6 +25,10 @@ describe('FormContainer component', () => {
     return render(<FormContainerComponent {...defaultProps} {...props} />)
   }
 
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
   test('Skal rendre komponenten', () => {
     renderComponent()
     expect(screen.getByText('Uinnlogget pensjonskalkulator')).toBeVisible()
@@ -38,7 +42,7 @@ describe('FormContainer component', () => {
         totalSteps: defaultProps.totalSteps,
         activeStep: defaultProps.activeStep,
       },
-      {}
+      undefined
     )
   })
 

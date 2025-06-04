@@ -83,7 +83,7 @@ export const getChartOptions = (input: {
   const xaxisCategories =
     extendedCategories.length > 0
       ? [
-          ...extendedCategories.slice(0, -1),
+          ...extendedCategories.slice(0, -1).map(String),
           `${extendedCategories[extendedCategories.length - 1]}+`,
         ]
       : []
@@ -96,7 +96,7 @@ export const getChartOptions = (input: {
 
   const chartOptions = {
     chart: {
-      type: 'column',
+      type: 'column' as const,
     },
     title: {
       text: '',
@@ -121,11 +121,12 @@ export const getChartOptions = (input: {
     },
     plotOptions: {
       column: {
-        stacking: 'normal',
+        stacking: 'normal' as const,
       },
     },
     series: [
       {
+        type: 'column' as const,
         name: 'Pensjonsgivende inntekt',
         data: [
           parsedAarligInntektFoerUttakBeloep,
@@ -134,6 +135,7 @@ export const getChartOptions = (input: {
         color: 'var(--a-gray-500)',
       },
       {
+        type: 'column' as const,
         name: 'Alderspensjon (Nav)',
         data: [null, ...alderspensjonData],
         color: 'var(--a-deepblue-500)',
@@ -153,6 +155,7 @@ export const getChartOptions = (input: {
         : afpPrivatData
 
     chartOptions.series.unshift({
+      type: 'column' as const,
       name: 'AFP Privat',
       data: [null, ...extendedAfpPrivatData],
       color: 'var(--a-purple-400)',

@@ -9,7 +9,7 @@ import stepStyles from './styles/stepStyles.module.css'
 interface FormContainerComponentProps {
   totalSteps: number
   activeStep: number
-  step: ReactElement | null
+  step: ReactElement<unknown> | null
 }
 
 const FormContainerComponent: React.FC<FormContainerComponentProps> = ({

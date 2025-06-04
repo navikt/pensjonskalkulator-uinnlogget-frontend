@@ -3,8 +3,14 @@ import React, { ReactElement } from 'react'
 
 import useMultiStepForm from '@/helpers/useMultiStepForm'
 
+// Mock window.scrollTo since it's not implemented in jsdom
+Object.defineProperty(window, 'scrollTo', {
+  value: jest.fn(),
+  writable: true,
+})
+
 interface TestComponentProps {
-  lastPage: ReactElement
+  lastPage: ReactElement<unknown>
 }
 
 const steps = {
