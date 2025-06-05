@@ -83,7 +83,9 @@ const InntektStepContent = () => {
       const year = startAar + index
       const showMonths = yearsWithMonths.includes(index) && startMaaneder > 0
 
-      if (showMonths) {
+      if (index === 0 && startMaaneder > 0) {
+        result.push({ year, month: startMaaneder })
+      } else if (showMonths) {
         result.push({ year, month: 0 })
         result.push({ year, month: startMaaneder })
       } else {
