@@ -31,6 +31,9 @@ const useErrorHandling = (state: State) => {
       if (state.utenlandsAntallAar && +state.utenlandsAntallAar < 0) {
         return 'Antall år må være positiv';
       }
+      if (state.utenlandsAntallAar && +state.utenlandsAntallAar > 60) {
+        return 'Antall år må være mellom 0 og 60';
+      }
     return '';
   }
 
