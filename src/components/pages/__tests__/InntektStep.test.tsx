@@ -55,6 +55,19 @@ const context = {
 const mockValidateFields = jest.fn()
 const mockClearError = jest.fn()
 
+const mockAldersgrenseResponse = {
+  aldersgrense: {
+    normertPensjoneringsalder: {
+      aar: 67,
+      maaneder: 1,
+    },
+    nedreAldersgrense: {
+      aar: 62,
+      maaneder: 1,
+    },
+  },
+}
+
 beforeEach(() => {
   jest.clearAllMocks()
   ;(useErrorHandling as jest.Mock).mockReturnValue([
@@ -65,6 +78,30 @@ beforeEach(() => {
     handleFieldChange: mockHandleFieldChange,
   })
   ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
+
+  global.fetch = jest.fn().mockImplementation(async (requestInfo) => {
+    const urlString =
+      typeof requestInfo === 'string' ? requestInfo : requestInfo.url
+    if (urlString.includes('api/aldersgrense')) {
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve(mockAldersgrenseResponse),
+      })
+    }
+    return Promise.resolve({
+      ok: false,
+      status: 404,
+      json: () =>
+        Promise.resolve({
+          error: 'Mocked fetch: Not Found for URL: ' + urlString,
+        }),
+    })
+  })
+})
+
+afterEach(() => {
+  jest.clearAllMocks()
 })
 
 describe('InntektStep Component', () => {
@@ -166,6 +203,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
+          ...mockAldersgrenseResponse,
         },
       })
       const input = screen.getByLabelText(
@@ -191,6 +229,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 2 },
@@ -206,6 +245,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 2 },
@@ -231,16 +271,17 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
-              uttaksalder: { aar: 62, maaneder: null },
+              uttaksalder: { aar: 62, maaneder: 0 },
             },
           },
         })
         const input = screen.getByTestId(
           'gradertUttaksalder'
         ) as HTMLSelectElement
-        fireEvent.change(input, { target: { value: '66' } })
+        fireEvent.change(input, { target: { value: '66-0' } })
         expect(mockHandleFieldChange).toHaveBeenCalledWith(
           expect.any(Function),
           'gradertUttaksalder'
@@ -248,6 +289,7 @@ describe('InntektStep Component', () => {
 
         const draft = mockHandleFieldChange.mock.results[0].value
         expect(draft.gradertUttak.uttaksalder.aar).toBe(66)
+        expect(draft.gradertUttak.uttaksalder.maaneder).toBe(0)
       })
 
       test('Burde gradertUttak.uttaksalder.aar settes til null når bruker velger tom uttaksalder', () => {
@@ -255,6 +297,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: null },
@@ -279,6 +322,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: null, maaneder: null },
@@ -298,6 +342,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 0 },
@@ -328,6 +373,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: { aar: 66, maaneder: 0 },
@@ -354,6 +400,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: 50,
               uttaksalder: {
@@ -378,6 +425,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: undefined,
           },
         })
@@ -399,6 +447,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: null,
               uttaksalder: { aar: null, maaneder: null },
@@ -437,6 +486,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             gradertUttak: {
               grad: null,
               uttaksalder: { aar: null, maaneder: null },
@@ -469,6 +519,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
+          ...mockAldersgrenseResponse,
           heltUttak: {
             uttaksalder: { aar: 62, maaneder: null },
             aarligInntektVsaPensjon: {
@@ -480,7 +531,7 @@ describe('InntektStep Component', () => {
       })
       const input = screen.getByTestId('heltUttaksalder') as HTMLSelectElement
 
-      fireEvent.change(input, { target: { value: '67' } })
+      fireEvent.change(input, { target: { value: '67-0' } })
       expect(mockHandleFieldChange).toHaveBeenCalledWith(
         expect.any(Function),
         'heltUttaksalder'
@@ -488,6 +539,7 @@ describe('InntektStep Component', () => {
 
       const draft = mockHandleFieldChange.mock.results[0].value
       expect(draft.heltUttak.uttaksalder.aar).toBe(67)
+      expect(draft.heltUttak.uttaksalder.maaneder).toBe(0)
     })
 
     test('Burde heltUttak.uttaksalder.aar settes til null når bruker velger tom uttaksalder', () => {
@@ -495,6 +547,7 @@ describe('InntektStep Component', () => {
         ...context,
         state: {
           ...initialState,
+          ...mockAldersgrenseResponse,
           heltUttak: {
             uttaksalder: { aar: 67, maaneder: null },
             aarligInntektVsaPensjon: {
@@ -580,6 +633,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -592,6 +646,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -607,6 +662,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
           },
         })
@@ -631,6 +687,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: {
@@ -655,6 +712,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: { aar: 0, maaneder: null },
@@ -676,6 +734,7 @@ describe('InntektStep Component', () => {
           ...context,
           state: {
             ...initialState,
+            ...mockAldersgrenseResponse,
             harInntektVsaHelPensjon: true,
             heltUttak: {
               uttaksalder: { aar: 63, maaneder: 0 },
@@ -705,6 +764,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -744,6 +804,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -764,7 +825,7 @@ describe('InntektStep Component', () => {
             const ageSelect = screen.getByTestId(
               'heltUttakSluttAlder'
             ) as HTMLSelectElement
-            fireEvent.change(ageSelect, { target: { value: '70' } })
+            fireEvent.change(ageSelect, { target: { value: '70-0' } })
             expect(mockHandleFieldChange).toHaveBeenCalledWith(
               expect.any(Function),
               'heltUttakSluttAlder'
@@ -774,12 +835,16 @@ describe('InntektStep Component', () => {
             expect(draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.aar).toBe(
               70
             )
+            expect(
+              draft.heltUttak.aarligInntektVsaPensjon.sluttAlder.maaneder
+            ).toBe(0)
           })
           test('Burde sette heltUttak.aarligInntektVsaPensjon.sluttAlder.aar til null når sluttAlder.aar ikke er definert', () => {
             renderMockedComponent(InntektStep, {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -817,6 +882,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -854,6 +920,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -889,6 +956,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -909,7 +977,7 @@ describe('InntektStep Component', () => {
             const ageSelect = screen.getByTestId(
               'heltUttakSluttAlder'
             ) as HTMLSelectElement
-            expect(ageSelect.value).toBe('65')
+            expect(ageSelect.value).toBe('65-0')
           })
 
           test('Burde sette riktig verdi når sluttAlder er udefinert', () => {
@@ -917,6 +985,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
@@ -942,6 +1011,7 @@ describe('InntektStep Component', () => {
               ...context,
               state: {
                 ...initialState,
+                ...mockAldersgrenseResponse,
                 harInntektVsaHelPensjon: true,
                 heltUttak: {
                   uttaksalder: {
