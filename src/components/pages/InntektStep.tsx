@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { Suspense, useContext, useEffect, useMemo } from 'react'
 
 import {
   Heading,
@@ -27,7 +27,6 @@ import stepStyles from '../styles/stepStyles.module.css'
 const InntektStepContent = () => {
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
-  const [isLoading, setIsLoading] = useState(false)
 
   const { handleFieldChange } = useFieldChange<State>({
     setState,
@@ -41,18 +40,13 @@ const InntektStepContent = () => {
   useEffect(() => {
     const foedselAarNumber = state.foedselAar ? parseInt(state.foedselAar) : 0
     if (foedselAarNumber > 0) {
-      setIsLoading(true)
-      getAldersgrense(foedselAarNumber)
-        .then((aldersgrense) => {
-          if (aldersgrense) {
-            handleFieldChange((draft) => {
-              draft.aldersgrense = aldersgrense
-            }, 'aldersgrense')
-          }
-        })
-        .finally(() => {
-          setIsLoading(false)
-        })
+      getAldersgrense(foedselAarNumber).then((aldersgrense) => {
+        if (aldersgrense) {
+          handleFieldChange((draft) => {
+            draft.aldersgrense = aldersgrense
+          }, 'aldersgrense')
+        }
+      })
     }
   }, [state.foedselAar])
 
@@ -121,11 +115,6 @@ const InntektStepContent = () => {
       })
       .filter(Boolean)
   }, [aarArray])
-
-  // Show loading component while fetching aldersgrense data
-  if (isLoading) {
-    return <LoadingComponent />
-  }
 
   return (
     <FormWrapper onSubmit={onSubmit}>
@@ -444,8 +433,10 @@ const InntektStepContent = () => {
   )
 }
 
-const InntektStep = () => {
-  return <InntektStepContent />
-}
+const InntektStep = () => (
+  <Suspense fallback={<LoadingComponent />}>
+    <InntektStepContent />
+  </Suspense>
+)
 
 export default InntektStep
