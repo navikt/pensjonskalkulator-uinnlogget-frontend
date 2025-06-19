@@ -25,6 +25,9 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 
 const InntektStepContent = () => {
+  const yearsWithMonthOptionsIndex = [0, 5, 13]
+  const totalYearArrayLength = 14
+
   const { state, setState, formPageProps } = useContext(FormContext)
   const [errorFields, { validateFields, clearError }] = useErrorHandling(state)
 
@@ -67,15 +70,14 @@ const InntektStepContent = () => {
     const startAar = nedreAldersgrense?.aar
     const startMaaneder = nedreAldersgrense?.maaneder || 0
 
-    const yearsWithMonths = [0, 5, 13]
-
     if (!startAar) return []
 
     const result: { year: number; month: number }[] = []
 
-    for (let index = 0; index < 14; index++) {
+    for (let index = 0; index < totalYearArrayLength; index++) {
       const year = startAar + index
-      const showMonths = yearsWithMonths.includes(index) && startMaaneder > 0
+      const showMonths =
+        yearsWithMonthOptionsIndex.includes(index) && startMaaneder > 0
 
       if (index === 0 && startMaaneder > 0) {
         result.push({ year, month: startMaaneder })
