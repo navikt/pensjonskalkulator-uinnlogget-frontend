@@ -51,7 +51,7 @@ const InntektStepContent = () => {
         }
       })
     }
-  }, [state.foedselAar])
+  }, [state.foedselAar, handleFieldChange])
 
   const onSubmit = () => {
     const hasErrors = validateFields('InntektStep')
@@ -90,10 +90,7 @@ const InntektStepContent = () => {
     }
 
     return result
-  }, [
-    state.aldersgrense.nedreAldersgrense?.aar,
-    state.aldersgrense.nedreAldersgrense?.maaneder,
-  ])
+  }, [state.aldersgrense.nedreAldersgrense, yearsWithMonthOptionsIndex])
 
   const yearOptions = useMemo(() => {
     if (!state.aldersgrense.nedreAldersgrense?.aar) {
@@ -116,7 +113,7 @@ const InntektStepContent = () => {
         )
       })
       .filter(Boolean)
-  }, [aarArray])
+  }, [aarArray, state.aldersgrense.nedreAldersgrense?.aar])
 
   return (
     <FormWrapper onSubmit={onSubmit}>
