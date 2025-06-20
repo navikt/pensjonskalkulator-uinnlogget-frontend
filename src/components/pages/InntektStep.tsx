@@ -25,7 +25,7 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 
 const InntektStepContent = () => {
-  const yearsWithMonthOptionsIndex = [0, 5, 13]
+  const yearsWithMonthOptionsIndex = useMemo(() => [0, 5, 13], [])
   const totalYearArrayLength = 14
 
   const { state, setState, formPageProps } = useContext(FormContext)
