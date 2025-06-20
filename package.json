@@ -52,7 +52,7 @@
     "@typescript-eslint/typescript-estree": "^8.8.1",
     "babel-jest": "^29.7.0",
     "concurrently": "^9.0.1",
-    "eslint": "^8.57.1",
+    "eslint": "^9.29.0",
     "eslint-config-next": "14.2.22",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
