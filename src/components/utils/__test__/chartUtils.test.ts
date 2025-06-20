@@ -41,19 +41,28 @@ describe('getChartOptions', () => {
       })
 
       expect(chartOptions.chart.type).toBe('column')
-      expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
+      expect(chartOptions.xAxis.categories).toEqual([
+        '64',
+        '65',
+        '66',
+        '67',
+        '68+',
+      ])
       expect(chartOptions.series).toEqual([
         {
+          type: 'column',
           name: 'Pensjonsgivende inntekt',
           data: [500000, 200000, 200000, 100000, 100000],
           color: 'var(--a-gray-500)',
         },
         {
+          type: 'column',
           name: 'AFP Privat',
           data: [null, 40000, 45000, 50000, 55000],
           color: 'var(--a-purple-400)',
         },
         {
+          type: 'column',
           name: 'Alderspensjon (Nav)',
           data: [null, 180000, 190000, 200000, 210000],
           color: 'var(--a-deepblue-500)',
@@ -76,6 +85,7 @@ describe('getChartOptions', () => {
       ]
 
       expect(chartOptions.series).toContainEqual({
+        type: 'column',
         name: 'Pensjonsgivende inntekt',
         data: filteredInntektVsaHelPensjonData,
         color: 'var(--a-gray-500)',
@@ -111,6 +121,7 @@ describe('getChartOptions', () => {
           })
 
           expect(chartOptions.series).toContainEqual({
+            type: 'column',
             name: 'Pensjonsgivende inntekt',
             data: [0, 0, 0, 0, 0],
             color: 'var(--a-gray-500)',
@@ -178,6 +189,7 @@ describe('getChartOptions', () => {
         })
 
         expect(chartOptions.series).toContainEqual({
+          type: 'column',
           name: 'Pensjonsgivende inntekt',
           data: [500000, 200000, 200000, 100000, 100000],
           color: 'var(--a-gray-500)',
@@ -201,14 +213,22 @@ describe('getChartOptions', () => {
           gradertUttakInntekt,
         })
 
-        expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
+        expect(chartOptions.xAxis.categories).toEqual([
+          '64',
+          '65',
+          '66',
+          '67',
+          '68+',
+        ])
         expect(chartOptions.series).toEqual([
           {
+            type: 'column',
             name: 'Pensjonsgivende inntekt',
             data: [500000, 200000, 200000, 100000, 100000],
             color: 'var(--a-gray-500)',
           },
           {
+            type: 'column',
             name: 'Alderspensjon (Nav)',
             data: [null, 180000, 190000, 200000, 210000],
             color: 'var(--a-deepblue-500)',
@@ -236,19 +256,28 @@ describe('getChartOptions', () => {
           gradertUttakInntekt,
         })
 
-        expect(chartOptions.xAxis.categories).toEqual([64, 65, 66, 67, '68+'])
+        expect(chartOptions.xAxis.categories).toEqual([
+          '64',
+          '65',
+          '66',
+          '67',
+          '68+',
+        ])
         expect(chartOptions.series).toEqual([
           {
+            type: 'column',
             name: 'Pensjonsgivende inntekt',
             data: [500000, 200000, 200000, 100000, 100000],
             color: 'var(--a-gray-500)',
           },
           {
+            type: 'column',
             name: 'AFP Privat',
             data: [null, 40000, 45000, 45000, 45000],
             color: 'var(--a-purple-400)',
           },
           {
+            type: 'column',
             name: 'Alderspensjon (Nav)',
             data: [null, 180000, 190000, 200000, 210000],
             color: 'var(--a-deepblue-500)',
@@ -276,16 +305,19 @@ describe('getChartOptions', () => {
         expect(chartOptions.xAxis.categories).toEqual([])
         expect(chartOptions.series).toEqual([
           {
+            type: 'column',
             name: 'Pensjonsgivende inntekt',
             data: [500000],
             color: 'var(--a-gray-500)',
           },
           {
+            type: 'column',
             name: 'AFP Privat',
             data: [null, 40000, 45000, 50000, 55000],
             color: 'var(--a-purple-400)',
           },
           {
+            type: 'column',
             name: 'Alderspensjon (Nav)',
             data: [null],
             color: 'var(--a-deepblue-500)',
@@ -308,11 +340,13 @@ describe('getChartOptions', () => {
         expect(chartOptions.xAxis.categories).toEqual([])
         expect(chartOptions.series).toEqual([
           {
+            type: 'column',
             name: 'Pensjonsgivende inntekt',
             data: [500000],
             color: 'var(--a-gray-500)',
           },
           {
+            type: 'column',
             name: 'Alderspensjon (Nav)',
             data: [null],
             color: 'var(--a-deepblue-500)',
