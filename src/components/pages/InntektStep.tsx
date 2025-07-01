@@ -25,7 +25,7 @@ import '../styles/selectStyle.css'
 import stepStyles from '../styles/stepStyles.module.css'
 
 const InntektStepContent = () => {
-  const yearsWithMonthOptionsIndex = [0, 5, 13]
+  const yearsWithMonthOptionsIndex = useMemo(() => [0, 5, 13], [])
   const totalYearArrayLength = 14
 
   const { state, setState, formPageProps } = useContext(FormContext)
@@ -51,7 +51,7 @@ const InntektStepContent = () => {
         }
       })
     }
-  }, [state.foedselAar])
+  }, [state.foedselAar, handleFieldChange])
 
   const onSubmit = () => {
     const hasErrors = validateFields('InntektStep')
@@ -90,10 +90,7 @@ const InntektStepContent = () => {
     }
 
     return result
-  }, [
-    state.aldersgrense.nedreAldersgrense?.aar,
-    state.aldersgrense.nedreAldersgrense?.maaneder,
-  ])
+  }, [state.aldersgrense.nedreAldersgrense, yearsWithMonthOptionsIndex])
 
   const yearOptions = useMemo(() => {
     if (!state.aldersgrense.nedreAldersgrense?.aar) {
@@ -116,7 +113,7 @@ const InntektStepContent = () => {
         )
       })
       .filter(Boolean)
-  }, [aarArray])
+  }, [aarArray, state.aldersgrense.nedreAldersgrense?.aar])
 
   return (
     <FormWrapper onSubmit={onSubmit}>

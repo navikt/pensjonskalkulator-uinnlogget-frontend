@@ -29,11 +29,19 @@ jest.mock('next/server', () => ({
 }))
 
 describe('route.ts', () => {
+  let consoleErrorSpy: jest.SpyInstance
+
+  beforeEach(() => {
+    // Mock console.error to suppress expected error messages during tests
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+  })
+
   afterEach(() => {
     Object.defineProperty(process.env, 'NODE_ENV', {
       value: originalEnv,
       writable: true,
     })
+    consoleErrorSpy.mockRestore()
     jest.clearAllMocks()
   })
 

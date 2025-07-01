@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { type JSX, useEffect, useState } from 'react'
 
 import FormContainerComponent from './FormContainer'
 import BeregnPage from './pages/BeregnPage'
@@ -22,6 +22,15 @@ interface Pages {
   [key: string]: JSX.Element
 }
 
+const pageTitles = [
+  'Alder og yrkesaktivitet – Uinnlogget pensjonskalkulator',
+  'Opphold utenfor Norge – Uinnlogget pensjonskalkulator',
+  'Inntekt og alderspensjon – Uinnlogget pensjonskalkulator',
+  'Sivilstand – Uinnlogget pensjonskalkulator',
+  'Avtalefestet pensjon (AFP) – Uinnlogget pensjonskalkulator',
+  'Beregning - Uinnlogget pensjonskalkulator',
+]
+
 function FormPage({ grunnbelop }: FormPageProps) {
   const [state, setState] = useState<State>(initialState)
 
@@ -32,15 +41,6 @@ function FormPage({ grunnbelop }: FormPageProps) {
     sivilstand: <SivilstandStep grunnbelop={grunnbelop} key="sivilstand" />,
     afp: <AFPStep key="afp" />,
   }
-
-  const pageTitles = [
-    'Alder og yrkesaktivitet – Uinnlogget pensjonskalkulator',
-    'Opphold utenfor Norge – Uinnlogget pensjonskalkulator',
-    'Inntekt og alderspensjon – Uinnlogget pensjonskalkulator',
-    'Sivilstand – Uinnlogget pensjonskalkulator',
-    'Avtalefestet pensjon (AFP) – Uinnlogget pensjonskalkulator',
-    'Beregning - Uinnlogget pensjonskalkulator',
-  ]
   const pagesNames = Object.keys(pagesDict)
 
   const lastPage = <BeregnPage key="beregn" />
