@@ -1,4 +1,4 @@
-import Highcharts from 'highcharts'
+import * as Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { useContext, useEffect, useMemo, useRef } from 'react'
 
@@ -23,21 +23,32 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
   const { state, formPageProps } = useContext(FormContext)
   const headingRef = useRef<HTMLHeadingElement>(null)
 
-  if (
-    isSimuleringError(simuleringsresultat) ||
-    simuleringsresultat === undefined
-  ) {
-    return <ResponseWarning error={simuleringsresultat} />
-  }
+  const validSimResult =
+    !isSimuleringError(simuleringsresultat) && simuleringsresultat !== undefined
+
+  const invalidSimResult =
+    isSimuleringError(simuleringsresultat) || simuleringsresultat === undefined
 
   useEffect(() => {
-    if (headingRef.current) {
-      headingRef.current.focus()
+    // Load Highcharts accessibility module only on client side
+    if (typeof window !== 'undefined') {
+      import('highcharts/modules/accessibility')
     }
-    logger('resultat vist', { tekst: 'Beregning' })
   }, [])
 
-  const chartOptions = useMemo(() => {
+  useEffect(() => {
+    if (validSimResult) {
+      if (headingRef.current) {
+        headingRef.current.focus()
+      }
+      logger('resultat vist', { tekst: 'Beregning' })
+    }
+  }, [validSimResult])
+
+  const chartOptions: Highcharts.Options | null = useMemo(() => {
+    if (invalidSimResult) {
+      return null
+    }
     return getChartOptions({
       simuleringsresultat,
       aarligInntektFoerUttakBeloep: state.aarligInntektFoerUttakBeloep!,
@@ -65,9 +76,11 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         ? state.gradertUttak?.aarligInntektVsaPensjonBeloep
         : undefined,
     })
-  }, [state, simuleringsresultat])
+  }, [state, simuleringsresultat, invalidSimResult])
 
-  return (
+  return invalidSimResult ? (
+    <ResponseWarning error={simuleringsresultat} />
+  ) : (
     <Box
       maxWidth={'70rem'}
       width={'100%'}
@@ -81,6 +94,7 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         <Heading level="1" size="large" className={stepStyles.overskrift}>
           Uinnlogget pensjonskalkulator
         </Heading>
+
         <Heading
           ref={headingRef}
           level="2"
@@ -90,21 +104,25 @@ const Beregn: React.FC<Props> = ({ simuleringsresultat }) => {
         >
           Beregning
         </Heading>
+
         <>
           <div role="img" aria-labelledby="alt-chart-title">
             <div id="alt-chart-title" hidden>
               Årlig inntekt og pensjon etter uttak i kroner
             </div>
             <div data-testid="highcharts-aria-wrapper" aria-hidden={true}>
-              <HighchartsReact
-                highcharts={Highcharts}
-                options={chartOptions}
-                containerProps={{ 'data-testid': 'highcharts-react' }}
-              />
+              {chartOptions && (
+                <HighchartsReact
+                  highcharts={Highcharts}
+                  options={chartOptions}
+                  containerProps={{ 'data-testid': 'highcharts-react' }}
+                />
+              )}
             </div>
           </div>
           <ResultTable simuleringsresultat={simuleringsresultat} />
         </>
+
         <Box maxWidth={{ md: '50%', xs: '100%' }}>
           <Forbehold />
         </Box>

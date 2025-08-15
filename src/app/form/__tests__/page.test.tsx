@@ -15,7 +15,11 @@ jest.mock('../../../components/FormPage.tsx', () => ({
 }))
 
 describe('Page Component', () => {
-  it('Skal kalle getGrunnbelop når komponenten renderes', async () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it('Skal kalle getGrunnbelop når komponenten rendres', async () => {
     render(await Page())
     expect(getGrunnbelop).toHaveBeenCalled()
   })
@@ -26,6 +30,9 @@ describe('Page Component', () => {
 
     render(await Page())
 
-    expect(FormPage).toHaveBeenCalledWith({ grunnbelop: mockGrunnbelop }, {})
+    expect(FormPage).toHaveBeenCalledWith(
+      { grunnbelop: mockGrunnbelop },
+      undefined
+    )
   })
 })

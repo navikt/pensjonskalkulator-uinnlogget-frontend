@@ -1,4 +1,4 @@
-import { Suspense, useContext, useRef } from 'react'
+import { type JSX, Suspense, useContext, useRef } from 'react'
 
 import Beregn from '../Beregn'
 import LoadingComponent from '../LoadingComponent'

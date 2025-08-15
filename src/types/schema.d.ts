@@ -1294,6 +1294,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1327,6 +1334,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1450,6 +1464,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1507,6 +1528,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1640,6 +1668,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1669,6 +1704,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1698,6 +1740,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1736,6 +1785,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1765,6 +1821,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1794,6 +1857,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1843,6 +1913,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1872,6 +1949,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1901,6 +1985,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1930,6 +2021,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -1999,6 +2097,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -2028,6 +2133,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
@@ -2059,6 +2171,13 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example {
+                     *       "timestamp": "2023-09-12T10:37:47.056+00:00",
+                     *       "status": 503,
+                     *       "error": "Service Unavailable",
+                     *       "message": "En feil inntraff",
+                     *       "path": "/api/ressurs"
+                     *     } */
                     "*/*": unknown;
                 };
             };
