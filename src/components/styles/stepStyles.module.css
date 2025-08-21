@@ -48,6 +48,12 @@
   padding-left: 0;
 }
 
+.tableReadMoreSpacing :global(.navds-read-more__content) {
+  border-left: none;
+  padding-left: 0;
+  margin-left: 0;
+}
+
 .tableMobileOnly {
   @media (min-width: 768px) {
     display: none !important;
