@@ -28,7 +28,7 @@
     "highcharts": "^12.3.0",
     "highcharts-react-official": "^3.2.2",
     "immer": "^10.1.1",
-    "next": "15.4.6",
+    "next": "15.5.0",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "server-only": "^0.0.1"
