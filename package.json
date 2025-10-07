@@ -25,7 +25,7 @@
     "@navikt/oasis": "^3.8.0",
     "@navikt/steng-for-regulering": "^0.0.7",
     "express": "^5.1.0",
-    "highcharts": "^12.3.0",
+    "highcharts": "^12.4.0",
     "highcharts-react-official": "^3.2.2",
     "immer": "^10.1.1",
     "next": "15.4.6",
