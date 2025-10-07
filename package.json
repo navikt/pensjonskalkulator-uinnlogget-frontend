@@ -62,7 +62,7 @@
     "openapi-typescript": "^7.9.1",
     "prettier": "^3.6.2",
     "typescript": "^5",
-    "typescript-eslint": "^8.39.1"
+    "typescript-eslint": "^8.41.0"
   },
   "lint-staged": {
     "**/*.{cjs,js,jsx,ts,tsx}": "next lint --fix --file",
