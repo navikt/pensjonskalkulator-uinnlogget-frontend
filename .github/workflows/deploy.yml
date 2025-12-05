@@ -79,8 +79,6 @@ jobs:
         with:
           team: pensjonskalkulator
           dockerfile: .docker/Dockerfile
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
   run-unit-tests:
     name: Run unit tests

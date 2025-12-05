@@ -23,6 +23,7 @@ export default [
       'plugin:jsx-a11y/recommended',
       'plugin:import/errors',
       'plugin:import/warnings',
+      'plugin:import/typescript',
       'prettier',
     ],
     rules: {
@@ -37,6 +38,7 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'prettier/prettier': 'error',
+      'import/no-unresolved': 'error',
     },
   }),
 
@@ -87,7 +89,11 @@ export default [
       },
       'import/resolver': {
         typescript: {
+          alwaysTryTypes: true,
           project: './tsconfig.json',
+        },
+        node: {
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
       },
     },
