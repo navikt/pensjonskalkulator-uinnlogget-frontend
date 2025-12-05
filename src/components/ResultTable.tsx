@@ -26,7 +26,7 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
 
   return (
     <ReadMore
-      className={stepStyles.readMoreSpacing}
+      className={stepStyles.tableReadMoreSpacing}
       data-testid="show-result-table"
       header={
         isOpen ? 'Lukk tabell av beregningen' : 'Vis tabell av beregningen'
