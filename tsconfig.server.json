@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmitOnError": true,
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "incremental": true,
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "skipLibCheck": true
+  },
+  "include": ["server/**/*.ts"],
+  "exclude": ["node_modules"]
+}

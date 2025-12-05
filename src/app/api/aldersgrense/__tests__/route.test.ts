@@ -29,19 +29,11 @@ jest.mock('next/server', () => ({
 }))
 
 describe('route.ts', () => {
-  let consoleErrorSpy: jest.SpyInstance
-
-  beforeEach(() => {
-    // Mock console.error to suppress expected error messages during tests
-    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
-  })
-
   afterEach(() => {
     Object.defineProperty(process.env, 'NODE_ENV', {
       value: originalEnv,
       writable: true,
     })
-    consoleErrorSpy.mockRestore()
     jest.clearAllMocks()
   })
 
@@ -76,7 +68,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const req = new NextRequest('http://localhost', { method: 'POST' })
@@ -92,7 +84,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const req = new NextRequest('http://localhost', { method: 'POST' })
@@ -112,7 +104,7 @@ describe('route.ts', () => {
     it('Burde returnere en backend response for POST request', async () => {
       global.fetch = jest.fn().mockResolvedValue({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const response = await routeUtils.postDev()
@@ -132,7 +124,7 @@ describe('route.ts', () => {
 
       global.fetch = jest.fn().mockResolvedValueOnce({
         status: 200,
-        text: jest.fn().mockResolvedValue('backend response'),
+        json: jest.fn().mockResolvedValue('backend response'),
       })
 
       const response = await routeUtils.postProd(req)

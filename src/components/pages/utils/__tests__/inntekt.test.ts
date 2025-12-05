@@ -1,4 +1,5 @@
 import {
+  calculateProportionalYearlyIncome,
   formatAndUpdateBeloep,
   formatInntekt,
   formatInntektToNumber,
@@ -103,5 +104,38 @@ describe('handleCaretPosition', () => {
     handleCaretPosition(event, '12 345')
     jest.runAllTimers()
     expect(event.target.selectionStart).toBe(4)
+  })
+})
+
+describe('calculateProportionalYearlyIncome', () => {
+  test('burde beregne proporsjonal inntekt korrekt for et helt år med første inntekt', () => {
+    expect(calculateProportionalYearlyIncome(12, 120000, 60000)).toBe(120000)
+  })
+
+  test('burde beregne proporsjonal inntekt korrekt for et helt år med andre inntekt', () => {
+    expect(calculateProportionalYearlyIncome(0, 120000, 60000)).toBe(60000)
+  })
+
+  test('burde beregne proporsjonal inntekt korrekt for et halvt år med hver inntekt', () => {
+    expect(calculateProportionalYearlyIncome(6, 120000, 60000)).toBe(90000)
+  })
+
+  test('burde beregne proporsjonal inntekt korrekt for ujevn månedsfordeling', () => {
+    expect(calculateProportionalYearlyIncome(9, 120000, 60000)).toBe(105000)
+    expect(calculateProportionalYearlyIncome(3, 120000, 60000)).toBe(75000)
+    expect(calculateProportionalYearlyIncome(8, 100000, 200000)).toBe(133333)
+  })
+
+  test('burde håndtere grensetilfeller med nullverdier', () => {
+    expect(calculateProportionalYearlyIncome(6, 0, 60000)).toBe(30000)
+    expect(calculateProportionalYearlyIncome(6, 120000, 0)).toBe(60000)
+    expect(calculateProportionalYearlyIncome(6, 0, 0)).toBe(0)
+  })
+
+  test('burde avrunde resultatet riktig til nærmeste heltall', () => {
+    // Med divisjon som resulterer i ikke-heltall
+    expect(calculateProportionalYearlyIncome(5, 100000, 50000)).toBe(70833) // (5/12)*100000 + (7/12)*50000 = 41667 + 29167 = 70833 avrundet
+    expect(calculateProportionalYearlyIncome(7, 120000, 60000)).toBe(95000) // (7/12)*120000 + (5/12)*60000 = 70000 + 25000 = 95000
+    expect(calculateProportionalYearlyIncome(1, 510000, 420000)).toBe(427500) // (1/12)*510000 + (11/12)*420000 = 42500 + 385000 = 427500
   })
 })
