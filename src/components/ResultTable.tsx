@@ -40,7 +40,14 @@ const ResultTable: React.FC<Props> = ({ simuleringsresultat }) => {
               <Table.HeaderCell
                 scope="col"
                 className={stepStyles.tableMobileOnly}
-              />
+              >
+                <span
+                  role="presentation"
+                  className={stepStyles.visibilityHidden}
+                >
+                  .
+                </span>
+              </Table.HeaderCell>
               <Table.HeaderCell scope="col">Alder</Table.HeaderCell>
               <Table.HeaderCell
                 scope="col"
