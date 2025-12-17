@@ -45,11 +45,12 @@ export const useSimuleringsresultatData = (
   const inntektVsaPensjonValue = (alder: number): number => {
     return beregnInntektForAlder({
       alder,
-      gradertUttakAar: state.gradertUttak?.uttaksalder?.aar,
+      gradertUttakAar: state.gradertUttak?.uttaksalder?.aar ?? undefined,
       gradertUttakMaaneder: state.gradertUttak?.uttaksalder?.maaneder ?? 0,
       heltUttakAar: state.heltUttak.uttaksalder.aar ?? 0,
       heltUttakMaaneder: state.heltUttak.uttaksalder.maaneder ?? 0,
-      inntektSluttAar: state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar,
+      inntektSluttAar:
+        state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.aar ?? undefined,
       inntektSluttMaaneder:
         state.heltUttak.aarligInntektVsaPensjon?.sluttAlder?.maaneder ?? 0,
       inntektFoerUttak: parseInntekt(state.aarligInntektFoerUttakBeloep),
