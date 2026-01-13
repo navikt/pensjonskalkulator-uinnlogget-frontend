@@ -49,7 +49,7 @@ describe('useErrorHandling', () => {
 
   describe('Validering for AlderStep', () => {
     describe('foedselAar', () => {
-      test('Skal validere at foedselAar ikke er mindre enn 1945', () => {
+      test('Skal validere at foedselAar ikke er mindre enn (dagens år - 75)', () => {
         const state = { ...initialState, foedselAar: '1940' }
         renderWithState(state)
 
@@ -57,7 +57,11 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AlderStep')
         })
 
-        expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+        const currentYear = new Date().getFullYear()
+        const minYear = currentYear - 75
+        expect(errorFields.foedselAar).toBe(
+          `Årstall må være mellom ${minYear} og ${currentYear}`
+        )
       })
 
       test('Skal validere at foedselAar ikke er etter dagens dato', () => {
@@ -71,7 +75,11 @@ describe('useErrorHandling', () => {
           handlers.validateFields('AlderStep')
         })
 
-        expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+        const currentYear = new Date().getFullYear()
+        const minYear = currentYear - 75
+        expect(errorFields.foedselAar).toBe(
+          `Årstall må være mellom ${minYear} og ${currentYear}`
+        )
       })
 
       test('Skal ikke gi feil ved gyldig foedselAar', () => {
@@ -1003,7 +1011,11 @@ describe('useErrorHandling', () => {
         handlers.validateFields('AlderStep')
       })
 
-      expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+      const currentYear = new Date().getFullYear()
+      const minYear = currentYear - 75
+      expect(errorFields.foedselAar).toBe(
+        `Årstall må være mellom ${minYear} og ${currentYear}`
+      )
 
       act(() => {
         handlers.clearError('foedselAar')
@@ -1028,7 +1040,12 @@ describe('useErrorHandling', () => {
       // Wait for state update
       setTimeout(() => {
         expect(errorFields.simuleringType).toBe('Du må velge et alternativ')
-        expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+
+        const currentYear = new Date().getFullYear()
+        const minYear = currentYear - 75
+        expect(errorFields.foedselAar).toBe(
+          `Årstall må være mellom ${minYear} og ${currentYear}`
+        )
 
         act(() => {
           handlers.clearError('simuleringType')
@@ -1037,7 +1054,9 @@ describe('useErrorHandling', () => {
         // Wait for state update
         setTimeout(() => {
           expect(errorFields.simuleringType).toBe('')
-          expect(errorFields.foedselAar).toBe('Du må oppgi et gyldig årstall')
+          expect(errorFields.foedselAar).toBe(
+            `Årstall må være mellom ${minYear} og ${currentYear}`
+          )
         }, 0)
       }, 0)
     })
