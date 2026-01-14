@@ -35,7 +35,7 @@ jobs:
       - name: Use Node.js v22
         uses: actions/setup-node@v4
         with:
-          node-version: 22.16.0
+          node-version: 22.22.0
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
 
@@ -93,7 +93,7 @@ jobs:
       - name: Use Node.js v22
         uses: actions/setup-node@v4
         with:
-          node-version: 22.16.0
+          node-version: 22.22.0
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
 
