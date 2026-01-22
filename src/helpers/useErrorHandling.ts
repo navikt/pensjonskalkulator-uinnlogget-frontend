@@ -191,7 +191,9 @@ const useErrorHandling = ({
           +foedselAar < new Date().getFullYear() - 75 ||
           +foedselAar > new Date().getFullYear()
         ) {
-          errors.foedselAar = 'Du må oppgi et gyldig årstall'
+          const currentYear = new Date().getFullYear()
+          const minYear = currentYear - 75
+          errors.foedselAar = `Årstall må være mellom ${minYear} og ${currentYear}`
         } else {
           errors.foedselAar = ''
         }
