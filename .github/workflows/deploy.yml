@@ -31,9 +31,9 @@ jobs:
       image: ${{ steps.image-creation.outputs.image }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Use Node.js v22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22.22.0
           cache: 'npm'
@@ -41,7 +41,7 @@ jobs:
 
       - name: Cache node modules
         id: cache-node
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -88,10 +88,10 @@ jobs:
       fail-fast: true
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Use Node.js v22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 22.22.0
           cache: 'npm'
@@ -99,7 +99,7 @@ jobs:
 
       - name: Cache node modules
         id: cache-node
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             node_modules
@@ -117,7 +117,7 @@ jobs:
         run: npm run test
 
       - name: Archive code coverage results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: code-coverage-report
           path: coverage
@@ -136,7 +136,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -156,7 +156,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -176,7 +176,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -196,7 +196,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Deploy
         uses: nais/deploy/actions/deploy@v2
         env:
@@ -215,16 +215,16 @@ jobs:
       security-events: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           queries: security-and-quality
           languages: 'javascript'
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
+        uses: github/codeql-action/autobuild@v4
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           category: '/language:javascript'
 
@@ -240,7 +240,7 @@ jobs:
       github.event.inputs.prod == 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Deploy to prod-gcp
         uses: nais/deploy/actions/deploy@v2
