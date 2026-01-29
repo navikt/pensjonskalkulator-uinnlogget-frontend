@@ -4,6 +4,7 @@ import { Simuleringstype, Sivilstand, State } from '@/common'
 import { FormContext } from '@/contexts/context'
 import { initialState } from '@/defaults/initialState'
 import useErrorHandling from '@/helpers/useErrorHandling'
+import { validationErrors } from '@/texts/errors'
 
 describe('useErrorHandling', () => {
   let errorFields: { [key: string]: string }
@@ -60,7 +61,7 @@ describe('useErrorHandling', () => {
         const currentYear = new Date().getFullYear()
         const minYear = currentYear - 75
         expect(errorFields.foedselAar).toBe(
-          `Årstall må være mellom ${minYear} og ${currentYear}`
+          validationErrors.foedselAarRange(minYear, currentYear)
         )
       })
 
@@ -78,7 +79,7 @@ describe('useErrorHandling', () => {
         const currentYear = new Date().getFullYear()
         const minYear = currentYear - 75
         expect(errorFields.foedselAar).toBe(
-          `Årstall må være mellom ${minYear} og ${currentYear}`
+          validationErrors.foedselAarRange(minYear, currentYear)
         )
       })
 
@@ -1014,7 +1015,7 @@ describe('useErrorHandling', () => {
       const currentYear = new Date().getFullYear()
       const minYear = currentYear - 75
       expect(errorFields.foedselAar).toBe(
-        `Årstall må være mellom ${minYear} og ${currentYear}`
+        validationErrors.foedselAarRange(minYear, currentYear)
       )
 
       act(() => {
@@ -1044,7 +1045,7 @@ describe('useErrorHandling', () => {
         const currentYear = new Date().getFullYear()
         const minYear = currentYear - 75
         expect(errorFields.foedselAar).toBe(
-          `Årstall må være mellom ${minYear} og ${currentYear}`
+          validationErrors.foedselAarRange(minYear, currentYear)
         )
 
         act(() => {
@@ -1055,7 +1056,7 @@ describe('useErrorHandling', () => {
         setTimeout(() => {
           expect(errorFields.simuleringType).toBe('')
           expect(errorFields.foedselAar).toBe(
-            `Årstall må være mellom ${minYear} og ${currentYear}`
+            validationErrors.foedselAarRange(minYear, currentYear)
           )
         }, 0)
       }, 0)
