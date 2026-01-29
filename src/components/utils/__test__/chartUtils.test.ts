@@ -1,5 +1,5 @@
 import { alignData, getChartOptions } from '../chartUtils'
-import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
+import { parseInntekt } from '@/components/pages/utils/inntekt'
 
 describe('getChartOptions', () => {
   const heltUttakAlder = { aar: 67, maaneder: 0 }
@@ -149,11 +149,7 @@ describe('getChartOptions', () => {
           gradertUttakInterval.push(i)
         }
 
-        const parsedGradertUttakInntekt = isNaN(
-          formatInntektToNumber(gradertUttakInntekt)
-        )
-          ? 0
-          : formatInntektToNumber(gradertUttakInntekt)
+        const parsedGradertUttakInntekt = parseInntekt(gradertUttakInntekt)
 
         const alignedGradertUttakData = alignData(
           [64, 65, 66, 67, 68],

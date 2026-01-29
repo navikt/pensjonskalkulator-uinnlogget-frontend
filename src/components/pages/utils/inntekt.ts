@@ -27,6 +27,11 @@ export const formatInntekt = (amount?: number | string | null): string => {
     : amount.toString()
 }
 
+export const parseInntekt = (s?: string | null) => {
+  const num = formatInntektToNumber(s)
+  return isNaN(num) ? 0 : num
+}
+
 export const formatInntektToNumber = (s?: string | null | undefined) => {
   if (!s) return 0
 
@@ -82,4 +87,87 @@ export const calculateProportionalYearlyIncome = (
   const firstPortion = (monthsWithFirstIncome / 12) * firstIncomeAmount
   const secondPortion = ((12 - monthsWithFirstIncome) / 12) * secondIncomeAmount
   return Math.round(firstPortion + secondPortion)
+}
+
+export const beregnInntektForAlder = (params: {
+  alder: number
+  gradertUttakAar?: number
+  gradertUttakMaaneder: number
+  heltUttakAar: number
+  heltUttakMaaneder: number
+  inntektSluttAar?: number
+  inntektSluttMaaneder: number
+  inntektFoerUttak: number
+  inntektVedGradertUttak: number
+  inntektVedHeltUttak: number
+}): number => {
+  const {
+    alder,
+    gradertUttakAar,
+    gradertUttakMaaneder,
+    heltUttakAar,
+    heltUttakMaaneder,
+    inntektSluttAar,
+    inntektSluttMaaneder,
+    inntektFoerUttak,
+    inntektVedGradertUttak,
+    inntektVedHeltUttak,
+  } = params
+
+  // Overgangsår: Inntekt før uttak → Inntekt under gradert uttak
+  if (
+    gradertUttakAar !== undefined &&
+    alder === gradertUttakAar &&
+    gradertUttakMaaneder > 0
+  ) {
+    return calculateProportionalYearlyIncome(
+      gradertUttakMaaneder,
+      inntektFoerUttak,
+      inntektVedGradertUttak
+    )
+  }
+
+  // Overgangsår: Gradert/før uttak → Helt uttak
+  if (alder === heltUttakAar && heltUttakMaaneder > 0) {
+    const inntektFoer =
+      gradertUttakAar !== undefined ? inntektVedGradertUttak : inntektFoerUttak
+    return calculateProportionalYearlyIncome(
+      heltUttakMaaneder,
+      inntektFoer,
+      inntektVedHeltUttak
+    )
+  }
+
+  // Overgangsår: Helt uttak → Ingen inntekt
+  if (
+    inntektSluttAar !== undefined &&
+    alder === inntektSluttAar &&
+    inntektSluttMaaneder > 0
+  ) {
+    return calculateProportionalYearlyIncome(
+      inntektSluttMaaneder,
+      inntektVedHeltUttak,
+      0
+    )
+  }
+
+  // I gradert uttak periode
+  if (
+    gradertUttakAar !== undefined &&
+    alder >= gradertUttakAar &&
+    alder < heltUttakAar
+  ) {
+    return inntektVedGradertUttak
+  }
+
+  // I helt uttak periode
+  if (
+    alder >= heltUttakAar &&
+    (inntektSluttAar === undefined || alder <= inntektSluttAar)
+  ) {
+    return inntektVedHeltUttak
+  }
+
+  // Før uttak eller etter inntekt slutt
+  return 0
 }
