@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { ErrorFields, State, StepName } from '@/common'
 import { formatInntektToNumber } from '@/components/pages/utils/inntekt'
+import { validationErrors } from '@/texts/errors'
 
 const useErrorHandling = ({
   inntektOver1GAntallAar,
@@ -183,15 +184,19 @@ const useErrorHandling = ({
 
       if (step === 'AlderStep') {
         if (!foedselAar) {
-          errors.foedselAar = 'Du må oppgi årstall'
+          errors.foedselAar = validationErrors.foedselAarMissing
         } else if (isNaN(+foedselAar)) {
-          errors.foedselAar =
-            'Du må oppgi årstall med siffer (ÅÅÅÅ, f.eks. 1960)'
+          errors.foedselAar = validationErrors.foedselAarInvalid
         } else if (
           +foedselAar < new Date().getFullYear() - 75 ||
           +foedselAar > new Date().getFullYear()
         ) {
-          errors.foedselAar = 'Du må oppgi et gyldig årstall'
+          const currentYear = new Date().getFullYear()
+          const minYear = currentYear - 75
+          errors.foedselAar = validationErrors.foedselAarRange(
+            minYear,
+            currentYear
+          )
         } else {
           errors.foedselAar = ''
         }
