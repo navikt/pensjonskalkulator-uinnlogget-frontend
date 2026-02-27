@@ -24,7 +24,7 @@
     "@navikt/nav-dekoratoren-moduler": "^3.4.0",
     "@navikt/oasis": "^3.8.0",
     "@navikt/steng-for-regulering": "^0.0.7",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
     "highcharts": "^12.4.0",
     "highcharts-react-official": "^3.2.2",
     "immer": "^10.1.1",
@@ -73,6 +73,7 @@
     "@types/react-dom": "19.1.7",
     "jsdom": {
       "parse5": "^7.1.2"
-    }
+    },
+    "minimatch": "^10.2.4"
   }
 }
