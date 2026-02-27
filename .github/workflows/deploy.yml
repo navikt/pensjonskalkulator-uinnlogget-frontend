@@ -17,6 +17,8 @@ on:
         description: Deploy to production
         type: boolean
         required: false
+  schedule:
+    - cron: '0 0 * * 1'
 
 jobs:
   build:
