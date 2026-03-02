@@ -34,10 +34,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-      - name: Use Node.js v22
+      - name: Use Node.js v24
         uses: actions/setup-node@v6
         with:
-          node-version: 22.22.0
+          node-version: 24.x
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
 
@@ -92,10 +92,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Use Node.js v22
+      - name: Use Node.js v24
         uses: actions/setup-node@v6
         with:
-          node-version: 22.22.0
+          node-version: 24.x
           cache: 'npm'
           registry-url: 'https://npm.pkg.github.com'
 

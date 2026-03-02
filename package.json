@@ -28,7 +28,7 @@
     "highcharts": "^12.4.0",
     "highcharts-react-official": "^3.2.2",
     "immer": "^10.1.1",
-    "next": "^15.5.9",
+    "next": "^15.5.12",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "server-only": "^0.0.1"
@@ -47,7 +47,7 @@
     "babel-jest": "^30.0.5",
     "concurrently": "^9.2.0",
     "eslint": "^9.33.0",
-    "eslint-config-next": "15.4.6",
+    "eslint-config-next": "15.5.12",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
@@ -73,7 +73,6 @@
     "@types/react-dom": "19.1.7",
     "jsdom": {
       "parse5": "^7.1.2"
-    },
-    "minimatch": "^10.2.4"
+    }
   }
 }
