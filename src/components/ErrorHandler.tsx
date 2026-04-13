@@ -19,12 +19,15 @@ export default function ErrorHandler() {
             // * Check if this is an Amplitude Logger error
             const errorMessage = args.join(' ')
             if (
-              errorMessage.includes('Amplitude Logger') &&
-              errorMessage.includes('Failed to fetch remote configuration')
+              (errorMessage.includes('Amplitude Logger') &&
+                errorMessage.includes(
+                  'Failed to fetch remote configuration'
+                )) ||
+              errorMessage.includes('Failed to fetch session')
             ) {
               // Suppress this specific error in development
               console.warn(
-                '[DEV] Suppressed Amplitude error (this is expected in development):',
+                '[DEV] Suppressed decorator/Amplitude error (expected in development):',
                 errorMessage
               )
               return
