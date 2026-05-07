@@ -78,7 +78,8 @@
     "overrides": {
       "@types/react": "19.1.10",
       "@types/react-dom": "19.1.7",
-      "jsdom>parse5": "^7.1.2"
+      "jsdom>parse5": "^7.1.2",
+      "lodash": ">=4.18.1"
     },
     "ignoredBuiltDependencies": [
       "unrs-resolver"
