@@ -6,6 +6,8 @@ import { awaitDecoratorData } from '@navikt/nav-dekoratoren-moduler'
 
 export default function ErrorHandler() {
   useEffect(() => {
+    let originalError: (typeof console)['error'] | null = null
+
     const initializeErrorHandling = async () => {
       try {
         // * Wait for decorator to fully load
@@ -13,25 +15,33 @@ export default function ErrorHandler() {
 
         // Only in development, suppress specific Amplitude errors
         if (process.env.NODE_ENV === 'development') {
-          const originalError = console.error
+          if ('__amplitudePatched' in console) return
+
+          originalError = console.error
+          ;(console as unknown as Record<string, boolean>)[
+            '__amplitudePatched'
+          ] = true
 
           console.error = (...args: unknown[]) => {
             // * Check if this is an Amplitude Logger error
             const errorMessage = args.join(' ')
             if (
-              errorMessage.includes('Amplitude Logger') &&
-              errorMessage.includes('Failed to fetch remote configuration')
+              (errorMessage.includes('Amplitude Logger') &&
+                errorMessage.includes(
+                  'Failed to fetch remote configuration'
+                )) ||
+              errorMessage.includes('Failed to fetch session')
             ) {
               // Suppress this specific error in development
               console.warn(
-                '[DEV] Suppressed Amplitude error (this is expected in development):',
+                '[DEV] Suppressed decorator/Amplitude error (expected in development):',
                 errorMessage
               )
               return
             }
 
             // * For all other errors, use the original console.error
-            originalError.apply(console, args)
+            originalError!.apply(console, args)
           }
         }
       } catch (error) {
@@ -40,6 +50,16 @@ export default function ErrorHandler() {
     }
 
     initializeErrorHandling()
+
+    // Cleanup: restore original console.error on unmount
+    return () => {
+      if (originalError) {
+        console.error = originalError
+        delete (console as unknown as Record<string, boolean>)[
+          '__amplitudePatched'
+        ]
+      }
+    }
   }, [])
 
   return null
