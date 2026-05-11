@@ -78,7 +78,9 @@
     "overrides": {
       "@types/react": "19.1.10",
       "@types/react-dom": "19.1.7",
-      "jsdom>parse5": "^7.1.2"
+      "jsdom>parse5": "^7.1.2",
+      "postcss@<8.5.14": "8.5.14",
+      "ip-address@<=10.1.0": "10.2.0"
     },
     "ignoredBuiltDependencies": [
       "unrs-resolver"
