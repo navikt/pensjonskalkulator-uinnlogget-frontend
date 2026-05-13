@@ -16,8 +16,7 @@ on:
         type: boolean
         required: false
   schedule:
-    - cron: '0 0 * * 1'
-
+    - cron: '0 8 * * 1,4' 
 jobs:
   build:
     name: Build application
