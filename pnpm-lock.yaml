@@ -11,6 +11,7 @@ overrides:
   postcss@<8.5.14: 8.5.14
   ip-address@<=10.1.0: 10.2.0
   '@ungap/structured-clone@<1.3.1': 1.3.1
+  lodash: 4.18.1
 
 importers:
 
@@ -43,9 +44,6 @@ importers:
       immer:
         specifier: ^10.1.1
         version: 10.1.1
-      jsdom:
-        specifier: ^29.0.2
-        version: 29.0.2
       next:
         specifier: ^15.5.15
         version: 15.5.15(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -140,6 +138,9 @@ importers:
       jest-environment-jsdom:
         specifier: ^30.0.5
         version: 30.0.5
+      jsdom:
+        specifier: ^29.0.2
+        version: 29.0.2
       json-server:
         specifier: ^1.0.0-beta.3
         version: 1.0.0-beta.3
@@ -780,6 +781,9 @@ packages:
     peerDependencies:
       '@types/react': 19.1.10
       react: '>=17.0.0 || >19.0.0-rc'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
 
   '@navikt/ds-tokens@7.28.1':
     resolution: {integrity: sha512-6xPQjBuavHe+EUQgdgFxXIl/cPmF028c/PP/KU47iKZGc8NQdCQYr9+wdRc4NRjngRXPi3GQ+2vX3XmdGuRofg==, tarball: https://npm.pkg.github.com/download/@navikt/ds-tokens/7.28.1/b8f8bac92b64d3966d823cc46bb586d0ec059e90}
@@ -792,6 +796,9 @@ packages:
       html-react-parser: '>=5.x'
       jsdom: '>=16.x'
       react: '>=17.x'
+    peerDependenciesMeta:
+      react:
+        optional: true
 
   '@navikt/oasis@3.8.0':
     resolution: {integrity: sha512-5CDsv3wop9eIw2YNBCJRr0w6PwwkoTiHzZQXn1+5YZnsksCkHJAFsfKSbRle6zgsD+XRBnc/TPOP0nvNly7NWg==, tarball: https://npm.pkg.github.com/download/@navikt/oasis/3.8.0/fc6862d934adfbefa382220614af18160688cd1e}
@@ -4753,11 +4760,12 @@ snapshots:
       '@floating-ui/react-dom': 2.1.5(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       '@navikt/aksel-icons': 7.28.1
       '@navikt/ds-tokens': 7.28.1
-      '@types/react': 19.1.10
       clsx: 2.1.1
       date-fns: 4.1.0
       react: 19.2.3
       react-day-picker: 9.7.0(react@19.2.3)
+    optionalDependencies:
+      '@types/react': 19.1.10
     transitivePeerDependencies:
       - react-dom
 
@@ -4769,6 +4777,7 @@ snapshots:
       html-react-parser: 5.2.6(@types/react@19.1.10)(react@19.2.3)
       js-cookie: 3.0.5
       jsdom: 29.0.2
+    optionalDependencies:
       react: 19.2.3
 
   '@navikt/oasis@3.8.0':
