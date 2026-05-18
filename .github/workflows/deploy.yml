@@ -15,6 +15,8 @@ on:
         description: Deploy to production
         type: boolean
         required: false
+  # Rebuild and redeploy sandbox weekly so Chainguard base image patches are picked up.
+  # GitHub cron uses UTC; 03:00 UTC is 05:00 in Oslo during daylight saving time.
   schedule:
     - cron: '0 8 * * 1,4' 
 jobs:
@@ -119,7 +121,7 @@ jobs:
     needs: [ build ]
     if: |
       github.ref_name == 'main' &&
-      github.event_name == 'push'
+      (github.event_name == 'push')
     runs-on: ubuntu-latest
     permissions:
       packages: read
