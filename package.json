@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit --pretty -p tsconfig.json && tsc --noEmit --pretty -p tsconfig.server.json",
     "lint": "next lint",
     "prettier:fix": "prettier --write '**/*.{cjs,js,jsx,ts,tsx,json}'",
-    "prepare": "husky"
+    "prepare": "if [ -z \"$CI\" ]; then husky; fi"
   },
   "packageManager": "pnpm@10.11.0",
   "dependencies": {
