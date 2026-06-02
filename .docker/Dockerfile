@@ -1,7 +1,5 @@
 FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24
 
-RUN apk del npm
-
 ENV NODE_ENV=production
 ENV TZ="Europe/Oslo"
 
