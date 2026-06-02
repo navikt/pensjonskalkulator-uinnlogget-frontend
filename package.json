@@ -29,7 +29,7 @@
     "highcharts": "^12.4.0",
     "highcharts-react-official": "^3.2.2",
     "immer": "^10.1.1",
-    "next": "^15.5.15",
+    "next": "^15.5.19",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "server-only": "^0.0.1"
@@ -62,8 +62,8 @@
     "jest": "^30.0.5",
     "jest-axe": "^10.0.0",
     "jest-environment-jsdom": "^30.0.5",
-    "json-server": "^1.0.0-beta.3",
     "jsdom": "^29.0.2",
+    "json-server": "^1.0.0-beta.3",
     "lint-staged": "^16.1.5",
     "openapi-typescript": "^7.9.1",
     "prettier": "^3.6.2",
