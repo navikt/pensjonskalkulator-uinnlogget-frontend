@@ -1,0 +1,2 @@
+pnpm generate-types
+git diff --quiet src/types/schema.d.ts || (echo 'ERROR: schema.d.ts was updated. Please commit the changes and push again.' && exit 1)

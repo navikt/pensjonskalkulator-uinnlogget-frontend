@@ -10,6 +10,7 @@
     "preview": "next start",
     "dev": "concurrently -k \"next dev --turbopack\" \"json-server mockdb/db.json --port 3001\"",
     "fetch-dev-types": "openapi-typescript https://pensjonskalkulator-backend.intern.dev.nav.no/v3/api-docs/current -o ./src/types/schema.d.ts",
+    "generate-types": "openapi-typescript https://www.nav.no/pensjon/kalkulator/v3/api-docs/current -o ./src/types/schema.d.ts && pnpm format:types",
     "format:types": "prettier --write ./src/types/schema.d.ts && eslint ./src/types/schema.d.ts --fix",
     "test": "jest",
     "testc": "jest --c",
