@@ -12,6 +12,29 @@ const compat = new FlatCompat({
 })
 
 export default [
+  {
+    ignores: [
+      '.next/**',
+      'out/**',
+      'build/**',
+      'coverage/**',
+      'dist/**',
+      'local/**',
+      'next-env.d.ts',
+    ],
+  },
+
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      globals: {
+        module: 'readonly',
+        process: 'readonly',
+        require: 'readonly',
+      },
+    },
+  },
+
   js.configs.recommended,
 
   ...tseslint.configs.recommended,

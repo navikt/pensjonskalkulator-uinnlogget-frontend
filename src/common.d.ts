@@ -3,14 +3,13 @@ import type { components } from './types/schema.d.ts'
 export type APIPayload = components['schemas']['AnonymSimuleringSpecV1']
 export type ApiPayloadStripped = Omit<ApiPayload, 'foedselAar'>
 
-export interface State
-  extends Omit<
-    APIPayload,
-    | 'foedselAar'
-    | 'inntektOver1GAntallAar'
-    | 'utenlandsAntallAar'
-    | 'aarligInntektFoerUttakBeloep'
-  > {
+export interface State extends Omit<
+  APIPayload,
+  | 'foedselAar'
+  | 'inntektOver1GAntallAar'
+  | 'utenlandsAntallAar'
+  | 'aarligInntektFoerUttakBeloep'
+> {
   foedselAar: string | null
   inntektOver1GAntallAar: string | null
   aarligInntektFoerUttakBeloep: string | null
@@ -30,8 +29,7 @@ export type OptionalGradertUttak = Omit<
   uttaksalder: {
     aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
     maaneder:
-      | null
-      | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
+      null | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
   }
   aarligInntektVsaPensjonBeloep?: string
 }
@@ -42,16 +40,14 @@ export type OptionalHeltUttak = Omit<
   uttaksalder: {
     aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
     maaneder:
-      | null
-      | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
+      null | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
   }
   aarligInntektVsaPensjon?: {
     beloep: string | null
     sluttAlder?: {
       aar: null | components['schemas']['AnonymSimuleringAlderV1']['aar']
       maaneder:
-        | null
-        | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
+        null | components['schemas']['AnonymSimuleringAlderV1']['maaneder']
     }
   }
 }
@@ -74,11 +70,7 @@ export type ErrorMessages = {
 }
 
 export type StepName =
-  | 'AlderStep'
-  | 'UtlandsStep'
-  | 'InntektStep'
-  | 'SivilstandStep'
-  | 'AFPStep'
+  'AlderStep' | 'UtlandsStep' | 'InntektStep' | 'SivilstandStep' | 'AFPStep'
 export type ErrorFields = {
   foedselAar?: string
   inntektOver1GAntallAar?: string
