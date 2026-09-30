@@ -837,6 +837,8 @@ export interface components {
             /** Format: int32 */
             skjermingstillegg?: number | null;
             /** Format: int32 */
+            garantitillegg?: number | null;
+            /** Format: int32 */
             kapittel19Gjenlevendetillegg?: number | null;
         };
         PersonligSimuleringAlternativResultV9: {
