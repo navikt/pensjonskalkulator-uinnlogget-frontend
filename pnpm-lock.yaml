@@ -78,6 +78,9 @@ importers:
       '@eslint/js':
         specifier: ^9.33.0
         version: 9.33.0
+      '@next/eslint-plugin-next':
+        specifier: 15.5.15
+        version: 15.5.15
       '@testing-library/jest-dom':
         specifier: ^6.7.0
         version: 6.7.0
