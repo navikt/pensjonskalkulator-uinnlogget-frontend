@@ -2,6 +2,14 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Use the Node.js version specified in `.nvmrc` for local development.
+CI pins Node.js 24.22.1 explicitly in the workflows:
+
+```bash
+nvm install
+nvm use
+```
+
 First, run the development server:
 
 ```bash

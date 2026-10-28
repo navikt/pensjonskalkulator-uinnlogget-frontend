@@ -40,7 +40,7 @@ jobs:
       - name: Use Node.js v24
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: '24.22.1'
           cache: 'pnpm'
           registry-url: 'https://npm.pkg.github.com'
 
@@ -90,7 +90,7 @@ jobs:
       - name: Use Node.js v24
         uses: actions/setup-node@v6
         with:
-          node-version: 24.x
+          node-version: '24.22.1'
           cache: 'pnpm'
           registry-url: 'https://npm.pkg.github.com'
 

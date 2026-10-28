@@ -1,6 +1,8 @@
-FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24
+ARG NODE_DEPLOY_IMG=europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/node:24-slim
 
-RUN npm install tar@latest
+FROM ${NODE_DEPLOY_IMG}
+
+RUN ["node", "--version"]
 
 ENV NODE_ENV=production
 ENV TZ="Europe/Oslo"
